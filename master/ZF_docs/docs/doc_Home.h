@@ -37,19 +37,19 @@
  * <div>
  *     <div style="float:left; border:20px solid transparent;">
  *         <div style="float:left; border:5px solid transparent;">
- *             <img src="http://ZFFramework.com/res/ZFFramework/ZF2048_iOS.png">
+ *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_iOS.png">
  *         </div>
  *         <div style="float:left; border:5px solid transparent;">
- *             <img src="http://ZFFramework.com/res/ZFFramework/ZF2048_Android.png">
+ *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Android.png">
  *         </div>
  *         <div style="float:left; border:5px solid transparent;">
- *             <img src="http://ZFFramework.com/res/ZFFramework/ZF2048_Qt_Windows.png">
+ *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_Windows.png">
  *         </div>
  *         <div style="float:left; border:5px solid transparent;">
- *             <img src="http://ZFFramework.com/res/ZFFramework/ZF2048_Qt_MacOS.png">
+ *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_MacOS.png">
  *         </div>
  *         <div style="float:left; border:5px solid transparent;">
- *             <img src="http://ZFFramework.com/res/ZFFramework/ZF2048_Qt_Ubuntu.png">
+ *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_Ubuntu.png">
  *         </div>
  *     </div>
  * </div>
