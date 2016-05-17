@@ -1,0 +1,20 @@
+@echo off
+setlocal
+
+set WORK_DIR=%~dp0
+set RES_PATH=%~1%
+
+if not defined RES_PATH goto :usage
+goto :run
+:usage
+echo usage:
+echo   res_fix.bat RES_PATH
+exit /b 1
+:run
+
+>nul 2>nul (
+    for /f "delims=" %%i in ('dir /a-d /b /s %RES_PATH%') do (
+        ren %%i %%~nxi.mp2
+    )
+)
+

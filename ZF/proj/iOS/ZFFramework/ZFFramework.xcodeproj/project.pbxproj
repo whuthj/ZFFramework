@@ -1,0 +1,356 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		04D57E091AC59575006CD285 /* ZFFramework_aggregate */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 04D57E0A1AC59576006CD285 /* Build configuration list for PBXAggregateTarget "ZFFramework_aggregate" */;
+			buildPhases = (
+				04D57E0D1AC5957A006CD285 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = ZFFramework_aggregate;
+			productName = ZFFramework_aggregate;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		04D1E23E1C3A700400B3AD34 /* zfgensrc_ZFFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E23D1C3A700400B3AD34 /* zfgensrc_ZFFramework.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04D57BC51AC594B1006CD285 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		04C8E3111C3B986900CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../src; sourceTree = "<group>"; };
+		04D1E23D1C3A700400B3AD34 /* zfgensrc_ZFFramework.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework.mm; sourceTree = "<group>"; };
+		04D57BC71AC594B1006CD285 /* libZFFramework.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFFramework.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04D57BC41AC594B1006CD285 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04C8E3101C3B985C00CA64A1 /* ZFFramework */ = {
+			isa = PBXGroup;
+			children = (
+				04C8E3111C3B986900CA64A1 /* src */,
+			);
+			name = ZFFramework;
+			sourceTree = "<group>";
+		};
+		04D1E24B1C3A72BF00B3AD34 /* ProjectFiles */ = {
+			isa = PBXGroup;
+			children = (
+				04D1E23D1C3A700400B3AD34 /* zfgensrc_ZFFramework.mm */,
+			);
+			name = ProjectFiles;
+			sourceTree = "<group>";
+		};
+		04D57BBE1AC594B1006CD285 = {
+			isa = PBXGroup;
+			children = (
+				04C8E3101C3B985C00CA64A1 /* ZFFramework */,
+				04D1E24B1C3A72BF00B3AD34 /* ProjectFiles */,
+				04D57BE11AC59520006CD285 /* Framework */,
+				04D57BC81AC594B1006CD285 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		04D57BC81AC594B1006CD285 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04D57BC71AC594B1006CD285 /* libZFFramework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04D57BE11AC59520006CD285 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04D57BC61AC594B1006CD285 /* ZFFramework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04D57BDB1AC594B2006CD285 /* Build configuration list for PBXNativeTarget "ZFFramework" */;
+			buildPhases = (
+				04D1E23C1C3A6FB700B3AD34 /* ZFCompileSource */,
+				04D57BC31AC594B1006CD285 /* Sources */,
+				04D57BC41AC594B1006CD285 /* Frameworks */,
+				04D57BC51AC594B1006CD285 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZFFramework;
+			productName = ZFFramework;
+			productReference = 04D57BC71AC594B1006CD285 /* libZFFramework.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04D57BBF1AC594B1006CD285 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = ZFFramework;
+				TargetAttributes = {
+					04D57BC61AC594B1006CD285 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					04D57E091AC59575006CD285 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = 04D57BC21AC594B1006CD285 /* Build configuration list for PBXProject "ZFFramework" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 04D57BBE1AC594B1006CD285;
+			productRefGroup = 04D57BC81AC594B1006CD285 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04D57BC61AC594B1006CD285 /* ZFFramework */,
+				04D57E091AC59575006CD285 /* ZFFramework_aggregate */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		04D1E23C1C3A6FB700B3AD34 /* ZFCompileSource */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = ZFCompileSource;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ${SRCROOT}/../../../../tools/common/unity_build.sh zfgensrc_ZFFramework.mm \"${SRCROOT}/../../../../ZF/src\"";
+		};
+		04D57E0D1AC5957A006CD285 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=${PROJECT_NAME}\n\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/../../../../_release/iOS/ZF\n\n# Working dir will be deleted after the framework creation.\nWRK_DIR=${SRCROOT}/../../../../_tmp/build/iOS/${FMK_NAME}\n\n# whether a Cocoapods project, 0 or 1\nCOCOAPODS_PROJECT=0\n\n# whether incremental build, 0 or 1\nINCREMENTAL_BUILD=1\n\n# copy header if not empty\nHEADER_SRC_PATH=../../../src\nHEADER_DST_PATH=${INSTALL_DIR}/include\n\n# copy res if not empty\nRES_SRC_PATH=../../../res\nRES_DST_PATH=${INSTALL_DIR}/res\n\n# whether to open result folder automatically, 0 or 1\nAUTO_OPEN_INSTALL_DIR=0\n\n# ============================================================\n# no need to change these\n# ============================================================\n# build paths\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator\n\n# -configuration ${CONFIGURATION}\n# Clean and Building both architectures.\nif [ ${COCOAPODS_PROJECT} = \"1\" ]; then\nif [ ${INCREMENTAL_BUILD} = \"1\" ]; then\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -sdk iphoneos SYMROOT=${WRK_DIR}\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -sdk iphonesimulator SYMROOT=${WRK_DIR}\nelse\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -target -sdk iphoneos clean build SYMROOT=${WRK_DIR}\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -target -sdk iphonesimulator clean build SYMROOT=${WRK_DIR}\nfi\nelse\nif [ ${INCREMENTAL_BUILD} = \"1\" ]; then\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos SYMROOT=${WRK_DIR}\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator SYMROOT=${WRK_DIR}\nelse\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build SYMROOT=${WRK_DIR}\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build SYMROOT=${WRK_DIR}\nfi\nfi\n\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]; then\nrm -rf \"${INSTALL_DIR}\" >/dev/null 2>&1\nfi\n\nmkdir -p \"${INSTALL_DIR}/lib\" >/dev/null 2>&1\n\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/lib${FMK_NAME}.a\" \"${SIMULATOR_DIR}/lib${FMK_NAME}.a\" -output \"${INSTALL_DIR}/lib/lib${FMK_NAME}.a\"\n\n# remove build dir\nif [ ${INCREMENTAL_BUILD} != \"1\" ]; then\nif [ -d \"${WRK_DIR}\" ]; then\nrm -rf \"${WRK_DIR}\" >/dev/null 2>&1\nfi\nfi\n\n# copy headers\nif [[ ${HEADER_SRC_PATH} != \"\" && ${HEADER_DST_PATH} != \"\" ]]; then\nif [ -d \"${HEADER_DST_PATH}\" ]; then\nrm -rf \"${HEADER_DST_PATH}\" >/dev/null 2>&1\nfi\ncp -rf ${HEADER_SRC_PATH}/. ${HEADER_DST_PATH}/ >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.c\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.cpp\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.m\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.mm\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*Private*\" | xargs rm >/dev/null 2>&1\n\nfind ${HEADER_DST_PATH} -depth -type d -empty -exec rm -rf {} ';' >/dev/null 2>&1\nfi\n\n# copy res\nif [[ ${RES_SRC_PATH} != \"\" && ${RES_DST_PATH} != \"\" ]]; then\nif [ -d \"${RES_DST_PATH}\" ]; then\nrm -rf \"${RES_DST_PATH}\" >/dev/null 2>&1\nfi\ncp -rf ${RES_SRC_PATH}/. ${RES_DST_PATH}/ >/dev/null 2>&1\nfi\n\nif [ ${AUTO_OPEN_INSTALL_DIR} = \"1\" ]; then\nopen \"${INSTALL_DIR}\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04D57BC31AC594B1006CD285 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04D1E23E1C3A700400B3AD34 /* zfgensrc_ZFFramework.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		04D57BD91AC594B2006CD285 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		04D57BDA1AC594B2006CD285 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		04D57BDC1AC594B2006CD285 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		04D57BDD1AC594B2006CD285 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		04D57E0B1AC59576006CD285 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		04D57E0C1AC59576006CD285 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04D57BC21AC594B1006CD285 /* Build configuration list for PBXProject "ZFFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04D57BD91AC594B2006CD285 /* Debug */,
+				04D57BDA1AC594B2006CD285 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04D57BDB1AC594B2006CD285 /* Build configuration list for PBXNativeTarget "ZFFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04D57BDC1AC594B2006CD285 /* Debug */,
+				04D57BDD1AC594B2006CD285 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04D57E0A1AC59576006CD285 /* Build configuration list for PBXAggregateTarget "ZFFramework_aggregate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04D57E0B1AC59576006CD285 /* Debug */,
+				04D57E0C1AC59576006CD285 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04D57BBF1AC594B1006CD285 /* Project object */;
+}

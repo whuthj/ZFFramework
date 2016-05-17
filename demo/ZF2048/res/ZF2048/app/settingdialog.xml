@@ -1,0 +1,75 @@
+<ZFUILinearLayout>
+    <ZFUIOrientationEnum name="layoutOrientation" value="Top" />
+    <zfint name="layoutChildSpace" value="8" />
+    <ZFUILinearLayout category="child" >
+        <zfint name="layoutChildSpace" value="8" />
+        <ZFUILinearLayoutParam category="layoutParam" />
+        <ZFUITextView category="child" >
+            <zfstring name="viewId" value="dataWidthHint" />
+            <ZFUILinearLayoutParam category="layoutParam" />
+        </ZFUITextView>
+        <ZFUILinearLayout category="child" >
+            <ZFUIOrientationEnum name="layoutOrientation" value="Top" />
+            <ZFUILinearLayoutParam category="layoutParam" />
+            <ZF2048AppButton category="child" >
+                <zfstring name="viewId" value="dataWidthIncrease" />
+                <ZFUILinearLayoutParam category="layoutParam" />
+            </ZF2048AppButton>
+            <ZFUITextEdit category="child" >
+                <zfstring name="viewId" value="dataWidthEdit" />
+                <ZFUITextView name="textPlaceHolder" >
+                    <ZFUIColor name="textColor" value="#FFAAAAAA" />
+                    <zfint name="textSize" value="12" />
+                    <ZFUIViewLayoutParam category="layoutParam" >
+                        <ZFUISizeParam name="sizeParam" value="(Fill, Fill)" />
+                    </ZFUIViewLayoutParam>
+                </ZFUITextView>
+                <ZFUILinearLayoutParam category="layoutParam" />
+            </ZFUITextEdit>
+            <ZF2048AppButton category="child" >
+                <zfstring name="viewId" value="dataWidthDecrease" />
+                <ZFUILinearLayoutParam category="layoutParam" />
+            </ZF2048AppButton>
+        </ZFUILinearLayout>
+        <ZFUITextView category="child" >
+            <zfstring name="viewId" value="dataHeightHint" />
+            <ZFUILinearLayoutParam category="layoutParam" />
+        </ZFUITextView>
+        <ZFUILinearLayout category="child" >
+            <ZFUIOrientationEnum name="layoutOrientation" value="Top" />
+            <ZFUILinearLayoutParam category="layoutParam" />
+            <ZF2048AppButton category="child" >
+                <zfstring name="viewId" value="dataHeightIncrease" />
+                <ZFUILinearLayoutParam category="layoutParam" />
+            </ZF2048AppButton>
+            <ZFUITextEdit category="child" >
+                <zfstring name="viewId" value="dataHeightEdit" />
+                <ZFUITextView name="textPlaceHolder" >
+                    <ZFUIColor name="textColor" value="#FFAAAAAA" />
+                    <zfint name="textSize" value="12" />
+                    <ZFUIViewLayoutParam category="layoutParam" >
+                        <ZFUISizeParam name="sizeParam" value="(Fill, Fill)" />
+                    </ZFUIViewLayoutParam>
+                </ZFUITextView>
+                <ZFUILinearLayoutParam category="layoutParam" />
+            </ZFUITextEdit>
+            <ZF2048AppButton category="child" >
+                <zfstring name="viewId" value="dataHeightDecrease" />
+                <ZFUILinearLayoutParam category="layoutParam" />
+            </ZF2048AppButton>
+        </ZFUILinearLayout>
+    </ZFUILinearLayout>
+    <ZFUILinearLayout category="child" >
+        <zfint name="layoutChildSpace" value="8" />
+        <ZFUILinearLayoutParam category="layoutParam" />
+        <ZF2048AppButton category="child" >
+            <zfstring name="viewId" value="confirmButton" />
+            <ZFUILinearLayoutParam category="layoutParam" />
+        </ZF2048AppButton>
+        <ZF2048AppButton category="child" >
+            <zfstring name="viewId" value="cancelButton" />
+            <ZFUILinearLayoutParam category="layoutParam" />
+        </ZF2048AppButton>
+    </ZFUILinearLayout>
+</ZFUILinearLayout>
+

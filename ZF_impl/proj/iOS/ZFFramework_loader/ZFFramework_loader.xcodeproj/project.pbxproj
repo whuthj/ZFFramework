@@ -1,0 +1,381 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		04C24CA81AC63B2B0045D560 /* ZFFramework_loader_aggregate */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 04C24CA91AC63B2B0045D560 /* Build configuration list for PBXAggregateTarget "ZFFramework_loader_aggregate" */;
+			buildPhases = (
+				04C24CAC1AC63B3F0045D560 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = ZFFramework_loader_aggregate;
+			productName = ZFFramework_loader_aggregate;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		04C24CA41AC63A7B0045D560 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04C24C9D1AC63A7B0045D560 /* AppDelegate.mm */; };
+		04C24CA51AC63A7B0045D560 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C24CA11AC63A7B0045D560 /* RootViewController.m */; };
+		04C24CA61AC63A7B0045D560 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04C24CA31AC63A7B0045D560 /* main.m */; };
+		04C24CAE1AC63B880045D560 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C24CAD1AC63B880045D560 /* Foundation.framework */; };
+		04C24CB01AC63B920045D560 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C24CAF1AC63B920045D560 /* UIKit.framework */; };
+		04C24CB21AC63B9A0045D560 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C24CB11AC63B9A0045D560 /* QuartzCore.framework */; };
+		04C24CB41AC63BA00045D560 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04C24CB31AC63BA00045D560 /* CoreGraphics.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		04C24C7F1AC63A310045D560 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		04C24C811AC63A310045D560 /* libZFFramework_loader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFFramework_loader.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		04C24C9C1AC63A7B0045D560 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		04C24C9D1AC63A7B0045D560 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		04C24CA01AC63A7B0045D560 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		04C24CA11AC63A7B0045D560 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		04C24CA21AC63A7B0045D560 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		04C24CA31AC63A7B0045D560 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		04C24CAD1AC63B880045D560 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		04C24CAF1AC63B920045D560 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		04C24CB11AC63B9A0045D560 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		04C24CB31AC63BA00045D560 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04C24C7E1AC63A310045D560 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04C24CB41AC63BA00045D560 /* CoreGraphics.framework in Frameworks */,
+				04C24CB21AC63B9A0045D560 /* QuartzCore.framework in Frameworks */,
+				04C24CB01AC63B920045D560 /* UIKit.framework in Frameworks */,
+				04C24CAE1AC63B880045D560 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04C24C781AC63A310045D560 = {
+			isa = PBXGroup;
+			children = (
+				04C24C9B1AC63A7B0045D560 /* ProjectFiles */,
+				04C24CA71AC63A810045D560 /* Framework */,
+				04C24C821AC63A310045D560 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		04C24C821AC63A310045D560 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04C24C811AC63A310045D560 /* libZFFramework_loader.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04C24C9B1AC63A7B0045D560 /* ProjectFiles */ = {
+			isa = PBXGroup;
+			children = (
+				04C24C9C1AC63A7B0045D560 /* AppDelegate.h */,
+				04C24C9D1AC63A7B0045D560 /* AppDelegate.mm */,
+				04C24CA01AC63A7B0045D560 /* RootViewController.h */,
+				04C24CA11AC63A7B0045D560 /* RootViewController.m */,
+				04C24CA21AC63A7B0045D560 /* RootViewController.xib */,
+				04C24CA31AC63A7B0045D560 /* main.m */,
+			);
+			path = ProjectFiles;
+			sourceTree = "<group>";
+		};
+		04C24CA71AC63A810045D560 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				04C24CB31AC63BA00045D560 /* CoreGraphics.framework */,
+				04C24CB11AC63B9A0045D560 /* QuartzCore.framework */,
+				04C24CAF1AC63B920045D560 /* UIKit.framework */,
+				04C24CAD1AC63B880045D560 /* Foundation.framework */,
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04C24C801AC63A310045D560 /* ZFFramework_loader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04C24C951AC63A320045D560 /* Build configuration list for PBXNativeTarget "ZFFramework_loader" */;
+			buildPhases = (
+				04C24C7D1AC63A310045D560 /* Sources */,
+				04C24C7E1AC63A310045D560 /* Frameworks */,
+				04C24C7F1AC63A310045D560 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZFFramework_loader;
+			productName = ZFFramework_loader;
+			productReference = 04C24C811AC63A310045D560 /* libZFFramework_loader.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04C24C791AC63A310045D560 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = ZFFramework;
+				TargetAttributes = {
+					04C24C801AC63A310045D560 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					04C24CA81AC63B2B0045D560 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+				};
+			};
+			buildConfigurationList = 04C24C7C1AC63A310045D560 /* Build configuration list for PBXProject "ZFFramework_loader" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 04C24C781AC63A310045D560;
+			productRefGroup = 04C24C821AC63A310045D560 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04C24C801AC63A310045D560 /* ZFFramework_loader */,
+				04C24CA81AC63B2B0045D560 /* ZFFramework_loader_aggregate */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		04C24CAC1AC63B3F0045D560 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Sets the target folders and the final framework product.\nFMK_NAME=${PROJECT_NAME}\n\n# Install dir will be the final output to the framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/../../../../_release/iOS/ZF_loader\n\n# Working dir will be deleted after the framework creation.\nWRK_DIR=${SRCROOT}/../../../../_tmp/build/iOS/${FMK_NAME}\n\n# whether a Cocoapods project, 0 or 1\nCOCOAPODS_PROJECT=0\n\n# whether incremental build, 0 or 1\nINCREMENTAL_BUILD=1\n\n# copy header if not empty\nHEADER_SRC_PATH=\nHEADER_DST_PATH=\n\n# copy res if not empty\nRES_SRC_PATH=\nRES_DST_PATH=\n\n# whether to open result folder automatically, 0 or 1\nAUTO_OPEN_INSTALL_DIR=0\n\n# ============================================================\n# no need to change these\n# ============================================================\n# build paths\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator\n\n# -configuration ${CONFIGURATION}\n# Clean and Building both architectures.\nif [ ${COCOAPODS_PROJECT} = \"1\" ]; then\nif [ ${INCREMENTAL_BUILD} = \"1\" ]; then\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -sdk iphoneos SYMROOT=${WRK_DIR}\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -sdk iphonesimulator SYMROOT=${WRK_DIR}\nelse\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -target -sdk iphoneos clean build SYMROOT=${WRK_DIR}\nxcodebuild -workspace \"${FMK_NAME}.xcworkspace\" -scheme \"${FMK_NAME}\" -configuration \"Release\" -target -sdk iphonesimulator clean build SYMROOT=${WRK_DIR}\nfi\nelse\nif [ ${INCREMENTAL_BUILD} = \"1\" ]; then\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos SYMROOT=${WRK_DIR}\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator SYMROOT=${WRK_DIR}\nelse\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build SYMROOT=${WRK_DIR}\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build SYMROOT=${WRK_DIR}\nfi\nfi\n\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]; then\nrm -rf \"${INSTALL_DIR}\" >/dev/null 2>&1\nfi\n\nmkdir -p \"${INSTALL_DIR}/lib\" >/dev/null 2>&1\n\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/lib${FMK_NAME}.a\" \"${SIMULATOR_DIR}/lib${FMK_NAME}.a\" -output \"${INSTALL_DIR}/lib/lib${FMK_NAME}.a\"\n\n# remove build dir\nif [ ${INCREMENTAL_BUILD} != \"1\" ]; then\nif [ -d \"${WRK_DIR}\" ]; then\nrm -rf \"${WRK_DIR}\" >/dev/null 2>&1\nfi\nfi\n\n# copy headers\nif [[ ${HEADER_SRC_PATH} != \"\" && ${HEADER_DST_PATH} != \"\" ]]; then\nif [ -d \"${HEADER_DST_PATH}\" ]; then\nrm -rf \"${HEADER_DST_PATH}\" >/dev/null 2>&1\nfi\ncp -rf ${HEADER_SRC_PATH}/. ${HEADER_DST_PATH}/ >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.c\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.cpp\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.m\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*.mm\" | xargs rm >/dev/null 2>&1\nfind ${HEADER_DST_PATH} -type f -name \"*Private*\" | xargs rm >/dev/null 2>&1\n\nfind ${HEADER_DST_PATH} -depth -type d -empty -exec rm -rf {} ';' >/dev/null 2>&1\nfi\n\n# copy res\nif [[ ${RES_SRC_PATH} != \"\" && ${RES_DST_PATH} != \"\" ]]; then\nif [ -d \"${RES_DST_PATH}\" ]; then\nrm -rf \"${RES_DST_PATH}\" >/dev/null 2>&1\nfi\ncp -rf ${RES_SRC_PATH}/. ${RES_DST_PATH}/ >/dev/null 2>&1\nfi\n\nif [ ${AUTO_OPEN_INSTALL_DIR} = \"1\" ]; then\nopen \"${INSTALL_DIR}\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04C24C7D1AC63A310045D560 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04C24CA51AC63A7B0045D560 /* RootViewController.m in Sources */,
+				04C24CA61AC63A7B0045D560 /* main.m in Sources */,
+				04C24CA41AC63A7B0045D560 /* AppDelegate.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		04C24C931AC63A320045D560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "8e1b0020-c0e4-4270-a402-e4aa4965ad91";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		04C24C941AC63A320045D560 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "8e1b0020-c0e4-4270-a402-e4aa4965ad91";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		04C24C961AC63A320045D560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../_release/iOS/ZF/include $(SRCROOT)/../../../../_release/iOS/ZF_impl/include";
+			};
+			name = Debug;
+		};
+		04C24C971AC63A320045D560 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACH_O_TYPE = staticlib;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../_release/iOS/ZF/include $(SRCROOT)/../../../../_release/iOS/ZF_impl/include";
+			};
+			name = Release;
+		};
+		04C24CAA1AC63B2B0045D560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		04C24CAB1AC63B2B0045D560 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04C24C7C1AC63A310045D560 /* Build configuration list for PBXProject "ZFFramework_loader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04C24C931AC63A320045D560 /* Debug */,
+				04C24C941AC63A320045D560 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04C24C951AC63A320045D560 /* Build configuration list for PBXNativeTarget "ZFFramework_loader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04C24C961AC63A320045D560 /* Debug */,
+				04C24C971AC63A320045D560 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04C24CA91AC63B2B0045D560 /* Build configuration list for PBXAggregateTarget "ZFFramework_loader_aggregate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04C24CAA1AC63B2B0045D560 /* Debug */,
+				04C24CAB1AC63B2B0045D560 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04C24C791AC63A310045D560 /* Project object */;
+}

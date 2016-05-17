@@ -1,0 +1,141 @@
+/* ====================================================================== *
+ * Copyright (c) 2010-2016 ZFFramework
+ * home page: http://ZFFramework.com
+ * blog: http://zsaber.com
+ * contact: master@zsaber.com (Chinese and English only)
+ * Distributed under MIT license:
+ *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
+ * ====================================================================== */
+/**
+ * @file ZFUILinearLayout.h
+ * @brief linear container view
+ */
+
+#ifndef _ZFI_ZFUILinearLayout_h_
+#define _ZFI_ZFUILinearLayout_h_
+
+#include "ZFUIWidgetDef.h"
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+// ============================================================
+// ZFUILinearLayoutStyle
+/**
+ * @brief style for #ZFUILinearLayout
+ */
+zfinterface ZF_ENV_EXPORT ZFUILinearLayoutStyle : zfextends ZFInterface
+{
+    ZFINTERFACE_DECLARE(ZFUILinearLayoutStyle, ZFUIViewStyle)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUILinearLayoutStyle, ZFUIViewStyle)
+
+public:
+    /**
+     * @brief direction to layout children, #ZFUIOrientation::e_Left by default
+     *
+     * #ZFUIOrientation::e_Left means layout children from left to right,
+     * while #ZFUIOrientation::e_Bottom means layout children from bottom to top
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIOrientationEnum, layoutOrientation,
+                                ZFPropertyInitValue(ZFUIOrientation::e_Left))
+
+    /**
+     * @brief extra margin independent from children's layout param's margin, #ZFUIMarginZero by default
+     */
+    ZFPROPERTY_ASSIGN(ZFUIMargin, layoutChildMargin)
+
+    /**
+     * @brief extra space between each child independent from children's layout param, 0 by default
+     */
+    ZFPROPERTY_ASSIGN(zfint, layoutChildSpace)
+};
+ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUILinearLayoutStyle, ZFUIViewStyle)
+
+// ============================================================
+// ZFUILinearLayoutParam
+/**
+ * @brief layout param for #ZFUILinearLayout
+ *
+ * for #ZFUILinearLayout,
+ * #ZFUIViewLayoutParam::layoutAlign and #ZFUIViewLayoutParam::layoutMargin
+ * would be relative to sibling child,
+ * instead of the container view
+ */
+zfclass ZF_ENV_EXPORT ZFUILinearLayoutParam : zfextends ZFUIViewLayoutParam
+{
+    ZFOBJECT_DECLARE(ZFUILinearLayoutParam, ZFUIViewLayoutParam)
+
+    /**
+     * @brief weight for the view, 0 by default
+     *
+     * if greater than 0, all children with weight would be layouted by its weight percent,
+     * ignoring sizeParam\n
+     * for example, assume we have 3 children with these layout weight:
+     * -  child0: 2
+     * -  child1: 4
+     * -  child2: 3
+     *
+     * then the total weight of children would be (2+4+3)=9,
+     * and the children's final size would be:
+     * -  child0 = parentSize * 2 / 9
+     * -  child1 = parentSize * 4 / 9
+     * -  child2 = parentSize * 3 / 9
+     */
+    ZFPROPERTY_ASSIGN(zfint, layoutWeight)
+
+    /**
+     * @brief whether reserve space if child is not visible, false by default
+     */
+    ZFPROPERTY_ASSIGN(zfbool, layoutReserveSpaceWhenNotVisible)
+
+    ZFPROPERTY_OVERRIDE_INIT_VALUE_ASSIGN_NO_AUTO_INIT(ZFUIAlignFlags, layoutAlign, ZFUIAlign::e_Center)
+};
+
+// ============================================================
+// ZFUILinearLayout
+/**
+ * @brief linear container view that layout children in linear by specified orientation
+ */
+zfclass ZF_ENV_EXPORT ZFUILinearLayout : zfextends ZFUIView, zfimplements ZFUILinearLayoutStyle
+{
+    ZFOBJECT_DECLARE(ZFUILinearLayout, ZFUIView)
+    ZFIMPLEMENTS_DECLARE(ZFUILinearLayoutStyle)
+
+public:
+    // ============================================================
+    // styles
+    ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIOrientationEnum, layoutOrientation);
+    ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIMargin, layoutChildMargin);
+    ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, zfint, layoutChildSpace);
+
+    // ============================================================
+    // override ZFUIView
+protected:
+    zfoverride
+    virtual const ZFClass *layoutParamClass(void)
+    {
+        return ZFUILinearLayoutParam::ClassData();
+    }
+
+    zfoverride
+    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
+                                 ZF_IN const ZFUISize &sizeHint,
+                                 ZF_IN const ZFUISizeParam &sizeParam);
+    /**
+     * @brief override ZFUIView to layout scroll view's internal view and content view
+     *
+     * usually you should not override this method,
+     * if necessary, you must call super
+     */
+    zfoverride
+    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
+
+    zfoverride
+    virtual void viewChildVisibleOnChange(void)
+    {
+        zfsuper::viewChildVisibleOnChange();
+        this->layoutRequest();
+    }
+};
+
+ZF_NAMESPACE_GLOBAL_END
+#endif // #ifndef _ZFI_ZFUILinearLayout_h_
+
