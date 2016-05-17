@@ -20,7 +20,7 @@ static void _ZFP_ZFUIViewPrintViewTreeDelayedAction(ZF_IN const ZFListenerData &
 void ZFUIViewPrintViewTreeDelayed(ZF_IN ZFUIView *view,
                                   ZF_IN_OPT const ZFOutputCallback &outputCallback /* = ZFOutputCallbackDefault */)
 {
-    ZFThread::taskRequest(
+    ZFThreadTaskRequest(
         ZFCallbackForRawFunction(_ZFP_ZFUIViewPrintViewTreeDelayedAction),
         zflineAllocInternal(ZFListenerHolder, outputCallback, ZFListenerData(zfidentityInvalid, zfnull, view)));
 }
@@ -29,7 +29,7 @@ void ZFUIViewPrintViewTreeDelayed(ZF_IN zftimet delay,
                                   ZF_IN ZFUIView *view,
                                   ZF_IN_OPT const ZFOutputCallback &outputCallback /* = ZFOutputCallbackDefault */)
 {
-    ZFThread::executeInMainThreadAfterDelay(
+    ZFThreadExecuteInMainThreadAfterDelay(
         delay,
         ZFCallbackForRawFunction(_ZFP_ZFUIViewPrintViewTreeDelayedAction),
         zflineAllocInternal(ZFListenerHolder, outputCallback, ZFListenerData(zfidentityInvalid, zfnull, view)));

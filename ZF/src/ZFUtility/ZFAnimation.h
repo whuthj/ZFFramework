@@ -177,7 +177,7 @@ protected:
     /**
      * @brief for subclass to achieve delay logic
      *
-     * by default, this method would implement delay by #ZFThread::executeInMainThreadAfterDelay,
+     * by default, this method would implement delay by #ZFThreadExecuteInMainThreadAfterDelay,
      * you may override and supply your own implementation without call super,
      * if you do, you must override or call all of these methods:
      * -  aniImplDelay: to achieve delay

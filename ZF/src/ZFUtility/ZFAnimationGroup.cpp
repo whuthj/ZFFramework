@@ -111,7 +111,7 @@ public:
         {
             for(zfindex i = 0; i < this->childDelayTaskIds.count(); ++i)
             {
-                ZFThread::executeCancel(this->childDelayTaskIds[i]);
+                ZFThreadExecuteCancel(this->childDelayTaskIds[i]);
             }
             this->childDelayTaskIds.removeAll();
         }
@@ -181,7 +181,7 @@ private:
         }
         else
         {
-            zfidentity childDelayTaskId = ZFThread::executeInMainThreadAfterDelay(
+            zfidentity childDelayTaskId = ZFThreadExecuteInMainThreadAfterDelay(
                 childData->childDelayBeforeStart(),
                 ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(_ZFP_ZFAnimationGroupPrivate, onChildStartDelay)),
                 ZFValue::identityValueCreate(aniId).toObject(),

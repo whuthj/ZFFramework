@@ -7,7 +7,7 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 #include "ZFPrivate_ZFCore.hh"
-#include "ZFThread.h"
+#include "ZFThread_taskRequest.h"
 #include "protocol/ZFProtocolZFThreadTaskRequest.h"
 #include "ZFArray.h"
 #include "ZFMutex.h"
@@ -135,12 +135,12 @@ const ZFListener &_ZFP_ZFThreadTaskRequestMergeCallbackDoNotMerge(void)
     return *_ZFP_ZFThread_mergeCallbackDoNotMerge;
 }
 
-zfbool ZFThread::taskRequestImplAvailable(void)
+zfbool ZFThreadTaskRequestImplAvailable(void)
 {
     return ZFPROTOCOL_IS_AVAILABLE(ZFThreadTaskRequest);
 }
-void ZFThread::taskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
-                           ZF_IN_OPT const ZFListener &mergeCallback /* = ZFThreadTaskRequestMergeCallbackDefault */)
+void ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
+                         ZF_IN_OPT const ZFListener &mergeCallback /* = ZFThreadTaskRequestMergeCallbackDefault */)
 {
     if(taskRequestData == zfnull || !taskRequestData->taskCallback().callbackIsValid())
     {
@@ -197,10 +197,10 @@ void ZFThread::taskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
         zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
     }
 }
-void ZFThread::taskCancelExactly(ZF_IN const ZFListener &task,
-                                 ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                                 ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                                 ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+void ZFThreadTaskCancelExactly(ZF_IN const ZFListener &task,
+                               ZF_IN_OPT ZFObject *userData /* = zfnull */,
+                               ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                               ZF_IN_OPT ZFObject *param1 /* = zfnull */)
 {
     if(!task.callbackIsValid())
     {
@@ -230,7 +230,7 @@ void ZFThread::taskCancelExactly(ZF_IN const ZFListener &task,
         zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
     }
 }
-void ZFThread::taskCancel(ZF_IN const ZFListener &task)
+void ZFThreadTaskCancel(ZF_IN const ZFListener &task)
 {
     if(!task.callbackIsValid())
     {
@@ -257,7 +257,7 @@ void ZFThread::taskCancel(ZF_IN const ZFListener &task)
         zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
     }
 }
-void ZFThread::taskCancelWithOwner(ZF_IN ZFObject *owner)
+void ZFThreadTaskCancelWithOwner(ZF_IN ZFObject *owner)
 {
     if(owner == zfnull)
     {

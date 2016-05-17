@@ -883,7 +883,7 @@ void ZFUIView::objectOnDeallocPrepare(void)
         this->viewFocusRequest(zffalse);
     }
 
-    ZFThread::taskCancelWithOwner(this);
+    ZFThreadTaskCancelWithOwner(this);
 
     d->removeAllView(ZFUIViewChildLayer::e_Foreground, d->layerInternalFg);
     this->childRemoveAll();
@@ -2011,7 +2011,7 @@ void ZFUIView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent)
 // view property async update
 void ZFUIView::viewPropertyUpdateRequest(void)
 {
-    ZFThread::taskRequest(
+    ZFThreadTaskRequest(
         zfHint("task")ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewListenerHolder)->viewPropertyOnUpdateListener,
         zfHint("userData")this->objectHolder(),
         zfHint("param0")zfnull,

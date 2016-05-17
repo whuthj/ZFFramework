@@ -56,7 +56,7 @@ public:
     virtual void sleep(ZF_IN const zftimet &miliSecs) = 0;
 
     /**
-     * @brief see #ZFThread::executeInMainThread
+     * @brief see #ZFThreadExecuteInMainThread
      *
      * you should not retain or release runnable or params\n
      * you should queue it to run even if current thread is main thread
@@ -85,7 +85,7 @@ public:
     }
 
     /**
-     * @brief see #ZFThread::executeInNewThread
+     * @brief see #ZFThreadExecuteInNewThread
      *
      * you should not retain or release runnable or params\n
      * you should not retain or release ownerZFThread\n
@@ -117,7 +117,7 @@ public:
     }
 
     /**
-     * @brief see #ZFThread::executeInMainThreadAfterDelay
+     * @brief see #ZFThreadExecuteInMainThreadAfterDelay
      *
      * you should not retain or release runnable or params\n
      * you should call runnable in main thread after specified delay\n

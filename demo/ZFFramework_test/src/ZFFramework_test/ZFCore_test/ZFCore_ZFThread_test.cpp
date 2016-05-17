@@ -48,7 +48,7 @@ protected:
             }
             zfLogTrim(zfText("async thread end"));
         })
-        taskId = ZFThread::executeInNewThread(asyncFunc);
+        taskId = ZFThreadExecuteInNewThread(asyncFunc);
         for(zfindex i = 0; i < 5; ++i)
         {
             for(zfindex j = 0; j < 10; ++j)
@@ -59,7 +59,7 @@ protected:
             ZFThread::sleep(190);
         }
         zfLogTrim(zfText("main thread wait async thread begin"));
-        ZFThread::executeWait(taskId);
+        ZFThreadExecuteWait(taskId);
         zfLogTrim(zfText("main thread wait async thread complete"));
 #endif
 
@@ -81,7 +81,7 @@ protected:
             }
             zfLogTrim(zfText("sync thread end"));
         })
-        taskId = ZFThread::executeInNewThread(syncFunc);
+        taskId = ZFThreadExecuteInNewThread(syncFunc);
         for(zfindex i = 0; i < 5; ++i)
         {
             zfsynchronizeLock();
@@ -94,7 +94,7 @@ protected:
             ZFThread::sleep(190);
         }
         zfLogTrim(zfText("main thread wait sync thread begin"));
-        ZFThread::executeWait(taskId);
+        ZFThreadExecuteWait(taskId);
         zfLogTrim(zfText("main thread wait sync thread complete"));
 #endif
 

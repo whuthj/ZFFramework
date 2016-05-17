@@ -41,7 +41,7 @@ protected:
 public:
     zffinal void timerStart(void)
     {
-        this->threadCallbackId = ZFThread::executeInNewThread(
+        this->threadCallbackId = ZFThreadExecuteInNewThread(
             ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, threadCallback)),
             ZFValue::identityValueCreate(this->threadCallbackIdGenerator.next()).toObject(),
             this /* pass this as dummy param to keep retain count */);
@@ -50,8 +50,8 @@ public:
     {
         this->threadCallbackIdGenerator.next();
         this->mainThreadCallbackIdGenerator.next();
-        ZFThread::executeCancel(this->threadCallbackId);
-        ZFThread::executeCancel(this->mainThreadCallbackId);
+        ZFThreadExecuteCancel(this->threadCallbackId);
+        ZFThreadExecuteCancel(this->mainThreadCallbackId);
         if(this->timerThreadStarted)
         {
             this->timerThreadStarted = zffalse;
@@ -82,7 +82,7 @@ public:
         {
             if(this->timer->timerActivateInMainThread())
             {
-                this->mainThreadCallbackId = ZFThread::executeInNewThread(
+                this->mainThreadCallbackId = ZFThreadExecuteInNewThread(
                     ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, mainThreadCallback)),
                     ZFValue::identityValueCreate(this->mainThreadCallbackIdGenerator.next()).toObject());
             }

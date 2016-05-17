@@ -71,7 +71,7 @@ public:
             return ;
         }
         this->requestRunning = zftrue;
-        ZFThread::taskRequest(
+        ZFThreadTaskRequest(
             this->requestOnResolveListener,
             zfHint("userData")owner,
             zfHint("param0")zfnull,
@@ -268,7 +268,7 @@ void ZFUIPageManager::embededDestroy(void)
 
     this->managerOnDestroy();
 
-    ZFThread::taskCancelWithOwner(this->toObject());
+    ZFThreadTaskCancelWithOwner(this->toObject());
 
     zfpoolDelete(d);
 }

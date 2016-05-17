@@ -225,7 +225,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *c
                     ZFLISTENER_LOCAL(leakTestEndDelay, {
                         leakTestEnd();
                     })
-                    ZFThread::taskRequest(leakTestEndDelay);
+                    ZFThreadTaskRequest(leakTestEndDelay);
                 }
             })
             running->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop, userData);

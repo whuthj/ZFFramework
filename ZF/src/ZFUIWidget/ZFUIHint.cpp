@@ -178,7 +178,7 @@ public:
     void hintDoShowDelay(void)
     {
         ZFPropertyChangeInternal(this->hintAnimating, zfnull);
-        this->hintShowDelayTaskId = ZFThread::executeInMainThreadAfterDelay(
+        this->hintShowDelayTaskId = ZFThreadExecuteInMainThreadAfterDelay(
             this->ownerZFUIHint->hintDuration(),
             this->hintShowDelayTimeoutListener,
             this->ownerZFUIHint->objectHolder());
@@ -327,7 +327,7 @@ void ZFUIHint::hintHide(void)
         }
         else
         {
-            ZFThread::executeCancel(d->hintShowDelayTaskId);
+            ZFThreadExecuteCancel(d->hintShowDelayTaskId);
             if(d->hintAnimating != zfnull)
             {
                 d->hintAnimating->observerRemove(ZFAnimation::EventAniOnStopOrOnInvalid(), d->hintAniShowOnStopListener);
@@ -427,7 +427,7 @@ void ZFUIHint::objectOnDealloc(void)
     }
     if(d->hintShowDelayTaskId != zfidentityInvalid)
     {
-        ZFThread::executeCancel(d->hintShowDelayTaskId);
+        ZFThreadExecuteCancel(d->hintShowDelayTaskId);
         d->hintShowDelayTaskId = zfidentityInvalid;
     }
     d->hintWindow->windowHide();

@@ -67,7 +67,7 @@ void ZFOperationAsync::taskNotifyFinishAfterDelay(ZF_IN zftimet delay,
         ZFOperationTaskData *operationTaskData = ZFCastZFObjectUnchecked(ZFOperationTaskData *, userData);
         operationTaskData->operation()->taskNotifyFinish(operationTaskData->operationParam(), operationTaskData->operationResult());
     })
-    ZFThread::executeInMainThreadAfterDelay(delay, onNotify, operationTaskData);
+    ZFThreadExecuteInMainThreadAfterDelay(delay, onNotify, operationTaskData);
 }
 void ZFOperationAsync::taskNotifyFinishAfterDelay(ZF_IN zftimet delay,
                                                   ZF_IN ZFOperation *operation,
@@ -83,7 +83,7 @@ void ZFOperationAsync::taskNotifyFinishAfterDelay(ZF_IN zftimet delay,
         ZFOperationTaskData *operationTaskData = ZFCastZFObjectUnchecked(ZFOperationTaskData *, userData);
         operationTaskData->operation()->taskNotifyFinish(operationTaskData->operationId(), operationTaskData->operationResult());
     })
-    ZFThread::executeInMainThreadAfterDelay(delay, onNotify, operationTaskData);
+    ZFThreadExecuteInMainThreadAfterDelay(delay, onNotify, operationTaskData);
 }
 void ZFOperationAsync::taskNotifyProgressAfterDelay(ZF_IN zftimet delay,
                                                     ZF_IN ZFOperation *operation,
@@ -99,7 +99,7 @@ void ZFOperationAsync::taskNotifyProgressAfterDelay(ZF_IN zftimet delay,
         ZFOperationTaskData *operationTaskData = ZFCastZFObjectUnchecked(ZFOperationTaskData *, userData);
         operationTaskData->operation()->taskNotifyProgress(operationTaskData->operationParam(), operationTaskData->operationProgress());
     })
-    ZFThread::executeInMainThreadAfterDelay(delay, onNotify, operationTaskData);
+    ZFThreadExecuteInMainThreadAfterDelay(delay, onNotify, operationTaskData);
 }
 void ZFOperationAsync::taskNotifyProgressAfterDelay(ZF_IN zftimet delay,
                                                     ZF_IN ZFOperation *operation,
@@ -115,7 +115,7 @@ void ZFOperationAsync::taskNotifyProgressAfterDelay(ZF_IN zftimet delay,
         ZFOperationTaskData *operationTaskData = ZFCastZFObjectUnchecked(ZFOperationTaskData *, userData);
         operationTaskData->operation()->taskNotifyProgress(operationTaskData->operationId(), operationTaskData->operationProgress());
     })
-    ZFThread::executeInMainThreadAfterDelay(delay, onNotify, operationTaskData);
+    ZFThreadExecuteInMainThreadAfterDelay(delay, onNotify, operationTaskData);
 }
 
 ZFObject *ZFOperationAsync::objectOnInit(void)
@@ -143,7 +143,7 @@ void ZFOperationAsync::objectOnDeallocPrepare(void)
 
     for(zfindex i = 0; i < threadsToWait.count(); ++i)
     {
-        ZFThread::executeWait(threadsToWait[i]);
+        ZFThreadExecuteWait(threadsToWait[i]);
     }
 
     zfsuper::objectOnDeallocPrepare();
@@ -153,7 +153,7 @@ void ZFOperationAsync::taskOnStart(ZF_IN ZFOperationTaskData *operationTaskData)
 {
     zfsuper::taskOnStart(operationTaskData);
 
-    zfidentity threadId = ZFThread::executeInNewThread(
+    zfidentity threadId = ZFThreadExecuteInNewThread(
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFOperationAsyncPrivate, onStartInNewThread)),
         operationTaskData);
     {
@@ -184,7 +184,7 @@ void ZFOperationAsync::taskOnStop(ZF_IN ZFOperationTaskData *operationTaskData)
 void ZFOperationAsync::taskNotifyFinish(ZF_IN ZFOperationParam *operationParam,
                                         ZF_IN ZFOperationResult *operationResult)
 {
-    ZFThread::executeInMainThread(
+    ZFThreadExecuteInMainThread(
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFOperationAsyncPrivate, onNotifyFinishInMainThread)),
         zfnull,
         operationParam,
@@ -193,7 +193,7 @@ void ZFOperationAsync::taskNotifyFinish(ZF_IN ZFOperationParam *operationParam,
 void ZFOperationAsync::taskNotifyFinish(ZF_IN zfidentity operationId,
                                         ZF_IN ZFOperationResult *operationResult)
 {
-    ZFThread::executeInMainThread(
+    ZFThreadExecuteInMainThread(
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFOperationAsyncPrivate, onNotifyFinishInMainThread)),
         zfnull,
         ZFValue::indexValueCreate(operationId).toObject(),
@@ -202,7 +202,7 @@ void ZFOperationAsync::taskNotifyFinish(ZF_IN zfidentity operationId,
 void ZFOperationAsync::taskNotifyProgress(ZF_IN ZFOperationParam *operationParam,
                                           ZF_IN_OPT ZFOperationProgress *operationProgress /* = zfnull */)
 {
-    ZFThread::executeInMainThread(
+    ZFThreadExecuteInMainThread(
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFOperationAsyncPrivate, onNotifyProgressInMainThread)),
         zfnull,
         operationParam,
@@ -211,7 +211,7 @@ void ZFOperationAsync::taskNotifyProgress(ZF_IN ZFOperationParam *operationParam
 void ZFOperationAsync::taskNotifyProgress(ZF_IN zfidentity operationId,
                                      ZF_IN_OPT ZFOperationProgress *operationProgress /* = zfnull */)
 {
-    ZFThread::executeInMainThread(
+    ZFThreadExecuteInMainThread(
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFOperationAsyncPrivate, onNotifyFinishInMainThread)),
         zfnull,
         ZFValue::indexValueCreate(operationId).toObject(),

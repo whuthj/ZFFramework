@@ -25,12 +25,12 @@ extern ZF_ENV_EXPORT void ZFUIViewPrintViewTree(ZF_IN ZFUIView *view,
                                                 ZF_IN_OPT const ZFOutputCallback &outputCallback = ZFOutputCallbackDefault);
 
 /**
- * @brief delay to #ZFUIViewPrintViewTree using #ZFThread::taskRequest
+ * @brief delay to #ZFUIViewPrintViewTree using #ZFThreadTaskRequest
  */
 extern ZF_ENV_EXPORT void ZFUIViewPrintViewTreeDelayed(ZF_IN ZFUIView *view,
                                                        ZF_IN_OPT const ZFOutputCallback &outputCallback = ZFOutputCallbackDefault);
 /**
- * @brief delay to #ZFUIViewPrintViewTree using #ZFThread::executeInMainThreadAfterDelay
+ * @brief delay to #ZFUIViewPrintViewTree using #ZFThreadExecuteInMainThreadAfterDelay
  */
 extern ZF_ENV_EXPORT void ZFUIViewPrintViewTreeDelayed(ZF_IN zftimet delay,
                                                        ZF_IN ZFUIView *view,

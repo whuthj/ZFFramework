@@ -234,7 +234,7 @@ ZFObject *ZFUIAutoFitLayout::objectOnInit(void)
 }
 void ZFUIAutoFitLayout::objectOnDealloc(void)
 {
-    ZFThread::taskCancel(d->scrollFocusedViewToVisibleDelayListener);
+    ZFThreadTaskCancel(d->scrollFocusedViewToVisibleDelayListener);
 
     d->autoFitEnableSet(zffalse);
     d->autoFitFocusedViewToVisibleSet(zffalse);
@@ -283,7 +283,7 @@ void ZFUIAutoFitLayout::viewDelegateLayoutOnLayoutPrepare(ZF_IN const ZFUIRect &
         if(d->autoFitFocusedViewNeedUpdate)
         {
             d->autoFitFocusedViewNeedUpdate = zffalse;
-            ZFThread::taskRequest(d->scrollFocusedViewToVisibleDelayListener, this->objectHolder());
+            ZFThreadTaskRequest(d->scrollFocusedViewToVisibleDelayListener, this->objectHolder());
         }
     }
 }

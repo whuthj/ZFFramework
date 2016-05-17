@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   due to impl's limitation,
  *   we are unable to be notified which time the layout step would finish,
  *   so the best solution to check valid position is using delay,
- *   use #ZFThread::taskRequest is recommended
+ *   use #ZFThreadTaskRequest is recommended
  */
 extern ZF_ENV_EXPORT void ZFUIViewPositionOnScreen(ZF_OUT ZFUIRect &rect, ZF_IN ZFUIView *view);
 /**

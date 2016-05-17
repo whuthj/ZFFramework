@@ -21,7 +21,7 @@ ZFLISTENER_FUNCTION_DECLARE(_ZFP_ZFCore_ZFTimer_test_timerEvent)
         ZFLISTENER_LOCAL(action, {
             userData->to<ZFTestCase *>()->testCaseStop();
         })
-        ZFThread::executeInMainThread(action, userData);
+        ZFThreadExecuteInMainThread(action, userData);
     }
 }
 zfclass ZFCore_ZFTimer_test : zfextends ZFFramework_test_TestCase

@@ -96,7 +96,7 @@ public:
     ZFObject *userData; // auto-retain
     ZFObject *param0; // no auto-retain
     ZFObject *param1; // no auto-retain
-    ZFSemaphore *semaWait; // not null, no auto-retain, used int executeWait and waitUntilDone, also used to notify task observer
+    ZFSemaphore *semaWait; // not null, no auto-retain, used int ZFThreadExecuteWait and waitUntilDone, also used to notify task observer
     _ZFP_ZFThreadRunState runState;
 
 public:
@@ -147,10 +147,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadDataHolder)
 #define _ZFP_ZFThread_runnableList (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadDataHolder)->runnableList)
 #define _ZFP_ZFThread_idGenerator (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadDataHolder)->idGenerator)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadExecuteCancel, ZFLevelZFFrameworkLow)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadExecute_AutoCancel, ZFLevelZFFrameworkLow)
 {
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadExecuteCancel)
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadExecute_AutoCancel)
 {
     zfbool lockAvailable = (_ZFP_ZFThread_mutex != zfnull);
     if(lockAvailable)
@@ -170,13 +170,19 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadExecuteCancel)
 
     for(zfindex i = 0; i < allTaskId.count(); ++i)
     {
-        ZFThread::executeCancel(allTaskId[i]);
+        ZFThreadExecuteCancel(allTaskId[i]);
     }
 }
-ZF_GLOBAL_INITIALIZER_END(ZFThreadExecuteCancel)
+ZF_GLOBAL_INITIALIZER_END(ZFThreadExecute_AutoCancel)
 
 // ============================================================
 static void _ZFP_ZFThreadRunnableCleanup(ZF_IN _ZFP_I_ZFThreadRunnableData *runnableData);
+static zfidentity _ZFP_ZFThreadExecuteInNewThread(ZF_IN const ZFListener &runnable,
+                                                  ZF_IN ZFObject *userData,
+                                                  ZF_IN ZFObject *param0,
+                                                  ZF_IN ZFObject *param1,
+                                                  ZF_IN ZFThread *ownerZFThread,
+                                                  ZF_IN _ZFP_ZFThreadPrivate *ownerZFThreadPrivate);
 static ZFLISTENER_PROTOTYPE_EXPAND(_ZFP_ZFThreadCallback)
 {
     zfbool lockAvailable = (_ZFP_ZFThread_mutex != zfnull);
@@ -325,7 +331,7 @@ static void _ZFP_ZFThreadRunnableCleanup(ZF_IN _ZFP_I_ZFThreadRunnableData *runn
 }
 
 // ============================================================
-// user registered threa
+// user registered thread
 zfclass _ZFP_ZFThreadUserRegisteredThread : zfextends ZFThread
 {
     ZFOBJECT_DECLARE(_ZFP_ZFThreadUserRegisteredThread, ZFThread)
@@ -362,7 +368,7 @@ ZFOBJECT_REGISTER(ZFThread)
 void *ZFThread::nativeThreadRegister(void)
 {
     ZFThread *zfThread = zfAllocInternal(_ZFP_ZFThreadUserRegisteredThread);
-    zfThread->d->semaWaitHolder = zfAllocInternal(ZFSemaphore);
+    zfThread->_ZFP_ZFThread_d->semaWaitHolder = zfAllocInternal(ZFSemaphore);
     return _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
 }
 void ZFThread::nativeThreadUnregister(ZF_IN void *token)
@@ -371,10 +377,10 @@ void ZFThread::nativeThreadUnregister(ZF_IN void *token)
     {
         ZFThread *zfThread = ZFPROTOCOL_ACCESS(ZFThread)->threadForToken(token);
         zfCoreAssert(zfThread != zfnull);
-        zfThread->d->semaWaitHolder->semaphoreBroadcastLocked();
+        zfThread->_ZFP_ZFThread_d->semaWaitHolder->semaphoreBroadcastLocked();
         _ZFP_ZFThreadImpl->nativeThreadUnregister(token);
-        zfReleaseInternal(zfThread->d->semaWaitHolder);
-        zfThread->d->semaWaitHolder = zfnull;
+        zfReleaseInternal(zfThread->_ZFP_ZFThread_d->semaWaitHolder);
+        zfThread->_ZFP_ZFThread_d->semaWaitHolder = zfnull;
         zfReleaseInternal(zfThread);
     }
 }
@@ -393,11 +399,194 @@ void ZFThread::sleep(ZF_IN const zftimet &miliSecs)
     _ZFP_ZFThreadImpl->sleep(miliSecs);
 }
 
-zfidentity ZFThread::executeInMainThread(ZF_IN const ZFListener &runnable,
-                                         ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                                         ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                                         ZF_IN_OPT ZFObject *param1 /* = zfnull */,
-                                         ZF_IN_OPT zfbool waitUntilDone /* = zffalse */)
+// ============================================================
+// zfautoRelease
+static ZFObject *_ZFP_ZFThread_drainPoolCallbackMethod(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+{
+    ZFThread *thread = ZFCastZFObjectUnchecked(ZFThread *, userData);
+    thread->autoReleasePoolDrain();
+    thread->_ZFP_ZFThreadAutoReleasePoolMarkResolved();
+    return zfnull;
+}
+static ZFListener *_ZFP_ZFThread_drainPoolCallback = zfnull;
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadAutoReleasePoolDrainDataHolder, ZFLevelZFFrameworkEssential)
+{
+    _ZFP_ZFThread_drainPoolCallback = zfnew(ZFListener);
+    *_ZFP_ZFThread_drainPoolCallback = ZFCallbackForRawFunction(_ZFP_ZFThread_drainPoolCallbackMethod);
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadAutoReleasePoolDrainDataHolder)
+{
+    zfdelete(_ZFP_ZFThread_drainPoolCallback);
+    _ZFP_ZFThread_drainPoolCallback = zfnull;
+}
+ZF_GLOBAL_INITIALIZER_END(ZFThreadAutoReleasePoolDrainDataHolder)
+
+// ============================================================
+// thread instance method
+ZFObject *ZFThread::objectOnInit(ZF_IN const ZFListener &runnable)
+{
+    this->objectOnInit();
+    zfself::threadRunnableSet(runnable);
+    return this;
+}
+ZFObject *ZFThread::objectOnInit(void)
+{
+    zfsuper::objectOnInit();
+    _ZFP_ZFThread_d = zfpoolNew(_ZFP_ZFThreadPrivate);
+    _ZFP_ZFThread_d->autoReleasePool = zfAllocInternal(ZFAutoReleasePool);
+    return this;
+}
+void ZFThread::objectOnDealloc(void)
+{
+    zfpoolDelete(_ZFP_ZFThread_d);
+    _ZFP_ZFThread_d = zfnull;
+    zfsuper::objectOnDealloc();
+}
+void ZFThread::objectOnDeallocPrepare(void)
+{
+    ZFThreadTaskCancelWithOwner(this);
+
+    if(!this->isMainThread())
+    {
+        this->threadWait();
+    }
+    this->autoReleasePoolDrain();
+    zfsuper::objectOnDeallocPrepare();
+}
+
+void ZFThread::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
+{
+    zfsuper::objectInfoOnAppend(ret);
+    if(this->isMainThread())
+    {
+        ret += zfText(" MainThread");
+    }
+}
+
+void ZFThread::threadStart(ZF_IN_OPT ZFObject *userData /* = zfnull */,
+                           ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                           ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+{
+    zfidentity taskIdTmp = _ZFP_ZFThreadExecuteInNewThread(
+        this->threadRunnable().callbackIsValid()
+            ? this->threadRunnable()
+            : ZFListener(ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(ZFThread, threadOnRun))),
+        userData,
+        param0,
+        param1,
+        this,
+        _ZFP_ZFThread_d);
+    if(zfidentityIsValid(taskIdTmp))
+    {
+        _ZFP_ZFThread_d->taskId = taskIdTmp;
+    }
+}
+zfbool ZFThread::threadStarted(void)
+{
+    return _ZFP_ZFThread_d->startFlag;
+}
+zfbool ZFThread::threadRunning(void)
+{
+    return _ZFP_ZFThread_d->runningFlag;
+}
+void ZFThread::threadStop(void)
+{
+    if(_ZFP_ZFThread_d->startFlag)
+    {
+        _ZFP_ZFThread_d->stopRequestedFlag = zftrue;
+        ZFThreadExecuteCancel(_ZFP_ZFThread_d->taskId);
+    }
+}
+zfbool ZFThread::threadStopRequested(void)
+{
+    return _ZFP_ZFThread_d->stopRequestedFlag;
+}
+
+void ZFThread::threadWait(void)
+{
+    if(_ZFP_ZFThread_d->semaWaitHolder != zfnull)
+    {
+        _ZFP_ZFThread_d->semaWaitHolder->semaphoreWaitLocked();
+    }
+}
+zfbool ZFThread::threadWait(ZF_IN const zftimet &miliSecs)
+{
+    if(_ZFP_ZFThread_d->semaWaitHolder != zfnull)
+    {
+        return _ZFP_ZFThread_d->semaWaitHolder->semaphoreWaitLocked(miliSecs);
+    }
+    return zftrue;
+}
+
+zfbool ZFThread::isMainThread(void)
+{
+    return zffalse;
+}
+
+void ZFThread::autoReleasePoolAdd(ZF_IN ZFObject *obj,
+                                  ZF_IN_OPT zfbool enableLeakTest /* = zftrue */)
+{
+    _ZFP_ZFThread_d->autoReleasePool->poolAdd(obj, enableLeakTest);
+}
+
+void ZFThread::autoReleasePoolAdd(ZF_IN ZFObject *obj,
+                                  ZF_IN const zfcharA *callerFile,
+                                  ZF_IN const zfcharA *callerFunction,
+                                  ZF_IN zfindex callerLine,
+                                  ZF_IN_OPT zfbool enableLeakTest /* = zftrue */)
+{
+    _ZFP_ZFThread_d->autoReleasePool->poolAdd(obj, callerFile, callerFunction, callerLine, enableLeakTest);
+}
+
+void ZFThread::autoReleasePoolDrain(void)
+{
+    _ZFP_ZFThread_d->autoReleasePool->poolDrain();
+}
+
+void ZFThread::_ZFP_ZFThreadAutoReleasePoolAdd(ZF_IN ZFObject *obj,
+                                               ZF_IN const zfcharA *callerFile,
+                                               ZF_IN const zfcharA *callerFunction,
+                                               ZF_IN zfindex callerLine,
+                                               ZF_IN zfbool enableLeakTest)
+{
+    zfbool lockAvailable = (_ZFP_ZFThread_mutex != zfnull);
+    if(lockAvailable)
+    {
+        zfsynchronizedObjectLock(_ZFP_ZFThread_mutex);
+    }
+
+    this->autoReleasePoolAdd(obj, callerFile, callerFunction, callerLine, enableLeakTest);
+    if(!_ZFP_ZFThread_d->autoReleasePoolNeedDrain)
+    {
+        _ZFP_ZFThread_d->autoReleasePoolNeedDrain = zftrue;
+        ZFThreadTaskRequest(*_ZFP_ZFThread_drainPoolCallback, this);
+    }
+
+    if(lockAvailable)
+    {
+        zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
+    }
+}
+void ZFThread::_ZFP_ZFThreadAutoReleasePoolMarkResolved(void)
+{
+    _ZFP_ZFThread_d->autoReleasePoolNeedDrain = zffalse;
+}
+
+ZFMETHOD_MEMBER_DEFINE_DETAIL_2(ZFThread, ZFMethodNotConst,
+                                void, threadOnRun,
+                                const ZFListenerData &, listenerData,
+                                ZFObject *, userData)
+{
+    // nothing to do
+}
+
+// ============================================================
+// thread execute
+zfidentity ZFThreadExecuteInMainThread(ZF_IN const ZFListener &runnable,
+                                       ZF_IN_OPT ZFObject *userData /* = zfnull */,
+                                       ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                                       ZF_IN_OPT ZFObject *param1 /* = zfnull */,
+                                       ZF_IN_OPT zfbool waitUntilDone /* = zffalse */)
 {
     if(!runnable.callbackIsValid())
     {
@@ -498,10 +687,10 @@ static zfidentity _ZFP_ZFThreadExecuteInNewThread(ZF_IN const ZFListener &runnab
         zfnull);
     return taskId;
 }
-zfidentity ZFThread::executeInNewThread(ZF_IN const ZFListener &runnable,
-                                        ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                                        ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                                        ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+zfidentity ZFThreadExecuteInNewThread(ZF_IN const ZFListener &runnable,
+                                      ZF_IN_OPT ZFObject *userData /* = zfnull */,
+                                      ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                                      ZF_IN_OPT ZFObject *param1 /* = zfnull */)
 {
     if(!runnable.callbackIsValid())
     {
@@ -516,20 +705,20 @@ zfidentity ZFThread::executeInNewThread(ZF_IN const ZFListener &runnable,
         param0,
         param1,
         tmpThread,
-        tmpThread->d);
+        tmpThread->_ZFP_ZFThread_d);
     zfReleaseWithLeakTest(tmpThread);
     return taskId;
 }
 
-zfidentity ZFThread::executeInMainThreadAfterDelay(ZF_IN zftimet delay,
-                                                   ZF_IN const ZFListener &runnable,
-                                                   ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                                                   ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                                                   ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+zfidentity ZFThreadExecuteInMainThreadAfterDelay(ZF_IN zftimet delay,
+                                                 ZF_IN const ZFListener &runnable,
+                                                 ZF_IN_OPT ZFObject *userData /* = zfnull */,
+                                                 ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                                                 ZF_IN_OPT ZFObject *param1 /* = zfnull */)
 {
     if(delay <= 0)
     {
-        return ZFThread::executeInMainThread(runnable, userData, param0, param1);
+        return ZFThreadExecuteInMainThread(runnable, userData, param0, param1);
     }
     if(!runnable.callbackIsValid())
     {
@@ -608,7 +797,7 @@ static void _ZFP_ZFThreadDoCancelTask(ZF_IN _ZFP_I_ZFThreadRunnableData *runnabl
 
     _ZFP_ZFThreadRunnableCleanup(runnableData);
 }
-void ZFThread::executeCancel(ZF_IN zfidentity taskId)
+void ZFThreadExecuteCancel(ZF_IN zfidentity taskId)
 {
     if(zfidentityIsValid(taskId))
     {
@@ -632,10 +821,10 @@ void ZFThread::executeCancel(ZF_IN zfidentity taskId)
         }
     }
 }
-void ZFThread::executeCancel(ZF_IN const ZFListener &runnable,
-                             ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                             ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                             ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+void ZFThreadExecuteCancel(ZF_IN const ZFListener &runnable,
+                           ZF_IN_OPT ZFObject *userData /* = zfnull */,
+                           ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                           ZF_IN_OPT ZFObject *param1 /* = zfnull */)
 {
     if(runnable.callbackIsValid())
     {
@@ -662,7 +851,7 @@ void ZFThread::executeCancel(ZF_IN const ZFListener &runnable,
         }
     }
 }
-void ZFThread::executeCancelByTarget(ZF_IN const ZFListener &runnable)
+void ZFThreadExecuteCancelByTarget(ZF_IN const ZFListener &runnable)
 {
     if(runnable.callbackIsValid())
     {
@@ -686,7 +875,7 @@ void ZFThread::executeCancelByTarget(ZF_IN const ZFListener &runnable)
     }
 }
 
-void ZFThread::executeWait(ZF_IN zfidentity taskId)
+void ZFThreadExecuteWait(ZF_IN zfidentity taskId)
 {
     if(zfidentityIsValid(taskId))
     {
@@ -725,8 +914,8 @@ void ZFThread::executeWait(ZF_IN zfidentity taskId)
         }
     }
 }
-zfbool ZFThread::executeWait(ZF_IN zfidentity taskId,
-                             ZF_IN const zftimet &miliSecs)
+zfbool ZFThreadExecuteWait(ZF_IN zfidentity taskId,
+                           ZF_IN const zftimet &miliSecs)
 {
     if(zfidentityIsValid(taskId))
     {
@@ -766,9 +955,9 @@ zfbool ZFThread::executeWait(ZF_IN zfidentity taskId,
     return zffalse;
 }
 
-void ZFThread::executeObserverAdd(ZF_IN zfidentity taskId,
-                                  ZF_IN const zfidentity &eventId,
-                                  ZF_IN const ZFListener &callback)
+void ZFThreadExecuteObserverAdd(ZF_IN zfidentity taskId,
+                                ZF_IN const zfidentity &eventId,
+                                ZF_IN const ZFListener &callback)
 {
     if(eventId != ZFThread::EventThreadOnStart()
         && eventId != ZFThread::EventThreadOnStop()
@@ -799,9 +988,9 @@ void ZFThread::executeObserverAdd(ZF_IN zfidentity taskId,
         }
     }
 }
-void ZFThread::executeObserverRemove(ZF_IN zfidentity taskId,
-                                     ZF_IN const zfidentity &eventId,
-                                     ZF_IN const ZFListener &callback)
+void ZFThreadExecuteObserverRemove(ZF_IN zfidentity taskId,
+                                   ZF_IN const zfidentity &eventId,
+                                   ZF_IN const ZFListener &callback)
 {
     if(eventId != ZFThread::EventThreadOnStart()
         && eventId != ZFThread::EventThreadOnStop()
@@ -829,244 +1018,6 @@ void ZFThread::executeObserverRemove(ZF_IN zfidentity taskId,
         if(lockAvailable)
         {
             zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
-        }
-    }
-}
-
-// ============================================================
-// zfautoRelease
-static ZFObject *_ZFP_ZFThread_drainPoolCallbackMethod(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-{
-    ZFThread *thread = ZFCastZFObjectUnchecked(ZFThread *, userData);
-    thread->autoReleasePoolDrain();
-    thread->_ZFP_ZFThreadAutoReleasePoolMarkResolved();
-    return zfnull;
-}
-static ZFListener *_ZFP_ZFThread_drainPoolCallback = zfnull;
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadAutoReleasePoolDrainDataHolder, ZFLevelZFFrameworkEssential)
-{
-    _ZFP_ZFThread_drainPoolCallback = zfnew(ZFListener);
-    *_ZFP_ZFThread_drainPoolCallback = ZFCallbackForRawFunction(_ZFP_ZFThread_drainPoolCallbackMethod);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadAutoReleasePoolDrainDataHolder)
-{
-    zfdelete(_ZFP_ZFThread_drainPoolCallback);
-    _ZFP_ZFThread_drainPoolCallback = zfnull;
-}
-ZF_GLOBAL_INITIALIZER_END(ZFThreadAutoReleasePoolDrainDataHolder)
-
-// ============================================================
-// thread instance method
-ZFObject *ZFThread::objectOnInit(ZF_IN const ZFListener &runnable)
-{
-    this->objectOnInit();
-    zfself::threadRunnableSet(runnable);
-    return this;
-}
-ZFObject *ZFThread::objectOnInit(void)
-{
-    zfsuper::objectOnInit();
-    d = zfpoolNew(_ZFP_ZFThreadPrivate);
-    d->autoReleasePool = zfAllocInternal(ZFAutoReleasePool);
-    return this;
-}
-void ZFThread::objectOnDealloc(void)
-{
-    zfpoolDelete(d);
-    d = zfnull;
-    zfsuper::objectOnDealloc();
-}
-void ZFThread::objectOnDeallocPrepare(void)
-{
-    ZFThread::taskCancelWithOwner(this);
-
-    if(!this->isMainThread())
-    {
-        this->threadWait();
-    }
-    this->autoReleasePoolDrain();
-    zfsuper::objectOnDeallocPrepare();
-}
-
-void ZFThread::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
-    zfsuper::objectInfoOnAppend(ret);
-    if(this->isMainThread())
-    {
-        ret += zfText(" MainThread");
-    }
-}
-
-void ZFThread::threadStart(ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                           ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                           ZF_IN_OPT ZFObject *param1 /* = zfnull */)
-{
-    zfidentity taskIdTmp = _ZFP_ZFThreadExecuteInNewThread(
-        this->threadRunnable().callbackIsValid()
-            ? this->threadRunnable()
-            : ZFListener(ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(ZFThread, threadOnRun))),
-        userData,
-        param0,
-        param1,
-        this,
-        d);
-    if(zfidentityIsValid(taskIdTmp))
-    {
-        d->taskId = taskIdTmp;
-    }
-}
-zfbool ZFThread::threadStarted(void)
-{
-    return d->startFlag;
-}
-zfbool ZFThread::threadRunning(void)
-{
-    return d->runningFlag;
-}
-void ZFThread::threadStop(void)
-{
-    if(d->startFlag)
-    {
-        d->stopRequestedFlag = zftrue;
-        ZFThread::executeCancel(d->taskId);
-    }
-}
-zfbool ZFThread::threadStopRequested(void)
-{
-    return d->stopRequestedFlag;
-}
-
-void ZFThread::threadWait(void)
-{
-    if(d->semaWaitHolder != zfnull)
-    {
-        d->semaWaitHolder->semaphoreWaitLocked();
-    }
-}
-zfbool ZFThread::threadWait(ZF_IN const zftimet &miliSecs)
-{
-    if(d->semaWaitHolder != zfnull)
-    {
-        return d->semaWaitHolder->semaphoreWaitLocked(miliSecs);
-    }
-    return zftrue;
-}
-
-zfbool ZFThread::isMainThread(void)
-{
-    return zffalse;
-}
-
-void ZFThread::autoReleasePoolAdd(ZF_IN ZFObject *obj,
-                                  ZF_IN_OPT zfbool enableLeakTest /* = zftrue */)
-{
-    d->autoReleasePool->poolAdd(obj, enableLeakTest);
-}
-
-void ZFThread::autoReleasePoolAdd(ZF_IN ZFObject *obj,
-                                  ZF_IN const zfcharA *callerFile,
-                                  ZF_IN const zfcharA *callerFunction,
-                                  ZF_IN zfindex callerLine,
-                                  ZF_IN_OPT zfbool enableLeakTest /* = zftrue */)
-{
-    d->autoReleasePool->poolAdd(obj, callerFile, callerFunction, callerLine, enableLeakTest);
-}
-
-void ZFThread::autoReleasePoolDrain(void)
-{
-    d->autoReleasePool->poolDrain();
-}
-
-void ZFThread::_ZFP_ZFThreadAutoReleasePoolAdd(ZF_IN ZFObject *obj,
-                                               ZF_IN const zfcharA *callerFile,
-                                               ZF_IN const zfcharA *callerFunction,
-                                               ZF_IN zfindex callerLine,
-                                               ZF_IN zfbool enableLeakTest)
-{
-    zfbool lockAvailable = (_ZFP_ZFThread_mutex != zfnull);
-    if(lockAvailable)
-    {
-        zfsynchronizedObjectLock(_ZFP_ZFThread_mutex);
-    }
-
-    this->autoReleasePoolAdd(obj, callerFile, callerFunction, callerLine, enableLeakTest);
-    if(!d->autoReleasePoolNeedDrain)
-    {
-        d->autoReleasePoolNeedDrain = zftrue;
-        ZFThread::taskRequest(*_ZFP_ZFThread_drainPoolCallback, this);
-    }
-
-    if(lockAvailable)
-    {
-        zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
-    }
-}
-void ZFThread::_ZFP_ZFThreadAutoReleasePoolMarkResolved(void)
-{
-    d->autoReleasePoolNeedDrain = zffalse;
-}
-
-ZFMETHOD_MEMBER_DEFINE_DETAIL_2(ZFThread, ZFMethodNotConst,
-                                void, threadOnRun,
-                                const ZFListenerData &, listenerData,
-                                ZFObject *, userData)
-{
-    // nothing to do
-}
-
-// ============================================================
-// zfautoRelease
-static ZFObject *_ZFP_zfautoRelease_poolDrain(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfautoRelease_poolDrainDataHolder, ZFLevelZFFrameworkEssential)
-{
-    this->drainTask = ZFCallbackForRawFunction(_ZFP_zfautoRelease_poolDrain);
-    this->drainTaskRequested = zffalse;
-}
-ZFListener drainTask;
-zfbool drainTaskRequested;
-ZF_GLOBAL_INITIALIZER_END(zfautoRelease_poolDrainDataHolder)
-static ZFObject *_ZFP_zfautoRelease_poolDrain(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-{
-    ZF_GLOBAL_INITIALIZER_INSTANCE(zfautoRelease_poolDrainDataHolder)->drainTaskRequested = zffalse;
-    ZFAutoReleasePool::instance()->poolDrain();
-    return zfnull;
-}
-
-void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj,
-                              ZF_IN const zfcharA *callerFile,
-                              ZF_IN const zfcharA *callerFunction,
-                              ZF_IN zfindex callerLine,
-                              ZF_IN zfbool enableLeakTest)
-{
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFThread))
-    {
-        ZFThread *threadCur = ZFThread::currentThread();
-        if(threadCur == zfnull)
-        {
-            zfCoreCriticalMessageTrim(zfTextA("%s current thread is null, make sure the thread is started or registered by ZFThread"),
-                ZF_CALLER_INFO_DETAIL(callerFile, callerFunction, callerLine));
-            return ;
-        }
-        threadCur->_ZFP_ZFThreadAutoReleasePoolAdd(obj, callerFile, callerFunction, callerLine, enableLeakTest);
-    }
-    else
-    {
-        ZFAutoReleasePool::instance()->poolAdd(obj, callerFile, callerFunction, callerLine, enableLeakTest);
-
-        if(ZFPROTOCOL_IS_AVAILABLE(ZFThreadTaskRequest))
-        {
-            ZF_GLOBAL_INITIALIZER_CLASS(zfautoRelease_poolDrainDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfautoRelease_poolDrainDataHolder);
-            if(!d->drainTaskRequested)
-            {
-                d->drainTaskRequested = zftrue;
-                ZFThread::taskRequest(d->drainTask);
-            }
-        }
-        else
-        {
-            zfCoreLogTrim(zfTextA("%s zfautoRelease called while no auto drain logic support, object %s would not be released normally"),
-                ZF_CALLER_INFO_DETAIL(callerFile, callerFunction, callerLine),
-                zfsCoreZ2A(obj->objectInfoOfInstance().cString()));
         }
     }
 }

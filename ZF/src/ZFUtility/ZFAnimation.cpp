@@ -190,7 +190,7 @@ void ZFAnimation::_ZFP_ZFAnimation_aniImplDelayNotifyFinish(ZF_IN zfidentity tas
 void ZFAnimation::aniImplDelay(void)
 {
     ++(d->aniDelayTaskId);
-    d->aniDelayThreadId = ZFThread::executeInMainThreadAfterDelay(
+    d->aniDelayThreadId = ZFThreadExecuteInMainThreadAfterDelay(
         this->aniDelay(),
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAnimationDelayDataHolder)->delayOnFinishListener,
         ZFValue::identityValueCreate(d->aniDelayTaskId).toObject(),
@@ -199,7 +199,7 @@ void ZFAnimation::aniImplDelay(void)
 void ZFAnimation::aniImplDelayCancel(void)
 {
     ++(d->aniDelayTaskId);
-    ZFThread::executeCancel(d->aniDelayThreadId);
+    ZFThreadExecuteCancel(d->aniDelayThreadId);
 }
 void ZFAnimation::aniImplDelayNotifyFinish(void)
 {
