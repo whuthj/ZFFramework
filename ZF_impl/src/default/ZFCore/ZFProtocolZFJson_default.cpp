@@ -121,8 +121,5 @@ private:
 ZFPROTOCOL_IMPLEMENTATION_END(ZFJsonImpl_default)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFJsonImpl_default)
 
-#undef min
-#undef max
-
 ZF_NAMESPACE_GLOBAL_END
 

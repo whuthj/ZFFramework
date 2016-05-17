@@ -12,6 +12,8 @@
 #undef min
 #undef max
 #include "../../_repo/deelx/deelx.h"
+#undef min
+#undef max
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -139,9 +141,6 @@ private:
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFRegExpImpl_default)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFRegExpImpl_default)
-
-#undef min
-#undef max
 
 ZF_NAMESPACE_GLOBAL_END
 
