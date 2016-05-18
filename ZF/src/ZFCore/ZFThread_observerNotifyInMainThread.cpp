@@ -86,8 +86,8 @@ static ZFLISTENER_PROTOTYPE_EXPAND(callbackAction)
 }
 ZF_GLOBAL_INITIALIZER_END(ZFObserverNotifyInMainThreadDataHolder)
 
-zfidentity ZFObserverNotifyInMainThreadWithCustomSender(ZF_IN ZFObject *obj,
-                                                        ZF_IN ZFObject *customSender,
+zfidentity ZFObserverNotifyInMainThreadWithCustomSender(ZF_IN ZFObject *customSender,
+                                                        ZF_IN ZFObject *obj,
                                                         ZF_IN const zfidentity &eventId,
                                                         ZF_IN_OPT ZFObject *param0 /* = zfnull */,
                                                         ZF_IN_OPT ZFObject *param1 /* = zfnull */)

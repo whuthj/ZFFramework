@@ -26,8 +26,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * the task can be canceled by #ZFObserverNotifyInMainThreadCancel if not actually started
  * @note obj, customSender, params would be retained during running
  */
-extern ZF_ENV_EXPORT zfidentity ZFObserverNotifyInMainThreadWithCustomSender(ZF_IN ZFObject *obj,
-                                                                             ZF_IN ZFObject *customSender,
+extern ZF_ENV_EXPORT zfidentity ZFObserverNotifyInMainThreadWithCustomSender(ZF_IN ZFObject *customSender,
+                                                                             ZF_IN ZFObject *obj,
                                                                              ZF_IN const zfidentity &eventId,
                                                                              ZF_IN_OPT ZFObject *param0 = zfnull,
                                                                              ZF_IN_OPT ZFObject *param1 = zfnull);
