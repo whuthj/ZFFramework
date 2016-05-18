@@ -260,6 +260,7 @@ ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFThread_h_
 
 #include "ZFThread_execute.h"
+#include "ZFThread_observerNotifyInMainThread.h"
 #include "ZFThread_taskRequest.h"
 #include "ZFThread_zfautoRelease.h"
 

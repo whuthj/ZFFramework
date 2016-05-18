@@ -26,6 +26,8 @@ zfclass ZF_ENV_EXPORT ZFThreadTaskRequestData : zfextends ZFObject
 
 public:
     /** @brief see #ZFThreadTaskRequest */
+    ZFPROPERTY_ASSIGN_READONLY(zfidentity, taskId, ZFPropertyInitValue(zfidentityInvalid))
+    /** @brief see #ZFThreadTaskRequest */
     ZFPROPERTY_ASSIGN_NOT_SERIALIZABLE(ZFListener, taskCallback)
     /** @brief see #ZFThreadTaskRequest */
     ZFPROPERTY_RETAIN(ZFObject *, taskParam0)
@@ -109,15 +111,15 @@ extern ZF_ENV_EXPORT zfbool ZFThreadTaskRequestImplAvailable(void);
  * to disable merge, set taskRequestDataMerged to null, and old/new task would be scheduled separately\n
  * or, you may use the pre-defined callbacks such as #ZFThreadTaskRequestMergeCallbackDoNotMerge
  */
-extern ZF_ENV_EXPORT void ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
-                                              ZF_IN_OPT const ZFListener &mergeCallback = ZFThreadTaskRequestMergeCallbackDefault);
+extern ZF_ENV_EXPORT zfidentity ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
+                                                    ZF_IN_OPT const ZFListener &mergeCallback = ZFThreadTaskRequestMergeCallbackDefault);
 /** @brief see #ZFThreadTaskRequest */
-inline void ZFThreadTaskRequest(ZF_IN const ZFListener &taskCallback,
-                                ZF_IN_OPT ZFObject *taskUserData = zfnull,
-                                ZF_IN_OPT ZFObject *taskParam0 = zfnull,
-                                ZF_IN_OPT ZFObject *taskParam1 = zfnull,
-                                ZF_IN_OPT ZFObject *taskOwner = zfnull,
-                                ZF_IN_OPT const ZFListener &taskMergeCallback = ZFThreadTaskRequestMergeCallbackDefault)
+inline zfidentity ZFThreadTaskRequest(ZF_IN const ZFListener &taskCallback,
+                                      ZF_IN_OPT ZFObject *taskUserData = zfnull,
+                                      ZF_IN_OPT ZFObject *taskParam0 = zfnull,
+                                      ZF_IN_OPT ZFObject *taskParam1 = zfnull,
+                                      ZF_IN_OPT ZFObject *taskOwner = zfnull,
+                                      ZF_IN_OPT const ZFListener &taskMergeCallback = ZFThreadTaskRequestMergeCallbackDefault)
 {
     zfblockedAllocInternal(ZFThreadTaskRequestData, taskRequestData);
     taskRequestData->taskCallbackSet(taskCallback);
@@ -125,8 +127,12 @@ inline void ZFThreadTaskRequest(ZF_IN const ZFListener &taskCallback,
     taskRequestData->taskParam0Set(taskParam0);
     taskRequestData->taskParam1Set(taskParam1);
     taskRequestData->taskOwnerSet(taskOwner);
-    ZFThreadTaskRequest(taskRequestData, taskMergeCallback);
+    return ZFThreadTaskRequest(taskRequestData, taskMergeCallback);
 }
+/**
+ * @brief see #ZFThreadTaskRequest
+ */
+extern ZF_ENV_EXPORT void ZFThreadTaskCancel(ZF_IN zfidentity taskId);
 /**
  * @brief see #ZFThreadTaskRequest
  */

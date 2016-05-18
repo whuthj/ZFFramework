@@ -54,7 +54,14 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadTaskRequestDataHolder)
     zfReleaseInternal(_ZFP_ZFThread_taskDatas);
     _ZFP_ZFThread_taskDatas = zfnull;
 }
+ZFIdentityGenerator taskIdHolder;
 ZF_GLOBAL_INITIALIZER_END(ZFThreadTaskRequestDataHolder)
+#define _ZFP_ZFThreadTaskRequestTaskIdHolder (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadTaskRequestDataHolder)->taskIdHolder)
+
+static void _ZFP_ZFThreadTaskRequest_taskStop(ZF_IN ZFThreadTaskRequestData *taskData)
+{
+    _ZFP_ZFThreadTaskRequestTaskIdHolder.markUnused(taskData->taskId());
+}
 
 ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestCallback)
 {
@@ -69,22 +76,25 @@ ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestCallback)
         ZFThreadTaskRequestData *taskData = _ZFP_ZFThread_taskDatas->getFirst<ZFThreadTaskRequestData *>();
         zfRetainWithLeakTest(taskData);
         _ZFP_ZFThread_taskDatas->removeFirst();
+
+        // run
         if(lockAvailable)
         {
             zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
         }
-
-        // run
         taskData->taskCallback().execute(
             ZFListenerData(zfidentityInvalid, zfnull, taskData->taskParam0(), taskData->taskParam1()),
             taskData->taskUserData());
-        zfReleaseWithLeakTest(taskData);
-
-        // schedule next task or quit
         if(lockAvailable)
         {
             zfsynchronizedObjectLock(_ZFP_ZFThread_mutex);
         }
+
+        // cleanup
+        _ZFP_ZFThreadTaskRequest_taskStop(taskData);
+        zfReleaseWithLeakTest(taskData);
+
+        // schedule next task or quit
         if(!_ZFP_ZFThread_taskDatas->isEmpty())
         {
             ZFPROTOCOL_ACCESS(ZFThreadTaskRequest)->taskRequest(*_ZFP_ZFThread_wrappedTaskCallback, zfnull, zfnull);
@@ -139,12 +149,12 @@ zfbool ZFThreadTaskRequestImplAvailable(void)
 {
     return ZFPROTOCOL_IS_AVAILABLE(ZFThreadTaskRequest);
 }
-void ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
-                         ZF_IN_OPT const ZFListener &mergeCallback /* = ZFThreadTaskRequestMergeCallbackDefault */)
+zfidentity ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
+                               ZF_IN_OPT const ZFListener &mergeCallback /* = ZFThreadTaskRequestMergeCallbackDefault */)
 {
     if(taskRequestData == zfnull || !taskRequestData->taskCallback().callbackIsValid())
     {
-        return ;
+        return zfidentityInvalid;
     }
 
     zfbool lockAvailable = (_ZFP_ZFThread_mutex != zfnull);
@@ -164,7 +174,8 @@ void ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
             break;
         }
     }
-    if(oldTaskIndex != zfindexMax)
+    zfidentity taskId = zfidentityInvalid;
+    if(oldTaskIndex != zfindexMax && mergeCallback != ZFThreadTaskRequestMergeCallbackDoNotMerge)
     {
         zfblockedAllocInternal(ZFThreadTaskRequestMergeCallbackData, mergeCallbackData);
         mergeCallbackData->taskRequestDataOld = _ZFP_ZFThread_taskDatas->get<ZFThreadTaskRequestData *>(oldTaskIndex);
@@ -172,6 +183,9 @@ void ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
         mergeCallback.execute(ZFListenerData(zfidentityInvalid, zfnull, mergeCallbackData));
         if(mergeCallbackData->taskRequestDataMerged != zfnull)
         {
+            taskRequestData = mergeCallbackData->taskRequestDataMerged;
+            taskId = mergeCallbackData->taskRequestDataMerged->taskId();
+
             _ZFP_ZFThread_taskDatas->remove(oldTaskIndex);
             _ZFP_ZFThread_taskDatas->add(mergeCallbackData->taskRequestDataMerged);
             zfReleaseWithLeakTest(mergeCallbackData->taskRequestDataMerged);
@@ -179,18 +193,45 @@ void ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
         }
         else
         {
+            taskId = _ZFP_ZFThreadTaskRequestTaskIdHolder.nextMarkUsed();
             _ZFP_ZFThread_taskDatas->add(taskRequestData);
         }
     }
     else
     {
+        taskId = _ZFP_ZFThreadTaskRequestTaskIdHolder.nextMarkUsed();
         _ZFP_ZFThread_taskDatas->add(taskRequestData);
     }
+    ZFPropertyAccess(ZFThreadTaskRequestData, taskId)->setterMethod()->executeClassMember<void, zfidentity const &>(taskRequestData, taskId);
 
     if(!_ZFP_ZFThread_taskRunning)
     {
         _ZFP_ZFThread_taskRunning = zftrue;
         ZFPROTOCOL_ACCESS(ZFThreadTaskRequest)->taskRequest(*_ZFP_ZFThread_wrappedTaskCallback, zfnull, zfnull);
+    }
+    if(lockAvailable)
+    {
+        zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
+    }
+    return taskId;
+}
+void ZFThreadTaskCancel(ZF_IN zfidentity taskId)
+{
+    zfbool lockAvailable = (_ZFP_ZFThread_mutex != zfnull);
+    if(lockAvailable)
+    {
+        zfsynchronizedObjectLock(_ZFP_ZFThread_mutex);
+    }
+
+    for(zfindex i = 0; i < _ZFP_ZFThread_taskDatas->count(); ++i)
+    {
+        ZFThreadTaskRequestData *taskData = _ZFP_ZFThread_taskDatas->get<ZFThreadTaskRequestData *>(i);
+        if(taskData->taskId() == taskId)
+        {
+            _ZFP_ZFThreadTaskRequest_taskStop(taskData);
+            _ZFP_ZFThread_taskDatas->remove(i);
+            break;
+        }
     }
     if(lockAvailable)
     {
@@ -221,6 +262,7 @@ void ZFThreadTaskCancelExactly(ZF_IN const ZFListener &task,
             && ZFObjectCompare(taskData->taskParam0(), param0) == ZFCompareTheSame
             && ZFObjectCompare(taskData->taskParam1(), param1) == ZFCompareTheSame)
         {
+            _ZFP_ZFThreadTaskRequest_taskStop(taskData);
             _ZFP_ZFThread_taskDatas->remove(i);
             break;
         }
@@ -248,6 +290,7 @@ void ZFThreadTaskCancel(ZF_IN const ZFListener &task)
         ZFThreadTaskRequestData *taskData = _ZFP_ZFThread_taskDatas->get<ZFThreadTaskRequestData *>(i);
         if(taskData->taskCallback().objectCompare(task) == ZFCompareTheSame)
         {
+            _ZFP_ZFThreadTaskRequest_taskStop(taskData);
             _ZFP_ZFThread_taskDatas->remove(i);
             --i;
         }
@@ -275,6 +318,7 @@ void ZFThreadTaskCancelWithOwner(ZF_IN ZFObject *owner)
         ZFThreadTaskRequestData *taskData = _ZFP_ZFThread_taskDatas->get<ZFThreadTaskRequestData *>(i);
         if(taskData->taskOwner() == owner)
         {
+            _ZFP_ZFThreadTaskRequest_taskStop(taskData);
             _ZFP_ZFThread_taskDatas->remove(i);
             --i;
         }
