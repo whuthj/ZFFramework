@@ -655,8 +655,6 @@ ZFObject *ZFUIScrollView::objectOnInit(void)
 {
     zfsuper::objectOnInit();
 
-    this->_ZFP_ZFUIScrollView_observerHasAddFlag = 0;
-
     d = zfAllocInternal(_ZFP_ZFUIScrollViewPrivate);
     d->thisView = this;
     d->xScroll = zfRetainWithLeakTest(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
@@ -710,79 +708,6 @@ void ZFUIScrollView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
     {
         ret += zfText(" ScrollDisabled");
     }
-}
-
-// ============================================================
-// override ZFObject
-void ZFUIScrollView::observerOnAddFirst(ZF_IN const zfidentity &eventId)
-{
-    zfsuper::observerOnAddFirst(eventId);
-    if(zffalse)
-    {
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnDragBegin())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragBegin);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnDrag())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDrag);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnDragEnd())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragEnd);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnScrollBegin())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollBegin);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnScroll())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScroll);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnScrollEnd())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollEnd);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollContentFrameOnChange())
-    {
-        ZFBitSet(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollContentFrameOnChange);
-    }
-}
-void ZFUIScrollView::observerOnRemoveLast(ZF_IN const zfidentity &eventId)
-{
-    if(zffalse)
-    {
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnDragBegin())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragBegin);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnDrag())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDrag);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnDragEnd())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragEnd);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnScrollBegin())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollBegin);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnScroll())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScroll);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollOnScrollEnd())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollEnd);
-    }
-    else if(eventId == ZFUIScrollView::EventScrollContentFrameOnChange())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollContentFrameOnChange);
-    }
-    zfsuper::observerOnRemoveLast(eventId);
 }
 
 // ============================================================

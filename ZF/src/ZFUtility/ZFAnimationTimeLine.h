@@ -57,11 +57,6 @@ public:
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
 
-    zfoverride
-    virtual void observerOnAddFirst(ZF_IN const zfidentity &eventId);
-    zfoverride
-    virtual void observerOnRemoveLast(ZF_IN const zfidentity &eventId);
-
     // ============================================================
     // property
 public:
@@ -95,6 +90,12 @@ protected:
 private:
     _ZFP_ZFAnimationTimeLinePrivate *d;
     friend zfclassFwd _ZFP_ZFAnimationTimeLinePrivate;
+
+    ZFOBSERVER_HAS_ADD_BEGIN()
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_AniTimeLineOnUpdate)
+    ZFOBSERVER_HAS_ADD_SEPARATOR()
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_AniTimeLineOnUpdate, ZFAnimationTimeLine::EventAniTimeLineOnUpdate())
+    ZFOBSERVER_HAS_ADD_END()
 };
 
 ZF_NAMESPACE_GLOBAL_END

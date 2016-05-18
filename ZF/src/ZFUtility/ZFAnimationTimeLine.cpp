@@ -21,7 +21,6 @@ public:
     ZFAnimationTimeLine *owner;
     ZFTimer *timer;
     zftimet timeStart;
-    zfbool aniTimeLineOnUpdateObserverHasAdd;
 
     ZFLISTENER_MEMBER_DECLARE(timerOnEvent)
     {
@@ -47,7 +46,6 @@ public:
         this->timer = zfAllocInternal(ZFTimer);
         this->timer->observerAdd(ZFTimer::EventTimerOnActivate(),
             ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, timerOnEvent)));
-        this->aniTimeLineOnUpdateObserverHasAdd = zffalse;
         return this;
     }
     virtual void objectOnDealloc(void)
@@ -98,23 +96,6 @@ ZFCompareResult ZFAnimationTimeLine::objectCompare(ZF_IN ZFObject *anotherObj)
     return ZFCompareUncomparable;
 }
 
-void ZFAnimationTimeLine::observerOnAddFirst(ZF_IN const zfidentity &eventId)
-{
-    zfsuper::observerOnAddFirst(eventId);
-    if(eventId == ZFAnimationTimeLine::EventAniTimeLineOnUpdate())
-    {
-        d->aniTimeLineOnUpdateObserverHasAdd = zftrue;
-    }
-}
-void ZFAnimationTimeLine::observerOnRemoveLast(ZF_IN const zfidentity &eventId)
-{
-    if(eventId == ZFAnimationTimeLine::EventAniTimeLineOnUpdate())
-    {
-        d->aniTimeLineOnUpdateObserverHasAdd = zffalse;
-    }
-    zfsuper::observerOnRemoveLast(eventId);
-}
-
 // ============================================================
 // start stop
 void ZFAnimationTimeLine::aniImplStart(void)
@@ -141,7 +122,7 @@ void ZFAnimationTimeLine::aniImplStop(void)
 
 void ZFAnimationTimeLine::aniTimeLineOnUpdate(ZF_IN zffloat progress)
 {
-    if(d->aniTimeLineOnUpdateObserverHasAdd)
+    if(ZFOBSERVER_HAS_ADD(HasAdd_AniTimeLineOnUpdate))
     {
         this->observerNotify(
             ZFAnimationTimeLine::EventAniTimeLineOnUpdate(),

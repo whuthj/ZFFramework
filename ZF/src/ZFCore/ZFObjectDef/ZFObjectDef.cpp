@@ -535,12 +535,12 @@ void ZFObject::observerRemoveAll(void)
         }
     }
 }
-zfbool ZFObject::observerHasAdded(void)
+zfbool ZFObject::observerHasAdd(void)
 {
     ZFCoreMutexLocker();
     return !d->observerMap.empty();
 }
-zfbool ZFObject::observerHasAdded(ZF_IN const zfidentity &eventId)
+zfbool ZFObject::observerHasAdd(ZF_IN const zfidentity &eventId)
 {
     ZFCoreMutexLocker();
     return (d->observerForId(eventId) != zfnull);

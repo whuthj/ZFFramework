@@ -1000,118 +1000,6 @@ void ZFUIView::objectCachedOnChange(void)
     }
 }
 
-void ZFUIView::observerOnAddFirst(ZF_IN const zfidentity &eventId)
-{
-    zfsuper::observerOnAddFirst(eventId);
-
-    if(zffalse)
-    {
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnMeasureFinish())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnMeasureFinish);
-
-        // should schedule a layout request to ensure observer to be called
-        this->layoutRequest();
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnLayoutPrepare())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutPrepare);
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnLayout())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayout);
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnLayoutFinish())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutFinish);
-    }
-    else if(eventId == ZFUIView::EventViewChildOnChange())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnChange);
-    }
-    else if(eventId == ZFUIView::EventViewChildOnAdd())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnAdd);
-    }
-    else if(eventId == ZFUIView::EventViewChildOnRemove())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnRemove);
-    }
-    else if(eventId == ZFUIView::EventViewChildVisibleOnChange())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildVisibleOnChange);
-    }
-    else if(eventId == ZFUIView::EventViewOnAddToParent())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewOnAddToParent);
-    }
-    else if(eventId == ZFUIView::EventViewOnRemoveFromParent())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewOnRemoveFromParent);
-    }
-    else if(eventId == ZFUIView::EventViewPropertyOnUpdate())
-    {
-        ZFBitSet(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewPropertyOnUpdate);
-    }
-
-}
-void ZFUIView::observerOnRemoveLast(ZF_IN const zfidentity &eventId)
-{
-    if(zffalse)
-    {
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnMeasureFinish())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnMeasureFinish);
-
-        // should schedule a layout request since the measure logic may changed
-        this->layoutRequest();
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnLayoutPrepare())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutPrepare);
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnLayout())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayout);
-    }
-    else if(eventId == ZFUIView::EventViewLayoutOnLayoutFinish())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutFinish);
-    }
-    else if(eventId == ZFUIView::EventViewChildOnChange())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnChange);
-    }
-    else if(eventId == ZFUIView::EventViewChildOnAdd())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnAdd);
-    }
-    else if(eventId == ZFUIView::EventViewChildOnRemove())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnRemove);
-    }
-    else if(eventId == ZFUIView::EventViewChildVisibleOnChange())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildVisibleOnChange);
-    }
-    else if(eventId == ZFUIView::EventViewOnAddToParent())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewOnAddToParent);
-    }
-    else if(eventId == ZFUIView::EventViewOnRemoveFromParent())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewOnRemoveFromParent);
-    }
-    else if(eventId == ZFUIView::EventViewPropertyOnUpdate())
-    {
-        ZFBitUnset(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewPropertyOnUpdate);
-    }
-
-    zfsuper::observerOnRemoveLast(eventId);
-}
-
 void ZFUIView::nativeImplViewSet(ZF_IN void *nativeImplView,
                                  ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback)
 {
@@ -1517,7 +1405,7 @@ const ZFUISize &ZFUIView::layoutMeasure(ZF_IN const ZFUISize &sizeHint,
             this->viewDelegateLayoutOnMeasureFinish(d->lastMeasuredSize, sizeHint, sizeParam);
         }
         this->layoutOnMeasureFinish(d->lastMeasuredSize, sizeHint, sizeParam);
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnMeasureFinish))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewLayoutOnMeasureFinish))
         {
             zfblockedAllocInternal(ZFUIViewMeasureResult, data);
             data->sizeHint = sizeHint;
@@ -1553,7 +1441,7 @@ void ZFUIView::layout(ZF_IN const ZFUIRect &rect)
             this->viewDelegateLayoutOnLayoutPrepare(bounds);
         }
         this->layoutOnLayoutPrepare(bounds);
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutPrepare))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewLayoutOnLayoutPrepare))
         {
             this->observerNotify(ZFUIView::EventViewLayoutOnLayoutPrepare());
         }
@@ -1567,7 +1455,7 @@ void ZFUIView::layout(ZF_IN const ZFUIRect &rect)
         {
             this->layoutOnLayout(bounds);
         }
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayout))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewLayoutOnLayout))
         {
             this->observerNotify(ZFUIView::EventViewLayoutOnLayout());
         }
@@ -1582,7 +1470,7 @@ void ZFUIView::layout(ZF_IN const ZFUIRect &rect)
             this->viewDelegateLayoutOnLayoutFinish(bounds);
         }
         this->layoutOnLayoutFinish(bounds);
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutFinish))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewLayoutOnLayoutFinish))
         {
             this->observerNotify(ZFUIView::EventViewLayoutOnLayoutFinish());
         }

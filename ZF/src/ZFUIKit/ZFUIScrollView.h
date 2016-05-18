@@ -233,14 +233,6 @@ protected:
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 
     // ============================================================
-    // override ZFObject
-protected:
-    zfoverride
-    virtual void observerOnAddFirst(ZF_IN const zfidentity &eventId);
-    zfoverride
-    virtual void observerOnRemoveLast(ZF_IN const zfidentity &eventId);
-
-    // ============================================================
     // override ZFUIView
 protected:
     zfoverride
@@ -484,7 +476,7 @@ protected:
     /** @brief see #EventScrollOnDragBegin */
     virtual inline void scrollOnDragBegin(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragBegin))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollOnDragBegin))
         {
             this->observerNotify(ZFUIScrollView::EventScrollOnDragBegin());
         }
@@ -492,7 +484,7 @@ protected:
     /** @brief see #EventScrollOnDrag */
     virtual inline void scrollOnDrag(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDrag))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollOnDrag))
         {
             this->observerNotify(ZFUIScrollView::EventScrollOnDrag());
         }
@@ -500,7 +492,7 @@ protected:
     /** @brief see #EventScrollOnDragEnd */
     virtual inline void scrollOnDragEnd(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragEnd))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollOnDragEnd))
         {
             this->observerNotify(ZFUIScrollView::EventScrollOnDragEnd());
         }
@@ -508,7 +500,7 @@ protected:
     /** @brief see #EventScrollOnScrollBegin */
     virtual inline void scrollOnScrollBegin(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollBegin))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollOnScrollBegin))
         {
             this->observerNotify(ZFUIScrollView::EventScrollOnScrollBegin());
         }
@@ -516,7 +508,7 @@ protected:
     /** @brief see #EventScrollOnScroll */
     virtual inline void scrollOnScroll(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScroll))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollOnScroll))
         {
             this->observerNotify(ZFUIScrollView::EventScrollOnScroll());
         }
@@ -524,7 +516,7 @@ protected:
     /** @brief see #EventScrollOnScrollEnd */
     virtual inline void scrollOnScrollEnd(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollEnd))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollOnScrollEnd))
         {
             this->observerNotify(ZFUIScrollView::EventScrollOnScrollEnd());
         }
@@ -537,7 +529,7 @@ protected:
     /** @brief see #EventScrollContentFrameOnChange */
     virtual inline void scrollContentFrameOnChange(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIScrollView_observerHasAddFlag, _ZFP_ZFUIScrollView_observerHasAdd_scrollContentFrameOnChange))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ScrollContentFrameOnChange))
         {
             this->observerNotify(ZFUIScrollView::EventScrollContentFrameOnChange());
         }
@@ -562,16 +554,23 @@ private:
     _ZFP_ZFUIScrollViewPrivate *d;
     friend zfclassFwd _ZFP_ZFUIScrollViewPrivate;
 
-    typedef enum {
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragBegin          = (1 << 0),
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDrag               = (1 << 1),
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollOnDragEnd            = (1 << 2),
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollBegin        = (1 << 3),
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScroll             = (1 << 4),
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollOnScrollEnd          = (1 << 5),
-        _ZFP_ZFUIScrollView_observerHasAdd_scrollContentFrameOnChange = (1 << 6),
-    } _ZFP_ZFUIScrollView_observerHasAddFlagType;
-    zfflags _ZFP_ZFUIScrollView_observerHasAddFlag;
+    ZFOBSERVER_HAS_ADD_BEGIN()
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollOnDragBegin)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollOnDrag)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollOnDragEnd)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollOnScrollBegin)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollOnScroll)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollOnScrollEnd)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ScrollContentFrameOnChange)
+    ZFOBSERVER_HAS_ADD_SEPARATOR()
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollOnDragBegin, ZFUIScrollView::EventScrollOnDragBegin())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollOnDrag, ZFUIScrollView::EventScrollOnDrag())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollOnDragEnd, ZFUIScrollView::EventScrollOnDragEnd())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollOnScrollBegin, ZFUIScrollView::EventScrollOnScrollBegin())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollOnScroll, ZFUIScrollView::EventScrollOnScroll())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollOnScrollEnd, ZFUIScrollView::EventScrollOnScrollEnd())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ScrollContentFrameOnChange, ZFUIScrollView::EventScrollContentFrameOnChange())
+    ZFOBSERVER_HAS_ADD_END()
 };
 
 ZF_NAMESPACE_GLOBAL_END

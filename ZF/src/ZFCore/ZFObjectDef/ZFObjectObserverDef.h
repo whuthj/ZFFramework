@@ -313,6 +313,97 @@ private:
 #define ZFOBSERVER_EVENT_GLOBAL(YourEvent) \
     ZFOBSERVER_EVENT_GLOBAL_WITH_NAMESPACE(ZFGlobalEvent, YourEvent)
 
+// ============================================================
+// util
+/**
+ * @brief util macro to cache whether a event has added to #observerAdd
+ *
+ * usage:
+ * @code
+ *   zfclass MyObject : zfextends ZFObject
+ *   {
+ *       ZFOBJECT_DECLARE(MyObject, ZFObject)
+ *
+ *       ZFOBSERVER_EVENT(MyEvent)
+ *
+ *       ZFOBSERVER_HAS_ADD_BEGIN()
+ *           ZFOBSERVER_HAS_ADD_VALUE(HasAdd_MyEvent)
+ *       ZFOBSERVER_HAS_ADD_SEPARATOR()
+ *           ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_MyEvent, MyObject::EventMyEvent())
+ *       ZFOBSERVER_HAS_ADD_END()
+ *
+ *   public:
+ *       void func(void)
+ *       {
+ *           if(ZFOBSERVER_HAS_ADD(HasAdd_MyEvent))
+ *           {
+ *               // do something
+ *           }
+ *       }
+ *   };
+ * @endcode
+ *
+ * this macro would cache the state that whether the event has attached observer\n
+ * #ZFObject::observerHasAdd supply same function as this macro,
+ * however, #ZFObject::observerHasAdd would search the entire observer map
+ * each time when it's called,
+ * which may cause performance issue if called frequently
+ * or if many observers attached
+ */
+#define ZFOBSERVER_HAS_ADD_BEGIN() \
+    private: \
+        /** @cond ZFPrivateDoc */ \
+        typedef enum { \
+            _ZFP_ZFObserverHasAddDummy = 0,
+/** @brief see #ZFOBSERVER_HAS_ADD_BEGIN */
+#define ZFOBSERVER_HAS_ADD_VALUE(EventEnumName) \
+            EventEnumName,
+/** @brief see #ZFOBSERVER_HAS_ADD_BEGIN */
+#define ZFOBSERVER_HAS_ADD_SEPARATOR() \
+        } _ZFP_ZFObserverHasAddFlagType; \
+        zfclassLikePOD _ZFP_ZFObserverHasAddFlagHolder \
+        { \
+        public: \
+            _ZFP_ZFObserverHasAddFlagHolder(void) : _flag(0) {} \
+        public: \
+            static zfflags flagForEventId(ZF_IN zfidentity eventId) \
+            { \
+                if(zffalse) {}
+/** @brief see #ZFOBSERVER_HAS_ADD_BEGIN */
+#define ZFOBSERVER_HAS_ADD_VALUE_REGISTER(EventEnumName, EventId) \
+                else if(eventId == EventId) \
+                { \
+                    return zfself::EventEnumName; \
+                }
+/** @brief see #ZFOBSERVER_HAS_ADD_BEGIN */
+#define ZFOBSERVER_HAS_ADD_END() \
+                return 0; \
+            } \
+        public: \
+             zfflags _flag; \
+        }; \
+        _ZFP_ZFObserverHasAddFlagHolder _ZFP_ZFObserverHasAddFlag; \
+    protected: \
+        zfoverride \
+        virtual void observerOnAddFirst(ZF_IN const zfidentity &eventId) \
+        { \
+            zfsuper::observerOnAddFirst(eventId); \
+            zfflags flag = _ZFP_ZFObserverHasAddFlagHolder::flagForEventId(eventId); \
+            ZFBitSet(_ZFP_ZFObserverHasAddFlag._flag, flag); \
+        } \
+        zfoverride \
+        virtual void observerOnRemoveLast(ZF_IN const zfidentity &eventId) \
+        { \
+            zfflags flag = _ZFP_ZFObserverHasAddFlagHolder::flagForEventId(eventId); \
+            ZFBitUnset(_ZFP_ZFObserverHasAddFlag._flag, flag); \
+            zfsuper::observerOnRemoveLast(eventId); \
+        } \
+        /** @endcond */ \
+    public:
+/** @brief see #ZFOBSERVER_HAS_ADD_BEGIN */
+#define ZFOBSERVER_HAS_ADD(EventEnumName) \
+    ZFBitTest(this->_ZFP_ZFObserverHasAddFlag._flag, zfself::EventEnumName)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectObserverDef_h_
 

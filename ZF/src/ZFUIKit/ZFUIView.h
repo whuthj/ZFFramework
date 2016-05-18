@@ -202,7 +202,7 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  */
 zfclass ZF_ENV_EXPORT ZFUIView : zfextends ZFUIStyleObject, zfimplements ZFUIViewStyle
 {
-    ZFOBJECT_DECLARE_ALLOW_CUSTOM_CONSTRUCTOR(ZFUIView, ZFUIStyleObject)
+    ZFOBJECT_DECLARE(ZFUIView, ZFUIStyleObject)
     ZFIMPLEMENTS_DECLARE(ZFUIViewStyle)
 
 public:
@@ -362,11 +362,6 @@ protected:
 protected:
     zfoverride
     virtual void objectCachedOnChange(void);
-
-    zfoverride
-    virtual void observerOnAddFirst(ZF_IN const zfidentity &eventId);
-    zfoverride
-    virtual void observerOnRemoveLast(ZF_IN const zfidentity &eventId);
 
 protected:
     /**
@@ -899,7 +894,7 @@ protected:
     /** @brief see #EventViewChildOnChange */
     virtual inline void viewChildOnChange(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnChange))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewChildOnChange))
         {
             this->observerNotify(ZFUIView::EventViewChildOnChange());
         }
@@ -912,7 +907,7 @@ protected:
         {
             child->objectCachedSet(zftrue);
         }
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnAdd))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewChildOnAdd))
         {
             zfblockedAllocInternal(ZFUIViewChildLayer, t, layer);
             this->observerNotify(ZFUIView::EventViewChildOnAdd(), child, t);
@@ -922,7 +917,7 @@ protected:
     virtual inline void viewChildOnRemove(ZF_IN ZFUIView *child,
                                           ZF_IN ZFUIViewChildLayerEnum layer)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildOnRemove))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewChildOnRemove))
         {
             zfblockedAllocInternal(ZFUIViewChildLayer, t, layer);
             this->observerNotify(ZFUIView::EventViewChildOnRemove(), child, t);
@@ -935,7 +930,7 @@ protected:
     /** @brief see #EventViewChildVisibleOnChange */
     virtual inline void viewChildVisibleOnChange(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewChildVisibleOnChange))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewChildVisibleOnChange))
         {
             this->observerNotify(ZFUIView::EventViewChildVisibleOnChange());
         }
@@ -943,7 +938,7 @@ protected:
     /** @brief see #EventViewOnAddToParent */
     virtual inline void viewOnAddToParent(ZF_IN ZFUIView *parent)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewOnAddToParent))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewOnAddToParent))
         {
             this->observerNotify(ZFUIView::EventViewOnAddToParent(), parent);
         }
@@ -951,7 +946,7 @@ protected:
     /** @brief see #EventViewOnRemoveFromParent */
     virtual inline void viewOnRemoveFromParent(ZF_IN ZFUIView *parent)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewOnRemoveFromParent))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewOnRemoveFromParent))
         {
             this->observerNotify(ZFUIView::EventViewOnRemoveFromParent(), parent);
         }
@@ -1121,7 +1116,7 @@ protected:
     /** @brief see #viewPropertyUpdateRequest */
     virtual inline void viewPropertyOnUpdate(void)
     {
-        if(ZFBitTest(this->_ZFP_ZFUIView_observerHasAddFlag, _ZFP_ZFUIView_observerHasAdd_viewPropertyOnUpdate))
+        if(ZFOBSERVER_HAS_ADD(HasAdd_ViewPropertyOnUpdate))
         {
             this->observerNotify(ZFUIView::EventViewPropertyOnUpdate());
         }
@@ -1131,29 +1126,31 @@ private:
     _ZFP_ZFUIViewPrivate *d;
     friend zfclassFwd _ZFP_ZFUIViewPrivate;
 
-    typedef enum {
-        _ZFP_ZFUIView_observerHasAdd_layoutOnMeasureFinish    = (1 << 0),
-        _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutPrepare    = (1 << 1),
-        _ZFP_ZFUIView_observerHasAdd_layoutOnLayout           = (1 << 2),
-        _ZFP_ZFUIView_observerHasAdd_layoutOnLayoutFinish     = (1 << 3),
-        _ZFP_ZFUIView_observerHasAdd_viewChildOnChange        = (1 << 4),
-        _ZFP_ZFUIView_observerHasAdd_viewChildOnAdd           = (1 << 5),
-        _ZFP_ZFUIView_observerHasAdd_viewChildOnRemove        = (1 << 6),
-        _ZFP_ZFUIView_observerHasAdd_viewChildVisibleOnChange = (1 << 7),
-        _ZFP_ZFUIView_observerHasAdd_viewOnAddToParent        = (1 << 8),
-        _ZFP_ZFUIView_observerHasAdd_viewOnRemoveFromParent   = (1 << 9),
-        _ZFP_ZFUIView_observerHasAdd_viewPropertyOnUpdate     = (1 << 10),
-    } _ZFP_ZFUIView_observerHasAddFlagType;
-    zfflags _ZFP_ZFUIView_observerHasAddFlag;
-
-protected:
-    /** @cond ZFPrivateDoc */
-    ZFUIView(void)
-    : d(zfnull)
-    , _ZFP_ZFUIView_observerHasAddFlag(0)
-    {
-    }
-    /** @endcond */
+    ZFOBSERVER_HAS_ADD_BEGIN()
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnMeasureFinish)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnLayoutPrepare)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnLayout)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnLayoutFinish)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewChildOnChange)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewChildOnAdd)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewChildOnRemove)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewChildVisibleOnChange)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewOnAddToParent)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewOnRemoveFromParent)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewPropertyOnUpdate)
+    ZFOBSERVER_HAS_ADD_SEPARATOR()
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnMeasureFinish, ZFUIView::EventViewLayoutOnMeasureFinish())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnLayoutPrepare, ZFUIView::EventViewLayoutOnLayoutPrepare())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnLayout, ZFUIView::EventViewLayoutOnLayout())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnLayoutFinish, ZFUIView::EventViewLayoutOnLayoutFinish())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewChildOnChange, ZFUIView::EventViewChildOnChange())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewChildOnAdd, ZFUIView::EventViewChildOnAdd())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewChildOnRemove, ZFUIView::EventViewChildOnRemove())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewChildVisibleOnChange, ZFUIView::EventViewChildVisibleOnChange())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewOnAddToParent, ZFUIView::EventViewOnAddToParent())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewOnRemoveFromParent, ZFUIView::EventViewOnRemoveFromParent())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewPropertyOnUpdate, ZFUIView::EventViewPropertyOnUpdate())
+    ZFOBSERVER_HAS_ADD_END()
 };
 
 ZF_NAMESPACE_GLOBAL_END

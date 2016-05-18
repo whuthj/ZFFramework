@@ -587,11 +587,11 @@ public:
     /**
      * @brief true if any observer has been added
      */
-    zffinal zfbool observerHasAdded(void);
+    zffinal zfbool observerHasAdd(void);
     /**
      * @brief true if any observer with eventId has been added
      */
-    zffinal zfbool observerHasAdded(ZF_IN const zfidentity &eventId);
+    zffinal zfbool observerHasAdd(ZF_IN const zfidentity &eventId);
     /**
      * @brief notify the observer with eventId
      *
