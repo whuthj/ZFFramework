@@ -21,13 +21,15 @@ if not exist "%OUTPUT_PATH%\ZFFramework_doc.chm" (
     exit /b 1
 )
 
-call "%ZF_TOOLS_PATH%\common\git_check.bat" "https://github.com/ZFFramework/zfframework.github.com" "%OUTPUT_PATH%\repo"
-call "%ZF_TOOLS_PATH%\common\copy_check.bat" "%WORK_DIR%\doc_repo" "%OUTPUT_PATH%\repo"
-rmdir /s/q "%OUTPUT_PATH%\repo\doc" >nul 2>nul
-call "%ZF_TOOLS_PATH%\common\copy_check.bat" "%OUTPUT_PATH%\html" "%OUTPUT_PATH%\repo\doc"
+set DOC_REPO_PATH=%OUTPUT_PATH%\..\DoxygenDoc_repo
+
+call "%ZF_TOOLS_PATH%\common\git_check.bat" "https://github.com/ZFFramework/zfframework.github.com" "%DOC_REPO_PATH%"
+call "%ZF_TOOLS_PATH%\common\copy_check.bat" "%WORK_DIR%\doc_repo" "%DOC_REPO_PATH%"
+rmdir /s/q "%DOC_REPO_PATH%\doc" >nul 2>nul
+call "%ZF_TOOLS_PATH%\common\copy_check.bat" "%OUTPUT_PATH%\html" "%DOC_REPO_PATH%\doc"
 
 set _OLD_DIR=%cd%
-cd "%OUTPUT_PATH%\repo"
+cd "%DOC_REPO_PATH%"
 git config user.email "z@zsaber.com"
 git config user.name "ZSaberLv0"
 git config push.default "simple"
