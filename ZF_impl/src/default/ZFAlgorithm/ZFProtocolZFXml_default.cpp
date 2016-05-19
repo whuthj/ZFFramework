@@ -6,9 +6,8 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFImpl_default_ZFCore.h"
-#include "ZFCore/protocol/ZFProtocolZFXml.h"
-#include "ZFCore/ZFString.h"
+#include "ZFImpl_default_ZFAlgorithm.h"
+#include "ZFAlgorithm/protocol/ZFProtocolZFXml.h"
 
 #include "../../_repo/pugixml/pugixml.hpp"
 

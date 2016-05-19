@@ -6,7 +6,7 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-package com.ZFFramework.Android.NativeEnum.ZFCore;
+package com.ZFFramework.Android.NativeEnum.ZFAlgorithm;
 
 public class ZFXmlVisitType {
     public static final int e_Enter = ZFXmlVisitType.native_e_Enter();

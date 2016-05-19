@@ -6,13 +6,13 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFImpl_sys_Android_NativeEnum_ZFCore.h"
-#include "ZFCore/ZFXml.h"
+#include "ZFImpl_sys_Android_NativeEnum_ZFAlgorithm.h"
+#include "ZFAlgorithm/ZFXml.h"
 
 #if ZF_ENV_sys_Android
 
-#define ZFImpl_sys_Android_JNI_ID_ZFXmlVisitType ZFImpl_sys_Android_JNI_ID_NativeEnum(ZFCore_ZFXmlVisitType)
-#define ZFImpl_sys_Android_JNI_NAME_ZFXmlVisitType ZFImpl_sys_Android_JNI_NAME_NativeEnum(ZFCore.ZFXmlVisitType)
+#define ZFImpl_sys_Android_JNI_ID_ZFXmlVisitType ZFImpl_sys_Android_JNI_ID_NativeEnum(ZFAlgorithm_ZFXmlVisitType)
+#define ZFImpl_sys_Android_JNI_NAME_ZFXmlVisitType ZFImpl_sys_Android_JNI_NAME_NativeEnum(ZFAlgorithm.ZFXmlVisitType)
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

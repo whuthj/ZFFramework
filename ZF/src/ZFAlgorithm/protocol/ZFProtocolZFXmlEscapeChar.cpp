@@ -6,12 +6,12 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "../ZFPrivate_ZFCore.hh"
-#include "ZFProtocolZFJsonEscapeChar.h"
+#include "../ZFPrivate_ZFAlgorithm.hh"
+#include "ZFProtocolZFXmlEscapeChar.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_INTERFACE_REGISTER(ZFJsonEscapeChar)
+ZFPROTOCOL_INTERFACE_REGISTER(ZFXmlEscapeChar)
 
 ZF_NAMESPACE_GLOBAL_END
 

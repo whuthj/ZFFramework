@@ -14,7 +14,6 @@
 #ifndef _ZFI_ZFProtocolZFJson_h_
 #define _ZFI_ZFProtocolZFJson_h_
 
-#include "../ZFProtocol.h"
 #include "../ZFJson.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 

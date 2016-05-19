@@ -6,10 +6,8 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore.hh"
-#include "ZFResCache.h"
-#include "ZFFile.h"
-#include "ZFJson.h"
+#include "ZFPrivate_ZFAddition.hh"
+#include "ZFResCache_ZFJson.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

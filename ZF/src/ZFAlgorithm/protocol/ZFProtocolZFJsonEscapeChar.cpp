@@ -6,13 +6,12 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore.hh"
-#include "ZFResCache.h"
+#include "../ZFPrivate_ZFAlgorithm.hh"
+#include "ZFProtocolZFJsonEscapeChar.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFOBJECT_REGISTER(ZFResCache)
-ZFOBJECT_SINGLETON_DEFINE_DETAIL(ZFResCache, ZFResCache, ZFResCache, instance, ZFLevelZFFrameworkNormal)
+ZFPROTOCOL_INTERFACE_REGISTER(ZFJsonEscapeChar)
 
 ZF_NAMESPACE_GLOBAL_END
 

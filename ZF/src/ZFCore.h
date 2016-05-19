@@ -36,9 +36,6 @@
 #include "ZFCore/ZFHashSet.h"
 #include "ZFCore/ZFIterable.h"
 #include "ZFCore/ZFIterableUtil.h"
-#include "ZFCore/ZFJson.h"
-#include "ZFCore/ZFJsonHandle.h"
-#include "ZFCore/ZFJsonSerializableConverterDef.h"
 #include "ZFCore/ZFKeyValueContainer.h"
 #include "ZFCore/ZFKeyValuePair.h"
 #include "ZFCore/ZFLog.h"
@@ -47,12 +44,8 @@
 #include "ZFCore/ZFMap.h"
 #include "ZFCore/ZFMutex.h"
 #include "ZFCore/ZFObject.h"
-#include "ZFCore/ZFObjectCache.h"
 #include "ZFCore/ZFObjectCreator_common.h"
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFResCache.h"
-#include "ZFCore/ZFResCache_json.h"
-#include "ZFCore/ZFResCache_xml.h"
 #include "ZFCore/ZFResultType.h"
 #include "ZFCore/ZFSemaphore.h"
 #include "ZFCore/ZFSet.h"
@@ -65,9 +58,6 @@
 #include "ZFCore/ZFTime.h"
 #include "ZFCore/ZFTimer.h"
 #include "ZFCore/ZFValue.h"
-#include "ZFCore/ZFXml.h"
-#include "ZFCore/ZFXmlHandle.h"
-#include "ZFCore/ZFXmlSerializableConverterDef.h"
 
 #endif // #ifndef _ZFI_ZFCore_h_
 

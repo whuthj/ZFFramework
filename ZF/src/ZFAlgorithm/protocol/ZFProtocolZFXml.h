@@ -14,7 +14,6 @@
 #ifndef _ZFI_ZFProtocolZFXml_h_
 #define _ZFI_ZFProtocolZFXml_h_
 
-#include "../ZFProtocol.h"
 #include "../ZFXml.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 

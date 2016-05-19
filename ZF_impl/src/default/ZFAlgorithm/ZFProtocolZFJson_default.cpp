@@ -6,9 +6,8 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFImpl_default_ZFCore.h"
-#include "ZFCore/protocol/ZFProtocolZFJson.h"
-#include "ZFCore/ZFString.h"
+#include "ZFImpl_default_ZFAlgorithm.h"
+#include "ZFAlgorithm/protocol/ZFProtocolZFJson.h"
 
 #include "../../_repo/rapidjson/document.h"
 #include "../../_repo/rapidjson/reader.h"

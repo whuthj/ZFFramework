@@ -19,9 +19,15 @@
 #include "ZFAlgorithm/ZFBezier.h"
 #include "ZFAlgorithm/ZFCrc32.h"
 #include "ZFAlgorithm/ZFEncrypt.h"
+#include "ZFAlgorithm/ZFJson.h"
+#include "ZFAlgorithm/ZFJsonHandle.h"
+#include "ZFAlgorithm/ZFJsonSerializableConverterDef.h"
 #include "ZFAlgorithm/ZFMd5.h"
 #include "ZFAlgorithm/ZFRegExp.h"
 #include "ZFAlgorithm/ZFTextTemplate.h"
+#include "ZFAlgorithm/ZFXml.h"
+#include "ZFAlgorithm/ZFXmlHandle.h"
+#include "ZFAlgorithm/ZFXmlSerializableConverterDef.h"
 
 #endif // #ifndef _ZFI_ZFAlgorithm_h_
 

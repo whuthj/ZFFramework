@@ -14,7 +14,6 @@
 #ifndef _ZFI_ZFProtocolZFXmlEscapeChar_h_
 #define _ZFI_ZFProtocolZFXmlEscapeChar_h_
 
-#include "../ZFProtocol.h"
 #include "../ZFXml.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 

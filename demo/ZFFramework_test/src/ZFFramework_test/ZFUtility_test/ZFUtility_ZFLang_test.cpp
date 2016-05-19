@@ -8,6 +8,8 @@
  * ====================================================================== */
 #include "ZFUtility_test.h"
 
+#include "ZFAlgorithm.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass ZFUtility_ZFLang_test : zfextends ZFFramework_test_TestCase

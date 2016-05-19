@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFXml_h_
 #define _ZFI_ZFXml_h_
 
-#include "ZFObject.h"
+#include "ZFAlgorithmDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /*

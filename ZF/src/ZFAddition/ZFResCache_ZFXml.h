@@ -7,14 +7,15 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 /**
- * @file ZFResCache_xml.h
+ * @file ZFResCache_ZFXml.h
  * @brief utility to load serializable from resource with cache logic
  */
 
-#ifndef _ZFI_ZFResCache_xml_h_
-#define _ZFI_ZFResCache_xml_h_
+#ifndef _ZFI_ZFResCache_ZFXml_h_
+#define _ZFI_ZFResCache_ZFXml_h_
 
-#include "ZFResCache.h"
+#include "../ZFUtility/ZFResCache.h"
+#include "../ZFAlgorithm/ZFXml.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -26,5 +27,5 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 extern ZF_ENV_EXPORT zfautoObject ZFResXml(ZF_IN const zfchar *resPath);
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFResCache_xml_h_
+#endif // #ifndef _ZFI_ZFResCache_ZFXml_h_
 

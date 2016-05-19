@@ -6,14 +6,14 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore.hh"
+#include "ZFPrivate_ZFAlgorithm.hh"
 #include "ZFXml.h"
 #include "protocol/ZFProtocolZFXml.h"
 #include "protocol/ZFProtocolZFXmlEscapeChar.h"
 
-#include "ZFSTLWrapper/zfstl_string.h"
-#include "ZFSTLWrapper/zfstl_deque.h"
-#include "ZFSTLWrapper/zfstl_map.h"
+#include "../ZFCore/ZFSTLWrapper/zfstl_string.h"
+#include "../ZFCore/ZFSTLWrapper/zfstl_deque.h"
+#include "../ZFCore/ZFSTLWrapper/zfstl_map.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

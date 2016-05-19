@@ -104,7 +104,7 @@ extern ZF_ENV_EXPORT zfbool ZFThreadExecuteWait(ZF_IN zfidentity taskId,
                                                 ZF_IN const zftimet &miliSecs);
 
 /**
- * @brief see #observerNotify
+ * @brief see #ZFObject::observerNotify
  *
  * do nothing if task not exist, auto remove after task finished
  */

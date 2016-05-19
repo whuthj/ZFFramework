@@ -16,6 +16,8 @@
 
 #include "ZFAddition/ZFAdditionDef.h"
 #include "ZFAddition/ZFFileDescriptorDef_ZFBase64.h"
+#include "ZFAddition/ZFResCache_ZFJson.h"
+#include "ZFAddition/ZFResCache_ZFXml.h"
 #include "ZFAddition/ZFTimeLineCurve_ZFBezier.h"
 #include "ZFAddition/ZFTimeLineProperty_ZFUIKit.h"
 

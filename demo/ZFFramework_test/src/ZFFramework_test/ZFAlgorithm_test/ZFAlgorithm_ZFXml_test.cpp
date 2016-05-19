@@ -6,13 +6,13 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFCore_test.h"
+#include "ZFAlgorithm_test.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFCore_ZFXml_test : zfextends ZFFramework_test_TestCase
+zfclass ZFAlgorithm_ZFXml_test : zfextends ZFFramework_test_TestCase
 {
-    ZFOBJECT_DECLARE(ZFCore_ZFXml_test, ZFFramework_test_TestCase)
+    ZFOBJECT_DECLARE(ZFAlgorithm_ZFXml_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
@@ -54,7 +54,7 @@ protected:
         this->testCaseStop();
     }
 };
-ZFOBJECT_REGISTER(ZFCore_ZFXml_test)
+ZFOBJECT_REGISTER(ZFAlgorithm_ZFXml_test)
 
 ZF_NAMESPACE_GLOBAL_END
 

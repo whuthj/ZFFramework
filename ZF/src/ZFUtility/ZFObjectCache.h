@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFObjectCache_h_
 #define _ZFI_ZFObjectCache_h_
 
-#include "ZFObject.h"
+#include "ZFUtilityDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd _ZFP_ZFObjectCachePrivate;

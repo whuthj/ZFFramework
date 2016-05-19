@@ -7,14 +7,15 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 /**
- * @file ZFResCache_json.h
+ * @file ZFResCache_ZFJson.h
  * @brief utility to load serializable from resource with cache logic
  */
 
-#ifndef _ZFI_ZFResCache_json_h_
-#define _ZFI_ZFResCache_json_h_
+#ifndef _ZFI_ZFResCache_ZFJson_h_
+#define _ZFI_ZFResCache_ZFJson_h_
 
-#include "ZFObjectCache.h"
+#include "../ZFUtility/ZFResCache.h"
+#include "../ZFAlgorithm/ZFJson.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -26,5 +27,5 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 extern ZF_ENV_EXPORT zfautoObject ZFResJson(ZF_IN const zfchar *resPath);
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFResCache_json_h_
+#endif // #ifndef _ZFI_ZFResCache_ZFJson_h_
 

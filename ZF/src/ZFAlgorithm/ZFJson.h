@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFJson_h_
 #define _ZFI_ZFJson_h_
 
-#include "ZFObject.h"
+#include "ZFAlgorithmDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /*

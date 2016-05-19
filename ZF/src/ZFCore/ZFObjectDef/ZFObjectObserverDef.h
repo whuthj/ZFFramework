@@ -316,7 +316,7 @@ private:
 // ============================================================
 // util
 /**
- * @brief util macro to cache whether a event has added to #observerAdd
+ * @brief util macro to cache whether a event has added to #ZFObject::observerAdd
  *
  * usage:
  * @code

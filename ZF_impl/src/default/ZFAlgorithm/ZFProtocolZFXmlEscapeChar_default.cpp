@@ -6,9 +6,8 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFImpl_default_ZFCore.h"
-#include "ZFCore/protocol/ZFProtocolZFXmlEscapeChar.h"
-#include "ZFCore/ZFString.h"
+#include "ZFImpl_default_ZFAlgorithm.h"
+#include "ZFAlgorithm/protocol/ZFProtocolZFXmlEscapeChar.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
