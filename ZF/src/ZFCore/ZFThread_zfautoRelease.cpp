@@ -9,6 +9,8 @@
 #include "ZFPrivate_ZFCore.hh"
 #include "ZFThread_zfautoRelease.h"
 #include "ZFAutoReleasePool.h"
+#include "protocol/ZFProtocolZFThread.h"
+#include "protocol/ZFProtocolZFThreadTaskRequest.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

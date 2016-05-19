@@ -22,6 +22,7 @@ ZF_MODULE_NAME          = ZFFramework
 # path must use '/' as path separator
 # may contain more than one directories, separated by space
 ZF_SRC_DIRS             =
+ZF_SRC_DIRS             += ../../../../../ZF/src/ZFAddition
 ZF_SRC_DIRS             += ../../../../../ZF/src/ZFAlgorithm
 ZF_SRC_DIRS             += ../../../../../ZF/src/ZFCore
 ZF_SRC_DIRS             += ../../../../../ZF/src/ZFUIKit

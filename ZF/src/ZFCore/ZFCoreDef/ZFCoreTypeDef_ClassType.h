@@ -17,6 +17,7 @@
 #include "ZFCoreEnvDef.h"
 #include "ZFCoreTypeDef_CoreType.h"
 #include <stdlib.h>
+#include <memory.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

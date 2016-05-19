@@ -6,16 +6,23 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFUIKit.hh"
-#include "ZFTimeLineProperty_ZFUIKit.h"
+/**
+ * @file ZFFileDescriptorDef_ZFBase64.h
+ * @brief file io from a string descriptor
+ */
 
+#ifndef _ZFI_ZFFileDescriptorDef_ZFBase64_h_
+#define _ZFI_ZFFileDescriptorDef_ZFBase64_h_
+
+#include "ZFAdditionDef.h"
+#include "../ZFAlgorithm/ZFBase64.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIPoint)
-ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUISize)
-ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIMargin)
-ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIRect)
-ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIColor)
+/**
+ * @brief see #ZFFileDescriptorTypeRegister, data is binary data encoded with base64
+ */
+#define ZFFileDescriptorType_Base64 zfText("Base64")
 
 ZF_NAMESPACE_GLOBAL_END
+#endif // #ifndef _ZFI_ZFFileDescriptorDef_Base64_h_
 

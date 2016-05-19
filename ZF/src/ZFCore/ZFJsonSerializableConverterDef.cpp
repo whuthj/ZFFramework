@@ -260,12 +260,12 @@ zfbool ZFSerializableDataParseJson(ZF_OUT ZFSerializableData &ret, ZF_IN const Z
     {
         return zffalse;
     }
-    ZFJsonItem xmlElement = ZFJsonFromInput(input);
-    if(xmlElement.jsonType() == ZFJsonType::e_JsonNull)
+    ZFJsonItem jsonElement = ZFJsonFromInput(input);
+    if(jsonElement.jsonType() == ZFJsonType::e_JsonNull)
     {
         return zffalse;
     }
-    if(!ZFJsonToSerializableData(ret, xmlElement))
+    if(!ZFJsonToSerializableData(ret, jsonElement))
     {
         return zffalse;
     }

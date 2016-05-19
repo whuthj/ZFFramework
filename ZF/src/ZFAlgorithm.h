@@ -19,11 +19,9 @@
 #include "ZFAlgorithm/ZFBezier.h"
 #include "ZFAlgorithm/ZFCrc32.h"
 #include "ZFAlgorithm/ZFEncrypt.h"
-#include "ZFAlgorithm/ZFFileDescriptorDef_ZFBase64.h"
 #include "ZFAlgorithm/ZFMd5.h"
 #include "ZFAlgorithm/ZFRegExp.h"
 #include "ZFAlgorithm/ZFTextTemplate.h"
-#include "ZFAlgorithm/ZFTimeLineCurve_ZFBezier.h"
 
 #endif // #ifndef _ZFI_ZFAlgorithm_h_
 

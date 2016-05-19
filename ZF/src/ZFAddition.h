@@ -7,16 +7,17 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 /**
- * @file ZFAlgorithmDef.h
- * @brief global header for ZFAlgorithm module
+ * @file ZFAddition.h
+ * @brief header file for ZFAddition module
  */
 
-#ifndef _ZFI_ZFAlgorithmDef_h_
-#define _ZFI_ZFAlgorithmDef_h_
+#ifndef _ZFI_ZFAddition_h_
+#define _ZFI_ZFAddition_h_
 
-#include "../ZFCore.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
+#include "ZFAddition/ZFAdditionDef.h"
+#include "ZFAddition/ZFFileDescriptorDef_ZFBase64.h"
+#include "ZFAddition/ZFTimeLineCurve_ZFBezier.h"
+#include "ZFAddition/ZFTimeLineProperty_ZFUIKit.h"
 
-ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFAlgorithmDef_h_
+#endif // #ifndef _ZFI_ZFAddition_h_
 

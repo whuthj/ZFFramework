@@ -14,7 +14,9 @@
 #ifndef _ZFI_ZFTimeLineProperty_ZFUIKit_h_
 #define _ZFI_ZFTimeLineProperty_ZFUIKit_h_
 
-#include "ZFUITypeDef.h"
+#include "ZFAdditionDef.h"
+#include "../ZFUtility/ZFTimeLineProperty.h"
+#include "../ZFUIKit/ZFUITypeDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

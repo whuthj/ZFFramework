@@ -6,17 +6,16 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-/**
- * @file ZFAlgorithmDef.h
- * @brief global header for ZFAlgorithm module
- */
+#include "ZFPrivate_ZFAddition.hh"
+#include "ZFTimeLineProperty_ZFUIKit.h"
 
-#ifndef _ZFI_ZFAlgorithmDef_h_
-#define _ZFI_ZFAlgorithmDef_h_
-
-#include "../ZFCore.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIPoint)
+ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUISize)
+ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIMargin)
+ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIRect)
+ZFOBJECT_REGISTER(ZFTimeLineProperty_ZFUIColor)
+
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFAlgorithmDef_h_
 

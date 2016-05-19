@@ -35,6 +35,7 @@ ZF_PROJ_DIR_NAME = ZF
 # src path of your project
 # can hold one or more paths, separated by space
 ZF_PROJ_SRC_PATH =
+ZF_PROJ_SRC_PATH += $$_PRO_FILE_PWD_/../../../src/ZFAddition
 ZF_PROJ_SRC_PATH += $$_PRO_FILE_PWD_/../../../src/ZFAlgorithm
 ZF_PROJ_SRC_PATH += $$_PRO_FILE_PWD_/../../../src/ZFCore
 ZF_PROJ_SRC_PATH += $$_PRO_FILE_PWD_/../../../src/ZFUIKit

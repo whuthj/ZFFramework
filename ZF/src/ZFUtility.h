@@ -23,6 +23,7 @@
 #include "ZFUtility/ZFLangUtil.h"
 #include "ZFUtility/ZFLangUtil_ZFSerializableHelper.h"
 #include "ZFUtility/ZFOperation.h"
+#include "ZFUtility/ZFOperation_Types.h"
 #include "ZFUtility/ZFOperationAsync.h"
 #include "ZFUtility/ZFOperationQueue.h"
 #include "ZFUtility/ZFSkin.h"

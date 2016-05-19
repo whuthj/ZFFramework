@@ -14,7 +14,9 @@
 #ifndef _ZFI_ZFTimeLineCurve_ZFBezier_h_
 #define _ZFI_ZFTimeLineCurve_ZFBezier_h_
 
-#include "ZFBezier.h"
+#include "ZFAdditionDef.h"
+#include "../ZFUtility/ZFTimeLineCurve.h"
+#include "../ZFAlgorithm/ZFBezier.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

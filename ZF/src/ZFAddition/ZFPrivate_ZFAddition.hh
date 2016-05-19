@@ -6,17 +6,14 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-/**
- * @file ZFAlgorithmDef.h
- * @brief global header for ZFAlgorithm module
- */
+/** @cond ZFPrivateDoc */
 
-#ifndef _ZFI_ZFAlgorithmDef_h_
-#define _ZFI_ZFAlgorithmDef_h_
+#ifndef _ZFI_ZFPrivate_ZFAddition_hh_
+#define _ZFI_ZFPrivate_ZFAddition_hh_
 
-#include "../ZFCore.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
+#include "../ZFCore/ZFPrivate_ZFCore.hh"
 
-ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFAlgorithmDef_h_
+#endif // #ifndef _ZFI_ZFPrivate_ZFAddition_hh_
+
+/** @endcond */
 

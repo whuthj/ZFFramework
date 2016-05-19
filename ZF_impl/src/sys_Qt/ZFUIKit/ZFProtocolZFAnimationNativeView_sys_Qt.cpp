@@ -9,7 +9,7 @@
 #include "ZFImpl_sys_Qt_ZFUIKit.h"
 #include "ZFUIKit/protocol/ZFProtocolZFAnimationNativeView.h"
 
-#include "ZFAlgorithm.h"
+#include "ZFAddition/ZFTimeLineCurve_ZFBezier.h"
 
 #if ZF_ENV_sys_Qt
 
