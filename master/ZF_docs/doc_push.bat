@@ -36,5 +36,6 @@ git config push.default "simple"
 git add -A
 git commit -a -m "update doc"
 git push "https://ZSaberLv0:%PASSWORD%@github.com/ZFFramework/zfframework.github.com"
+git fetch origin --prune
 cd "%_OLD_DIR%"
 
