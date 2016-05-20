@@ -12,7 +12,7 @@
 
 #include "../../_repo/stack_trace/stack.hpp"
 
-#if ZFLOG_STACKTRACE_SUPPORT && !ZF_ENV_sys_Android
+#if ZF_EDD_STACK_TRACE_ENABLE
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -127,5 +127,5 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFLogStackTraceImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #if ZFLOG_STACKTRACE_SUPPORT && !ZF_ENV_sys_Android
+#endif // #if ZF_EDD_STACK_TRACE_ENABLE
 
