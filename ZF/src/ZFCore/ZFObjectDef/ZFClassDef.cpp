@@ -9,9 +9,6 @@
 #include "ZFPrivate_ZFCore_ZFObjectDef.hh"
 #include "ZFObjectDef.h"
 #include "ZFObjectSmartPointerDef.h"
-#include "ZFCopyableDef.h"
-#include "ZFSerializableDataDef.h"
-#include "ZFStyleableDef.h"
 
 #include "../ZFSTLWrapper/zfstl_string.h"
 #include "../ZFSTLWrapper/zfstl_deque.h"
@@ -21,7 +18,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFClass's global data
-typedef zfstlmap<const ZFClass *, zfbool> _ZFP_ZFClassMethodAndPropertyIgnoreMapType;
 ZF_STATIC_INITIALIZER_INIT_WITH_LEVEL(ZFClassDataHolder, ZFLevelZFFrameworkEssential)
 {
 }
@@ -43,7 +39,6 @@ ZF_STATIC_INITIALIZER_DESTROY(ZFClassDataHolder)
 }
 ZFCoreMap classMap; // ZFClass *
 ZFCoreMap delayDeleteMap; // ZFClass *
-_ZFP_ZFClassMethodAndPropertyIgnoreMapType methodAndPropertyReflectIgnoreMap;
 /*
  * delay delete a class
  * ZFClass may be registered by different module,
@@ -60,17 +55,6 @@ _ZFP_ZFClassMethodAndPropertyIgnoreMapType methodAndPropertyReflectIgnoreMap;
 ZF_STATIC_INITIALIZER_END(ZFClassDataHolder)
 #define _ZFP_ZFClassMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->classMap)
 #define _ZFP_ZFClassDelayDeleteMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->delayDeleteMap)
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFClassDataHolderInit, ZFLevelZFFrameworkEssential)
-{
-    _ZFP_ZFClassMethodAndPropertyIgnoreMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->methodAndPropertyReflectIgnoreMap;
-
-    m[ZFObject::ClassData()] = zffalse;
-    m[ZFInterface::ClassData()] = zffalse;
-    m[ZFCopyable::ClassData()] = zffalse;
-    m[ZFSerializable::ClassData()] = zffalse;
-    m[ZFStyleable::ClassData()] = zffalse;
-}
-ZF_GLOBAL_INITIALIZER_END(ZFClassDataHolderInit)
 
 // ============================================================
 // _ZFP_ZFClassPrivate
@@ -153,8 +137,7 @@ public:
     /*
      * cache all parent to search method and property for performance
      *
-     * unlike allParent, this array ensured ordered by: self > parent interface > parent,
-     * and ensured ignored from ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->methodAndPropertyReflectIgnoreMap
+     * unlike allParent, this array ensured ordered by: self > parent interface > parent
      */
     zfstldeque<const ZFClass *> methodAndPropertyFindCache;
 
@@ -575,25 +558,28 @@ const ZFMethod *ZFClass::methodForNameIgnoreParent(ZF_IN const zfchar *methodNam
 {
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
 
-    ZFCoreArrayPOD<const ZFMethod *> *methodList = d->methodMap.get<ZFCoreArrayPOD<const ZFMethod *> *>(methodName);
-    if(methodList != zfnull)
+    if(!d->methodMap.isEmpty())
     {
-        if(methodId == zfnull)
+        ZFCoreArrayPOD<const ZFMethod *> *methodList = d->methodMap.get<ZFCoreArrayPOD<const ZFMethod *> *>(methodName);
+        if(methodList != zfnull)
         {
-            if(methodList->isEmpty())
+            if(methodId == zfnull)
             {
-                return zfnull;
+                if(methodList->isEmpty())
+                {
+                    return zfnull;
+                }
+                else
+                {
+                    return methodList->get(0);
+                }
             }
-            else
+            for(zfindex i = methodList->count() - 1; i != zfindexMax; --i)
             {
-                return methodList->get(0);
-            }
-        }
-        for(zfindex i = methodList->count() - 1; i != zfindexMax; --i)
-        {
-            if(zfscmpTheSame(methodId, methodList->get(i)->methodId()))
-            {
-                return methodList->get(i);
+                if(zfscmpTheSame(methodId, methodList->get(i)->methodId()))
+                {
+                    return methodList->get(i);
+                }
             }
         }
     }
@@ -629,12 +615,15 @@ const ZFProperty *ZFClass::propertyAtIndex(ZF_IN zfindex index) const
 const ZFProperty *ZFClass::propertyForNameIgnoreParent(const zfchar *propertyName) const
 {
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
-    const ZFProperty **t = d->propertyMap.get<const ZFProperty **>(propertyName);
-    if(t == zfnull)
+    if(!d->propertyMap.isEmpty())
     {
-        return zfnull;
+        const ZFProperty **t = d->propertyMap.get<const ZFProperty **>(propertyName);
+        if(t != zfnull)
+        {
+            return *t;
+        }
     }
-    return *t;
+    return zfnull;
 }
 const ZFProperty *ZFClass::propertyForName(const zfchar *propertyName) const
 {
@@ -1054,15 +1043,13 @@ void ZFClass::_ZFP_ZFClassInitFinish_allParentAndChildrenCache(ZF_IN ZFClass *cl
 void ZFClass::_ZFP_ZFClassInitFinish_methodAndPropertyFindCache(ZF_IN ZFClass *cls)
 { // all class to find property and method
     zfstldeque<const ZFClass *> clsToCheck;
-    _ZFP_ZFClassMethodAndPropertyIgnoreMapType alreadyChecked;
+    zfstlmap<const ZFClass *, zfbool> alreadyChecked;
     clsToCheck.push_back(cls);
-    const _ZFP_ZFClassMethodAndPropertyIgnoreMapType &ignoreList = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->methodAndPropertyReflectIgnoreMap;
     do
     {
         const ZFClass *clsTmp = clsToCheck.front();
         clsToCheck.pop_front();
-        if(ignoreList.find(clsTmp) != ignoreList.end()
-            || alreadyChecked.find(clsTmp) != alreadyChecked.end())
+        if(alreadyChecked.find(clsTmp) != alreadyChecked.end())
         {
             continue;
         }
