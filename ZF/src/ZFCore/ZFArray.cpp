@@ -155,7 +155,7 @@ void ZFArray::add(ZF_IN zfindex indexAddTo,
                   ZF_IN ZFObject *obj)
 {
     zfCoreAssertWithMessage(obj != zfnull, zfTextA("insert null object"));
-    zfRetainWithLeakTest(obj);
+    zfRetain(obj);
     d->data.insert(d->data.begin() + indexAddTo, obj);
 
     this->contentOnAdd(obj);
@@ -164,7 +164,7 @@ void ZFArray::add(ZF_IN zfindex indexAddTo,
 void ZFArray::add(ZF_IN ZFObject *obj)
 {
     zfCoreAssertWithMessage(obj != zfnull, zfTextA("insert null object"));
-    zfRetainWithLeakTest(obj);
+    zfRetain(obj);
     d->data.push_back(obj);
 
     this->contentOnAdd(obj);
@@ -183,7 +183,7 @@ void ZFArray::addFrom(ZF_IN ZFContainer *another)
         for(zfstldeque<ZFObject *>::const_iterator it = tmp.begin(); it != tmp.end(); ++it)
         {
             obj = *it;
-            zfRetainWithLeakTest(obj);
+            zfRetain(obj);
             d->data.push_back(obj);
             this->contentOnAdd(obj);
         }
@@ -198,7 +198,7 @@ void ZFArray::addFrom(ZF_IN ZFContainer *another)
         for(zfiterator it = another->iterator(); another->iteratorIsValid(it);)
         {
             obj = another->iteratorNext(it);
-            zfRetainWithLeakTest(obj);
+            zfRetain(obj);
             d->data.push_back(obj);
             this->contentOnAdd(obj);
         }
@@ -213,7 +213,7 @@ void ZFArray::set(ZF_IN zfindex index,
                   ZF_IN ZFObject *obj)
 {
     zfCoreAssertWithMessage(obj != zfnull, zfTextA("set null object"));
-    zfRetainWithLeakTest(obj);
+    zfRetain(obj);
 
     ZFObject *old = d->data[index];
     d->data[index] = obj;
@@ -222,7 +222,7 @@ void ZFArray::set(ZF_IN zfindex index,
     this->contentOnAdd(obj);
     this->contentOnChange();
 
-    zfReleaseWithLeakTest(old);
+    zfRelease(old);
 }
 
 zfbool ZFArray::removeElement(ZF_IN ZFObject *obj)
@@ -235,7 +235,7 @@ zfbool ZFArray::removeElement(ZF_IN ZFObject *obj)
             {
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfReleaseWithLeakTest(toRelease);
+                zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnChange();
@@ -259,7 +259,7 @@ zfbool ZFArray::removeElement(ZF_IN ZFObject *obj, ZF_IN ZFComparer<ZFObject *>:
             {
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfReleaseWithLeakTest(toRelease);
+                zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnChange();
@@ -283,7 +283,7 @@ zfbool ZFArray::removeElementRevsersely(ZF_IN ZFObject *obj)
             {
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
-                zfReleaseWithLeakTest(toRelease);
+                zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnChange();
@@ -303,7 +303,7 @@ zfbool ZFArray::removeElementRevsersely(ZF_IN ZFObject *obj, ZF_IN ZFComparer<ZF
             {
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
-                zfReleaseWithLeakTest(toRelease);
+                zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
                 this->contentOnChange();
@@ -325,7 +325,7 @@ zfindex ZFArray::removeElementAll(ZF_IN ZFObject *obj)
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfReleaseWithLeakTest(toRelease);
+                zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
             }
@@ -353,7 +353,7 @@ zfindex ZFArray::removeElementAll(ZF_IN ZFObject *obj, ZF_IN ZFComparer<ZFObject
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
-                zfReleaseWithLeakTest(toRelease);
+                zfRelease(toRelease);
 
                 this->contentOnRemove(toRelease);
             }
@@ -377,7 +377,7 @@ void ZFArray::remove(ZF_IN zfindex index,
     {
         ZFObject *tmp = d->data[index];
         d->data.erase(d->data.begin() + index);
-        zfReleaseWithLeakTest(tmp);
+        zfRelease(tmp);
 
         this->contentOnRemove(tmp);
         this->contentOnChange();
@@ -391,7 +391,7 @@ void ZFArray::remove(ZF_IN zfindex index,
         for(zfstldeque<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it)
         {
             this->contentOnRemove(*it);
-            zfReleaseWithLeakTest(*it);
+            zfRelease(*it);
         }
 
         if(!tmp.empty())
@@ -406,7 +406,7 @@ void ZFArray::removeFirst(void)
     {
         ZFObject *tmp = d->data[0];
         d->data.pop_front();
-        zfReleaseWithLeakTest(tmp);
+        zfRelease(tmp);
 
         this->contentOnRemove(tmp);
         this->contentOnChange();
@@ -418,7 +418,7 @@ void ZFArray::removeLast(void)
     {
         ZFObject *tmp = d->data[d->data.size() - 1];
         d->data.pop_back();
-        zfReleaseWithLeakTest(tmp);
+        zfRelease(tmp);
 
         this->contentOnRemove(tmp);
         this->contentOnChange();
@@ -433,7 +433,7 @@ void ZFArray::removeAll(void)
         for(zfstldeque<ZFObject *>::iterator it = tmp.begin(); it != tmp.end(); ++it)
         {
             this->contentOnRemove(*it);
-            zfReleaseWithLeakTest(*it);
+            zfRelease(*it);
         }
 
         if(!tmp.empty())

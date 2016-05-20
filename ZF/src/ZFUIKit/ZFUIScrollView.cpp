@@ -655,10 +655,10 @@ ZFObject *ZFUIScrollView::objectOnInit(void)
 {
     zfsuper::objectOnInit();
 
-    d = zfAllocInternal(_ZFP_ZFUIScrollViewPrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFUIScrollViewPrivate);
     d->thisView = this;
-    d->xScroll = zfRetainWithLeakTest(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
-    d->yScroll = zfRetainWithLeakTest(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
+    d->xScroll = zfRetain(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
+    d->yScroll = zfRetain(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
     zfCoreAssertWithMessage(d->xScroll != zfnull && d->yScroll != zfnull,
         zfTextA("scrollerClass must return a class type of %s"),
         zfsCoreZ2A(ZFUIScroller::ClassData()->className()));
@@ -672,23 +672,23 @@ ZFObject *ZFUIScrollView::objectOnInit(void)
 }
 void ZFUIScrollView::objectOnDealloc(void)
 {
-    ZFPropertyChangeWithLeakTest(d->xScroll, zfnull);
-    ZFPropertyChangeWithLeakTest(d->yScroll, zfnull);
+    ZFPropertyChange(d->xScroll, zfnull);
+    ZFPropertyChange(d->yScroll, zfnull);
 
     if(d->xScrollThumb != zfnull)
     {
         d->xScrollThumb->scrollThumbDealloc();
-        zfReleaseWithLeakTest(d->xScrollThumb);
+        zfRelease(d->xScrollThumb);
         d->xScrollThumb = zfnull;
     }
     if(d->yScrollThumb != zfnull)
     {
         d->yScrollThumb->scrollThumbDealloc();
-        zfReleaseWithLeakTest(d->yScrollThumb);
+        zfRelease(d->yScrollThumb);
         d->yScrollThumb = zfnull;
     }
 
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
@@ -989,12 +989,12 @@ void ZFUIScrollView::scrollThumbHorizontalClassSet(ZF_IN const ZFClass *cls)
     if(d->xScrollThumb != zfnull)
     {
         d->xScrollThumb->scrollThumbDealloc();
-        zfReleaseWithLeakTest(d->xScrollThumb);
+        zfRelease(d->xScrollThumb);
         d->xScrollThumb = zfnull;
     }
     if(cls != zfnull)
     {
-        d->xScrollThumb = zfRetainWithLeakTest(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
+        d->xScrollThumb = zfRetain(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
         if(d->xScrollThumb != zfnull)
         {
             d->xScrollThumb->_scrollView = this;
@@ -1017,12 +1017,12 @@ void ZFUIScrollView::scrollThumbVerticalClassSet(ZF_IN const ZFClass *cls)
     if(d->yScrollThumb != zfnull)
     {
         d->yScrollThumb->scrollThumbDealloc();
-        zfReleaseWithLeakTest(d->yScrollThumb);
+        zfRelease(d->yScrollThumb);
         d->yScrollThumb = zfnull;
     }
     if(cls != zfnull)
     {
-        d->yScrollThumb = zfRetainWithLeakTest(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
+        d->yScrollThumb = zfRetain(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).toObject()));
         if(d->yScrollThumb != zfnull)
         {
             d->yScrollThumb->_scrollView = this;

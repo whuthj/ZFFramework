@@ -22,7 +22,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObjectWithLeakTest, {
+ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
     }, {
         ZFCoreMutexLock();
         zflockfree_ZFLeakTestLogReleaseVerbose(p, zfTextA("unknown"), zfTextA("ZFCorePointerOnDelete"), 0);
@@ -42,26 +42,8 @@ ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObjectMarkCached, {
         ZFCoreMutexUnlock();
     })
 
-/**
- * @brief deleted by zfRelease, see #ZFCorePointer
- */
-#if ZF_LEAKTEST_ENABLE
-    #define ZFCorePointerForZFObject ZFCorePointerForZFObjectWithLeakTest
-#else
-    #define ZFCorePointerForZFObject ZFCorePointerForZFObjectWithoutLeakTest
-#endif
-
-/**
- * @brief deleted by zfReleaseInternal, see #ZFCorePointer
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define ZFCorePointerForZFObjectInternal ZFCorePointerForZFObjectWithLeakTest
-#else
-    #define ZFCorePointerForZFObjectInternal ZFCorePointerForZFObjectWithoutLeakTest
-#endif
-
 // ============================================================
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zflineReleaseWithLeakTest
+zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zflineRelease
 {
 public:
     template<typename T_ZFObject>
@@ -100,14 +82,14 @@ public:
         return any;
     }
 public:
-    _ZFP_zflineReleaseWithLeakTest(void)
+    _ZFP_zflineRelease(void)
     : obj(zfnull)
     , callerFile(zfnull)
     , callerFunction(zfnull)
     , callerLine(0)
     {
     }
-    ~_ZFP_zflineReleaseWithLeakTest(void)
+    ~_ZFP_zflineRelease(void)
     {
         if(this->obj != zfnull)
         {
@@ -125,7 +107,7 @@ private:
     const zfcharA *callerFunction;
     zfindex callerLine;
 };
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zflockfree_zflineReleaseWithLeakTest
+zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zflockfree_zflineRelease
 {
 public:
     template<typename T_ZFObject>
@@ -164,14 +146,14 @@ public:
         return any;
     }
 public:
-    _ZFP_zflockfree_zflineReleaseWithLeakTest(void)
+    _ZFP_zflockfree_zflineRelease(void)
     : obj(zfnull)
     , callerFile(zfnull)
     , callerFunction(zfnull)
     , callerLine(0)
     {
     }
-    ~_ZFP_zflockfree_zflineReleaseWithLeakTest(void)
+    ~_ZFP_zflockfree_zflineRelease(void)
     {
         if(this->obj != zfnull)
         {
@@ -252,20 +234,6 @@ public:
     ZFObject *obj;
 };
 /**
- * @brief see #zflineRelease
- */
-#define zflineReleaseWithLeakTest(obj) (_ZFP_zflineReleaseWithLeakTest().set(obj, \
-    ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE))
-/** @brief no lock version of #zflineReleaseWithLeakTest, use with causion */
-#define zflockfree_zflineReleaseWithLeakTest(obj) (_ZFP_zflockfree_zflineReleaseWithLeakTest().set(obj, \
-    ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE))
-/**
- * @brief see #zflineRelease
- */
-#define zflineReleaseWithoutLeakTest(obj) (_ZFP_zflineReleaseWithoutLeakTest().set(obj))
-/** @brief no lock version of #zflineReleaseWithLeakTest, use with causion */
-#define zflockfree_zflineReleaseWithoutLeakTest(obj) (_ZFP_zflockfree_zflineReleaseWithoutLeakTest().set(obj))
-/**
  * @brief convenient method to release the object after code line end
  *
  * usage:
@@ -290,36 +258,27 @@ public:
  * usually, this method is used to save you some code,
  * or designed for chained code
  */
-#if ZF_LEAKTEST_ENABLE
-    #define zflineRelease(obj) zflineReleaseWithLeakTest(obj)
-#else
-    #define zflineRelease(obj) zflineReleaseWithoutLeakTest(obj)
-#endif
-
+#define zflineRelease(obj) (_ZFP_zflineRelease().set(obj, \
+    ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE))
+/** @brief no lock version of #zflineRelease, use with causion */
+#define zflockfree_zflineRelease(obj) (_ZFP_zflockfree_zflineRelease().set(obj, \
+    ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE))
 /**
  * @brief see #zflineRelease
  */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflineReleaseInternal(obj) zflockfree_zflineReleaseWithLeakTest(obj)
-#else
-    #define zflineReleaseInternal(obj) zflockfree_zflineReleaseWithoutLeakTest(obj)
-#endif
-/** @brief no lock version of #zflineReleaseInternal, use with causion */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_zflineReleaseInternal(obj) zflineReleaseWithLeakTest(obj)
-#else
-    #define zflocked_zflineReleaseInternal(obj) zflineReleaseWithoutLeakTest(obj)
-#endif
+#define zflineReleaseWithoutLeakTest(obj) (_ZFP_zflineReleaseWithoutLeakTest().set(obj))
+/** @brief no lock version of #zflineRelease, use with causion */
+#define zflockfree_zflineReleaseWithoutLeakTest(obj) (_ZFP_zflockfree_zflineReleaseWithoutLeakTest().set(obj))
 
 // ============================================================
 /**
- * @brief see #zflineRelease
+ * @brief same as zflineRelease(zfAlloc(...)), see #zflineRelease
  */
-#define zflineAllocWithLeakTest(T_ZFObject, ...) \
-    zflineReleaseWithLeakTest(zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__))
-/** @brief no lock version of #zflineAllocWithLeakTest, use with causion */
-#define zflockfree_zflineAllocWithLeakTest(T_ZFObject, ...) \
-    zflockfree_zflineReleaseWithLeakTest(zflockfree_zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__))
+#define zflineAlloc(T_ZFObject, ...) \
+    zflineRelease(zfAlloc(T_ZFObject, ##__VA_ARGS__))
+/** @brief no lock version of #zflineAlloc, use with causion */
+#define zflockfree_zflineAlloc(T_ZFObject, ...) \
+    zflockfree_zflineRelease(zflockfree_zfAlloc(T_ZFObject, ##__VA_ARGS__))
 /**
  * @brief see #zflineRelease
  */
@@ -329,46 +288,22 @@ public:
 #define zflockfree_zflineAllocWithoutLeakTest(T_ZFObject, ...) \
     zflockfree_zflineReleaseWithoutLeakTest(zflockfree_zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__))
 
-/**
- * @brief same as zflineRelease(zfAlloc(...)), see #zflineRelease
- */
-#if ZF_LEAKTEST_ENABLE
-    #define zflineAlloc(T_ZFObject, ...) zflineAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__)
-#else
-    #define zflineAlloc(T_ZFObject, ...) zflineAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)
-#endif
-
-/**
- * @brief see #zflineRelease
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflineAllocInternal(T_ZFObject, ...) zflockfree_zflineAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__)
-#else
-    #define zflineAllocInternal(T_ZFObject, ...) zflockfree_zflineAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)
-#endif
-/** @brief no lock version of #zflineAllocInternal, use with causion */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_zflineAllocInternal(T_ZFObject, ...) zflineAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__)
-#else
-    #define zflocked_zflineAllocInternal(T_ZFObject, ...) zflineAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)
-#endif
-
 // ============================================================
 template<typename T_ZFObject>
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedAllocContainerWithLeakTest
+zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedAllocContainer
 {
 public:
-    explicit _ZFP_zfblockedAllocContainerWithLeakTest(ZF_IN T_ZFObject *obj,
-                                                      ZF_IN const zfcharA *callerFile,
-                                                      ZF_IN const zfcharA *callerFunction,
-                                                      ZF_IN zfindex callerLine)
+    explicit _ZFP_zfblockedAllocContainer(ZF_IN T_ZFObject *obj,
+                                          ZF_IN const zfcharA *callerFile,
+                                          ZF_IN const zfcharA *callerFunction,
+                                          ZF_IN zfindex callerLine)
     : obj(obj)
     , callerFile(callerFile)
     , callerFunction(callerFunction)
     , callerLine(callerLine)
     {
     }
-    ~_ZFP_zfblockedAllocContainerWithLeakTest(void)
+    ~_ZFP_zfblockedAllocContainer(void)
     {
         ZFCoreMutexLock();
         zflockfree_ZFLeakTestLogReleaseVerbose(this->obj,
@@ -384,20 +319,20 @@ private:
     zfindex callerLine;
 };
 template<typename T_ZFObject>
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zflockfree_zfblockedAllocContainerWithLeakTest
+zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zflockfree_zfblockedAllocContainer
 {
 public:
-    explicit _ZFP_zflockfree_zfblockedAllocContainerWithLeakTest(ZF_IN T_ZFObject *obj,
-                                                                 ZF_IN const zfcharA *callerFile,
-                                                                 ZF_IN const zfcharA *callerFunction,
-                                                                 ZF_IN zfindex callerLine)
+    explicit _ZFP_zflockfree_zfblockedAllocContainer(ZF_IN T_ZFObject *obj,
+                                                     ZF_IN const zfcharA *callerFile,
+                                                     ZF_IN const zfcharA *callerFunction,
+                                                     ZF_IN zfindex callerLine)
     : obj(obj)
     , callerFile(callerFile)
     , callerFunction(callerFunction)
     , callerLine(callerLine)
     {
     }
-    ~_ZFP_zflockfree_zfblockedAllocContainerWithLeakTest(void)
+    ~_ZFP_zflockfree_zfblockedAllocContainer(void)
     {
         zflockfree_ZFLeakTestLogReleaseVerbose(this->obj,
             this->callerFile, this->callerFunction, this->callerLine);
@@ -441,33 +376,6 @@ public:
     T_ZFObject *obj;
 };
 /**
- * @brief see #zfblockedAlloc
- */
-#define zfblockedAllocWithLeakTest(T_ZFObject, name, ...) \
-    _ZFP_zfblockedAllocContainerWithLeakTest<T_ZFObject> \
-        ZFUniqueName(name) (zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__), \
-            ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE); \
-    T_ZFObject *name = (ZFUniqueName(name).obj)
-/** @brief no lock version of #zfblockedAllocWithLeakTest, use with causion */
-#define zflockfree_zfblockedAllocWithLeakTest(T_ZFObject, name, ...) \
-    _ZFP_zflockfree_zfblockedAllocContainerWithLeakTest<T_ZFObject> \
-        ZFUniqueName(name) (zflockfree_zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__), \
-            ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE); \
-    T_ZFObject *name = (ZFUniqueName(name).obj)
-/**
- * @brief see #zfblockedAlloc
- */
-#define zfblockedAllocWithoutLeakTest(T_ZFObject, name, ...) \
-    _ZFP_zfblockedAllocContainerWithoutLeakTest<T_ZFObject> \
-    ZFUniqueName(name) (zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)); \
-    T_ZFObject *name = (ZFUniqueName(name).obj)
-/** @brief no lock version of #zfblockedAllocWithoutLeakTest, use with causion */
-#define zflockfree_zfblockedAllocWithoutLeakTest(T_ZFObject, name, ...) \
-    _ZFP_zflockfree_zfblockedAllocContainerWithoutLeakTest<T_ZFObject> \
-    ZFUniqueName(name) (zflockfree_zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)); \
-    T_ZFObject *name = (ZFUniqueName(name).obj)
-
-/**
  * @brief alloc a ZFObject looks like on a stack
  *
  * @code
@@ -485,43 +393,46 @@ public:
  *   zfRelease(saved); // release it
  * @endcode
  */
-#if ZF_LEAKTEST_ENABLE
-    #define zfblockedAlloc(T_ZFObject, name, ...) zfblockedAllocWithLeakTest(T_ZFObject, name, ##__VA_ARGS__)
-#else
-    #define zfblockedAlloc(T_ZFObject, name, ...) zfblockedAllocWithoutLeakTest(T_ZFObject, name, ##__VA_ARGS__)
-#endif
-
+#define zfblockedAlloc(T_ZFObject, name, ...) \
+    _ZFP_zfblockedAllocContainer<T_ZFObject> \
+        ZFUniqueName(name) (zfAlloc(T_ZFObject, ##__VA_ARGS__), \
+            ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE); \
+    T_ZFObject *name = (ZFUniqueName(name).obj)
+/** @brief no lock version of #zfblockedAlloc, use with causion */
+#define zflockfree_zfblockedAlloc(T_ZFObject, name, ...) \
+    _ZFP_zflockfree_zfblockedAllocContainer<T_ZFObject> \
+        ZFUniqueName(name) (zflockfree_zfAlloc(T_ZFObject, ##__VA_ARGS__), \
+            ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE); \
+    T_ZFObject *name = (ZFUniqueName(name).obj)
 /**
  * @brief see #zfblockedAlloc
  */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zfblockedAllocInternal(T_ZFObject, name, ...) zflockfree_zfblockedAllocWithLeakTest(T_ZFObject, name, ##__VA_ARGS__)
-#else
-    #define zfblockedAllocInternal(T_ZFObject, name, ...) zflockfree_zfblockedAllocWithoutLeakTest(T_ZFObject, name, ##__VA_ARGS__)
-#endif
-/** @brief no lock version of #zfblockedAllocInternal, use with causion */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_zfblockedAllocInternal(T_ZFObject, name, ...) zfblockedAllocWithLeakTest(T_ZFObject, name, ##__VA_ARGS__)
-#else
-    #define zflocked_zfblockedAllocInternal(T_ZFObject, name, ...) zfblockedAllocWithoutLeakTest(T_ZFObject, name, ##__VA_ARGS__)
-#endif
+#define zfblockedAllocWithoutLeakTest(T_ZFObject, name, ...) \
+    _ZFP_zfblockedAllocContainerWithoutLeakTest<T_ZFObject> \
+    ZFUniqueName(name) (zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)); \
+    T_ZFObject *name = (ZFUniqueName(name).obj)
+/** @brief no lock version of #zfblockedAllocWithoutLeakTest, use with causion */
+#define zflockfree_zfblockedAllocWithoutLeakTest(T_ZFObject, name, ...) \
+    _ZFP_zflockfree_zfblockedAllocContainerWithoutLeakTest<T_ZFObject> \
+    ZFUniqueName(name) (zflockfree_zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)); \
+    T_ZFObject *name = (ZFUniqueName(name).obj)
 
 // ============================================================
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedReleaseContainerWithLeakTest
+zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedReleaseContainer
 {
 public:
     template<typename T_ZFObject>
-    _ZFP_zfblockedReleaseContainerWithLeakTest(ZF_IN T_ZFObject *obj,
-                                               ZF_IN const zfcharA *callerFile,
-                                               ZF_IN const zfcharA *callerFunction,
-                                               ZF_IN zfindex callerLine)
+    _ZFP_zfblockedReleaseContainer(ZF_IN T_ZFObject *obj,
+                                   ZF_IN const zfcharA *callerFile,
+                                   ZF_IN const zfcharA *callerFunction,
+                                   ZF_IN zfindex callerLine)
     : obj(ZFCastZFObjectUnchecked(ZFObject *, obj))
     , callerFile(callerFile)
     , callerFunction(callerFunction)
     , callerLine(callerLine)
     {
     }
-    ~_ZFP_zfblockedReleaseContainerWithLeakTest(void)
+    ~_ZFP_zfblockedReleaseContainer(void)
     {
         ZFCoreMutexLock();
         zflockfree_ZFLeakTestLogReleaseVerbose(this->obj,
@@ -535,21 +446,21 @@ private:
     const zfcharA *callerFunction;
     zfindex callerLine;
 };
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zflockfree_zfblockedReleaseContainerWithLeakTest
+zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zflockfree_zfblockedReleaseContainer
 {
 public:
     template<typename T_ZFObject>
-    _ZFP_zflockfree_zfblockedReleaseContainerWithLeakTest(ZF_IN T_ZFObject *obj,
-                                                        ZF_IN const zfcharA *callerFile,
-                                                        ZF_IN const zfcharA *callerFunction,
-                                                        ZF_IN zfindex callerLine)
+    _ZFP_zflockfree_zfblockedReleaseContainer(ZF_IN T_ZFObject *obj,
+                                              ZF_IN const zfcharA *callerFile,
+                                              ZF_IN const zfcharA *callerFunction,
+                                              ZF_IN zfindex callerLine)
     : obj(ZFCastZFObjectUnchecked(ZFObject *, obj))
     , callerFile(callerFile)
     , callerFunction(callerFunction)
     , callerLine(callerLine)
     {
     }
-    ~_ZFP_zflockfree_zfblockedReleaseContainerWithLeakTest(void)
+    ~_ZFP_zflockfree_zfblockedReleaseContainer(void)
     {
         zflockfree_ZFLeakTestLogReleaseVerbose(this->obj,
             this->callerFile, this->callerFunction, this->callerLine);
@@ -592,15 +503,23 @@ private:
     ZFObject *obj;
 };
 /**
- * @brief see #zfblockedRelease
+ * @brief release the object after nearest block
+ *
+ * @code
+ *   { // code block
+ *       ZFObject *obj = ...;
+ *       zfblockedRelease(obj); // mark release, must be single line
+ *       return ; // safe to return, auto released after exiting code block
+ *   } // obj would be released after here
+ * @endcode
  */
-#define zfblockedReleaseWithLeakTest(obj) \
-    _ZFP_zfblockedReleaseContainerWithLeakTest ZFUniqueName(zfblockedRelease) (obj, \
+#define zfblockedRelease(obj) \
+    _ZFP_zfblockedReleaseContainer ZFUniqueName(zfblockedRelease) (obj, \
         ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE); \
     ZFUNUSED(ZFUniqueName(zfblockedRelease))
-/** @brief no lock version of #zfblockedReleaseWithLeakTest, use with causion */
-#define zflockfree_zfblockedReleaseWithLeakTest(obj) \
-    _ZFP_zflockfree_zfblockedReleaseContainerWithLeakTest ZFUniqueName(zfblockedRelease) (obj, \
+/** @brief no lock version of #zfblockedRelease, use with causion */
+#define zflockfree_zfblockedRelease(obj) \
+    _ZFP_zflockfree_zfblockedReleaseContainer ZFUniqueName(zfblockedRelease) (obj, \
         ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE); \
     ZFUNUSED(ZFUniqueName(zfblockedRelease))
 /**
@@ -614,45 +533,13 @@ private:
     _ZFP_zflockfree_zfblockedReleaseContainerWithoutLeakTest ZFUniqueName(zfblockedRelease) (obj); \
     ZFUNUSED(ZFUniqueName(zfblockedRelease))
 
-/**
- * @brief release the object after nearest block
- *
- * @code
- *   { // code block
- *       ZFObject *obj = ...;
- *       zfblockedRelease(obj); // mark release, must be single line
- *       return ; // safe to return, auto released after exiting code block
- *   } // obj would be released after here
- * @endcode
- */
-#if ZF_LEAKTEST_ENABLE
-    #define zfblockedRelease(obj) zfblockedReleaseWithLeakTest(obj)
-#else
-    #define zfblockedRelease(obj) zfblockedReleaseWithoutLeakTest(obj)
-#endif
-
-/**
- * @brief see #zfblockedRelease
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zfblockedReleaseInternal(obj) zflockfree_zfblockedReleaseWithLeakTest(obj)
-#else
-    #define zfblockedReleaseInternal(obj) zflockfree_zfblockedReleaseWithoutLeakTest(obj)
-#endif
-/** @brief no lock version of #zfblockedReleaseInternal, use with causion */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_zfblockedReleaseInternal(obj) zfblockedReleaseWithLeakTest(obj)
-#else
-    #define zflocked_zfblockedReleaseInternal(obj) zfblockedReleaseWithoutLeakTest(obj)
-#endif
-
 // ============================================================
 // zfautoObject
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivateWithoutLeakTest : public _ZFP_zfautoObjectPrivate
+zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivateWithoutLeakTest : public _ZFP_zfautoObjectPrivateBase
 {
 public:
     _ZFP_zfautoObjectPrivateWithoutLeakTest(ZF_IN ZFObject *obj)
-    : _ZFP_zfautoObjectPrivate(obj)
+    : _ZFP_zfautoObjectPrivateBase(obj)
     {
     }
 public:
@@ -664,18 +551,18 @@ public:
         }
     }
 };
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivateWithLeakTest : public _ZFP_zfautoObjectPrivate
+zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivate : public _ZFP_zfautoObjectPrivateBase
 {
 public:
     const zfcharA *callerFile;
     const zfcharA *callerFunction;
     zfindex callerLine;
 public:
-    _ZFP_zfautoObjectPrivateWithLeakTest(ZF_IN ZFObject *obj,
-                                         ZF_IN const zfcharA *callerFile,
-                                         ZF_IN const zfcharA *callerFunction,
-                                         ZF_IN zfindex callerLine)
-    : _ZFP_zfautoObjectPrivate(obj)
+    _ZFP_zfautoObjectPrivate(ZF_IN ZFObject *obj,
+                             ZF_IN const zfcharA *callerFile,
+                             ZF_IN const zfcharA *callerFunction,
+                             ZF_IN zfindex callerLine)
+    : _ZFP_zfautoObjectPrivateBase(obj)
     , callerFile(callerFile)
     , callerFunction(callerFunction)
     , callerLine(callerLine)
@@ -701,54 +588,34 @@ public:
     zfautoObject::_ZFP_zfautoObjectCreate(zfnew(_ZFP_zfautoObjectPrivateWithoutLeakTest, zflockfree_zfRetainWithoutLeakTest(obj)))
 
 /** @brief see #zfautoObject */
-#define zfautoObjectCreateWithLeakTestVerbose(obj, callerFile, callerFunction, callerLine) \
+#define zfautoObjectCreateVerbose(obj, callerFile, callerFunction, callerLine) \
     zfautoObject::_ZFP_zfautoObjectCreate((ZFCoreMutexLockerHolder(), _ZFP_ZFLeakTestEnableCache \
-        ? (_ZFP_zfautoObjectPrivate *)zfnew(_ZFP_zfautoObjectPrivateWithLeakTest, zfRetainWithLeakTest(obj), \
+        ? (_ZFP_zfautoObjectPrivateBase *)zfnew(_ZFP_zfautoObjectPrivate, zflockfree_zfRetain(obj), \
                 callerFile, callerFunction, callerLine \
             ) \
-        : (_ZFP_zfautoObjectPrivate *)zfnew(_ZFP_zfautoObjectPrivateWithoutLeakTest, zfRetainWithoutLeakTest(obj)) \
+        : (_ZFP_zfautoObjectPrivateBase *)zfnew(_ZFP_zfautoObjectPrivateWithoutLeakTest, zflockfree_zfRetainWithoutLeakTest(obj)) \
         ))
 /** @brief see #zfautoObject */
-#define zfautoObjectCreateWithLeakTest(obj) \
-    zfautoObjectCreateWithLeakTestVerbose(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
-/** @brief no lock version of #zfautoObjectCreateWithLeakTestVerbose, use with causion */
-#define zflockfree_zfautoObjectCreateWithLeakTestVerbose(obj, callerFile, callerFunction, callerLine) \
+#define zfautoObjectCreate(obj) \
+    zfautoObjectCreateVerbose(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
+/** @brief no lock version of #zfautoObjectCreateVerbose, use with causion */
+#define zflockfree_zfautoObjectCreateVerbose(obj, callerFile, callerFunction, callerLine) \
     zfautoObject::_ZFP_zfautoObjectCreate((ZFCoreMutexLockerHolder(), _ZFP_ZFLeakTestEnableCache \
-        ? (_ZFP_zfautoObjectPrivate *)zfnew(_ZFP_zfautoObjectPrivateWithLeakTest, zflockfree_zfRetainWithLeakTest(obj), \
+        ? (_ZFP_zfautoObjectPrivateBase *)zfnew(_ZFP_zfautoObjectPrivate, zflockfree_zfRetain(obj), \
                 callerFile, callerFunction, callerLine \
             ) \
-        : (_ZFP_zfautoObjectPrivate *)zfnew(_ZFP_zfautoObjectPrivateWithoutLeakTest, zflockfree_zfRetainWithoutLeakTest(obj)) \
+        : (_ZFP_zfautoObjectPrivateBase *)zfnew(_ZFP_zfautoObjectPrivateWithoutLeakTest, zflockfree_zfRetainWithoutLeakTest(obj)) \
         ))
-/** @brief no lock version of #zfautoObjectCreateWithLeakTest, use with causion */
-#define zflockfree_zfautoObjectCreateWithLeakTest(obj) \
-    zflockfree_zfautoObjectCreateWithLeakTestVerbose(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
-
-/** @brief see #zfautoObject */
-#if ZF_LEAKTEST_ENABLE
-    #define zfautoObjectCreate(obj) zfautoObjectCreateWithLeakTest(obj)
-#else
-    #define zfautoObjectCreate(obj) zfautoObjectCreateWithoutLeakTest(obj)
-#endif
-
-/** @brief see #zfautoObject */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zfautoObjectCreateInternal(obj) zflockfree_zfautoObjectCreateWithLeakTest(obj)
-#else
-    #define zfautoObjectCreateInternal(obj) zflockfree_zfautoObjectCreateWithoutLeakTest(obj)
-#endif
-/** @brief no lock version of #zfautoObjectCreateInternal, use with causion */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_zfautoObjectCreateInternal(obj) zfautoObjectCreateWithLeakTest(obj)
-#else
-    #define zflocked_zfautoObjectCreateInternal(obj) zfautoObjectCreateWithoutLeakTest(obj)
-#endif
+/** @brief no lock version of #zfautoObjectCreate, use with causion */
+#define zflockfree_zfautoObjectCreate(obj) \
+    zflockfree_zfautoObjectCreateVerbose(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
 
 // ============================================================
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivateMarkCached : public _ZFP_zfautoObjectPrivate
+zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivateMarkCached : public _ZFP_zfautoObjectPrivateBase
 {
 public:
     _ZFP_zfautoObjectPrivateMarkCached(ZF_IN ZFObject *obj)
-    : _ZFP_zfautoObjectPrivate(obj)
+    : _ZFP_zfautoObjectPrivateBase(obj)
     {
         if(this->obj)
         {
@@ -783,7 +650,7 @@ inline void _ZFP_ZFCastZFObjectToUnknown(zfautoObject &ret,
 {
     ZFCoreMutexLock();
     zflockfree_ZFLeakTestLogRetainVerbose(obj, ZF_CALLER_FILE, zfTextA("ZFCastZFObject"), ZF_CALLER_LINE);
-    ret = zflockfree_zfautoObjectCreateWithLeakTestVerbose(obj, ZF_CALLER_FILE, zfTextA("ZFCastZFObject"), ZF_CALLER_LINE);
+    ret = zflockfree_zfautoObjectCreateVerbose(obj, ZF_CALLER_FILE, zfTextA("ZFCastZFObject"), ZF_CALLER_LINE);
     ZFCoreMutexUnlock();
 }
 
@@ -796,7 +663,7 @@ inline void _ZFP_ZFCastZFObjectToUnknownUnchecked(zfautoObject &ret,
 {
     ZFCoreMutexLock();
     zflockfree_ZFLeakTestLogRetainVerbose(obj, ZF_CALLER_FILE, zfTextA("ZFCastZFObjectUnchecked"), ZF_CALLER_LINE);
-    ret = zflockfree_zfautoObjectCreateWithLeakTestVerbose(obj, ZF_CALLER_FILE, zfTextA("ZFCastZFObjectUnchecked"), ZF_CALLER_LINE);
+    ret = zflockfree_zfautoObjectCreateVerbose(obj, ZF_CALLER_FILE, zfTextA("ZFCastZFObjectUnchecked"), ZF_CALLER_LINE);
     ZFCoreMutexUnlock();
 }
 

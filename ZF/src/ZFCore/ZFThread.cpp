@@ -26,12 +26,12 @@ zfclass _ZFP_I_ZFThreadMutex : zfextends ZFMutex
 ZFMutex *_ZFP_ZFThread_mutex = zfnull;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadMutexHolder, ZFLevelZFFrameworkEssential)
 {
-    _ZFP_ZFThread_mutex = zfAllocInternal(_ZFP_I_ZFThreadMutex);
+    _ZFP_ZFThread_mutex = zfAllocWithoutLeakTest(_ZFP_I_ZFThreadMutex);
     _ZFP_ZFThread_mutex->objectDebugInfoSet(zfText("ZFThread internal mutex"));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadMutexHolder)
 {
-    zfReleaseInternal(_ZFP_ZFThread_mutex);
+    zfReleaseWithoutLeakTest(_ZFP_ZFThread_mutex);
     _ZFP_ZFThread_mutex = zfnull;
 }
 ZF_GLOBAL_INITIALIZER_END(ZFThreadMutexHolder)
@@ -66,7 +66,7 @@ public:
     }
     ~_ZFP_ZFThreadPrivate(void)
     {
-        zfReleaseWithLeakTest(this->autoReleasePool);
+        zfRelease(this->autoReleasePool);
     }
 };
 
@@ -304,10 +304,10 @@ static void _ZFP_ZFThreadRunnableCleanup(ZF_IN _ZFP_I_ZFThreadRunnableData *runn
             zfCoreCriticalShouldNotGoHere();
             return ;
     }
-    zfReleaseWithLeakTest(runnableData->ownerZFThread);
-    zfReleaseWithLeakTest(runnableData->param0);
-    zfReleaseWithLeakTest(runnableData->param1);
-    zfReleaseWithLeakTest(runnableData->userData);
+    zfRelease(runnableData->ownerZFThread);
+    zfRelease(runnableData->param0);
+    zfRelease(runnableData->param1);
+    zfRelease(runnableData->userData);
 
     if(lockAvailable)
     {
@@ -315,9 +315,9 @@ static void _ZFP_ZFThreadRunnableCleanup(ZF_IN _ZFP_I_ZFThreadRunnableData *runn
     }
 
     runnableData->semaWait->semaphoreBroadcastLocked();
-    zfReleaseInternal(runnableData->semaWait);
+    zfReleaseWithoutLeakTest(runnableData->semaWait);
     runnableData->semaWait = zfnull;
-    zfReleaseInternal(runnableData);
+    zfReleaseWithoutLeakTest(runnableData);
 
     if(lockAvailable)
     {
@@ -367,8 +367,8 @@ ZFOBJECT_REGISTER(ZFThread)
 
 void *ZFThread::nativeThreadRegister(void)
 {
-    ZFThread *zfThread = zfAllocInternal(_ZFP_ZFThreadUserRegisteredThread);
-    zfThread->_ZFP_ZFThread_d->semaWaitHolder = zfAllocInternal(ZFSemaphore);
+    ZFThread *zfThread = zfAllocWithoutLeakTest(_ZFP_ZFThreadUserRegisteredThread);
+    zfThread->_ZFP_ZFThread_d->semaWaitHolder = zfAllocWithoutLeakTest(ZFSemaphore);
     return _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
 }
 void ZFThread::nativeThreadUnregister(ZF_IN void *token)
@@ -379,9 +379,9 @@ void ZFThread::nativeThreadUnregister(ZF_IN void *token)
         zfCoreAssert(zfThread != zfnull);
         zfThread->_ZFP_ZFThread_d->semaWaitHolder->semaphoreBroadcastLocked();
         _ZFP_ZFThreadImpl->nativeThreadUnregister(token);
-        zfReleaseInternal(zfThread->_ZFP_ZFThread_d->semaWaitHolder);
+        zfReleaseWithoutLeakTest(zfThread->_ZFP_ZFThread_d->semaWaitHolder);
         zfThread->_ZFP_ZFThread_d->semaWaitHolder = zfnull;
-        zfReleaseInternal(zfThread);
+        zfReleaseWithoutLeakTest(zfThread);
     }
 }
 
@@ -433,7 +433,7 @@ ZFObject *ZFThread::objectOnInit(void)
 {
     zfsuper::objectOnInit();
     _ZFP_ZFThread_d = zfpoolNew(_ZFP_ZFThreadPrivate);
-    _ZFP_ZFThread_d->autoReleasePool = zfAllocInternal(ZFAutoReleasePool);
+    _ZFP_ZFThread_d->autoReleasePool = zfAllocWithoutLeakTest(ZFAutoReleasePool);
     return this;
 }
 void ZFThread::objectOnDealloc(void)
@@ -604,23 +604,23 @@ zfidentity ZFThreadExecuteInMainThread(ZF_IN const ZFListener &runnable,
     {
         zfsynchronizedObjectLock(_ZFP_ZFThread_mutex);
     }
-    _ZFP_I_ZFThreadRunnableData *runnableData = zfAllocInternal(_ZFP_I_ZFThreadRunnableData);
+    _ZFP_I_ZFThreadRunnableData *runnableData = zfAllocWithoutLeakTest(_ZFP_I_ZFThreadRunnableData);
     zfidentity taskId = _ZFP_ZFThread_idGenerator.nextMarkUsed();
     runnableData->taskId = taskId;
     runnableData->runnableType = _ZFP_ZFThreadRunnableTypeExecuteInMainThread;
     runnableData->runnableSet(runnable);
-    runnableData->param0 = zfRetainWithLeakTest(param0);
-    runnableData->param1 = zfRetainWithLeakTest(param1);
-    runnableData->userData = zfRetainWithLeakTest(userData);
-    runnableData->semaWait = zfAllocInternal(ZFSemaphore);
+    runnableData->param0 = zfRetain(param0);
+    runnableData->param1 = zfRetain(param1);
+    runnableData->userData = zfRetain(userData);
+    runnableData->semaWait = zfAllocWithoutLeakTest(ZFSemaphore);
     _ZFP_ZFThread_runnableList.add(runnableData);
     if(lockAvailable)
     {
         zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
     }
 
-    zfRetainInternal(runnableData);
-    zfRetainInternal(runnableData->semaWait);
+    zfRetainWithoutLeakTest(runnableData);
+    zfRetainWithoutLeakTest(runnableData->semaWait);
     runnableData->nativeToken = _ZFP_ZFThreadImpl->executeInMainThread(
         taskId,
         ZFCallbackForRawFunction(_ZFP_ZFThreadCallback),
@@ -631,8 +631,8 @@ zfidentity ZFThreadExecuteInMainThread(ZF_IN const ZFListener &runnable,
     {
         runnableData->semaWait->semaphoreWaitLocked();
     }
-    zfReleaseInternal(runnableData->semaWait);
-    zfReleaseInternal(runnableData);
+    zfReleaseWithoutLeakTest(runnableData->semaWait);
+    zfReleaseWithoutLeakTest(runnableData);
 
     return taskId;
 }
@@ -659,17 +659,17 @@ static zfidentity _ZFP_ZFThreadExecuteInNewThread(ZF_IN const ZFListener &runnab
     }
     ownerZFThreadPrivate->startFlag = zftrue;
 
-    _ZFP_I_ZFThreadRunnableData *runnableData = zfAllocInternal(_ZFP_I_ZFThreadRunnableData);
+    _ZFP_I_ZFThreadRunnableData *runnableData = zfAllocWithoutLeakTest(_ZFP_I_ZFThreadRunnableData);
     zfidentity taskId = _ZFP_ZFThread_idGenerator.nextMarkUsed();
     runnableData->taskId = taskId;
     runnableData->runnableType = _ZFP_ZFThreadRunnableTypeExecuteInNewThread;
     runnableData->runnableSet(runnable);
-    runnableData->ownerZFThread = zfRetainWithLeakTest(ownerZFThread);
+    runnableData->ownerZFThread = zfRetain(ownerZFThread);
     runnableData->ownerZFThreadPrivate = ownerZFThreadPrivate;
-    runnableData->param0 = zfRetainWithLeakTest(param0);
-    runnableData->param1 = zfRetainWithLeakTest(param1);
-    runnableData->userData = zfRetainWithLeakTest(userData);
-    runnableData->semaWait = zfAllocInternal(ZFSemaphore);
+    runnableData->param0 = zfRetain(param0);
+    runnableData->param1 = zfRetain(param1);
+    runnableData->userData = zfRetain(userData);
+    runnableData->semaWait = zfAllocWithoutLeakTest(ZFSemaphore);
     if(runnableData->ownerZFThreadPrivate != zfnull)
     {
         runnableData->ownerZFThreadPrivate->semaWaitHolder = runnableData->semaWait;
@@ -697,7 +697,7 @@ zfidentity ZFThreadExecuteInNewThread(ZF_IN const ZFListener &runnable,
         return zfidentityInvalid;
     }
 
-    ZFThread *tmpThread = zfAllocWithLeakTest(ZFThread);
+    ZFThread *tmpThread = zfAlloc(ZFThread);
     tmpThread->threadRunnableSet(runnable);
     zfidentity taskId = _ZFP_ZFThreadExecuteInNewThread(
         runnable,
@@ -706,7 +706,7 @@ zfidentity ZFThreadExecuteInNewThread(ZF_IN const ZFListener &runnable,
         param1,
         tmpThread,
         tmpThread->_ZFP_ZFThread_d);
-    zfReleaseWithLeakTest(tmpThread);
+    zfRelease(tmpThread);
     return taskId;
 }
 
@@ -730,31 +730,31 @@ zfidentity ZFThreadExecuteInMainThreadAfterDelay(ZF_IN zftimet delay,
     {
         zfsynchronizedObjectLock(_ZFP_ZFThread_mutex);
     }
-    _ZFP_I_ZFThreadRunnableData *runnableData = zfAllocInternal(_ZFP_I_ZFThreadRunnableData);
+    _ZFP_I_ZFThreadRunnableData *runnableData = zfAllocWithoutLeakTest(_ZFP_I_ZFThreadRunnableData);
     zfidentity taskId = _ZFP_ZFThread_idGenerator.nextMarkUsed();
     runnableData->taskId = taskId;
     runnableData->runnableType = _ZFP_ZFThreadRunnableTypeExecuteInMainThreadAfterDelay;
     runnableData->runnableSet(runnable);
-    runnableData->param0 = zfRetainWithLeakTest(param0);
-    runnableData->param1 = zfRetainWithLeakTest(param1);
-    runnableData->userData = zfRetainWithLeakTest(userData);
-    runnableData->semaWait = zfAllocInternal(ZFSemaphore);
+    runnableData->param0 = zfRetain(param0);
+    runnableData->param1 = zfRetain(param1);
+    runnableData->userData = zfRetain(userData);
+    runnableData->semaWait = zfAllocWithoutLeakTest(ZFSemaphore);
     _ZFP_ZFThread_runnableList.add(runnableData);
     if(lockAvailable)
     {
         zfsynchronizedObjectUnlock(_ZFP_ZFThread_mutex);
     }
 
-    zfRetainInternal(runnableData);
-    zfRetainInternal(runnableData->semaWait);
+    zfRetainWithoutLeakTest(runnableData);
+    zfRetainWithoutLeakTest(runnableData->semaWait);
     runnableData->nativeToken = _ZFP_ZFThreadImpl->executeInMainThreadAfterDelay(
         taskId,
         delay,
         ZFCallbackForRawFunction(_ZFP_ZFThreadCallback),
         runnableData,
         zfnull);
-    zfReleaseInternal(runnableData->semaWait);
-    zfReleaseInternal(runnableData);
+    zfReleaseWithoutLeakTest(runnableData->semaWait);
+    zfReleaseWithoutLeakTest(runnableData);
     return taskId;
 }
 

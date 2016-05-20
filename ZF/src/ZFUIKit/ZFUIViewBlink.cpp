@@ -67,7 +67,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
         return ;
     }
     {
-        zfblockedAllocInternal(_ZFP_ZFUIViewBlinkView, t);
+        zfblockedAllocWithoutLeakTest(_ZFP_ZFUIViewBlinkView, t);
         view->internalForegroundViewAdd(t);
         view->tagSetMarkCached(_ZFP_ZFUIViewBlink_tag_blinkView, t);
         t->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
@@ -79,7 +79,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
 
     if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView) && !_ZFP_ZFUIViewBlink_DEBUG_noAni)
     {
-        zfblockedAllocInternal(ZFAnimationNativeView, ani);
+        zfblockedAllocWithoutLeakTest(ZFAnimationNativeView, ani);
         view->tagSetMarkCached(_ZFP_ZFUIViewBlink_tag_ani, ani);
         ani->aniAlphaToSet(0);
         #if _ZFP_ZFUIViewBlink_DEBUG_duration

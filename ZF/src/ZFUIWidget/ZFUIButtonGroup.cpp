@@ -263,11 +263,11 @@ void ZFUIButtonGroup::buttonRemoveAtIndex(ZF_IN zfindex buttonIndex)
         return ;
     }
     ZFUIButton *button = this->buttonAtIndex(buttonIndex);
-    zfRetainInternal(button);
+    zfRetainWithoutLeakTest(button);
     _ZFP_ZFUIButtonGroup_cleanup(this, button);
     this->_ZFP_ZFUIButtonGroup_buttons()->remove(buttonIndex);
     this->buttonOnRemove(button, buttonIndex);
-    zfReleaseInternal(button);
+    zfReleaseWithoutLeakTest(button);
 }
 void ZFUIButtonGroup::buttonRemoveAll(void)
 {

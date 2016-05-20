@@ -33,7 +33,7 @@ zfautoObject ZFUIImageScale(ZF_IN ZFUIImage *image,
     {
         return zfautoObjectNull;
     }
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     ret.to<ZFUIImage *>()->nativeImageSet(nativeImage);
     ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(nativeImage);
     return ret;
@@ -47,7 +47,7 @@ zfautoObject ZFUIImageLoadFromNativeImage(ZF_IN void *nativeImage)
     {
         return zfautoObjectNull;
     }
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     ret.to<ZFUIImage *>()->nativeImageSet(nativeImage);
     return ret;
 }
@@ -78,7 +78,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ZFUIImageSerializeType_input)
 
 zfautoObject ZFUIImageLoadFromInput(ZF_IN const ZFInputCallback &input)
 {
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     ZFUIImage *image = ret.to<ZFUIImage *>();
     if(!ZFUIImageEncodeFromBinary(image, input))
     {
@@ -176,7 +176,7 @@ zfautoObject ZFUIImageLoadFromColor(ZF_IN const ZFUIColor &color,
         return zfautoObjectNull;
     }
 
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     ZFUIImage *image = ret.to<ZFUIImage *>();
     image->nativeImageSet(nativeImage);
     ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(nativeImage);

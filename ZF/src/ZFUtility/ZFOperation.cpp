@@ -39,7 +39,7 @@ public:
     zfoverride
     virtual void objectOnDealloc(void)
     {
-        zfReleaseWithLeakTest(this->operationTaskData);
+        zfRelease(this->operationTaskData);
         zfsuper::objectOnDealloc();
     }
 };
@@ -57,14 +57,14 @@ public:
     {
         zfsuper::objectOnInit();
         this->operationParam = zfnull;
-        this->taskObserverDatas = zfAllocInternal(ZFArrayEditable);
+        this->taskObserverDatas = zfAllocWithoutLeakTest(ZFArrayEditable);
         return this;
     }
     zfoverride
     virtual void objectOnDealloc(void)
     {
-        zfReleaseWithLeakTest(operationParam);
-        zfReleaseInternal(this->taskObserverDatas);
+        zfRelease(operationParam);
+        zfReleaseWithoutLeakTest(this->taskObserverDatas);
         zfsuper::objectOnDealloc();
     }
 };
@@ -92,7 +92,7 @@ public:
     {
         if(this->dummyParam)
         {
-            this->dummyParam = zfRetainInternal(this->ownerOperation->createParam().to<ZFOperationParam *>());
+            this->dummyParam = zfRetainWithoutLeakTest(this->ownerOperation->createParam().to<ZFOperationParam *>());
         }
         return this->dummyParam;
     }
@@ -416,17 +416,17 @@ public:
     , startFirstFlag(zffalse)
     , dummyParam(zfnull)
     {
-        this->tasks = zfAllocInternal(ZFArrayEditable);
-        this->tasksQueued = zfAllocInternal(ZFArrayEditable);
-        this->caches = zfAllocInternal(ZFArrayEditable);
+        this->tasks = zfAllocWithoutLeakTest(ZFArrayEditable);
+        this->tasksQueued = zfAllocWithoutLeakTest(ZFArrayEditable);
+        this->caches = zfAllocWithoutLeakTest(ZFArrayEditable);
     }
     ~_ZFP_ZFOperationPrivate(void)
     {
-        zfReleaseInternal(this->tasks);
-        zfReleaseInternal(this->tasksQueued);
-        zfReleaseInternal(this->caches);
+        zfReleaseWithoutLeakTest(this->tasks);
+        zfReleaseWithoutLeakTest(this->tasksQueued);
+        zfReleaseWithoutLeakTest(this->caches);
 
-        zfReleaseInternal(this->dummyParam);
+        zfReleaseWithoutLeakTest(this->dummyParam);
     }
 };
 
@@ -477,7 +477,7 @@ void ZFOperation::cacheTrimBySize(ZF_IN zfindex size)
     {
         return ;
     }
-    zfblockedAllocInternal(ZFArrayEditable, tmp);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, tmp);
     for(zfindex i = size; i < d->caches->count(); ++i)
     {
         tmp->add(d->caches->get(i));
@@ -520,11 +520,11 @@ void ZFOperation::objectOnDeallocPrepare(void)
 // type create
 zfautoObject ZFOperation::createParam(void)
 {
-    return this->classForOperationParam()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    return this->classForOperationParam()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
 }
 zfautoObject ZFOperation::createResult(void)
 {
-    return this->classForOperationResult()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    return this->classForOperationResult()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
 }
 zfautoObject ZFOperation::createResult(ZF_IN ZFResultTypeEnum resultType)
 {
@@ -535,11 +535,11 @@ zfautoObject ZFOperation::createResult(ZF_IN ZFResultTypeEnum resultType)
 }
 zfautoObject ZFOperation::createObserver(void)
 {
-    return this->classForOperationObserver()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    return this->classForOperationObserver()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
 }
 zfautoObject ZFOperation::createCache(void)
 {
-    return this->classForOperationCache()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    return this->classForOperationCache()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
 }
 zfautoObject ZFOperation::createCache(ZF_IN ZFOperationParam *operationParam,
                                       ZF_IN ZFOperationResult *operationResult,
@@ -556,11 +556,11 @@ zfautoObject ZFOperation::createCache(ZF_IN ZFOperationParam *operationParam,
 }
 zfautoObject ZFOperation::createProgress(void)
 {
-    return this->classForOperationProgress()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    return this->classForOperationProgress()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
 }
 zfautoObject ZFOperation::createTaskData(void)
 {
-    return this->classForOperationTaskData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    return this->classForOperationTaskData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
 }
 zfautoObject ZFOperation::createTaskData(ZF_IN ZFOperationParam *operationParam,
                                          ZF_IN_OPT ZFOperationResult *operationResult /* = zfnull */,
@@ -650,7 +650,7 @@ const ZFClass *ZFOperation::classForOperationTaskData(void)
 zfidentity ZFOperation::taskStart(ZF_IN_OPT ZFOperationParam *operationParam /* = zfnull */,
                                   ZF_IN_OPT ZFOperationObserver *operationObserver /* = zfnull */)
 {
-    zfblockedAllocInternal(ZFOperationStartParam, startParam);
+    zfblockedAllocWithoutLeakTest(ZFOperationStartParam, startParam);
     startParam->operationTaskDataSet(this->createTaskData(operationParam, zfnull, operationObserver).to<ZFOperationTaskData *>());
     return this->taskStart(startParam);
 }
@@ -712,8 +712,8 @@ zfidentity ZFOperation::taskStart(ZF_IN ZFOperationStartParam *startParam)
         this->cacheSaveRequest();
 
         ZFOperationCache *operationCache = d->caches->get<ZFOperationCache *>(cacheIndex);
-        zfRetainWithLeakTest(operationCache);
-        zfblockedReleaseWithLeakTest(operationCache);
+        zfRetain(operationCache);
+        zfblockedRelease(operationCache);
         d->caches->remove(cacheIndex);
 
         zfbool cacheValid = this->cacheIsValid(operationCache);
@@ -734,7 +734,7 @@ zfidentity ZFOperation::taskStart(ZF_IN ZFOperationStartParam *startParam)
                 operationTaskData->operationCacheSet(operationCache);
                 this->cacheOnMatch(operationCache);
                 this->operationCacheOnMatch(operationTaskData);
-                zfReleaseWithLeakTest(operationTaskData);
+                zfRelease(operationTaskData);
             }
 
             ZFOperationCacheMatchActionEnum cacheMatchAction = startParam->cacheMatchAction();
@@ -828,7 +828,7 @@ zfidentity ZFOperation::taskStart(ZF_IN ZFOperationStartParam *startParam)
         {
             if(taskDuplicateAction == ZFOperationTaskDuplicateAction::e_Merge)
             {
-                _ZFP_ZFOperationPrivateTaskObserverData *taskObserverData = zfAllocInternal(_ZFP_ZFOperationPrivateTaskObserverData);
+                _ZFP_ZFOperationPrivateTaskObserverData *taskObserverData = zfAllocWithoutLeakTest(_ZFP_ZFOperationPrivateTaskObserverData);
                 taskObserverData->ownerTaskData = dupTaskData;
                 taskObserverData->operationTaskData = operationTaskData;
                 taskObserverData->cacheExpireTime = startParam->cacheExpireTime();
@@ -847,10 +847,10 @@ zfidentity ZFOperation::taskStart(ZF_IN ZFOperationStartParam *startParam)
         }
     }
 
-    zfblockedAllocInternal(_ZFP_ZFOperationPrivateTaskData, taskData);
-    ZFPropertyChangeWithLeakTest(taskData->operationParam, operationParam);
+    zfblockedAllocWithoutLeakTest(_ZFP_ZFOperationPrivateTaskData, taskData);
+    ZFPropertyChange(taskData->operationParam, operationParam);
 
-    zfblockedAllocInternal(_ZFP_ZFOperationPrivateTaskObserverData, taskObserverData);
+    zfblockedAllocWithoutLeakTest(_ZFP_ZFOperationPrivateTaskObserverData, taskObserverData);
     taskData->taskObserverDatas->add(taskObserverData);
     taskObserverData->ownerTaskData = taskData;
     taskObserverData->operationTaskData = operationTaskData;
@@ -878,7 +878,7 @@ void ZFOperation::taskStop(ZF_IN zfidentity operationId)
     if(zfidentityIsValid(operationId))
     {
         zfsynchronizedObjectLock(this);
-        zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+        zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
         d->prepareStopForOperationId(d->tasks, toNotifyTaskObserverDatas, operationId);
         if(toNotifyTaskObserverDatas->isEmpty())
         {
@@ -895,7 +895,7 @@ zfautoObject ZFOperation::taskStopAndGetResult(ZF_IN zfidentity operationId)
         zfsynchronizedObject(this);
         zfautoObject operationResultTmp = this->createResult(ZFResultType::e_Cancel);
         ZFOperationResult *operationResult = operationResultTmp.to<ZFOperationResult *>();
-        zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+        zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
         d->prepareStopForOperationId(d->tasks, toNotifyTaskObserverDatas, operationId);
         if(toNotifyTaskObserverDatas->isEmpty())
         {
@@ -906,7 +906,7 @@ zfautoObject ZFOperation::taskStopAndGetResult(ZF_IN zfidentity operationId)
         if(toNotifyTaskObserverDatas->count() == 1)
         {
             operationResult = toNotifyTaskObserverDatas->getFirst<_ZFP_ZFOperationPrivateTaskObserverData *>()->operationTaskData->operationResult();
-            return zfautoObjectCreateWithLeakTest(operationResult);
+            return zfautoObjectCreate(operationResult);
         }
     }
     return zfautoObjectNull;
@@ -922,7 +922,7 @@ void ZFOperation::taskStop(ZF_IN_OPT ZFOperationParam *operationParam /* = zfnul
     {
         return ;
     }
-    zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
     d->prepareStopForOperationParam(d->tasks, toNotifyTaskObserverDatas, operationParam, zffalse);
     d->prepareStopForOperationParam(d->tasksQueued, toNotifyTaskObserverDatas, operationParam, zffalse);
     d->doStop(toNotifyTaskObserverDatas, this->createResult(ZFResultType::e_Cancel).to<ZFOperationResult *>());
@@ -932,7 +932,7 @@ void ZFOperation::taskStopForCategory(ZF_IN ZFObject *category)
     if(category != zfnull)
     {
         zfsynchronizedObjectLock(this);
-        zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+        zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
         d->prepareStopForCategory(d->tasks, toNotifyTaskObserverDatas, category);
         d->prepareStopForCategory(d->tasksQueued, toNotifyTaskObserverDatas, category);
         d->doStop(toNotifyTaskObserverDatas, this->createResult(ZFResultType::e_Cancel).to<ZFOperationResult *>());
@@ -942,7 +942,7 @@ void ZFOperation::taskStopForCategory(ZF_IN ZFObject *category)
 void ZFOperation::taskStopAll(void)
 {
     zfsynchronizedObjectLock(this);
-    zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
     d->prepareStopAll(d->tasks, toNotifyTaskObserverDatas);
     d->prepareStopAll(d->tasksQueued, toNotifyTaskObserverDatas);
     d->doStop(toNotifyTaskObserverDatas, this->createResult(ZFResultType::e_Cancel).to<ZFOperationResult *>());
@@ -1070,7 +1070,7 @@ void ZFOperation::taskNotifyFinish(ZF_IN ZFOperationParam *operationParam,
     }
     zfCoreAssertWithMessage(this->paramIsValid(operationParam) && operationResult != zfnull, zfTextA("invalid param or result"));
 
-    zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
     d->prepareStopForOperationParam(d->tasks, toNotifyTaskObserverDatas, operationParam);
 
     if(toNotifyTaskObserverDatas->isEmpty())
@@ -1096,7 +1096,7 @@ void ZFOperation::taskNotifyFinish(ZF_IN zfidentity operationId,
 
     zfsynchronizedObject(this);
 
-    zfblockedAllocInternal(ZFArrayEditable, toNotifyTaskObserverDatas);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, toNotifyTaskObserverDatas);
     d->prepareStopForOperationId(d->tasks, toNotifyTaskObserverDatas, operationId);
 
     if(toNotifyTaskObserverDatas->isEmpty())
@@ -1296,10 +1296,10 @@ void ZFOperation::cacheAdd(ZF_IN ZFOperationCache *operationCache)
     }
     while(d->caches->count() > this->cacheMaxSize())
     {
-        ZFOperationCache *cacheTmp = zfRetainWithLeakTest(d->caches->get<ZFOperationCache *>(0));
+        ZFOperationCache *cacheTmp = zfRetain(d->caches->get<ZFOperationCache *>(0));
         d->caches->remove(0);
         this->cacheOnRemove(cacheTmp);
-        zfReleaseWithLeakTest(cacheTmp);
+        zfRelease(cacheTmp);
     }
 }
 void ZFOperation::cacheRemove(ZF_IN ZFOperationParam *operationParam)
@@ -1318,23 +1318,23 @@ void ZFOperation::cacheRemove(ZF_IN ZFOperationParam *operationParam)
     {
         if(d->caches->get<ZFOperationCache *>(i)->operationParam()->paramIsEqual(operationParam))
         {
-            ZFOperationCache *cache = zfRetainWithLeakTest(d->caches->get<ZFOperationCache *>(i));
+            ZFOperationCache *cache = zfRetain(d->caches->get<ZFOperationCache *>(i));
             d->caches->remove(i);
             this->cacheOnRemove(cache);
-            zfReleaseWithLeakTest(cache);
+            zfRelease(cache);
             return ;
         }
     }
 }
 void ZFOperation::cacheRemoveAll(void)
 {
-    ZFArrayEditable *tmpArray = zfAllocInternal(ZFArrayEditable, d->caches);
+    ZFArrayEditable *tmpArray = zfAllocWithoutLeakTest(ZFArrayEditable, d->caches);
     d->caches->removeAll();
     for(zfindex i = 0; i < tmpArray->count(); ++i)
     {
         this->cacheOnRemove(tmpArray->get<ZFOperationCache *>(i));
     }
-    zfReleaseInternal(tmpArray);
+    zfReleaseWithoutLeakTest(tmpArray);
 }
 zfbool ZFOperation::cacheIsValid(ZF_IN ZFOperationCache *operationCache)
 {
@@ -1367,7 +1367,7 @@ void ZFOperation::cacheRestore(void)
         d->cacheNeedRestore = zffalse;
 
         this->cacheRemoveAll();
-        zfblockedAllocInternal(ZFArrayEditable, tmpArray);
+        zfblockedAllocWithoutLeakTest(ZFArrayEditable, tmpArray);
         this->cacheOnRestore(tmpArray);
         for(zfindex i = 0; i < tmpArray->count(); ++i)
         {

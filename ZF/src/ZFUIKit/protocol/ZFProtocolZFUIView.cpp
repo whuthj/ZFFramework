@@ -17,15 +17,15 @@ ZFPROTOCOL_INTERFACE_REGISTER(ZFUIView)
 zftimet _ZFP_ZFProtocolZFUIView_scrollViewScrollAnimationStart(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIView) *impl,
                                                                ZF_IN ZFUIScrollView *scrollView)
 {
-    zfblockedAllocInternal(ZFTimer, scrollTimer);
+    zfblockedAllocWithoutLeakTest(ZFTimer, scrollTimer);
     scrollTimer->timerIntervalSet(30);
     ZFLISTENER_LOCAL(scrollTimerEvent, {
         ZFPROTOCOL_INTERFACE_CLASS(ZFUIView) *impl = (ZFPROTOCOL_INTERFACE_CLASS(ZFUIView) *)(userData->tagGet<ZFTypeHolder *>(zfText("_ZFP_ZFProtocolZFUIView_impl"))->holdedData);
         ZFUIScrollView *scrollView = userData->tagGet<ZFObjectHolder *>(zfText("_ZFP_ZFProtocolZFUIView_scrollView"))->holdedObj;
         impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
     })
-    zfblockedAllocInternal(ZFObject, userData);
-    userData->tagSet(zfText("_ZFP_ZFProtocolZFUIView_impl"), zflineAllocInternal(ZFTypeHolder, impl, ZFTypeHolder::DeletePointerRef));
+    zfblockedAllocWithoutLeakTest(ZFObject, userData);
+    userData->tagSet(zfText("_ZFP_ZFProtocolZFUIView_impl"), zflineAllocWithoutLeakTest(ZFTypeHolder, impl, ZFTypeHolder::DeletePointerRef));
     userData->tagSet(zfText("_ZFP_ZFProtocolZFUIView_scrollView"), scrollView->objectHolder());
     scrollTimer->observerAdd(ZFTimer::EventTimerOnActivate(), scrollTimerEvent, userData);
     scrollView->tagSet(zfText("_ZFP_ZFProtocolZFUIView_scrollTimer"), scrollTimer);
@@ -37,11 +37,11 @@ void _ZFP_ZFProtocolZFUIView_scrollViewScrollAnimationStop(ZF_IN ZFPROTOCOL_INTE
                                                            ZF_IN ZFUIScrollView *scrollView)
 {
     ZFTimer *scrollTimer = scrollView->tagGet<ZFTimer *>(zfText("_ZFP_ZFProtocolZFUIView_scrollTimer"));
-    zfRetainInternal(scrollTimer);
+    zfRetainWithoutLeakTest(scrollTimer);
     scrollView->tagRemove(zfText("_ZFP_ZFProtocolZFUIView_scrollTimer"));
     scrollTimer->timerStop();
     scrollTimer->objectCachedSet(zffalse);
-    zfReleaseInternal(scrollTimer);
+    zfReleaseWithoutLeakTest(scrollTimer);
 }
 
 // ============================================================
@@ -51,7 +51,7 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMili
 {
     if(owner->_trackDelayDefaultImplTimer == zfnull)
     {
-        owner->_trackDelayDefaultImplTimer = zfAllocInternal(ZFTimer);
+        owner->_trackDelayDefaultImplTimer = zfAllocWithoutLeakTest(ZFTimer);
         owner->_trackDelayDefaultImplTimer->timerActivateInMainThreadSet(zftrue);
         owner->_trackDelayDefaultImplTimer->timerIntervalSet(timeoutMiliSeconds);
         ZFLISTENER_LOCAL(timerActivated, {
@@ -61,7 +61,7 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMili
         owner->_trackDelayDefaultImplTimer->observerAdd(
             ZFTimer::EventTimerOnActivate(),
             timerActivated,
-            zflineAllocInternal(ZFTypeHolder, owner, ZFTypeHolder::DeletePointerRef));
+            zflineAllocWithoutLeakTest(ZFTypeHolder, owner, ZFTypeHolder::DeletePointerRef));
     }
     owner->_trackDelayDefaultImplTimer->timerIntervalSet(timeoutMiliSeconds);
     owner->_trackDelayDefaultImplTimer->timerStart();
@@ -236,7 +236,7 @@ ZFUIScrollViewImplHelper::~ZFUIScrollViewImplHelper(void)
     if(_trackDelayDefaultImplTimer != zfnull)
     {
         _trackDelayDefaultImplTimer->timerStop();
-        zfReleaseInternal(_trackDelayDefaultImplTimer);
+        zfReleaseWithoutLeakTest(_trackDelayDefaultImplTimer);
     }
     zfpoolDelete(d);
 }

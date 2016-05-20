@@ -22,34 +22,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // global settings
 /**
- * @brief add this to your precomipler to enable or disable builtin leak test, disable by default
+ * @brief whether ZFLeakTest enabled, true by default
  */
-#ifndef ZF_LEAKTEST_ENABLE
-    #define ZF_LEAKTEST_ENABLE 0
-#else
-    #undef ZF_LEAKTEST_ENABLE
-    #define ZF_LEAKTEST_ENABLE 1
-#endif
-
-/**
- * @brief see #ZF_LEAKTEST_ENABLE, disabled by default, valid only if #ZF_LEAKTEST_ENABLE
- *
- * used only for debug ZFFramework itself
- */
-#ifndef ZF_LEAKTEST_ENABLE_INTERNAL
-    #define ZF_LEAKTEST_ENABLE_INTERNAL 0
-#else
-    #undef ZF_LEAKTEST_ENABLE_INTERNAL
-    #define ZF_LEAKTEST_ENABLE_INTERNAL ZF_LEAKTEST_ENABLE
-#endif
-
-/**
- * @brief runtime configurable setting for ZFLeakTest,
- *   true by default, valid only if #ZF_LEAKTEST_ENABLE
- *
- * should be set before #ZFLeakTestBegin, and should be used only for debug use only
- */
-extern ZF_ENV_EXPORT zfbool ZFLeakTestEnable;
+extern ZF_ENV_EXPORT zfbool ZFLeakTestEnable(void);
+/** @brief see #ZFLeakTestEnable */
+extern ZF_ENV_EXPORT void ZFLeakTestEnableSet(ZF_IN zfbool enable);
 
 zfclassFwd ZFClass;
 zfclassFwd ZFObject;
@@ -107,13 +84,9 @@ extern ZF_ENV_EXPORT void _ZFP_ZFLeakTestBegin(ZF_IN const zfcharA *callerFile,
  *   since object may retain or release much frequently,
  *   the actions would be accumulated and may consume much memory to store
  */
-#if ZF_LEAKTEST_ENABLE
-    #define ZFLeakTestBegin(...) _ZFP_ZFLeakTestBegin( \
-        ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, \
-        ##__VA_ARGS__)
-#else
-    #define ZFLeakTestBegin(...) ((void)0)
-#endif
+#define ZFLeakTestBegin(...) _ZFP_ZFLeakTestBegin( \
+    ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, \
+    ##__VA_ARGS__)
 
 extern ZF_ENV_EXPORT void _ZFP_ZFLeakTestEnd(void);
 /**
@@ -121,11 +94,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFLeakTestEnd(void);
  *
  * you may want to use #ZFLeakTestPrintStatus before end
  */
-#if ZF_LEAKTEST_ENABLE
-    #define ZFLeakTestEnd() _ZFP_ZFLeakTestEnd()
-#else
-    #define ZFLeakTestEnd() ((void)0)
-#endif
+#define ZFLeakTestEnd() _ZFP_ZFLeakTestEnd()
 
 // ============================================================
 /**
@@ -210,13 +179,9 @@ extern ZF_ENV_EXPORT void _ZFP_ZFLeakTestPrintStatus(ZF_IN const zfcharA *caller
  * may take 0 or 1 param, which is ZFLeakTestObjectFilter,
  * for how to use filter, see #ZFLeakTestObjectFilter
  */
-#if ZF_LEAKTEST_ENABLE
-    #define ZFLeakTestPrintStatus(...) _ZFP_ZFLeakTestPrintStatus( \
-        ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, \
-        ##__VA_ARGS__)
-#else
-    #define ZFLeakTestPrintStatus(...) ((void)0)
-#endif
+#define ZFLeakTestPrintStatus(...) _ZFP_ZFLeakTestPrintStatus( \
+    ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, \
+    ##__VA_ARGS__)
 
 // ============================================================
 extern ZF_ENV_EXPORT void _ZFP_ZFLeakTestLogAlloc(ZF_IN ZFObject *obj,
@@ -489,126 +454,37 @@ inline void _ZFP_ZFLeakTestRelease(ZF_IN const ZFAnyT<T_ZFObject *> &any,
 
 // ============================================================
 /**
- * @brief ensured to be logged by ZFLeakTest
- *
- * usually used internally
- * (so that the zfAlloc macro doesn't affect when building a static library),
- * try not to abuse this in your application
+ * @brief alloc an object, see #ZFObject
  */
-#define zfAllocWithLeakTest(T_ZFObject, ...) \
-    (ZFCoreMutexLockerHolder(), zflockfree_zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__))
-/** @brief no lock version of #zfAllocWithLeakTest, use with causion */
-#define zflockfree_zfAllocWithLeakTest(T_ZFObject, ...) \
+#define zfAlloc(T_ZFObject, ...) \
+    (ZFCoreMutexLockerHolder(), zflockfree_zfAlloc(T_ZFObject, ##__VA_ARGS__))
+/** @brief no lock version of #zfAlloc, use with causion */
+#define zflockfree_zfAlloc(T_ZFObject, ...) \
     _ZFP_ZFLeakTestAlloc( \
         zflockfree_zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__), \
         ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
 
 /**
- * @brief ensured to be logged by ZFLeakTest
- *
- * usually used internally
- * (so that the zfAlloc macro doesn't affect when building a static library),
- * try not to abuse this in your application
+ * @brief retain an object, see #ZFObject
  */
-#define zfRetainWithLeakTest(obj) \
-    (ZFCoreMutexLockerHolder(), zflockfree_zfRetainWithLeakTest(obj))
-/** @brief no lock version of #zfRetainWithLeakTest, use with causion */
-#define zflockfree_zfRetainWithLeakTest(obj) \
+#define zfRetain(obj) \
+    (ZFCoreMutexLockerHolder(), zflockfree_zfRetain(obj))
+/** @brief no lock version of #zfRetain, use with causion */
+#define zflockfree_zfRetain(obj) \
     (_ZFP_ZFLeakTestEnableCache \
         ? _ZFP_ZFLeakTestRetain(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE) \
         : zflockfree_zfRetainWithoutLeakTest(obj))
 
 /**
- * @brief ensured to be logged by ZFLeakTest
- *
- * usually used internally
- * (so that the zfAlloc macro doesn't affect when building a static library),
- * try not to abuse this in your application
+ * @brief release an object, see #ZFObject
  */
-#define zfReleaseWithLeakTest(obj) \
-    (ZFCoreMutexLockerHolder(), zflockfree_zfReleaseWithLeakTest(obj))
-/** @brief no lock version of #zfRetainWithLeakTest, use with causion */
-#define zflockfree_zfReleaseWithLeakTest(obj) \
+#define zfRelease(obj) \
+    (ZFCoreMutexLockerHolder(), zflockfree_zfRelease(obj))
+/** @brief no lock version of #zfRetain, use with causion */
+#define zflockfree_zfRelease(obj) \
     (_ZFP_ZFLeakTestEnableCache \
         ? _ZFP_ZFLeakTestRelease(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE) \
         : zflockfree_zfReleaseWithoutLeakTest(obj))
-
-// ============================================================
-/**
- * @def zfAlloc
- * @brief simlar to "new T_Zobject(...)"
- *
- * alloc a new object, the #ZFObject::objectOnInit would be called\n
- * auto log leak test info if #ZF_LEAKTEST_ENABLE is zftrue
- * @see zfAllocWithLeakTest, zfAllocWithoutLeakTest, zfRetain, zfRelease
- * @def zfRetain
- * @brief retain a ZFObject
- *
- * increase objectRetainCount by 1 and return the obj itself,
- * it's safe to pass a zfnull as param\n
- * auto log leak test info if #ZF_LEAKTEST_ENABLE is zftrue
- * @see ZFObject::objectRetainCount,
- *   zfAlloc, zfRetainWithLeakTest, zfRetainWithoutLeakTest, zfRelease, ZFPropertyChange
- * @def zfRelease
- * @brief release a ZFObject
- *
- * decrease objectRetainCount by 1, if reach 0, delete obj automatically,
- * it's safe to pass a zfnull as param\n
- * auto log leak test info if #ZF_LEAKTEST_ENABLE is zftrue
- * @see ZFObject::objectRetainCount,
- *   zfAlloc, zfRetain, zfReleaseWithLeakTest, zfReleaseWithoutLeakTest, ZFPropertyChange
- */
-#if ZF_LEAKTEST_ENABLE
-    #define zfAlloc(T_ZFObject, ...) zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__)
-    #define zfRetain(obj) zfRetainWithLeakTest(obj)
-    #define zfRelease(obj) zfReleaseWithLeakTest(obj)
-#else // #if ZF_LEAKTEST_ENABLE
-    #define zfAlloc(T_ZFObject, ...) zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)
-    #define zfRetain(obj) zfRetainWithoutLeakTest(obj)
-    #define zfRelease(obj) zfReleaseWithoutLeakTest(obj)
-#endif // #if ZF_LEAKTEST_ENABLE #else
-
-// ============================================================
-/**
- * @def zfAllocInternal
- * @brief same as zfAllocWithLeakTest if ZFLeakTestEnable,
- *   or zfAllocWithoutLeakTest otherwise
- * @note no lock for internal memory management, use #zflocked_zfAllocInternal if necessary
- * @def zfRetainInternal
- * @brief same as zfRetainWithLeakTest if ZFLeakTestEnable,
- *   or zfRetainWithoutLeakTest otherwise
- * @note no lock for internal memory management, use #zflocked_zfRetainInternal if necessary
- * @def zfReleaseInternal
- * @brief same as zfReleaseWithLeakTest if ZFLeakTestEnable,
- *   or zfReleaseWithoutLeakTest otherwise
- * @note no lock for internal memory management, use #zflocked_zfReleaseInternal if necessary
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zfAllocInternal(T_ZFObject, ...) zflockfree_zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__)
-    #define zfRetainInternal(obj) zflockfree_zfRetainWithLeakTest(obj)
-    #define zfReleaseInternal(obj) zflockfree_zfReleaseWithLeakTest(obj)
-#else
-    #define zfAllocInternal(T_ZFObject, ...) zflockfree_zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)
-    #define zfRetainInternal(obj) zflockfree_zfRetainWithoutLeakTest(obj)
-    #define zfReleaseInternal(obj) zflockfree_zfReleaseWithoutLeakTest(obj)
-#endif
-/**
- * @def zflocked_zfAllocInternal
- * @brief no lock version of #zfAllocInternal, use with causion
- * @def zflocked_zfRetainInternal
- * @brief no lock version of #zfRetainInternal, use with causion
- * @def zflocked_zfReleaseInternal
- * @brief no lock version of #zfReleaseInternal, use with causion
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_zfAllocInternal(T_ZFObject, ...) zfAllocWithLeakTest(T_ZFObject, ##__VA_ARGS__)
-    #define zflocked_zfRetainInternal(obj) zfRetainWithLeakTest(obj)
-    #define zflocked_zfReleaseInternal(obj) zfReleaseWithLeakTest(obj)
-#else
-    #define zflocked_zfAllocInternal(T_ZFObject, ...) zfAllocWithoutLeakTest(T_ZFObject, ##__VA_ARGS__)
-    #define zflocked_zfRetainInternal(obj) zfRetainWithoutLeakTest(obj)
-    #define zflocked_zfReleaseInternal(obj) zfReleaseWithoutLeakTest(obj)
-#endif
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLeakTestDef_h_

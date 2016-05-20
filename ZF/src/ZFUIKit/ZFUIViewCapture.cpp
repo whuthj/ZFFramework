@@ -18,7 +18,7 @@ zfautoObject ZFUIViewCapture(ZF_IN ZFUIView *view)
     {
         return zfautoObjectNull;
     }
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(!ZFPROTOCOL_ACCESS(ZFUIViewCapture)->viewCapture(view, ret.to<ZFUIImage *>()))
     {
         return zfautoObjectNull;

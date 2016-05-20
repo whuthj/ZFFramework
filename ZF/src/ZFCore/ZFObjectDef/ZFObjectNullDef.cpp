@@ -48,25 +48,25 @@ private:
     ZFMETHOD_MEMBER_DECLARE_DETAIL_0(private, ZFMethodIsStatic, ZFMethodNotVirtual, ZFMethodNotConst,
                                      zfautoObject, ZFSerializableKeyword_serializableNewInstanceSig, ZFMethodNoId)
     {
-        return zfautoObjectCreateWithLeakTest(zfnullObject);
+        return zfautoObjectCreate(zfnullObject);
     }
 
 public:
     zfoverride
     virtual zfautoObject copy(void)
     {
-        return zfautoObjectCreateWithLeakTest(zfnullObject);
+        return zfautoObjectCreate(zfnullObject);
     }
 };
 ZFOBJECT_REGISTER(ZFNull)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkHigh)
 {
-    this->nullObject = zfAllocWithLeakTest(ZFNull);
+    this->nullObject = zfAlloc(ZFNull);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder)
 {
-    zfReleaseWithLeakTest(this->nullObject);
+    zfRelease(this->nullObject);
     this->nullObject = zfnull;
 }
 ZFObject *nullObject;

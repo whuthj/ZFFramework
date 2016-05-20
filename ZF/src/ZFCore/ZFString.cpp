@@ -424,11 +424,11 @@ void ZFString::stringValueSet(ZF_IN ZFString *another)
 static ZFString *_ZFP_ZFStringEmptyInstance = zfnull;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStringEmptyHolder, ZFLevelZFFrameworkNormal)
 {
-    _ZFP_ZFStringEmptyInstance = zfAllocWithLeakTest(ZFString);
+    _ZFP_ZFStringEmptyInstance = zfAlloc(ZFString);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFStringEmptyHolder)
 {
-    zfReleaseWithLeakTest(_ZFP_ZFStringEmptyInstance);
+    zfRelease(_ZFP_ZFStringEmptyInstance);
     _ZFP_ZFStringEmptyInstance = zfnull;
 }
 ZF_GLOBAL_INITIALIZER_END(ZFStringEmptyHolder)

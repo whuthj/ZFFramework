@@ -538,7 +538,7 @@ extern ZF_ENV_EXPORT const zfchar *zfflagsFromString(ZF_OUT zfflags &ret,
     { \
         if(zfsncmp(src, ZFEnumValueNameInvalid, srcLen) == 0) \
         { \
-            ret = zfautoObjectCreateWithLeakTest(zflineAllocWithLeakTest(EnumName, ZFEnumValueInvalid)); \
+            ret = zfautoObjectCreate(zflineAlloc(EnumName, ZFEnumValueInvalid)); \
             return zfnull; \
         } \
         ZFEnumValue tmpValue = EnumName::EnumValueForName( \
@@ -549,7 +549,7 @@ extern ZF_ENV_EXPORT const zfchar *zfflagsFromString(ZF_OUT zfflags &ret,
         } \
         else \
         { \
-            ret = zfautoObjectCreateWithLeakTest(zflineAllocWithLeakTest(EnumName, tmpValue)); \
+            ret = zfautoObjectCreate(zflineAlloc(EnumName, tmpValue)); \
             return zfnull; \
         } \
     } \
@@ -660,7 +660,7 @@ extern ZF_ENV_EXPORT const zfchar *zfflagsFromString(ZF_OUT zfflags &ret,
                                  ZF_OUT_OPT zfflags *notConverted /* = zfnull */, \
                                  ZF_IN_OPT zfchar separatorToken /* = '|' */) \
     { \
-        zfflagsToString(ret, zflineAllocInternal(EnumName), \
+        zfflagsToString(ret, zflineAllocWithoutLeakTest(EnumName), \
             (zfflags)value.enumValue(), includeNotConverted, exclusiveMode, notConverted, separatorToken); \
     } \
     const zfchar *EnumFlagsName##FromString(ZF_OUT EnumFlagsName &ret, \
@@ -670,7 +670,7 @@ extern ZF_ENV_EXPORT const zfchar *zfflagsFromString(ZF_OUT zfflags &ret,
     { \
         zfflags flags = 0; \
         const zfchar *result = zfflagsFromString(flags, \
-            zflineAllocInternal(EnumName), \
+            zflineAllocWithoutLeakTest(EnumName), \
             src, srcLen, separatorToken); \
         ret.enumValueSet((ZFEnumValue)flags); \
         return result; \
@@ -744,7 +744,7 @@ extern ZF_ENV_EXPORT const zfchar *zfflagsFromString(ZF_OUT zfflags &ret,
     _ZFP_ZFENUM_FLAGS_CONVERTER_DEFINE(EnumName, EnumFlagsName) \
     void EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const \
     { \
-        zfflagsToString(ret, zflineAllocInternal(EnumName), (zfflags)this->enumValue()); \
+        zfflagsToString(ret, zflineAllocWithoutLeakTest(EnumName), (zfflags)this->enumValue()); \
     }
 
 // ============================================================

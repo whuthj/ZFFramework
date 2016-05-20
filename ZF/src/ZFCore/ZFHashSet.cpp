@@ -29,7 +29,7 @@ zfbool ZFHashSet::serializableOnSerializeCategoryToDataWithRef(ZF_IN_OUT ZFSeria
         return zffalse;
     }
 
-    zfblockedAllocInternal(zfself, tmp, ref);
+    zfblockedAllocWithoutLeakTest(zfself, tmp, ref);
     for(zfiterator it = this->iterator(); this->iteratorIsValid(it); )
     {
         ZFObject *element = this->iteratorNext(it);
@@ -68,12 +68,12 @@ ZFObject *ZFHashSet::objectOnInit(ZF_IN ZFContainer *another)
 ZFObject *ZFHashSet::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    d = zfAllocInternal(ZFHashMapEditable);
+    d = zfAllocWithoutLeakTest(ZFHashMapEditable);
     return this;
 }
 void ZFHashSet::objectOnDealloc(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }

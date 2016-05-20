@@ -222,9 +222,9 @@ void ZFUIButtonBasic::objectOnDealloc(void)
     _ZFP_ZFUIButtonBasic_componentObserverRemove(Background, CheckedHighlighted)
     _ZFP_ZFUIButtonBasic_componentObserverRemove(Background, Disabled)
 
-    zfReleaseInternal(d->buttonLabel);
-    zfReleaseInternal(d->buttonIcon);
-    zfReleaseInternal(d->buttonBackground);
+    zfReleaseWithoutLeakTest(d->buttonLabel);
+    zfReleaseWithoutLeakTest(d->buttonIcon);
+    zfReleaseWithoutLeakTest(d->buttonBackground);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -542,7 +542,7 @@ void ZFUIButtonBasic::prepareButtonLabel(void)
 {
     if(d->buttonLabel == zfnull)
     {
-        ZFObject *obj = zfRetainInternal(this->buttonLabelClass()->newInstanceWithoutLeakTest().toObject());
+        ZFObject *obj = zfRetainWithoutLeakTest(this->buttonLabelClass()->newInstanceWithoutLeakTest().toObject());
         d->buttonLabel = ZFCastZFObject(ZFUITextViewStyle *, obj);
         zfCoreAssert(d->buttonLabel != zfnull);
         this->internalBackgroundViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, d->buttonLabel));
@@ -552,7 +552,7 @@ void ZFUIButtonBasic::prepareButtonIcon(void)
 {
     if(d->buttonIcon == zfnull)
     {
-        ZFObject *obj = zfRetainInternal(this->buttonIconClass()->newInstanceWithoutLeakTest().toObject());
+        ZFObject *obj = zfRetainWithoutLeakTest(this->buttonIconClass()->newInstanceWithoutLeakTest().toObject());
         d->buttonIcon = ZFCastZFObject(ZFUIImageViewStyle *, obj);
         zfCoreAssert(d->buttonIcon != zfnull);
         this->internalBackgroundViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, d->buttonIcon));
@@ -569,7 +569,7 @@ void ZFUIButtonBasic::prepareButtonBackground(void)
 {
     if(d->buttonBackground == zfnull)
     {
-        ZFObject *obj = zfRetainInternal(this->buttonBackgroundClass()->newInstanceWithoutLeakTest().toObject());
+        ZFObject *obj = zfRetainWithoutLeakTest(this->buttonBackgroundClass()->newInstanceWithoutLeakTest().toObject());
         d->buttonBackground = ZFCastZFObject(ZFUIImageViewStyle *, obj);
         zfCoreAssert(d->buttonBackground != zfnull);
         this->internalBackgroundViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, d->buttonBackground));

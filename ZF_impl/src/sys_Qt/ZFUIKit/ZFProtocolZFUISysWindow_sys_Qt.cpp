@@ -84,7 +84,7 @@ public:
     {
         if(this->_mainWindow == zfnull)
         {
-            this->_mainWindow = zfRetainWithLeakTest(ZFUISysWindow::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
+            this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
             ZFImpl_sys_Qt_Window *nativeWindow = ZFImpl_sys_Qt_rootWindow();
             ZFImpl_sys_Qt_QObjectTagSetZFObject(nativeWindow, zfText("_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow"), this->_mainWindow->objectHolder());
             nativeWindow->installEventFilter(&_eventWrapper);
@@ -104,7 +104,7 @@ public:
             {
                 this->notifyOnPause(this->_mainWindow);
             }
-            zfblockedReleaseWithLeakTest(this->_mainWindow);
+            zfblockedRelease(this->_mainWindow);
             QWidget *nativeWindow = ZFImpl_sys_Qt_rootWindow();
             nativeWindow->removeEventFilter(&_eventWrapper);
             ZFImpl_sys_Qt_QObjectTagSetZFObject(nativeWindow, zfText("_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow"), zfnull);
@@ -137,7 +137,7 @@ public:
 
     virtual ZFUISysWindow *modalWindowShow(ZF_IN ZFUISysWindow *ownerWindow)
     {
-        ZFUISysWindow *modalWindow = zfRetainWithLeakTest(ZFUISysWindow::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
+        ZFUISysWindow *modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
         ZFImpl_sys_Qt_Window *nativeModalWindow = new ZFImpl_sys_Qt_Window();
         ZFImpl_sys_Qt_QObjectTagSetZFObject(nativeModalWindow, zfText("_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow"), modalWindow->objectHolder());
         nativeModalWindow->installEventFilter(&_eventWrapper);

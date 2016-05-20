@@ -41,7 +41,7 @@ public slots:
     {
         ZFListenerHolder *listenerHolderTmp = ZFCastStatic(ZFListenerHolder *, listenerHolder);
         listenerHolderTmp->runnableExecute();
-        zfReleaseInternal(listenerHolderTmp);
+        zfReleaseWithoutLeakTest(listenerHolderTmp);
     }
 };
 
@@ -68,7 +68,7 @@ protected:
         {
             this->_ZFP_listenerHolder->runnableExecute();
         }
-        zfReleaseInternal(this->_ZFP_listenerHolder);
+        zfReleaseWithoutLeakTest(this->_ZFP_listenerHolder);
         this->deleteLater();
     }
 };
@@ -92,7 +92,7 @@ public:
     }
     ~_ZFP_ZFThreadImpl_sys_Qt_MainThreadAfterDelayHolder(void)
     {
-        zfReleaseInternal(_ZFP_listenerHolder);
+        zfReleaseWithoutLeakTest(_ZFP_listenerHolder);
     }
 
 public:
@@ -101,7 +101,7 @@ public:
                     ZF_IN ZFObject *param0,
                     ZF_IN ZFObject *param1)
     {
-        _ZFP_listenerHolder = zfAllocInternal(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
+        _ZFP_listenerHolder = zfAllocWithoutLeakTest(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
         _ZFP_timer.connect(&_ZFP_timer, SIGNAL(timeout()), this, SLOT(_ZFP_run()));
         _ZFP_timer.moveToThread(QCoreApplication::instance()->thread());
         _ZFP_timer.setInterval(delay);
@@ -143,12 +143,12 @@ static _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType _ZFP_ZFThreadImpl_sys_Qt_getN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_Qt_DataHolder, ZFLevelZFFrameworkNormal)
 {
-    mainThread = zfAllocInternal(ZFThreadMainThread);
+    mainThread = zfAllocWithoutLeakTest(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId()] = mainThread;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_Qt_DataHolder)
 {
-    zfReleaseInternal(mainThread);
+    zfReleaseWithoutLeakTest(mainThread);
     mainThread = zfnull;
 }
 ZFThread *mainThread;
@@ -233,7 +233,7 @@ public:
                                       ZF_IN ZFObject *param0,
                                       ZF_IN ZFObject *param1)
     {
-        ZFListenerHolder *listenerHolder = zfAllocInternal(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
+        ZFListenerHolder *listenerHolder = zfAllocWithoutLeakTest(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
         this->_mainThreadHolder.executeInMainThread(listenerHolder);
         return zfnull;
     }
@@ -255,7 +255,7 @@ public:
                                      ZF_IN ZFObject *param1)
     {
         _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder *threadHolder = new _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder();
-        threadHolder->_ZFP_listenerHolder = zfAllocInternal(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
+        threadHolder->_ZFP_listenerHolder = zfAllocWithoutLeakTest(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
         threadHolder->start();
         return threadHolder;
     }

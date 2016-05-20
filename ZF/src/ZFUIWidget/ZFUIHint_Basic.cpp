@@ -18,21 +18,21 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIHintContentBasicStyle, ZFUIButtonBasicStyle)
 zfautoObject ZFUIHintMake(ZF_IN const zfchar *text,
                           ZF_IN_OPT ZFUIImage *icon /* = zfnull */)
 {
-    zfblockedAllocWithLeakTest(ZFUIHint, hint);
+    zfblockedAlloc(ZFUIHint, hint);
 
-    zfblockedAllocWithLeakTest(ZFAnimationNativeView, hintAniShow);
+    zfblockedAlloc(ZFAnimationNativeView, hintAniShow);
     hint->hintAniShowSet(hintAniShow);
     hintAniShow->aniAlphaFromSet(0);
-    zfblockedAllocWithLeakTest(ZFAnimationNativeView, hintAniHide);
+    zfblockedAlloc(ZFAnimationNativeView, hintAniHide);
     hint->hintAniHideSet(hintAniHide);
     hintAniHide->aniAlphaToSet(0);
 
-    zfblockedAllocWithLeakTest(ZFUIHintContentBasic, hintContent);
+    zfblockedAlloc(ZFUIHintContentBasic, hintContent);
     hint->hintContentSet(hintContent);
     hintContent->buttonLabelStyleNormal()->textContentStringSet(text);
     hintContent->buttonIconStyleNormal()->imageContentSet(icon);
 
-    return zfautoObjectCreateWithLeakTest(hint);
+    return zfautoObjectCreate(hint);
 }
 
 ZF_NAMESPACE_GLOBAL_END

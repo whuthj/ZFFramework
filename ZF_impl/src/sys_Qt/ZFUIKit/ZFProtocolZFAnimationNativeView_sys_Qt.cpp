@@ -353,16 +353,16 @@ public:
         switch(this->ownerZFAnimation->aniCurve())
         {
             case ZFAnimationNativeViewCurve::e_Linear:
-                this->aniCurve = zfAllocInternal(ZFTimeLineCurveLinear);
+                this->aniCurve = zfAllocWithoutLeakTest(ZFTimeLineCurveLinear);
                 break;
             case ZFAnimationNativeViewCurve::e_EaseIn:
-                this->aniCurve = zfAllocInternal(ZFTimeLineCurveEaseIn);
+                this->aniCurve = zfAllocWithoutLeakTest(ZFTimeLineCurveEaseIn);
                 break;
             case ZFAnimationNativeViewCurve::e_EaseOut:
-                this->aniCurve = zfAllocInternal(ZFTimeLineCurveEaseOut);
+                this->aniCurve = zfAllocWithoutLeakTest(ZFTimeLineCurveEaseOut);
                 break;
             case ZFAnimationNativeViewCurve::e_EaseInOut:
-                this->aniCurve = zfAllocInternal(ZFTimeLineCurveEaseInOut);
+                this->aniCurve = zfAllocWithoutLeakTest(ZFTimeLineCurveEaseInOut);
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
@@ -407,7 +407,7 @@ private:
         this->aniTargetCached->setVisible(true);
         this->aniTargetCached = zfnull;
 
-        zfReleaseInternal(this->aniCurve);
+        zfReleaseWithoutLeakTest(this->aniCurve);
         this->aniCurve = zfnull;
     }
 };

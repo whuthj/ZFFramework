@@ -23,11 +23,11 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(ZF_IN ZFUIListCell
     ZFUIView *separatorView = separatorViewHolder.to<ZFUIView *>();
     if(separatorView == zfnull)
     {
-        separatorView = zfAllocWithLeakTest(ZFUIView);
-        separatorViewHolder = zfautoObjectCreateWithLeakTest(separatorView);
-        zfReleaseWithLeakTest(separatorView);
+        separatorView = zfAlloc(ZFUIView);
+        separatorViewHolder = zfautoObjectCreate(separatorView);
+        zfRelease(separatorView);
 
-        separatorView->layoutParamSet(zflineAllocInternal(ZFUIViewLayoutParam));
+        separatorView->layoutParamSet(zflineAllocWithoutLeakTest(ZFUIViewLayoutParam));
         separatorView->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
 
         separatorView->viewUIEnableTreeSet(zffalse);

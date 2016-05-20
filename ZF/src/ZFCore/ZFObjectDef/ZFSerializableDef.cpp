@@ -322,7 +322,7 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
                     zfText(" while serializing %s to data"), this->toObject()->objectInfoOfInstance().cString());
                 return zffalse;
             }
-            referencedOwnerOrNull = zfRetainWithLeakTest(ZFCastZFObjectUnchecked(zfself *, referencedOwnerObject.toObject()));
+            referencedOwnerOrNull = zfRetain(ZFCastZFObjectUnchecked(zfself *, referencedOwnerObject.toObject()));
 
             serializableData.referenceRefTypeSet(this->serializableSelfRefTypeGet());
             serializableData.referenceRefDataSet(this->serializableSelfRefDataGet());
@@ -337,14 +337,14 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
                     zfText("failed to create object from \"%s\" \"%s\""), this->serializableStyleableTypeGet(), this->serializableStyleableDataGet());
                 return zffalse;
             }
-            referencedOwnerOrNull = zfRetainWithLeakTest(ZFCastZFObject(zfself *, styleableObj.toObject()));
+            referencedOwnerOrNull = zfRetain(ZFCastZFObject(zfself *, styleableObj.toObject()));
         }
     }
     else
     {
-        zfRetainWithLeakTest(referencedOwnerOrNull);
+        zfRetain(referencedOwnerOrNull);
     }
-    zfblockedReleaseWithLeakTest(referencedOwnerOrNull ? referencedOwnerOrNull->toObject() : zfnull);
+    zfblockedRelease(referencedOwnerOrNull ? referencedOwnerOrNull->toObject() : zfnull);
 
     // ownerTag
     if(this->serializableOwnerTagGet() != zfnull)
@@ -989,7 +989,7 @@ zfbool ZFObjectFromSerializableData(ZF_OUT zfautoObject &result,
         }
         else
         {
-            obj = cls->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+            obj = cls->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
         }
     }
     ZFSerializable *tmp = ZFCastZFObject(ZFSerializable *, obj.toObject());
@@ -1120,7 +1120,7 @@ void ZFSerializableOwnerTagSet(ZF_IN const zfchar *name,
         }
         if(objAdded != zfnull)
         {
-            zfblockedAllocWithLeakTest(_ZFP_ZFSerializableOwnerTagData, ownerTagData);
+            zfblockedAlloc(_ZFP_ZFSerializableOwnerTagData, ownerTagData);
             ownerTagData->name = name;
             objAdded->observerAddWithLevel(ZFLevelAppLow,
                 ZFObject::EventObjectBeforeDealloc(),

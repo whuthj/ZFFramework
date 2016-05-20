@@ -110,7 +110,7 @@ public:
             return ;
         }
         int cursor = this->cursorPosition();
-        zfblockedAllocInternal(ZFString, s, (void *)(new QString(text)));
+        zfblockedAllocWithoutLeakTest(ZFString, s, (void *)(new QString(text)));
         if(ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(this->ownerZFUITextEdit, s))
         {
             int positionSaved = this->cursorPosition();

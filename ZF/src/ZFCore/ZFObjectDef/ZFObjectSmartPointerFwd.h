@@ -20,23 +20,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // zfautoObject
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivate
+zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivateBase
 {
 public:
     zfindex refCount;
     ZFObject *obj;
 public:
-    _ZFP_zfautoObjectPrivate(void)
+    _ZFP_zfautoObjectPrivateBase(void)
     : refCount(1)
     , obj(zfnull)
     {
     }
-    _ZFP_zfautoObjectPrivate(ZF_IN ZFObject *obj)
+    _ZFP_zfautoObjectPrivateBase(ZF_IN ZFObject *obj)
     : refCount(1)
     , obj(obj)
     {
     }
-    virtual ~_ZFP_zfautoObjectPrivate(void)
+    virtual ~_ZFP_zfautoObjectPrivateBase(void)
     {
     }
 public:
@@ -134,14 +134,14 @@ public:
     }
 
 public:
-    static inline zfautoObject _ZFP_zfautoObjectCreate(ZF_IN _ZFP_zfautoObjectPrivate *data)
+    static inline zfautoObject _ZFP_zfautoObjectCreate(ZF_IN _ZFP_zfautoObjectPrivateBase *data)
     {
         zfautoObject ret;
         ret.d = data;
         return ret;
     }
 private:
-    _ZFP_zfautoObjectPrivate *d;
+    _ZFP_zfautoObjectPrivateBase *d;
     void releaseRef(void)
     {
         if(d)

@@ -635,8 +635,8 @@ protected:
             return true;
         }
 
-        zfRetainInternal(this->_ZFP_ownerZFUIScrollView);
-        zfblockedReleaseInternal(this->_ZFP_ownerZFUIScrollView);
+        zfRetainWithoutLeakTest(this->_ZFP_ownerZFUIScrollView);
+        zfblockedReleaseWithoutLeakTest(this->_ZFP_ownerZFUIScrollView);
 
         // cloned even if no extra processing
         // to ensure tag map would be cleaned to the event

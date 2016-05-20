@@ -21,7 +21,7 @@ class _ZFP_ZFThreadTaskRequestImpl_sys_Qt_TaskHolder : public QObject
 public:
     void taskRequest(ZF_IN const ZFListener &runnable, ZF_IN ZFObject *param0, ZF_IN ZFObject *param1)
     {
-        ZFListenerHolder *task = zfAllocInternal(ZFListenerHolder);
+        ZFListenerHolder *task = zfAllocWithoutLeakTest(ZFListenerHolder);
         task->runnable = runnable;
         task->listenerData.param0Set(param0);
         task->listenerData.param1Set(param1);
@@ -45,7 +45,7 @@ public:
             {
                 ZFListenerHolder *task = this->tasks.queueTake();
                 task->runnableExecute();
-                zfReleaseInternal(task);
+                zfReleaseWithoutLeakTest(task);
             }
             return true;
         }

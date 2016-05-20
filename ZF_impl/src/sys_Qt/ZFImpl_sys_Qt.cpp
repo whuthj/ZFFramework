@@ -20,20 +20,20 @@ public:
     {
     }
     _ZFP_ZFImpl_sys_Qt_ValueWrapper(ZF_IN ZFObject *obj)
-    : value(zfRetainInternal(obj))
+    : value(zfRetainWithoutLeakTest(obj))
     {
     }
     _ZFP_ZFImpl_sys_Qt_ValueWrapper(ZF_IN const _ZFP_ZFImpl_sys_Qt_ValueWrapper &ref)
-    : value(zfRetainInternal(ref.value))
+    : value(zfRetainWithoutLeakTest(ref.value))
     {
     }
     ~_ZFP_ZFImpl_sys_Qt_ValueWrapper(void)
     {
-        zfReleaseInternal(this->value);
+        zfReleaseWithoutLeakTest(this->value);
     }
     _ZFP_ZFImpl_sys_Qt_ValueWrapper &operator = (ZF_IN const _ZFP_ZFImpl_sys_Qt_ValueWrapper &ref)
     {
-        ZFPropertyChangeInternal(this->value, ref.value);
+        ZFPropertyChangeWithoutLeakTest(this->value, ref.value);
         return *this;
     }
 };

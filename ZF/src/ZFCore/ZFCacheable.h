@@ -52,7 +52,7 @@ public:
         for(zfindex i = 0; i < this->cache.count(); ++i)
         {
             this->cache[i]->objectCachedSet(zffalse);
-            zflockfree_zfReleaseWithLeakTest(this->cache[i]);
+            zflockfree_zfRelease(this->cache[i]);
         }
         ZFCoreMutexUnlock();
     }
@@ -142,7 +142,7 @@ public:
         T_ZFCacheable *ret = zfnull; \
         if(holder->cache.isEmpty()) \
         { \
-            ret = zflockfree_zfAllocWithLeakTest(T_ZFCacheable); \
+            ret = zflockfree_zfAlloc(T_ZFCacheable); \
             ret->objectCachedSet(zftrue); \
         } \
         else \
@@ -160,7 +160,7 @@ public:
             if(holder->cache.count() >= MaxSize) \
             { \
                 cachedObject->objectCachedSet(zffalse); \
-                zflockfree_zfReleaseWithLeakTest(cachedObject); \
+                zflockfree_zfRelease(cachedObject); \
             } \
             else \
             { \

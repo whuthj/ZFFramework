@@ -22,7 +22,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFOutputImpl_sys_Android, ZFOutput, ZFProtocolLe
 public:
     ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFOutputImpl_sys_Android)(void)
     {
-        this->syncObj = zfAllocInternal(ZFObject);
+        this->syncObj = zfAllocWithoutLeakTest(ZFObject);
     }
     virtual ~ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFOutputImpl_sys_Android)(void)
     {
@@ -33,7 +33,7 @@ public:
                 _ZFP_ZFImpl_sys_Android_ZFOutput_output(zfTextA("%s"), this->savedString.cString());
             }
         }
-        zfReleaseInternal(this->syncObj);
+        zfReleaseWithoutLeakTest(this->syncObj);
     }
 
 public:

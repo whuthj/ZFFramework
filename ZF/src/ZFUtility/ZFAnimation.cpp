@@ -114,8 +114,8 @@ void ZFAnimation::aniStart(void)
         return ;
     }
 
-    zfRetainWithLeakTest(this);
-    zfRetainWithLeakTest(this->aniTarget());
+    zfRetain(this);
+    zfRetain(this->aniTarget());
     this->objectCachedSet(zftrue);
     if(this->aniTarget() != zfnull)
     {
@@ -232,8 +232,8 @@ void ZFAnimation::aniImplNotifyStop(void)
         aniTargetToRelease->objectCachedSet(zffalse);
     }
     this->objectCachedSet(zffalse);
-    zfReleaseWithLeakTest(aniTargetToRelease);
-    zfReleaseWithLeakTest(this);
+    zfRelease(aniTargetToRelease);
+    zfRelease(this);
 }
 
 ZF_NAMESPACE_GLOBAL_END

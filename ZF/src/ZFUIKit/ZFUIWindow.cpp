@@ -62,14 +62,14 @@ ZFObject *ZFUIWindow::objectOnInit(void)
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIWindowPrivate);
     d->ownerSysWindow = ZFUISysWindow::mainWindow();
-    d->windowLayoutParam = zfAllocWithLeakTest(ZFUIViewLayoutParam);
+    d->windowLayoutParam = zfAlloc(ZFUIViewLayoutParam);
     d->windowLayoutParam->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
     ZFGlobalEventCenter::instance()->observerNotifyWithCustomSender(d->windowLayoutParam, ZFUIWindow::EventWindowLayoutParamOnInit());
     return this;
 }
 void ZFUIWindow::objectOnDealloc(void)
 {
-    zfReleaseWithLeakTest(d->windowLayoutParam);
+    zfRelease(d->windowLayoutParam);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -123,11 +123,11 @@ void ZFUIWindow::windowShow(void)
 }
 void ZFUIWindow::windowHide(void)
 {
-    zfRetainInternal(this);
+    zfRetainWithoutLeakTest(this);
     d->windowRemoveOverrideFlag = zftrue;
     this->viewRemoveFromParent();
     d->windowRemoveOverrideFlag = zffalse;
-    zfReleaseInternal(this);
+    zfReleaseWithoutLeakTest(this);
 }
 zfbool ZFUIWindow::windowShowing(void)
 {

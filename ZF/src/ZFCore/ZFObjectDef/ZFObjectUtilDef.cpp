@@ -27,7 +27,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFPointerHolderCacheHolder)
 {
     while(_ZFP_ZFPointerHolderCacheAvailable > _ZFP_ZFPointerHolderCache)
     {
-        zfReleaseInternal(*_ZFP_ZFPointerHolderCacheAvailable);
+        zfReleaseWithoutLeakTest(*_ZFP_ZFPointerHolderCacheAvailable);
         --_ZFP_ZFPointerHolderCacheAvailable;
     }
 }
@@ -43,7 +43,7 @@ ZFPointerHolder *ZFPointerHolder::cacheAccess(void)
     }
     else
     {
-        ret = zfAllocInternal(ZFPointerHolder);
+        ret = zfAllocWithoutLeakTest(ZFPointerHolder);
     }
     ZFCoreMutexUnlock();
     return ret;
@@ -55,7 +55,7 @@ void ZFPointerHolder::cacheRelease(ZF_IN ZFPointerHolder *obj)
     obj->tagRemoveAll();
     if(_ZFP_ZFPointerHolderCacheAvailable == _ZFP_ZFPointerHolderCacheAvailableEnd)
     {
-        zfReleaseInternal(obj);
+        zfReleaseWithoutLeakTest(obj);
     }
     else
     {

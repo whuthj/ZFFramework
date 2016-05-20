@@ -30,13 +30,13 @@ zfautoObject zfSkin(ZF_IN const zfchar *key,
     _ZFP_ZFSkinMapType::iterator it = m.find(key);
     if(it != m.end())
     {
-        return zfautoObjectCreateWithLeakTest(it->second.toObject());
+        return zfautoObjectCreate(it->second.toObject());
     }
     else
     {
         if(valueDefault != zfnull)
         {
-            return zfautoObjectCreateWithLeakTest(valueDefault->toObject());
+            return zfautoObjectCreate(valueDefault->toObject());
         }
         else
         {

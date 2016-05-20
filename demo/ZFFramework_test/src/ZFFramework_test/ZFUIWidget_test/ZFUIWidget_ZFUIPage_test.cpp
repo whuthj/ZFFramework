@@ -286,7 +286,7 @@ protected:
     zfoverride
     virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult)
     {
-        zfReleaseWithLeakTest(this->_pageManager);
+        zfRelease(this->_pageManager);
         this->_pageManager = zfnull;
         zfsuper::testCaseOnStop(testCaseResult);
     }

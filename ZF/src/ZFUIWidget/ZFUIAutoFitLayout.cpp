@@ -226,7 +226,7 @@ ZFObject *ZFUIAutoFitLayout::objectOnInit(void)
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIAutoFitLayoutPrivate);
     d->owner = this;
-    zfblockedAllocInternal(_ZFP_ZFUIAutoFitLayoutScrollView, scrollView);
+    zfblockedAllocWithoutLeakTest(_ZFP_ZFUIAutoFitLayoutScrollView, scrollView);
     d->scrollView = scrollView;
     d->scrollView->scrollEnableSet(zffalse);
     this->viewDelegateSet(d->scrollView);

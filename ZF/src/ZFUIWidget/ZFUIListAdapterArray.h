@@ -31,13 +31,13 @@ public:
     virtual ZFObject *objectOnInit(void)
     {
         zfsuper::objectOnInit();
-        d = zfAllocInternal(ZFArrayEditable);
+        d = zfAllocWithoutLeakTest(ZFArrayEditable);
         return this;
     }
     zfoverride
     virtual void objectOnDealloc(void)
     {
-        zfReleaseInternal(d);
+        zfReleaseWithoutLeakTest(d);
         zfsuper::objectOnDealloc();
     }
     zfoverride
@@ -113,12 +113,12 @@ public:
     zfoverride
     virtual zfautoObject listCellCacheOnAccess(ZF_IN zfindex index)
     {
-        return zfautoObjectCreateWithLeakTest(d->get(index));
+        return zfautoObjectCreate(d->get(index));
     }
     zfoverride
     virtual zfautoObject listCellAtIndex(ZF_IN zfindex index)
     {
-        return zfautoObjectCreateWithLeakTest(d->get(index));
+        return zfautoObjectCreate(d->get(index));
     }
     zfoverride
     virtual zfint listCellSizeAtIndex(ZF_IN zfindex index,

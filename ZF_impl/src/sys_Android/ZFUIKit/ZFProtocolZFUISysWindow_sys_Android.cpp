@@ -45,7 +45,7 @@ public:
     {
         if(this->_mainWindow == zfnull)
         {
-            this->_mainWindow = zfRetainWithLeakTest(ZFUISysWindow::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
+            this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
 
             JNIEnv *jniEnv = JNIGetJNIEnv();
             static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, zfTextA("native_nativeMainWindowCreate"),
@@ -63,7 +63,7 @@ public:
         {
             ZFUISysWindow *mainWindowTmp = this->_mainWindow;
             this->_mainWindow = zfnull;
-            zfReleaseWithLeakTest(mainWindowTmp);
+            zfRelease(mainWindowTmp);
         }
     }
     virtual void mainWindowOnDestroy(void)
@@ -112,7 +112,7 @@ public:
 
     virtual ZFUISysWindow *modalWindowShow(ZF_IN ZFUISysWindow *ownerWindow)
     {
-        ZFUISysWindow *modalWindow = zfRetainWithLeakTest(ZFUISysWindow::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
+        ZFUISysWindow *modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, zfTextA("native_modalWindowShow"),

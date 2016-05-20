@@ -17,24 +17,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator = zfnull;
 zfautoObject ZFUIDialogDefaultLayoutParamCreatorDefault(void)
 {
-    zfblockedAllocWithLeakTest(ZFUIViewLayoutParam, lp);
+    zfblockedAlloc(ZFUIViewLayoutParam, lp);
     lp->layoutAlignSet(ZFUIAlign::e_Center);
     lp->layoutMarginSet(ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
-    return zfautoObjectCreateWithLeakTest(lp);
+    return zfautoObjectCreate(lp);
 }
 ZFObjectCreator ZFUIDialogDefaultAniShowCreator = zfnull;
 zfautoObject ZFUIDialogDefaultAniShowCreatorDefault(void)
 {
-    zfblockedAllocWithLeakTest(ZFAnimationNativeView, ani);
+    zfblockedAlloc(ZFAnimationNativeView, ani);
     ani->aniAlphaFromSet(0);
-    return zfautoObjectCreateWithLeakTest(ani);
+    return zfautoObjectCreate(ani);
 }
 ZFObjectCreator ZFUIDialogDefaultAniHideCreator = zfnull;
 zfautoObject ZFUIDialogDefaultAniHideCreatorDefault(void)
 {
-    zfblockedAllocWithLeakTest(ZFAnimationNativeView, ani);
+    zfblockedAlloc(ZFAnimationNativeView, ani);
     ani->aniAlphaToSet(0);
-    return zfautoObjectCreateWithLeakTest(ani);
+    return zfautoObjectCreate(ani);
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultCreatorInit, ZFLevelZFFrameworkLow)
@@ -178,7 +178,7 @@ public:
             this->viewUIEnableTreeSet(zftrue);
             this->windowHide();
             this->owner->dialogAfterHide();
-            zfReleaseWithLeakTest(this->owner);
+            zfRelease(this->owner);
         }
     }
 
@@ -301,7 +301,7 @@ void ZFUIDialog::dialogShow(void)
     {
         return ;
     }
-    zfRetainWithLeakTest(this);
+    zfRetain(this);
     d->aniStop();
     d->windowShow();
     d->viewUIEnableTreeSet(zffalse);
@@ -365,7 +365,7 @@ void ZFUIDialog::dialogHideForce(void)
 {
     if(d->windowShowing())
     {
-        zfRetainInternal(this);
+        zfRetainWithoutLeakTest(this);
         d->aniStop();
         if(d->windowShowing())
         {
@@ -373,7 +373,7 @@ void ZFUIDialog::dialogHideForce(void)
             d->windowHide();
             this->dialogAfterHide();
         }
-        zfReleaseInternal(this);
+        zfReleaseWithoutLeakTest(this);
     }
 }
 
@@ -411,27 +411,27 @@ ZFUIView *ZFUIDialog::dialogInternalBackgroundContainer(void)
 ZFObject *ZFUIDialog::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    d = zfAllocInternal(_ZFP_ZFUIDialogPrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFUIDialogPrivate);
     d->owner = this;
     d->windowLevelSet(ZFUIWindowLevel::e_AppHigh);
 
-    d->dialogWindowBg = zfAllocInternal(_ZFP_ZFUIDialog_DialogWindowBg);
+    d->dialogWindowBg = zfAllocWithoutLeakTest(_ZFP_ZFUIDialog_DialogWindowBg);
     d->childAdd(d->dialogWindowBg);
     d->dialogWindowBg->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
     d->dialogWindowBg->observerAdd(ZFUIButton::EventButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFUIDialogPrivate, dialogWindowBgOnClick)));
 
-    d->dialogBg = zfAllocInternal(ZFUIImageView);
+    d->dialogBg = zfAllocWithoutLeakTest(ZFUIImageView);
     d->childAdd(d->dialogBg);
     d->dialogBg->viewUIEnableTreeSet(zftrue);
     d->dialogBg->viewUIEnableSet(zftrue);
 
-    d->dialogContainer = zfAllocInternal(ZFUIViewLayout);
+    d->dialogContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
     d->dialogBg->childAdd(d->dialogContainer);
 
-    d->dialogWindowAniShow = zfAllocInternal(ZFAnimationNativeView);
+    d->dialogWindowAniShow = zfAllocWithoutLeakTest(ZFAnimationNativeView);
     d->dialogWindowAniShow->aniAlphaFromSet(0);
-    d->dialogWindowAniHide = zfAllocInternal(ZFAnimationNativeView);
+    d->dialogWindowAniHide = zfAllocWithoutLeakTest(ZFAnimationNativeView);
     d->dialogWindowAniHide->aniAlphaToSet(0);
 
     d->aniShowOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFUIDialogPrivate, aniShowOnStop));
@@ -447,13 +447,13 @@ void ZFUIDialog::objectOnDealloc(void)
 {
     _ZFP_ZFUIDialogAllDialog.removeElement(this);
 
-    ZFPropertyChangeInternal(d->dialogWindowAniShow, zfnull);
-    ZFPropertyChangeInternal(d->dialogWindowAniHide, zfnull);
+    ZFPropertyChangeWithoutLeakTest(d->dialogWindowAniShow, zfnull);
+    ZFPropertyChangeWithoutLeakTest(d->dialogWindowAniHide, zfnull);
 
-    zfReleaseInternal(d->dialogContainer);
-    zfReleaseInternal(d->dialogBg);
-    zfReleaseInternal(d->dialogWindowBg);
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d->dialogContainer);
+    zfReleaseWithoutLeakTest(d->dialogBg);
+    zfReleaseWithoutLeakTest(d->dialogWindowBg);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
 
     zfsuper::objectOnDealloc();

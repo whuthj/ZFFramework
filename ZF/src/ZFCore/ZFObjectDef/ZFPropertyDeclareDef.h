@@ -103,9 +103,9 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
                 { \
                     ZFCoreMutexLock(); \
                     T_Type *valueTmp = zfnull; \
-                    zflockfree_zfRetainWithLeakTest(*(valueTmp = zfpoolNew(Type, ZFPropertyInitValueOrNoInitValue))); \
-                    zfautoObject valueHolderTmp = zflockfree_zfautoObjectCreateWithLeakTest(ZFObjectToObject(*valueTmp)); \
-                    zflockfree_zfReleaseWithLeakTest(*valueTmp); \
+                    zflockfree_zfRetain(*(valueTmp = zfpoolNew(Type, ZFPropertyInitValueOrNoInitValue))); \
+                    zfautoObject valueHolderTmp = zflockfree_zfautoObjectCreate(ZFObjectToObject(*valueTmp)); \
+                    zflockfree_zfRelease(*valueTmp); \
                     _ZFP_ZFPropertyRawInitStepInvoker_##Name<zfself, \
                         ZFMACRO_CLASS_HAS_MEMBER(_, _ZFP_ZFPropertyRawInitStep_##Name, zfself)>::action(owner, valueHolderTmp); \
                     if(owner->classData()->_ZFP_ZFClass_propertyInitStepAction( \
@@ -500,7 +500,7 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
             _ZFP_ZFPROPERTY_VALUE_REF(Name) = newValue; \
             ZFCoreMutexLock(); \
             this->Name##_ZFPropertyValue.valueHolder = \
-                zflockfree_zfautoObjectCreateWithLeakTest(ZFObjectToObject(newValue)); \
+                zflockfree_zfautoObjectCreate(ZFObjectToObject(newValue)); \
             ZFCoreMutexUnlock(); \
             toObject()->_ZFP_ZFObject_objectPropertyValueAfterChange(zfself::_ZFP_ZFProperty_##Name()); \
         }
@@ -1022,7 +1022,7 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
 #define ZFPROPERTY_OVERRIDE_INIT_VALUE_RETAIN(Type, Name, customInitValue) \
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN(Type, Name) \
     { \
-        propertyValue = zflockfree_zfautoObjectCreateWithLeakTest(customInitValue); \
+        propertyValue = zflockfree_zfautoObjectCreate(customInitValue); \
     }
 
 // ============================================================
@@ -1048,7 +1048,7 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
 #define ZFPROPERTY_OVERRIDE_INIT_VALUE_RETAIN_NO_AUTO_INIT(Type, Name, customInitValue) \
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(Type, Name) \
     { \
-        propertyValue = zflockfree_zfautoObjectCreateWithLeakTest(customInitValue); \
+        propertyValue = zflockfree_zfautoObjectCreate(customInitValue); \
     }
 
 // ============================================================

@@ -21,13 +21,13 @@ ZFPROPERTY_CUSTOM_SETTER_DEFINE(ZFUIListViewStyle, ZFUIListAdapter *, listAdapte
 }
 void ZFUIListViewStyle::listAdapterSetAutoRetain(ZF_IN ZFUIListAdapter *listAdapter)
 {
-    zfRetainInternal(listAdapter);
+    zfRetainWithoutLeakTest(listAdapter);
     this->listAdapterSet(listAdapter);
     if(listAdapter != zfnull)
     {
         this->toObject()->tagSet(_ZFP_ZFUIListView_listAdapterHolderTag, listAdapter->toObject());
     }
-    zfReleaseInternal(listAdapter);
+    zfReleaseWithoutLeakTest(listAdapter);
 }
 
 // ============================================================
@@ -217,7 +217,7 @@ public:
                     this->cellOnRecycle(cell);
                 }
                 this->thisView->listCellOnDetach(cell);
-                zfReleaseWithLeakTest(cell);
+                zfRelease(cell);
             }
             this->listVisibleCell.removeAll();
         }
@@ -236,7 +236,7 @@ public:
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->cellOnRecycle(cell);
             this->thisView->listCellOnDetach(cell);
-            zfReleaseWithLeakTest(cell);
+            zfRelease(cell);
         }
         this->listVisibleCell.remove(0, indexOfVisibleCell + 1);
         this->listVisibleCellIndexRange.start = index + 1;
@@ -256,7 +256,7 @@ public:
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->cellOnRecycle(cell);
             this->thisView->listCellOnDetach(cell);
-            zfReleaseWithLeakTest(cell);
+            zfRelease(cell);
         }
         this->listVisibleCell.remove(indexOfVisibleCell, zfindexMax);
         this->listVisibleCellIndexRange.count = this->listVisibleCell.count();
@@ -301,7 +301,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -368,7 +368,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -435,7 +435,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -494,7 +494,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -568,7 +568,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -637,7 +637,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -706,7 +706,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -769,7 +769,7 @@ public:
                             continue;
                         }
                         this->listCellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetainWithLeakTest(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
                         zfint cellSizeNew = this->listCellSizeAtIndex(index, cellNew);
                         if(cellSizeNew != this->listCellSizeList[index])
                         {
@@ -1019,7 +1019,7 @@ public:
             this->childRemoveAtIndex(i);
             this->cellOnRecycle(cell);
             this->thisView->listCellOnDetach(cell);
-            zfReleaseWithLeakTest(cell);
+            zfRelease(cell);
         }
         this->listVisibleCell.removeAll();
 
@@ -1459,7 +1459,7 @@ void ZFUIListView::listReloadCellAtIndex(ZF_IN zfindex index)
     ZFUIListCell *cellOld = d->listVisibleCell[indexOfVisibleCell];
     ZFUIRect cellOldFrame = d->listVisibleCellFrame(index);
 
-    ZFUIListCell *cellNew = zfRetainWithLeakTest(d->cellLoadAtIndex(index).to<ZFUIListCell *>());
+    ZFUIListCell *cellNew = zfRetain(d->cellLoadAtIndex(index).to<ZFUIListCell *>());
     d->listVisibleCell[indexOfVisibleCell] = cellNew;
 
     this->childReplaceAtIndex(indexOfVisibleCell, cellNew);
@@ -1493,7 +1493,7 @@ void ZFUIListView::listReloadCellAtIndex(ZF_IN zfindex index)
     // finally notify visible cell changed
     this->listVisibleCellOnChange();
 
-    zfReleaseWithLeakTest(cellOld);
+    zfRelease(cellOld);
 }
 
 ZFCoreArrayPOD<ZFUIListCell *> ZFUIListView::listVisibleCell(void)

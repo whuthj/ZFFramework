@@ -106,7 +106,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_default, ZFTimer, ZFProtocolLevelDef
 public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer)
     {
-        _ZFP_ZFTimerImpl_default_Timer *token = zfAllocInternal(_ZFP_ZFTimerImpl_default_Timer);
+        _ZFP_ZFTimerImpl_default_Timer *token = zfAllocWithoutLeakTest(_ZFP_ZFTimerImpl_default_Timer);
         token->impl = this;
         token->timer = timer;
         return token;
@@ -115,7 +115,7 @@ public:
                                     ZF_IN void *nativeTimer)
     {
         _ZFP_ZFTimerImpl_default_Timer *token = ZFCastStatic(_ZFP_ZFTimerImpl_default_Timer *, nativeTimer);
-        zfReleaseInternal(token);
+        zfReleaseWithoutLeakTest(token);
     }
     virtual void timerStart(ZF_IN ZFTimer *timer)
     {

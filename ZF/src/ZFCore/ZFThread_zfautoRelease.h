@@ -63,16 +63,6 @@ inline const ZFAnyT<T_ZFObject *> &_ZFP_zfautoRelease(ZF_IN const ZFAnyT<T_ZFObj
     return obj;
 }
 /**
- * @brief ensured be logged by ZFLeakTest
- * @see zfautoRelease
- */
-#define zfautoReleaseWithLeakTest(obj) _ZFP_zfautoRelease(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, zftrue)
-/**
- * @brief ensured not be logged by ZFLeakTest
- * @see zfautoRelease
- */
-#define zfautoReleaseWithoutLeakTest(obj) _ZFP_zfautoRelease(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, zffalse)
-/**
  * @brief make object autorelease, which would be released by the owner thread
  *
  * calling this function will add the object to current thread's autorelease pool\n
@@ -94,21 +84,9 @@ inline const ZFAnyT<T_ZFObject *> &_ZFP_zfautoRelease(ZF_IN const ZFAnyT<T_ZFObj
  * -  it have lower performance than other release methods
  *   (see #ZFObject for more info about other release methods)
  */
-#if ZF_LEAKTEST_ENABLE
-    #define zfautoRelease(obj) zfautoReleaseWithLeakTest(obj)
-#else
-    #define zfautoRelease(obj) zfautoReleaseWithoutLeakTest(obj)
-#endif
-
-/**
- * @brief log leak test if ZF_LEAKTEST_ENABLE_INTERNAL,
- *   internal use only
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zfautoReleaseInternal(obj) zfautoReleaseWithLeakTest(obj)
-#else
-    #define zfautoReleaseInternal(obj) zfautoReleaseWithoutLeakTest(obj)
-#endif
+#define zfautoRelease(obj) _ZFP_zfautoRelease(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, zftrue)
+/** @see zfautoRelease */
+#define zfautoReleaseWithoutLeakTest(obj) _ZFP_zfautoRelease(obj, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE, zffalse)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFThread_zfautoRelease_h_

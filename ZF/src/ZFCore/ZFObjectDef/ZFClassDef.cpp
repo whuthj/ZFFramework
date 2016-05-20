@@ -9,7 +9,6 @@
 #include "ZFPrivate_ZFCore_ZFObjectDef.hh"
 #include "ZFObjectDef.h"
 #include "ZFObjectSmartPointerDef.h"
-#include "ZFObjectRetainDef.h"
 #include "ZFCopyableDef.h"
 #include "ZFSerializableDataDef.h"
 #include "ZFStyleableDef.h"
@@ -309,22 +308,18 @@ const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className)
     ZFCoreMutexLocker();
     return _ZFP_ZFClassMap.get<const ZFClass *>(className);
 }
-zfautoObject ZFClass::newInstanceForName(ZF_IN const zfchar *className)
+zfautoObject ZFClass::newInstanceForName(ZF_IN const zfchar *className,
+                                         ZF_IN_OPT const zfcharA *callerFile /* = zfnull */,
+                                         ZF_IN_OPT const zfcharA *callerFunction /* = zfnull */,
+                                         ZF_IN_OPT zfindex callerLine /* = 0 */)
 {
-    return ZFClass::newInstanceForNameWithLeakTest(className, ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    const ZFClass *cls = ZFClass::classForName(className);
+    return ((cls != zfnull) ? cls->newInstance(callerFile, callerFunction, callerLine) : zfautoObjectNull);
 }
 zfautoObject ZFClass::newInstanceForNameWithoutLeakTest(ZF_IN const zfchar *className)
 {
     const ZFClass *cls = ZFClass::classForName(className);
     return ((cls != zfnull) ? cls->newInstanceWithoutLeakTest() : zfautoObjectNull);
-}
-zfautoObject ZFClass::newInstanceForNameWithLeakTest(ZF_IN const zfchar *className,
-                                                     ZF_IN const zfcharA *callerFile,
-                                                     ZF_IN const zfcharA *callerFunction,
-                                                     ZF_IN zfindex callerLine)
-{
-    const ZFClass *cls = ZFClass::classForName(className);
-    return ((cls != zfnull) ? cls->newInstanceWithLeakTest(callerFile, callerFunction, callerLine) : zfautoObjectNull);
 }
 ZFCoreArrayPOD<const ZFClass *> ZFClass::allClass(void)
 {
@@ -504,9 +499,34 @@ zfbool ZFClass::classIsInternal(void) const
     return d->isInternalClass;
 }
 
-zfautoObject ZFClass::newInstance(void) const
+zfautoObject ZFClass::newInstance(ZF_IN const zfcharA *callerFile /* = zfnull */,
+                                  ZF_IN const zfcharA *callerFunction /* = zfnull */,
+                                  ZF_IN zfindex callerLine /* = 0 */) const
 {
-    return this->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    if(callerFile)
+    {
+        ZFCoreMutexLocker();
+        ZFObject *obj = zfnull;
+        if(d->constructor != zfnull)
+        {
+            obj = d->constructor();
+        }
+        if(obj != zfnull)
+        {
+            ZFObject::_ZFP_ZFObjectAlloc(obj);
+            obj->objectOnInit();
+            obj->_ZFP_ZFObjectCheckOnInit();
+            zflockfree_ZFLeakTestLogAllocVerbose(obj, callerFile, callerFunction, callerLine);
+        }
+        zfautoObject ret = zflockfree_zfautoObjectCreateVerbose(obj, callerFile, callerFunction, callerLine);
+        zflockfree_zfReleaseWithoutLeakTest(obj);
+        zflockfree_ZFLeakTestLogReleaseVerbose(obj, callerFile, callerFunction, callerLine);
+        return ret;
+    }
+    else
+    {
+        return this->newInstanceWithoutLeakTest();
+    }
 }
 zfautoObject ZFClass::newInstanceWithoutLeakTest(void) const
 {
@@ -524,28 +544,6 @@ zfautoObject ZFClass::newInstanceWithoutLeakTest(void) const
     }
     zflockfree_zfblockedReleaseWithoutLeakTest(obj);
     return zflockfree_zfautoObjectCreateWithoutLeakTest(obj);
-}
-zfautoObject ZFClass::newInstanceWithLeakTest(ZF_IN const zfcharA *callerFile,
-                                              ZF_IN const zfcharA *callerFunction,
-                                              ZF_IN zfindex callerLine) const
-{
-    ZFCoreMutexLocker();
-    ZFObject *obj = zfnull;
-    if(d->constructor != zfnull)
-    {
-        obj = d->constructor();
-    }
-    if(obj != zfnull)
-    {
-        ZFObject::_ZFP_ZFObjectAlloc(obj);
-        obj->objectOnInit();
-        obj->_ZFP_ZFObjectCheckOnInit();
-        zflockfree_ZFLeakTestLogAllocVerbose(obj, callerFile, callerFunction, callerLine);
-    }
-    zfautoObject ret = zflockfree_zfautoObjectCreateWithLeakTestVerbose(obj, callerFile, callerFunction, callerLine);
-    zflockfree_zfReleaseWithoutLeakTest(obj);
-    zflockfree_ZFLeakTestLogReleaseVerbose(obj, callerFile, callerFunction, callerLine);
-    return ret;
 }
 
 zfindex ZFClass::implementedInterfaceCount(void) const
@@ -733,7 +731,7 @@ zfautoObject ZFClass::classTagRemoveAndGet(ZF_IN const zfchar *key) const
         _ZFP_ZFClassTagMapType::iterator it = m.find(key);
         if(it != m.end())
         {
-            zfautoObject ret = zfautoObjectCreateWithLeakTest(it->second.toObject());
+            zfautoObject ret = zfautoObjectCreate(it->second.toObject());
             m.erase(it);
             return ret;
         }

@@ -448,14 +448,14 @@ ZFXmlVisitCallback _ZFP_ZFXmlVisitCallbackForOutput(ZF_IN const zfcharA *ownerFi
     {
         return ZFCallbackNullDetail(ownerFilePath, ownerFunctionName, ownerFileLine);
     }
-    _ZFP_ZFXmlOutputOwner *owner = zfAllocWithLeakTest(_ZFP_ZFXmlOutputOwner);
+    _ZFP_ZFXmlOutputOwner *owner = zfAlloc(_ZFP_ZFXmlOutputOwner);
     owner->outputCallback = outputCallback;
     owner->flags = flags;
     ZFXmlVisitCallback callback = ZFCallbackForMemberMethodDetail(
         owner, ZFMethodAccessClassMember(_ZFP_ZFXmlOutputOwner, onVisit),
         ownerFilePath, ownerFunctionName, ownerFileLine);
     callback.callbackOwnerObjectRetain();
-    zfReleaseWithLeakTest(owner);
+    zfRelease(owner);
     return callback;
 }
 

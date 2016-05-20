@@ -342,10 +342,10 @@ static ZFOutputCallback _ZFP_ZFOutputCallbackForFile_create(ZF_IN const zfcharA 
                                                             ZF_IN ZFFileOpenOptionFlags flags,
                                                             ZF_IN zfindex autoFlushSize)
 {
-    _ZFP_ZFOutputCallbackForFileOwner *outputOwner = zfAllocWithLeakTest(_ZFP_ZFOutputCallbackForFileOwner);
+    _ZFP_ZFOutputCallbackForFileOwner *outputOwner = zfAlloc(_ZFP_ZFOutputCallbackForFileOwner);
     if(!outputOwner->openFile(filePath, flags))
     {
-        zfReleaseWithLeakTest(outputOwner);
+        zfRelease(outputOwner);
         return ZFCallbackNullDetail(callerFile, callerFunction, callerLine);
     }
     outputOwner->autoFlushSize = autoFlushSize;
@@ -353,7 +353,7 @@ static ZFOutputCallback _ZFP_ZFOutputCallbackForFile_create(ZF_IN const zfcharA 
         outputOwner, ZFMethodAccessClassMember(_ZFP_ZFOutputCallbackForFileOwner, onOutput),
         callerFile, callerFunction, callerLine);
     ret.callbackTagSet(ZFCallbackTagKeyword_ioOwner, outputOwner);
-    zfReleaseWithLeakTest(outputOwner);
+    zfRelease(outputOwner);
 
     ret.callbackTagSetMarkCached(ZFCallbackTagKeyword_filePath, zflineAllocWithoutLeakTest(ZFString, filePath));
     return ret;
@@ -455,17 +455,17 @@ static ZFInputCallback _ZFP_ZFInputCallbackForFile_create(ZF_IN const zfcharA *c
                                                           ZF_IN const ZFFileBOM *autoSkipBOMTable,
                                                           ZF_IN zfindex autoSkipBOMTableCount)
 {
-    _ZFP_ZFInputCallbackForFileOwner *inputOwner = zfAllocWithLeakTest(_ZFP_ZFInputCallbackForFileOwner);
+    _ZFP_ZFInputCallbackForFileOwner *inputOwner = zfAlloc(_ZFP_ZFInputCallbackForFileOwner);
     if(!inputOwner->openFile(filePath, flags, autoSkipBOMTable, autoSkipBOMTableCount))
     {
-        zfReleaseWithLeakTest(inputOwner);
+        zfRelease(inputOwner);
         return ZFCallbackNullDetail(callerFile, callerFunction, callerLine);
     }
     ZFInputCallback ret = ZFCallbackForMemberMethodDetail(
         inputOwner, ZFMethodAccessClassMember(_ZFP_ZFInputCallbackForFileOwner, onInput),
         callerFile, callerFunction, callerLine);
     ret.callbackTagSet(ZFCallbackTagKeyword_ioOwner, inputOwner);
-    zfReleaseWithLeakTest(inputOwner);
+    zfRelease(inputOwner);
 
     ret.callbackTagSetMarkCached(ZFCallbackTagKeyword_filePath, zflineAllocWithoutLeakTest(ZFString, filePath));
     return ret;
@@ -603,17 +603,17 @@ static ZFInputCallback _ZFP_ZFInputCallbackForResFile_create(ZF_IN const zfcharA
                                                              ZF_IN const ZFFileBOM *autoSkipBOMTable,
                                                              ZF_IN zfindex autoSkipBOMTableCount)
 {
-    _ZFP_ZFInputCallbackForResFileOwner *inputOwner = zfAllocWithLeakTest(_ZFP_ZFInputCallbackForResFileOwner);
+    _ZFP_ZFInputCallbackForResFileOwner *inputOwner = zfAlloc(_ZFP_ZFInputCallbackForResFileOwner);
     if(!inputOwner->openFile(resFilePath, autoSkipBOMTable, autoSkipBOMTableCount))
     {
-        zfReleaseWithLeakTest(inputOwner);
+        zfRelease(inputOwner);
         return ZFCallbackNullDetail(callerFile, callerFunction, callerLine);
     }
     ZFInputCallback ret = ZFCallbackForMemberMethodDetail(
         inputOwner, ZFMethodAccessClassMember(_ZFP_ZFInputCallbackForResFileOwner, onInput),
         callerFile, callerFunction, callerLine);
     ret.callbackTagSet(ZFCallbackTagKeyword_ioOwner, inputOwner);
-    zfReleaseWithLeakTest(inputOwner);
+    zfRelease(inputOwner);
 
     ret.callbackTagSetMarkCached(ZFCallbackTagKeyword_resPath, zflineAllocWithoutLeakTest(ZFString, resFilePath));
     return ret;

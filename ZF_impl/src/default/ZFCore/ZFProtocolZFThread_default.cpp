@@ -92,14 +92,14 @@ static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_defaul
 typedef zfstlmap<_ZFP_ZFThreadImpl_default_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_default_ThreadMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_default_DataHolder, ZFLevelZFFrameworkHigh)
 {
-    mainThread = zfAllocInternal(ZFThreadMainThread);
-    syncObj = zfAllocInternal(ZFObject);
+    mainThread = zfAllocWithoutLeakTest(ZFThreadMainThread);
+    syncObj = zfAllocWithoutLeakTest(ZFObject);
     threadMap[_ZFP_ZFThreadImpl_default_getNativeThreadId()] = mainThread;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_default_DataHolder)
 {
-    zfReleaseInternal(syncObj);
-    zfReleaseInternal(mainThread);
+    zfReleaseWithoutLeakTest(syncObj);
+    zfReleaseWithoutLeakTest(mainThread);
 }
 ZFThread *mainThread;
 ZFObject *syncObj;

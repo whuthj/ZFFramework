@@ -118,12 +118,12 @@ static _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType _ZFP_ZFThreadImpl_sys_iOS_ge
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkNormal)
 {
-    mainThread = zfAllocInternal(ZFThreadMainThread);
+    mainThread = zfAllocWithoutLeakTest(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId()] = mainThread;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_iOS_DataHolder)
 {
-    zfReleaseInternal(mainThread);
+    zfReleaseWithoutLeakTest(mainThread);
     mainThread = zfnull;
 }
 ZFThread *mainThread;

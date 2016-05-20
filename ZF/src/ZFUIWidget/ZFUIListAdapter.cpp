@@ -23,7 +23,7 @@ zfautoObject ZFUIListAdapter::listCellCacheDefaultAccess(ZF_IN const zfchar *key
     ZFArrayEditable *cacheList = this->toObject()->tagGet<ZFArrayEditable *>(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty())
     {
-        zfautoObject ret = zfautoObjectCreateWithLeakTest(cacheList->getLast());
+        zfautoObject ret = zfautoObjectCreate(cacheList->getLast());
         cacheList->removeLast();
         return ret;
     }
@@ -38,9 +38,9 @@ void ZFUIListAdapter::listCellCacheDefaultRecycle(ZF_IN const zfchar *key, ZF_IN
     ZFArrayEditable *cacheList = this->toObject()->tagGet<ZFArrayEditable *>(cacheKey);
     if(cacheList == zfnull)
     {
-        cacheList = zfAllocInternal(ZFArrayEditable);
+        cacheList = zfAllocWithoutLeakTest(ZFArrayEditable);
         this->toObject()->tagSetMarkCached(cacheKey, cacheList);
-        zfReleaseInternal(cacheList);
+        zfReleaseWithoutLeakTest(cacheList);
     }
     cacheList->add(cell);
 }

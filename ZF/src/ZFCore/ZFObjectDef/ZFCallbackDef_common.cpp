@@ -152,14 +152,14 @@ ZFOutputCallback _ZFP_ZFOutputCallbackForString(ZF_IN const zfcharA *ownerFilePa
                                                 ZF_IN zfindex ownerFileLine,
                                                 ZF_IN zfstring &s)
 {
-    _ZFP_ZFOutputCallbackForStringOwner *owner = zfAllocWithLeakTest(_ZFP_ZFOutputCallbackForStringOwner);
+    _ZFP_ZFOutputCallbackForStringOwner *owner = zfAlloc(_ZFP_ZFOutputCallbackForStringOwner);
     owner->pString = &s;
     owner->savedLength = owner->pString->length();
     ZFOutputCallback ret = ZFCallbackForMemberMethodDetail(
         owner, ZFMethodAccessClassMember(_ZFP_ZFOutputCallbackForStringOwner, onOutput),
         ownerFilePath, ownerFunctionName, ownerFileLine);
     ret.callbackTagSet(ZFCallbackTagKeyword_ioOwner, owner);
-    zfReleaseWithLeakTest(owner);
+    zfRelease(owner);
     return ret;
 }
 
@@ -293,7 +293,7 @@ ZFOutputCallback _ZFP_ZFOutputCallbackForBuffer(ZF_IN const zfcharA *ownerFilePa
     {
         return ZFCallbackNullDetail(ownerFilePath, ownerFunctionName, ownerFileLine);
     }
-    _ZFP_ZFOutputCallbackForBufferOwner *owner = zfAllocWithLeakTest(_ZFP_ZFOutputCallbackForBufferOwner);
+    _ZFP_ZFOutputCallbackForBufferOwner *owner = zfAlloc(_ZFP_ZFOutputCallbackForBufferOwner);
     owner->autoAppendNullToken = autoAppendNullToken;
     owner->pStart = (zfbyte *)buf;
     if(maxCount == zfindexMax)
@@ -314,7 +314,7 @@ ZFOutputCallback _ZFP_ZFOutputCallbackForBuffer(ZF_IN const zfcharA *ownerFilePa
         owner, ZFMethodAccessClassMember(_ZFP_ZFOutputCallbackForBufferOwner, onOutput),
         ownerFilePath, ownerFunctionName, ownerFileLine);
     ret.callbackTagSet(ZFCallbackTagKeyword_ioOwner, owner);
-    zfReleaseWithLeakTest(owner);
+    zfRelease(owner);
     return ret;
 }
 
@@ -683,7 +683,7 @@ ZFInputCallback _ZFP_ZFInputCallbackForInputInRange(ZF_IN const zfcharA *ownerFi
         return ZFCallbackNullDetail(ownerFilePath, ownerFunctionName, ownerFileLine);
     }
 
-    _ZFP_ZFInputCallbackForInputInRangeOwner *owner = zfAllocWithLeakTest(_ZFP_ZFInputCallbackForInputInRangeOwner);
+    _ZFP_ZFInputCallbackForInputInRangeOwner *owner = zfAlloc(_ZFP_ZFInputCallbackForInputInRangeOwner);
     owner->src = inputCallback;
     owner->srcStart = start;
     owner->srcCount = countFixed;
@@ -694,7 +694,7 @@ ZFInputCallback _ZFP_ZFInputCallbackForInputInRange(ZF_IN const zfcharA *ownerFi
         owner, ZFMethodAccessClassMember(_ZFP_ZFInputCallbackForInputInRangeOwner, onInput),
         ownerFilePath, ownerFunctionName, ownerFileLine);
     ret.callbackTagSet(ZFCallbackTagKeyword_ioOwner, owner);
-    zfReleaseWithLeakTest(owner);
+    zfRelease(owner);
 
     if(inputCallback.callbackId() != zfnull)
     {
@@ -872,7 +872,7 @@ ZFInputCallback _ZFP_ZFInputCallbackForBuffer(ZF_IN const zfcharA *ownerFilePath
         return ZFCallbackNullDetail(ownerFilePath, ownerFunctionName, ownerFileLine);
     }
 
-    _ZFP_ZFInputCallbackForBufferOwner *owner = zfAllocWithLeakTest(_ZFP_ZFInputCallbackForBufferOwner);
+    _ZFP_ZFInputCallbackForBufferOwner *owner = zfAlloc(_ZFP_ZFInputCallbackForBufferOwner);
     owner->isCopy = copy;
     owner->pStart = (const zfbyte *)src;
     owner->pEnd = owner->pStart + len;
@@ -885,10 +885,10 @@ ZFInputCallback _ZFP_ZFInputCallbackForBuffer(ZF_IN const zfcharA *ownerFilePath
     {
         ret.callbackTagSet(
             zfText("ZFInputCallbackForBufferCopiedBuffer"),
-            zflineAllocWithLeakTest(ZFTypeHolder, srcTmp, ZFTypeHolder::DeletePOD));
+            zflineAlloc(ZFTypeHolder, srcTmp, ZFTypeHolder::DeletePOD));
 
     }
-    zfReleaseWithLeakTest(owner);
+    zfRelease(owner);
     return ret;
 }
 
@@ -950,7 +950,7 @@ public:
 ZFIOBridgeCallbackUsingBuffer::ZFIOBridgeCallbackUsingBuffer(void)
 : ZFIOBridgeCallbackAbs()
 {
-    d = zfAllocInternal(_ZFP_ZFIOBridgeCallbackUsingBufferPrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFIOBridgeCallbackUsingBufferPrivate);
 }
 ZFIOBridgeCallbackUsingBuffer::ZFIOBridgeCallbackUsingBuffer(ZF_IN const ZFIOBridgeCallbackUsingBuffer &ref)
 : ZFIOBridgeCallbackAbs(ref)
@@ -960,15 +960,15 @@ ZFIOBridgeCallbackUsingBuffer::ZFIOBridgeCallbackUsingBuffer(ZF_IN const ZFIOBri
 }
 ZFIOBridgeCallbackUsingBuffer &ZFIOBridgeCallbackUsingBuffer::operator =(ZF_IN const ZFIOBridgeCallbackUsingBuffer &ref)
 {
-    zfRetainInternal(ref.d);
-    zfReleaseInternal(d);
+    zfRetainWithoutLeakTest(ref.d);
+    zfReleaseWithoutLeakTest(d);
     d = ref.d;
     return *this;
 }
 /** @endcond */
 ZFIOBridgeCallbackUsingBuffer::~ZFIOBridgeCallbackUsingBuffer(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
 }
 

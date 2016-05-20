@@ -29,7 +29,7 @@ zfbool ZFSet::serializableOnSerializeCategoryToDataWithRef(ZF_IN_OUT ZFSerializa
         return zffalse;
     }
 
-    zfblockedAllocInternal(zfself, tmp, ref);
+    zfblockedAllocWithoutLeakTest(zfself, tmp, ref);
     for(zfiterator it = this->iterator(); this->iteratorIsValid(it); )
     {
         ZFObject *element = this->iteratorNext(it);
@@ -68,12 +68,12 @@ ZFObject *ZFSet::objectOnInit(ZF_IN ZFContainer *another)
 ZFObject *ZFSet::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    d = zfAllocInternal(ZFMapEditable);
+    d = zfAllocWithoutLeakTest(ZFMapEditable);
     return this;
 }
 void ZFSet::objectOnDealloc(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }

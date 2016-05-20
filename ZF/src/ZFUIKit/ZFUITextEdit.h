@@ -195,7 +195,7 @@ public:
      */
     virtual void textContentStringSet(ZF_IN const zfchar *s)
     {
-        this->textContentSet(s ? zflineAllocWithLeakTest(ZFString, s) : zfnull);
+        this->textContentSet(s ? zflineAlloc(ZFString, s) : zfnull);
     }
 
     /**

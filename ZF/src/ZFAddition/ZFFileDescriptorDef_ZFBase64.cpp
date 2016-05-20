@@ -27,7 +27,7 @@ static ZFInputCallback _ZFP_ZFFileDescriptorInputCallbackGetter_Base64(ZF_IN con
         return ZFInputCallbackForBuffer(zfText(""), 0);
     }
     zfbyte *base64Buf = (zfbyte *)zfmalloc(base64Size);
-    zfblockedAllocWithLeakTest(ZFTypeHolder, bufSaved, base64Buf, ZFTypeHolder::DeletePOD);
+    zfblockedAlloc(ZFTypeHolder, bufSaved, base64Buf, ZFTypeHolder::DeletePOD);
     zfindex decodedSize = 0;
     if(!ZFBase64Decode(base64Buf, fileDescriptorData, dataLen, &decodedSize))
     {

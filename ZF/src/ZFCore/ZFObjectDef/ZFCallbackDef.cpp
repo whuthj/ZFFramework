@@ -121,7 +121,7 @@ public:
         zffree(callbackId);
         if(this->callbackOwnerObjectRetainFlag)
         {
-            zfReleaseWithLeakTest(this->callbackOwnerObj);
+            zfRelease(this->callbackOwnerObj);
         }
         zffree(this->serializableOwnerTag);
         zffree(this->serializableCustomType);
@@ -357,7 +357,7 @@ void ZFCallback::callbackTagSet(ZF_IN const zfchar *key,
             }
             else
             {
-                m[key] = zfautoObjectCreateWithLeakTest(tag);
+                m[key] = zfautoObjectCreate(tag);
             }
         }
     }
@@ -379,7 +379,7 @@ void ZFCallback::callbackTagSet(ZF_IN const zfchar *key,
             }
             else
             {
-                it->second = zfautoObjectCreateWithLeakTest(tag);
+                it->second = zfautoObjectCreate(tag);
             }
         }
     }
@@ -415,7 +415,7 @@ zfautoObject ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfchar *key)
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end())
         {
-            zfautoObject ret = zfautoObjectCreateWithLeakTest(it->second.toObject());
+            zfautoObject ret = zfautoObjectCreate(it->second.toObject());
             m.erase(it);
             return ret;
         }
@@ -490,7 +490,7 @@ void ZFCallback::callbackOwnerObjectRetain(void) const
 {
     if(d->callbackOwnerObj != zfnull && !d->callbackOwnerObjectRetainFlag)
     {
-        zfRetainWithLeakTest(d->callbackOwnerObj);
+        zfRetain(d->callbackOwnerObj);
         d->callbackOwnerObjectRetainFlag = zftrue;
     }
 }
@@ -499,7 +499,7 @@ void ZFCallback::callbackOwnerObjectRelease(void) const
     if(d->callbackOwnerObjectRetainFlag)
     {
         d->callbackOwnerObjectRetainFlag = zffalse;
-        zfReleaseWithLeakTest(d->callbackOwnerObj);
+        zfRelease(d->callbackOwnerObj);
     }
 }
 

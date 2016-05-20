@@ -481,7 +481,7 @@ zfbool ZFUIImageEncodeFromBase64(ZF_IN_OUT ZFUIImage *image,
 }
 zfautoObject ZFUIImageEncodeFromBase64(ZF_IN const ZFInputCallback &inputCallback)
 {
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(ZFUIImageEncodeFromBase64(ret.to<ZFUIImage *>(), inputCallback))
     {
         return ret;
@@ -524,7 +524,7 @@ zfbool ZFUIImageEncodeFromBinary(ZF_IN_OUT ZFUIImage *image,
 }
 zfautoObject ZFUIImageEncodeFromBinary(ZF_IN const ZFInputCallback &inputCallback)
 {
-    zfautoObject ret = ZFUIImage::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = ZFUIImage::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(ZFUIImageEncodeFromBinary(ret.to<ZFUIImage *>(), inputCallback))
     {
         return ret;

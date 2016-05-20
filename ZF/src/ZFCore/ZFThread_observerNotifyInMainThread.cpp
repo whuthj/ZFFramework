@@ -15,24 +15,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 zfclass _ZFP_I_ZFObserverNotifyInMainThreadTaskData : zfextends ZFObject, zfimplements ZFCacheable
 {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFObserverNotifyInMainThreadTaskData, ZFObject)
+    ZFOBJECT_DECLARE_ALLOW_CUSTOM_CONSTRUCTOR(_ZFP_I_ZFObserverNotifyInMainThreadTaskData, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFCacheable)
     ZFCACHEABLE_DECLARE(_ZFP_I_ZFObserverNotifyInMainThreadTaskData)
 
+public:
+    _ZFP_I_ZFObserverNotifyInMainThreadTaskData(void)
+    : obj(zfnull)
+    , customSender(zfnull)
+    , param0(zfnull)
+    , param1(zfnull)
+    {
+    }
+
 public: // use direct pointer for performance
     ZFObject *obj;
-    inline void objSet(ZF_IN ZFObject *obj) {this->obj = zfRetainInternal(obj);}
+    inline void objSet(ZF_IN ZFObject *obj) {zfRetainWithoutLeakTest(obj); zfReleaseWithoutLeakTest(this->obj); this->obj = obj;}
 
     ZFObject *customSender;
-    inline void customSenderSet(ZF_IN ZFObject *customSender) {this->customSender = zfRetainInternal(customSender);}
+    inline void customSenderSet(ZF_IN ZFObject *customSender) {zfRetainWithoutLeakTest(customSender); zfReleaseWithoutLeakTest(this->customSender); this->customSender = customSender;}
 
     zfidentity eventId;
 
     ZFObject *param0;
-    inline void param0Set(ZF_IN ZFObject *param0) {this->param0 = zfRetainInternal(param0);}
+    inline void param0Set(ZF_IN ZFObject *param0) {zfRetainWithoutLeakTest(param0); zfReleaseWithoutLeakTest(this->param0); this->param0 = param0;}
 
     ZFObject *param1;
-    inline void param1Set(ZF_IN ZFObject *param1) {this->param1 = zfRetainInternal(param1);}
+    inline void param1Set(ZF_IN ZFObject *param1) {zfRetainWithoutLeakTest(param1); zfReleaseWithoutLeakTest(this->param1); this->param1 = param1;}
 
 private:
     inline void removeAll(void)

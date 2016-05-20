@@ -143,7 +143,7 @@ public:
     {
         if(this->_mainWindow == zfnull)
         {
-            this->_mainWindow = zfRetainWithLeakTest(ZFUISysWindow::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
+            this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
             _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeWindow = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow new];
             nativeWindow.ownerZFUISysWindow = this->_mainWindow;
 
@@ -167,7 +167,7 @@ public:
             {
                 this->notifyOnPause(this->_mainWindow);
             }
-            zfblockedReleaseWithLeakTest(this->_mainWindow);
+            zfblockedRelease(this->_mainWindow);
             this->notifyOnDestroy(this->_mainWindow);
         }
     }
@@ -196,7 +196,7 @@ public:
 
     virtual ZFUISysWindow *modalWindowShow(ZF_IN ZFUISysWindow *ownerWindow)
     {
-        ZFUISysWindow *modalWindow = zfRetainWithLeakTest(ZFUISysWindow::ClassData()->newInstanceWithLeakTest(
+        ZFUISysWindow *modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance(
             ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE).to<ZFUISysWindow *>());
         _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeModalWindow = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow new];
         nativeModalWindow.ownerZFUISysWindow = modalWindow;

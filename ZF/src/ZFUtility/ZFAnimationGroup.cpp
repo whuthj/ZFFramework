@@ -62,14 +62,14 @@ public:
     virtual ZFObject *objectOnInit(void)
     {
         zfsuper::objectOnInit();
-        this->childAnis = zfAllocInternal(ZFArrayEditable);
-        this->childBuf = zfAllocInternal(ZFArrayEditable);
+        this->childAnis = zfAllocWithoutLeakTest(ZFArrayEditable);
+        this->childBuf = zfAllocWithoutLeakTest(ZFArrayEditable);
         return this;
     }
     virtual void objectOnDealloc(void)
     {
-        zfReleaseInternal(this->childAnis);
-        zfReleaseInternal(this->childBuf);
+        zfReleaseWithoutLeakTest(this->childAnis);
+        zfReleaseWithoutLeakTest(this->childBuf);
         zfsuper::objectOnDealloc();
     }
 
@@ -117,7 +117,7 @@ public:
         }
         if(!this->childBuf->isEmpty())
         {
-            zfblockedAllocInternal(ZFArrayEditable, childToStop, this->childBuf);
+            zfblockedAllocWithoutLeakTest(ZFArrayEditable, childToStop, this->childBuf);
             this->childBuf->removeAll();
             if(this->cachedParallel)
             {
@@ -144,7 +144,7 @@ private:
     void doStartParallel(void)
     {
         zfidentity aniId = this->owner->aniId();
-        zfblockedAllocInternal(ZFArrayEditable, tmpArray, this->childAnis);
+        zfblockedAllocWithoutLeakTest(ZFArrayEditable, tmpArray, this->childAnis);
         this->childBuf->addFrom(this->childAnis);
         for(zfindex i = 0; aniId == this->owner->aniId() && i < tmpArray->count(); ++i)
         {
@@ -384,13 +384,13 @@ zfbool ZFAnimationGroup::serializableOnSerializeCategoryToData(ZF_IN_OUT ZFSeria
 ZFObject *ZFAnimationGroup::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    d = zfAllocInternal(_ZFP_ZFAnimationGroupPrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFAnimationGroupPrivate);
     d->owner = this;
     return this;
 }
 void ZFAnimationGroup::objectOnDealloc(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
@@ -429,14 +429,14 @@ ZFCompareResult ZFAnimationGroup::objectCompare(ZF_IN ZFObject *anotherObj)
 // child animation control
 void ZFAnimationGroup::childAniAdd(ZF_IN ZFAnimation *ani)
 {
-    zfblockedAllocInternal(ZFAnimationGroupChildData, childData);
+    zfblockedAllocWithoutLeakTest(ZFAnimationGroupChildData, childData);
     childData->childAniSet(ani);
     this->childAniAdd(childData);
 }
 void ZFAnimationGroup::childAniAdd(ZF_IN ZFAnimation *ani,
                                    ZF_IN zfbool childAutoCopyTarget)
 {
-    zfblockedAllocInternal(ZFAnimationGroupChildData, childData);
+    zfblockedAllocWithoutLeakTest(ZFAnimationGroupChildData, childData);
     childData->childAniSet(ani);
     childData->childAutoCopyTargetSet(childAutoCopyTarget);
     this->childAniAdd(childData);

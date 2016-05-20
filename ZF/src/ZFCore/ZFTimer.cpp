@@ -120,7 +120,7 @@ const zftimet &ZFTimer::timerDelay(void)
 void ZFTimer::timerParam0Set(ZF_IN ZFObject *timerParam0)
 {
     zfCoreAssert(!this->timerStarted());
-    ZFPropertyChangeWithLeakTest(d->timerParam0, timerParam0);
+    ZFPropertyChange(d->timerParam0, timerParam0);
 }
 ZFObject *ZFTimer::timerParam0(void)
 {
@@ -129,7 +129,7 @@ ZFObject *ZFTimer::timerParam0(void)
 void ZFTimer::timerParam1Set(ZF_IN ZFObject *timerParam1)
 {
     zfCoreAssert(!this->timerStarted());
-    ZFPropertyChangeWithLeakTest(d->timerParam1, timerParam1);
+    ZFPropertyChange(d->timerParam1, timerParam1);
 }
 ZFObject *ZFTimer::timerParam1(void)
 {
@@ -153,7 +153,7 @@ void ZFTimer::timerStart(void)
     }
     d->timerStarted = zftrue;
 
-    zfRetainWithLeakTest(this);
+    zfRetain(this);
 
     d->timerActivatedCount = 0;
     ZFPROTOCOL_ACCESS(ZFTimer)->timerStart(this);
@@ -187,12 +187,12 @@ void ZFTimer::_ZFP_ZFTimer_timerOnStart(void)
 }
 void ZFTimer::_ZFP_ZFTimer_timerOnActivate(void)
 {
-    zfRetainWithLeakTest(this);
+    zfRetain(this);
     {
         ++(d->timerActivatedCount);
         this->timerOnActivate();
     }
-    zfReleaseWithLeakTest(this);
+    zfRelease(this);
 }
 void ZFTimer::_ZFP_ZFTimer_timerOnStop(void)
 {
@@ -202,7 +202,7 @@ void ZFTimer::_ZFP_ZFTimer_timerOnStop(void)
         ZFThread::nativeThreadUnregister(d->timerThreadToken);
         d->timerThreadToken = zfnull;
     }
-    zfReleaseWithLeakTest(this);
+    zfRelease(this);
 }
 
 ZF_NAMESPACE_GLOBAL_END

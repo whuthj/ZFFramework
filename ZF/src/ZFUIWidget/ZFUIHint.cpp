@@ -57,7 +57,7 @@ static ZFArrayEditable *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSy
     ZFArrayEditable *hintList = inSysWindow->tagGet<ZFArrayEditable *>(zfText("_ZFP_ZFUIHint_hintList"));
     if(hintList == zfnull)
     {
-        zfblockedAllocInternal(ZFArrayEditable, hintListTmp);
+        zfblockedAllocWithoutLeakTest(ZFArrayEditable, hintListTmp);
         hintList = hintListTmp;
         inSysWindow->tagSet(zfText("_ZFP_ZFUIHint_hintList"), hintList);
     }
@@ -65,11 +65,11 @@ static ZFArrayEditable *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSy
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIHintDataHolder, ZFLevelZFFrameworkNormal)
 {
-    this->syncObject = zfAllocInternal(ZFObject);
+    this->syncObject = zfAllocWithoutLeakTest(ZFObject);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIHintDataHolder)
 {
-    zfReleaseInternal(this->syncObject);
+    zfReleaseWithoutLeakTest(this->syncObject);
     this->syncObject = zfnull;
 }
 ZFObject *syncObject;
@@ -153,7 +153,7 @@ public:
             this->ownerZFUIHint,
             ZFUIOnScreenKeyboardState::instanceForSysWindow(this->ownerZFUIHint->hintWindow()->ownerSysWindow())->keyboardFrame(),
             ZFUIRectZero);
-        ZFPropertyChangeInternal(this->hintAnimating, this->ownerZFUIHint->hintAniShow());
+        ZFPropertyChangeWithoutLeakTest(this->hintAnimating, this->ownerZFUIHint->hintAniShow());
         if(this->hintAnimating != zfnull)
         {
             this->hintAnimating->observerAdd(ZFObject::ObserverAddParam()
@@ -177,7 +177,7 @@ public:
     }
     void hintDoShowDelay(void)
     {
-        ZFPropertyChangeInternal(this->hintAnimating, zfnull);
+        ZFPropertyChangeWithoutLeakTest(this->hintAnimating, zfnull);
         this->hintShowDelayTaskId = ZFThreadExecuteInMainThreadAfterDelay(
             this->ownerZFUIHint->hintDuration(),
             this->hintShowDelayTimeoutListener,
@@ -192,7 +192,7 @@ public:
     }
     void hintDoHide(void)
     {
-        ZFPropertyChangeInternal(this->hintAnimating, this->ownerZFUIHint->hintAniHide());
+        ZFPropertyChangeWithoutLeakTest(this->hintAnimating, this->ownerZFUIHint->hintAniHide());
         if(this->hintAnimating != zfnull)
         {
             this->hintAnimating->observerAdd(ZFObject::ObserverAddParam()
@@ -217,10 +217,10 @@ public:
     void hintDoFinish(void)
     {
         this->hintShowing = zffalse;
-        ZFPropertyChangeInternal(this->hintAnimating, zfnull);
+        ZFPropertyChangeWithoutLeakTest(this->hintAnimating, zfnull);
         ZFArrayEditable *hintList = _ZFP_ZFUIHint_hintListForWrite(this->ownerZFUIHint->hintWindow()->ownerSysWindow());
-        zfRetainInternal(this->ownerZFUIHint);
-        zfblockedReleaseInternal(this->ownerZFUIHint);
+        zfRetainWithoutLeakTest(this->ownerZFUIHint);
+        zfblockedReleaseWithoutLeakTest(this->ownerZFUIHint);
         hintList->removeElement(this->ownerZFUIHint, ZFComparerCheckEqualOnly);
         _ZFP_ZFUIHint_onScreenKeyboardApply(
             this->ownerZFUIHint,
@@ -267,8 +267,8 @@ ZFCoreArrayPOD<ZFUIHint *> ZFUIHint::hintList(ZF_IN_OPT ZFUISysWindow *inSysWind
 ZFPROPERTY_CUSTOM_SETTER_DEFINE(ZFUIHint, ZFUIView *, hintContent)
 {
     ZFUIView *old = this->hintContent();
-    zfRetainInternal(old);
-    zfblockedReleaseInternal(old);
+    zfRetainWithoutLeakTest(old);
+    zfblockedReleaseWithoutLeakTest(old);
     if(old != zfnull)
     {
         old->viewRemoveFromParent();
@@ -293,7 +293,7 @@ void ZFUIHint::hintShow(void)
         return ;
     }
     d->hintShowing = zftrue;
-    zfRetainWithLeakTest(this);
+    zfRetain(this);
 
     ZFArrayEditable *hintList = _ZFP_ZFUIHint_hintListForWrite(this->hintWindow()->ownerSysWindow());
     hintList->add(this);
@@ -315,15 +315,15 @@ void ZFUIHint::hintHide(void)
         {
             d->hintShowing = zffalse;
             d->hintDelaying = zffalse;
-            zfRetainInternal(this);
-            zfblockedReleaseInternal(this);
+            zfRetainWithoutLeakTest(this);
+            zfblockedReleaseWithoutLeakTest(this);
             ZFArrayEditable *hintList = _ZFP_ZFUIHint_hintListForWrite(this->hintWindow()->ownerSysWindow());
             hintList->removeElement(this, ZFComparerCheckEqualOnly);
             _ZFP_ZFUIHint_onScreenKeyboardApply(
                 this,
                 ZFUIRectZero,
                 ZFUIOnScreenKeyboardState::instanceForSysWindow(this->hintWindow()->ownerSysWindow())->keyboardFrame());
-            zfReleaseWithLeakTest(this);
+            zfRelease(this);
         }
         else
         {
@@ -335,12 +335,12 @@ void ZFUIHint::hintHide(void)
                 ZFAnimation *hintAniTmp = d->hintAnimating;
                 d->hintAnimating = zfnull;
                 hintAniTmp->aniStop();
-                zfReleaseInternal(hintAniTmp);
+                zfReleaseWithoutLeakTest(hintAniTmp);
             }
             d->hintShowing = zffalse;
             d->hintDelaying = zffalse;
             this->hintOnHide();
-            zfReleaseWithLeakTest(this);
+            zfRelease(this);
         }
     }
 }
@@ -364,7 +364,7 @@ ZFObject *ZFUIHint::objectOnInit(void)
 
     d->ownerZFUIHint = this;
 
-    d->hintWindow = zfAllocInternal(_ZFP_ZFUIHintWindow);
+    d->hintWindow = zfAllocWithoutLeakTest(_ZFP_ZFUIHintWindow);
     d->hintWindow->windowLevelSet(ZFUIWindowLevel::e_ZFFrameworkFgHighest);
     d->hintWindow->viewSizeMinSet(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeText()));
     d->hintWindow->windowLayoutParam()->layoutAlignSet(ZFUIAlign::e_Center);
@@ -423,7 +423,7 @@ void ZFUIHint::objectOnDealloc(void)
     if(d->hintAnimating != zfnull)
     {
         d->hintAnimating->aniStop();
-        ZFPropertyChangeInternal(d->hintAnimating, zfnull);
+        ZFPropertyChangeWithoutLeakTest(d->hintAnimating, zfnull);
     }
     if(d->hintShowDelayTaskId != zfidentityInvalid)
     {
@@ -431,7 +431,7 @@ void ZFUIHint::objectOnDealloc(void)
         d->hintShowDelayTaskId = zfidentityInvalid;
     }
     d->hintWindow->windowHide();
-    ZFPropertyChangeInternal(d->hintWindow, zfnull);
+    ZFPropertyChangeWithoutLeakTest(d->hintWindow, zfnull);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();

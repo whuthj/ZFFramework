@@ -195,7 +195,7 @@ void zfLangApplyProperty_zfstring(ZF_IN ZFObject *obj,
         _ZFP_zfLangApplyProperty_zfstring_objIdentity(property),
         langKey,
         _ZFP_zfLangApplyProperty_zfstring::_ZFP_action,
-        zflineAllocInternal(ZFPointerHolder, property));
+        zflineAllocWithoutLeakTest(ZFPointerHolder, property));
 }
 void zfLangApplyCancelProperty_zfstring(ZF_IN ZFObject *obj,
                                         ZF_IN const ZFProperty *property)

@@ -45,13 +45,13 @@ void *ZFSemaphore::nativeSemaphore(void)
 
 void ZFSemaphore::semaphoreLock(void)
 {
-    zfRetainInternal(this);
+    zfRetainWithoutLeakTest(this);
     d->impl->semaphoreLock(this);
 }
 void ZFSemaphore::semaphoreUnlock(void)
 {
     d->impl->semaphoreUnlock(this);
-    zfReleaseInternal(this);
+    zfReleaseWithoutLeakTest(this);
 }
 
 void ZFSemaphore::semaphoreSignal(void)

@@ -59,7 +59,7 @@ zfbool ZFMap::serializableOnSerializeCategoryToDataWithRef(ZF_IN_OUT ZFSerializa
         return zffalse;
     }
 
-    zfblockedAllocInternal(zfself, tmp, ref);
+    zfblockedAllocWithoutLeakTest(zfself, tmp, ref);
     for(zfiterator it = this->iterator(); this->iteratorIsValid(it); )
     {
         ZFKeyValuePair pair = this->iteratorNextPair(it);
@@ -256,15 +256,15 @@ void ZFMap::addFrom(ZF_IN ZFKeyValueContainer *another)
         {
             this->contentOnRemove(itExisting->first, itExisting->second);
             ZFObject *tmp = itExisting->second;
-            zfRetainWithLeakTest(pair.value);
+            zfRetain(pair.value);
             itExisting->second = pair.value;
             this->contentOnAdd(itExisting->first, itExisting->second);
-            zfReleaseWithLeakTest(tmp);
+            zfRelease(tmp);
         }
         else
         {
-            zfRetainWithLeakTest(pair.key);
-            zfRetainWithLeakTest(pair.value);
+            zfRetain(pair.key);
+            zfRetain(pair.value);
             (d->data)[pair.key] = pair.value;
         }
     }
@@ -293,15 +293,15 @@ void ZFMap::set(ZF_IN ZFObject *pKey,
     {
         this->contentOnRemove(it->first, it->second);
         ZFObject *tmp = it->second;
-        zfRetainWithLeakTest(pValue);
+        zfRetain(pValue);
         it->second = pValue;
         this->contentOnAdd(it->first, it->second);
-        zfReleaseWithLeakTest(tmp);
+        zfRelease(tmp);
     }
     else
     {
-        zfRetainWithLeakTest(pKey);
-        zfRetainWithLeakTest(pValue);
+        zfRetain(pKey);
+        zfRetain(pValue);
         (d->data)[pKey] = pValue;
     }
 
@@ -319,8 +319,8 @@ void ZFMap::remove(ZF_IN ZFObject *pKey)
             ZFObject *tmpValue = it->second;
             d->data.erase(it);
             this->contentOnRemove(tmpKey, tmpValue);
-            zfReleaseWithLeakTest(tmpKey);
-            zfReleaseWithLeakTest(tmpValue);
+            zfRelease(tmpKey);
+            zfRelease(tmpValue);
 
             this->contentOnChange();
         }
@@ -340,9 +340,9 @@ zfautoObject ZFMap::removeAndGet(ZF_IN ZFObject *pKey)
             this->contentOnRemove(tmpKey, tmpValue);
             this->contentOnChange();
 
-            zfReleaseWithLeakTest(tmpKey);
-            zfblockedReleaseWithLeakTest(tmpValue);
-            return zfautoObjectCreateWithLeakTest(tmpValue);
+            zfRelease(tmpKey);
+            zfblockedRelease(tmpValue);
+            return zfautoObjectCreate(tmpValue);
         }
     }
     return zfautoObjectNull;
@@ -355,10 +355,10 @@ ZFKeyValuePairAutoRelease ZFMap::removeAndGetPair(ZF_IN ZFObject *pKey)
         _ZFP_ZFMapPrivate::MapType::iterator it = d->data.find(pKey);
         if(it != d->data.end())
         {
-            zfblockedReleaseWithLeakTest(it->first);
-            zfblockedReleaseWithLeakTest(it->second);
-            ret.key = zfautoObjectCreateWithLeakTest(it->first);
-            ret.value = zfautoObjectCreateWithLeakTest(it->second);
+            zfblockedRelease(it->first);
+            zfblockedRelease(it->second);
+            ret.key = zfautoObjectCreate(it->first);
+            ret.value = zfautoObjectCreate(it->second);
             d->data.erase(it);
 
             this->contentOnRemove(ret.key.toObject(), ret.value.toObject());
@@ -384,8 +384,8 @@ void ZFMap::removeAll(void)
         for(zfindex i = 0; i < count; i += 2)
         {
             this->contentOnRemove(tmp[i], tmp[i + 1]);
-            zfReleaseWithLeakTest(tmp[i]);
-            zfReleaseWithLeakTest(tmp[i + 1]);
+            zfRelease(tmp[i]);
+            zfRelease(tmp[i + 1]);
         }
         zffree(tmp);
 
@@ -429,10 +429,10 @@ void ZFMap::iteratorSet(ZF_IN_OUT zfiterator &it,
     {
         this->contentOnRemove((*data)->first, (*data)->second);
         ZFObject *tmp = (*data)->second;
-        zfRetainWithLeakTest(value);
+        zfRetain(value);
         (*data)->second = value;
         this->contentOnAdd((*data)->first, (*data)->second);
-        zfReleaseWithLeakTest(tmp);
+        zfRelease(tmp);
 
         this->contentOnChange();
     }
@@ -449,8 +449,8 @@ void ZFMap::iteratorRemove(ZF_IN_OUT zfiterator &it)
         this->contentOnRemove(tmpKey, tmpValue);
         this->contentOnChange();
 
-        zfReleaseWithLeakTest(tmpKey);
-        zfReleaseWithLeakTest(tmpValue);
+        zfRelease(tmpKey);
+        zfRelease(tmpValue);
     }
 }
 zfiterator ZFMap::iteratorForKey(ZF_IN ZFObject *key)

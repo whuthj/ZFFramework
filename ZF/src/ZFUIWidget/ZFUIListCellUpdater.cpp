@@ -22,7 +22,7 @@ zfautoObject ZFUIListCellUpdater::itemCacheAccess(ZF_IN const zfchar *key)
     ZFArrayEditable *cacheList = this->tagGet<ZFArrayEditable *>(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty())
     {
-        zfautoObject ret = zfautoObjectCreateWithLeakTest(cacheList->getLast());
+        zfautoObject ret = zfautoObjectCreate(cacheList->getLast());
         cacheList->removeLast();
         return ret;
     }
@@ -37,9 +37,9 @@ void ZFUIListCellUpdater::itemCacheRecycle(ZF_IN const zfchar *key, ZF_IN ZFObje
     ZFArrayEditable *cacheList = this->tagGet<ZFArrayEditable *>(cacheKey);
     if(cacheList == zfnull)
     {
-        cacheList = zfAllocInternal(ZFArrayEditable);
+        cacheList = zfAllocWithoutLeakTest(ZFArrayEditable);
         this->tagSetMarkCached(cacheKey, cacheList);
-        zfReleaseInternal(cacheList);
+        zfReleaseWithoutLeakTest(cacheList);
     }
     cacheList->add(cache);
 }

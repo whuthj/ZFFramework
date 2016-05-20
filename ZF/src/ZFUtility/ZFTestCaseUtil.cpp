@@ -23,7 +23,7 @@ zfbool ZFTestCaseRun(ZF_IN const ZFClass *cls,
     {
         return zffalse;
     }
-    zfautoObject testCaseTmp = cls->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject testCaseTmp = cls->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(testCaseTmp == zfautoObjectNull || !testCaseTmp.toObject()->classData()->classIsSubclassOf(ZFTestCase::ClassData()))
     {
         return zffalse;

@@ -179,7 +179,7 @@ ZFCompareResult ZFOperationStartParam::objectCompare(ZF_IN ZFObject *anotherObj)
 
 void ZFOperationStartParam::operationTaskDataSet(ZF_IN ZFOperationTaskData *operationTaskData)
 {
-    ZFPropertyChangeWithLeakTest(this->_operationTaskData, operationTaskData);
+    ZFPropertyChange(this->_operationTaskData, operationTaskData);
 }
 ZFObject *ZFOperationStartParam::objectOnInit(void)
 {

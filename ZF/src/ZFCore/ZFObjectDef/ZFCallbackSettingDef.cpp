@@ -39,10 +39,10 @@ void _ZFP_ZFCallbackSettingSet(ZF_IN_OUT const ZFCallback &o, ZF_IN const zfchar
     }
     else
     {
-        _ZFP_I_ZFCallbackSettingHolder *holder = zfAllocInternal(_ZFP_I_ZFCallbackSettingHolder);
+        _ZFP_I_ZFCallbackSettingHolder *holder = zfAllocWithoutLeakTest(_ZFP_I_ZFCallbackSettingHolder);
         holder->value = sp.refNew();
         ZFCallback(o).callbackTagSet(name, holder);
-        zfReleaseInternal(holder);
+        zfReleaseWithoutLeakTest(holder);
     }
 }
 const ZFCorePointerBase *_ZFP_ZFCallbackSettingGet(ZF_IN const ZFCallback &o, ZF_IN const zfchar *name)

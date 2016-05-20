@@ -26,7 +26,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder)
 {
     if(this->logMutex != zfnull)
     {
-        zfReleaseInternal(this->logMutex);
+        zfReleaseWithoutLeakTest(this->logMutex);
         this->logMutex = zfnull;
     }
 }
@@ -34,7 +34,7 @@ ZFMutex *getLogMutex(void)
 {
     if(this->logMutex == zfnull)
     {
-        this->logMutex = zfAllocInternal(_ZFP_I_ZFLogMutex,
+        this->logMutex = zfAllocWithoutLeakTest(_ZFP_I_ZFLogMutex,
             zfHint("ignore if impl not available")zftrue);
         this->logMutex->objectDebugInfoSet(zfText("ZFLogMutex"));
     }

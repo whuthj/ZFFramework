@@ -40,17 +40,17 @@ zfint ZFMainExecute(ZF_IN_OPT ZFArray *params)
 int ZFMainCommonEntry(ZF_IN int argc /* = 0 */, char **argv /* = zfnull */)
 {
     ZFFrameworkInit();
-    ZFArrayEditable *params = zfAllocInternal(ZFArrayEditable);
+    ZFArrayEditable *params = zfAllocWithoutLeakTest(ZFArrayEditable);
 
     for(int i = 0; i < argc; ++i)
     {
-        ZFString *s = zfAllocInternal(ZFString, ZFStringA2Z(argv[i]));
+        ZFString *s = zfAllocWithoutLeakTest(ZFString, ZFStringA2Z(argv[i]));
         params->add(s);
-        zfReleaseInternal(s);
+        zfReleaseWithoutLeakTest(s);
     }
 
     zfint result = ZFMainExecute(params);
-    zfReleaseInternal(params);
+    zfReleaseWithoutLeakTest(params);
     ZFFrameworkCleanup();
     return result;
 }

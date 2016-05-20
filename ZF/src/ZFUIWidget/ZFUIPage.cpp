@@ -63,7 +63,7 @@ void ZFUIPage::_ZFP_ZFUIPage_pageDestroy(void)
     this->pageOnDestroy();
     zfCoreAssertWithMessageTrim(this->_ZFP_ZFUIPage_pageOnDestroyCalled, zfTextA("[ZFUIPage] you must call zfsuperI(ZFUIPage)::pageOnDestroy"));
     this->_ZFP_ZFUIPage_pageCreated = zffalse;
-    ZFPropertyChangeWithLeakTest(this->_ZFP_ZFUIPage_pageCreateParam, zfnull);
+    ZFPropertyChange(this->_ZFP_ZFUIPage_pageCreateParam, zfnull);
 }
 
 ZF_NAMESPACE_GLOBAL_END

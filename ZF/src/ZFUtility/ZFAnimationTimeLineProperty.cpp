@@ -166,7 +166,7 @@ void ZFAnimationTimeLineProperty::stepAdd(ZF_IN ZFTimeLineProperty *step)
 {
     zfCoreAssert(!this->aniRunning());
     zfCoreAssert(step != zfnull);
-    d->steps.add(zfRetainWithLeakTest(step));
+    d->steps.add(zfRetain(step));
 }
 void ZFAnimationTimeLineProperty::stepRemove(ZF_IN ZFTimeLineProperty *step)
 {
@@ -175,7 +175,7 @@ void ZFAnimationTimeLineProperty::stepRemove(ZF_IN ZFTimeLineProperty *step)
     if(index != zfindexMax)
     {
         d->steps.remove(index);
-        zfReleaseWithLeakTest(step);
+        zfRelease(step);
     }
 }
 void ZFAnimationTimeLineProperty::stepRemoveAtIndex(ZF_IN zfindex index)
@@ -183,7 +183,7 @@ void ZFAnimationTimeLineProperty::stepRemoveAtIndex(ZF_IN zfindex index)
     zfCoreAssert(!this->aniRunning());
     ZFTimeLineProperty *step = d->steps[index];
     d->steps.remove(index);
-    zfReleaseWithLeakTest(step);
+    zfRelease(step);
 }
 void ZFAnimationTimeLineProperty::stepRemoveAll(void)
 {
@@ -195,7 +195,7 @@ void ZFAnimationTimeLineProperty::stepRemoveAll(void)
         d->steps.removeAll();
         for(zfindex i = 0; i < tmp.count(); ++i)
         {
-            zfReleaseWithLeakTest(tmp[i]);
+            zfRelease(tmp[i]);
         }
     }
 }

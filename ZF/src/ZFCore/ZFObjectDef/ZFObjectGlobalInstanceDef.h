@@ -214,7 +214,7 @@ public:
     _ZFP_ZFCLASS_SINGLETON_DEFINE(OwnerClass, \
                                   AccessTypeName, ObjectTypeName, sig, accessMethodName, \
                                   ZFLevel_, \
-                                  zfAllocWithLeakTest, zfReleaseWithLeakTest, zfRetainWithLeakTest, zfReleaseWithLeakTest) \
+                                  zfAlloc, zfRelease, zfRetain, zfRelease) \
     ZFMETHOD_MEMBER_DEFINE_0(OwnerClass, ZFObject *, accessMethodName##Reflect) \
     { \
         return ZFCastZFObjectUnchecked(ZFObject *, zfself::accessMethodName()); \

@@ -100,7 +100,7 @@ public:
     ZFPROPERTY_CUSTOM_SETTER_DECLARE(ZFUIButtonGroupTypeEnum, buttonGroupType);
 
 private:
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFArrayEditable *, _ZFP_ZFUIButtonGroup_buttons, ZFPropertyInitValue(zflineAllocInternal(ZFArrayEditable)))
+    ZFPROPERTY_RETAIN_WITH_INIT(ZFArrayEditable *, _ZFP_ZFUIButtonGroup_buttons, ZFPropertyInitValue(zflineAllocWithoutLeakTest(ZFArrayEditable)))
 public:
     /**
      * @brief button count

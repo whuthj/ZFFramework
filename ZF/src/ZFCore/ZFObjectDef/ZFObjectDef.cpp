@@ -161,7 +161,7 @@ ZFObjectHolder *ZFObject::objectHolder(void)
 {
     if(d->objectHolder == zfnull)
     {
-        d->objectHolder = zfAllocInternal(ZFObjectHolder, this);
+        d->objectHolder = zfAllocWithoutLeakTest(ZFObjectHolder, this);
     }
     return d->objectHolder;
 }
@@ -235,7 +235,7 @@ void ZFObject::tagSet(ZF_IN const zfchar *key,
             }
             else
             {
-                m[key] = zflockfree_zfautoObjectCreateWithLeakTest(tag);
+                m[key] = zflockfree_zfautoObjectCreate(tag);
             }
         }
     }
@@ -257,7 +257,7 @@ void ZFObject::tagSet(ZF_IN const zfchar *key,
             }
             else
             {
-                it->second = zflockfree_zfautoObjectCreateWithLeakTest(tag);
+                it->second = zflockfree_zfautoObjectCreate(tag);
             }
         }
     }
@@ -298,7 +298,7 @@ zfautoObject ZFObject::tagRemoveAndGet(ZF_IN const zfchar *key)
         _ZFP_ZFObjectTagMapType::iterator it = d->tagMap.find(key);
         if(it != d->tagMap.end())
         {
-            zfautoObject ret = zfautoObjectCreateWithLeakTest(it->second.toObject());
+            zfautoObject ret = zfautoObjectCreate(it->second.toObject());
             d->tagMap.erase(it);
             return ret;
         }
@@ -360,7 +360,7 @@ void ZFObject::observerAdd(ZF_IN const zfidentity &eventId,
         observerList->insert(observerList->begin() + index, _ZFP_ZFObjectObserverListData(
             eventId
             , observer
-            , zflockfree_zfRetainWithLeakTest(userData)
+            , zflockfree_zfRetain(userData)
             , owner
             , autoRemoveAfterActivate
             , observerLevel
@@ -373,7 +373,7 @@ void ZFObject::observerAdd(ZF_IN const zfidentity &eventId,
         observerListTmp.push_back(_ZFP_ZFObjectObserverListData(
             eventId
             , observer
-            , zflockfree_zfRetainWithLeakTest(userData)
+            , zflockfree_zfRetain(userData)
             , owner
             , autoRemoveAfterActivate
             , observerLevel
@@ -412,7 +412,7 @@ void ZFObject::observerRemove(ZF_IN const zfidentity &eventId,
                 if(toRemove != zfnull)
                 {
                     toRemove->objectCachedSet(zffalse);
-                    zflockfree_zfReleaseWithLeakTest(toRemove);
+                    zflockfree_zfRelease(toRemove);
                 }
                 break;
             }
@@ -464,7 +464,7 @@ void ZFObject::observerRemoveByOwner(ZF_IN ZFObject *owner)
                 if(userDataTmp != zfnull)
                 {
                     userDataTmp->objectCachedSet(zffalse);
-                    zflockfree_zfReleaseWithLeakTest(userDataTmp);
+                    zflockfree_zfRelease(userDataTmp);
                 }
             }
         }
@@ -493,7 +493,7 @@ void ZFObject::observerRemoveAll(ZF_IN const zfidentity &eventId)
                     if(userDataTmp != zfnull)
                     {
                         userDataTmp->objectCachedSet(zffalse);
-                        zflockfree_zfReleaseWithLeakTest(userDataTmp);
+                        zflockfree_zfRelease(userDataTmp);
                     }
                 }
             }
@@ -529,7 +529,7 @@ void ZFObject::observerRemoveAll(void)
                 if(userDataTmp != zfnull)
                 {
                     userDataTmp->objectCachedSet(zffalse);
-                    zflockfree_zfReleaseWithLeakTest(userDataTmp);
+                    zflockfree_zfRelease(userDataTmp);
                 }
             }
         }
@@ -601,7 +601,7 @@ void ZFObject::observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
                 {
                     ZFObject *userDataTmp = toRelease[i];
                     userDataTmp->objectCachedSet(zffalse);
-                    zflockfree_zfReleaseWithLeakTest(userDataTmp);
+                    zflockfree_zfRelease(userDataTmp);
                 }
             }
         }
@@ -823,7 +823,7 @@ void ZFObject::objectOnDealloc(void)
     if(d->objectHolder)
     {
         d->objectHolder->holdedObj = (ZFObject *)zfnull;
-        zfReleaseInternal(d->objectHolder);
+        zfReleaseWithoutLeakTest(d->objectHolder);
     }
 
     zfpoolDelete(d);

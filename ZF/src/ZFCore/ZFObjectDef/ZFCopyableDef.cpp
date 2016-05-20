@@ -16,7 +16,7 @@ ZFOBJECT_REGISTER(ZFCopyable)
 
 zfautoObject ZFCopyable::copy(void)
 {
-    zfautoObject ret = this->classData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject ret = this->classData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(ret != zfautoObjectNull)
     {
         ZFCastZFObjectUnchecked(zfself *, ret.toObject())->copyableOnCopyFrom(this->toObject());

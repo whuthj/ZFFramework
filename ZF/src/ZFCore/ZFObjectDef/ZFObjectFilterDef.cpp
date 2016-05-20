@@ -32,7 +32,7 @@ ZFFilterForZFObject::~ZFFilterForZFObject(void)
 {
     for(zfindex i = 0; i < this->filterCount(); ++i)
     {
-        zfReleaseWithLeakTest(this->filterGetInternal(i));
+        zfRelease(this->filterGetInternal(i));
     }
 }
 
@@ -42,7 +42,7 @@ void ZFFilterForZFObject::copyFrom(ZF_IN ZFFilterForZFObject const &ref)
     zfsuper::copyFrom(ref);
     for(zfindex i = 0; i < this->filterCount(); ++i)
     {
-        zfRetainWithLeakTest(this->filterGetInternal(i));
+        zfRetain(this->filterGetInternal(i));
     }
     this->classFilter.copyFrom(ref.classFilter);
 }
@@ -56,11 +56,11 @@ zfbool ZFFilterForZFObject::filterOnCheckValid(ZF_IN ZFObject * const &e) const
 void ZFFilterForZFObject::filterOnStore(ZF_IN_OUT ZFObject * &to,
                                         ZF_IN ZFObject * const &from) const
 {
-    to = zfRetainWithLeakTest(from);
+    to = zfRetain(from);
 }
 void ZFFilterForZFObject::filterOnRemove(ZF_IN_OUT ZFObject * &value) const
 {
-    zfReleaseWithLeakTest(value);
+    zfRelease(value);
 }
 zfbool ZFFilterForZFObject::filterOnCheckEqual(ZF_IN ZFObject * const &e1,
                                                ZF_IN ZFObject * const &e2) const

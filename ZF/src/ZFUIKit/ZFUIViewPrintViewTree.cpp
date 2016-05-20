@@ -22,7 +22,7 @@ void ZFUIViewPrintViewTreeDelayed(ZF_IN ZFUIView *view,
 {
     ZFThreadTaskRequest(
         ZFCallbackForRawFunction(_ZFP_ZFUIViewPrintViewTreeDelayedAction),
-        zflineAllocInternal(ZFListenerHolder, outputCallback, ZFListenerData(zfidentityInvalid, zfnull, view)));
+        zflineAllocWithoutLeakTest(ZFListenerHolder, outputCallback, ZFListenerData(zfidentityInvalid, zfnull, view)));
 }
 
 void ZFUIViewPrintViewTreeDelayed(ZF_IN zftimet delay,
@@ -32,7 +32,7 @@ void ZFUIViewPrintViewTreeDelayed(ZF_IN zftimet delay,
     ZFThreadExecuteInMainThreadAfterDelay(
         delay,
         ZFCallbackForRawFunction(_ZFP_ZFUIViewPrintViewTreeDelayedAction),
-        zflineAllocInternal(ZFListenerHolder, outputCallback, ZFListenerData(zfidentityInvalid, zfnull, view)));
+        zflineAllocWithoutLeakTest(ZFListenerHolder, outputCallback, ZFListenerData(zfidentityInvalid, zfnull, view)));
 }
 
 // ============================================================
@@ -62,11 +62,11 @@ public:
 static ZFObject *_ZFP_ZFUIViewPrintViewTreeSyncObject = zfnull;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewPrintViewTreeSyncObjectHolder, ZFLevelZFFrameworkNormal)
 {
-    _ZFP_ZFUIViewPrintViewTreeSyncObject = zfAllocInternal(ZFObject);
+    _ZFP_ZFUIViewPrintViewTreeSyncObject = zfAllocWithoutLeakTest(ZFObject);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewPrintViewTreeSyncObjectHolder)
 {
-    zfReleaseInternal(_ZFP_ZFUIViewPrintViewTreeSyncObject);
+    zfReleaseWithoutLeakTest(_ZFP_ZFUIViewPrintViewTreeSyncObject);
     _ZFP_ZFUIViewPrintViewTreeSyncObject = zfnull;
 }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewPrintViewTreeSyncObjectHolder);

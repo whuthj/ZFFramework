@@ -27,8 +27,8 @@ protected:
         this->testCaseOutput(zfText("ZFLeakTest, should have no leak:"));
         ZFLeakTestBegin();
         {
-            obj1 = zfAllocWithLeakTest(ZFString, zfText("obj1")); // obj1 : 1
-            zfReleaseWithLeakTest(obj1); // obj1 : 0
+            obj1 = zfAlloc(ZFString, zfText("obj1")); // obj1 : 1
+            zfRelease(obj1); // obj1 : 0
             obj1 = zfnull;
         }
         ZFLeakTestPrintStatus();
@@ -38,30 +38,30 @@ protected:
         this->testCaseOutput(zfText("ZFLeakTest, should have two object leaked:"));
         ZFLeakTestBegin();
         {
-            obj1 = zfAllocWithLeakTest(ZFString, zfText("obj1")); // obj1 : 1
-            zfRetainWithLeakTest(obj1); // obj1 : 2
+            obj1 = zfAlloc(ZFString, zfText("obj1")); // obj1 : 1
+            zfRetain(obj1); // obj1 : 2
 
-            obj2 = zfAllocWithLeakTest(ZFString, zfText("obj2")); // obj2 : 1
+            obj2 = zfAlloc(ZFString, zfText("obj2")); // obj2 : 1
 
-            obj3 = zfAllocWithLeakTest(ZFString, zfText("obj3")); // obj3 : 1
+            obj3 = zfAlloc(ZFString, zfText("obj3")); // obj3 : 1
 
             ZFLeakTestBegin();
             {
-                zfRetainWithLeakTest(obj1); // obj1 : 3
-                zfReleaseWithLeakTest(obj1); // obj1 : 2
+                zfRetain(obj1); // obj1 : 3
+                zfRelease(obj1); // obj1 : 2
 
-                zfReleaseWithLeakTest(obj2); // obj2 : 0, over-released by disabled by default
+                zfRelease(obj2); // obj2 : 0, over-released by disabled by default
                 obj2 = zfnull;
 
-                zfRetainWithLeakTest(obj3); // obj3 : 2
+                zfRetain(obj3); // obj3 : 2
             }
             ZFLeakTestPrintStatus(); // should have obj3 leaked from 1 to 2
             ZFLeakTestEnd();
 
-            zfReleaseWithLeakTest(obj1); // obj1 : 1
+            zfRelease(obj1); // obj1 : 1
 
-            zfReleaseWithLeakTest(obj3); // obj3 : 1
-            zfReleaseWithLeakTest(obj3); // obj2 : 0
+            zfRelease(obj3); // obj3 : 1
+            zfRelease(obj3); // obj2 : 0
             obj3 = zfnull;
         }
         ZFLeakTestPrintStatus(); // should have obj1 leaked from 0 to 1
@@ -73,9 +73,9 @@ protected:
         this->testCaseOutput(zfText("ZFLeakTest, leak test with blocked alloc object:"));
         ZFLeakTestBegin();
         {
-            zfblockedAllocWithLeakTest(ZFString, obj1_tmp, zfText("obj1"));
+            zfblockedAlloc(ZFString, obj1_tmp, zfText("obj1"));
             obj1 = obj1_tmp;
-            zfRetainWithLeakTest(obj1);
+            zfRetain(obj1);
         }
         ZFLeakTestPrintStatus(); // should have obj1 leaked from 0 to 1
         zfReleaseWithoutLeakTest(obj1); obj1 = zfnull;
@@ -85,10 +85,10 @@ protected:
         this->testCaseOutput(zfText("ZFLeakTest, four leaked objects but one is filtered by instance, one by class name and one by global instance filter:"));
         ZFLeakTestBegin();
         {
-            obj1 = zfAllocWithLeakTest(ZFString, zfText("obj1"));
-            obj2 = zfAllocWithLeakTest(ZFString, zfText("obj2"));
-            obj3 = zfAllocWithLeakTest(ZFStringEditable, zfText("obj3"));
-            obj4 = zfAllocWithLeakTest(ZFObject);
+            obj1 = zfAlloc(ZFString, zfText("obj1"));
+            obj2 = zfAlloc(ZFString, zfText("obj2"));
+            obj3 = zfAlloc(ZFStringEditable, zfText("obj3"));
+            obj4 = zfAlloc(ZFObject);
         }
         ZFLeakTestExcludeInstanceAdd(obj4);
         ZFLeakTestObjectFilter filter;
@@ -109,8 +109,8 @@ protected:
         obj2 = zfAllocWithoutLeakTest(ZFString, zfText("obj2"));
         ZFLeakTestBegin(ZFLeakTestBeginParam().checkOverReleaseSet(zftrue));
         {
-            zfReleaseWithLeakTest(obj1); // 2 > 1, over-released
-            zfReleaseWithLeakTest(obj2); // 1 > 0, over-released, should be printed immediately since obj2 would be deallocated
+            zfRelease(obj1); // 2 > 1, over-released
+            zfRelease(obj2); // 1 > 0, over-released, should be printed immediately since obj2 would be deallocated
         }
         ZFLeakTestPrintStatus(); // should have obj1 over-released from 2 to 1
         zfReleaseWithoutLeakTest(obj1); obj1 = zfnull;

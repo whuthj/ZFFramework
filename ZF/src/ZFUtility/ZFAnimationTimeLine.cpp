@@ -43,14 +43,14 @@ public:
     virtual ZFObject *objectOnInit(void)
     {
         zfsuper::objectOnInit();
-        this->timer = zfAllocInternal(ZFTimer);
+        this->timer = zfAllocWithoutLeakTest(ZFTimer);
         this->timer->observerAdd(ZFTimer::EventTimerOnActivate(),
             ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, timerOnEvent)));
         return this;
     }
     virtual void objectOnDealloc(void)
     {
-        zfReleaseInternal(this->timer);
+        zfReleaseWithoutLeakTest(this->timer);
         zfsuper::objectOnDealloc();
     }
 };
@@ -63,13 +63,13 @@ ZFOBJECT_REGISTER(ZFAnimationTimeLine)
 ZFObject *ZFAnimationTimeLine::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    d = zfAllocInternal(_ZFP_ZFAnimationTimeLinePrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFAnimationTimeLinePrivate);
     d->owner = this;
     return this;
 }
 void ZFAnimationTimeLine::objectOnDealloc(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }

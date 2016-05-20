@@ -41,7 +41,7 @@ ZFUIWebJSBridge *ZFUIWebJSBridge::instanceForWebView(ZF_IN ZFUIWebView *webView)
     ZFUIWebJSBridge *ret = webView->tagGet<ZFUIWebJSBridge *>(_ZFP_ZFUIWebJSBridge_tagKey);
     if(ret == zfnull)
     {
-        zfblockedAllocWithLeakTest(ZFUIWebJSBridge, tmp);
+        zfblockedAlloc(ZFUIWebJSBridge, tmp);
         webView->tagSet(_ZFP_ZFUIWebJSBridge_tagKey, tmp);
         ret->d->webView = webView;
         ret = tmp;

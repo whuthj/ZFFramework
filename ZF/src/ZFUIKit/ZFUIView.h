@@ -909,7 +909,7 @@ protected:
         }
         if(ZFOBSERVER_HAS_ADD(HasAdd_ViewChildOnAdd))
         {
-            zfblockedAllocInternal(ZFUIViewChildLayer, t, layer);
+            zfblockedAllocWithoutLeakTest(ZFUIViewChildLayer, t, layer);
             this->observerNotify(ZFUIView::EventViewChildOnAdd(), child, t);
         }
     }
@@ -919,7 +919,7 @@ protected:
     {
         if(ZFOBSERVER_HAS_ADD(HasAdd_ViewChildOnRemove))
         {
-            zfblockedAllocInternal(ZFUIViewChildLayer, t, layer);
+            zfblockedAllocWithoutLeakTest(ZFUIViewChildLayer, t, layer);
             this->observerNotify(ZFUIView::EventViewChildOnRemove(), child, t);
         }
         if(this->objectCached())

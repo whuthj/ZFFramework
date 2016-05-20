@@ -38,7 +38,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadTaskRequestDataHolder, ZFLevelZFFr
     *_ZFP_ZFThread_mergeCallbackIgnoreNewTask = ZFCallbackForMethod(ZFMethodAccessFunction(_ZFP_ZFThreadTaskRequestMergeCallbackIgnoreNewTask));
     _ZFP_ZFThread_mergeCallbackDoNotMerge = zfnew(ZFListener);
     *_ZFP_ZFThread_mergeCallbackDoNotMerge = ZFCallbackForMethod(ZFMethodAccessFunction(_ZFP_ZFThreadTaskRequestMergeCallbackDoNotMerge));
-    _ZFP_ZFThread_taskDatas = zfAllocInternal(ZFArrayEditable);
+    _ZFP_ZFThread_taskDatas = zfAllocWithoutLeakTest(ZFArrayEditable);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadTaskRequestDataHolder)
 {
@@ -51,7 +51,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadTaskRequestDataHolder)
     zfdelete(_ZFP_ZFThread_mergeCallbackDoNotMerge);
     _ZFP_ZFThread_mergeCallbackDoNotMerge = zfnull;
     _ZFP_ZFThread_taskRunning = zffalse;
-    zfReleaseInternal(_ZFP_ZFThread_taskDatas);
+    zfReleaseWithoutLeakTest(_ZFP_ZFThread_taskDatas);
     _ZFP_ZFThread_taskDatas = zfnull;
 }
 ZFIdentityGenerator taskIdHolder;
@@ -74,7 +74,7 @@ ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestCallback)
     {
         // take and remove a task
         ZFThreadTaskRequestData *taskData = _ZFP_ZFThread_taskDatas->getFirst<ZFThreadTaskRequestData *>();
-        zfRetainWithLeakTest(taskData);
+        zfRetain(taskData);
         _ZFP_ZFThread_taskDatas->removeFirst();
 
         // run
@@ -92,7 +92,7 @@ ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestCallback)
 
         // cleanup
         _ZFP_ZFThreadTaskRequest_taskStop(taskData);
-        zfReleaseWithLeakTest(taskData);
+        zfRelease(taskData);
 
         // schedule next task or quit
         if(!_ZFP_ZFThread_taskDatas->isEmpty())
@@ -120,12 +120,12 @@ ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestCallback)
 ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestMergeCallbackIgnoreOldTask)
 {
     ZFThreadTaskRequestMergeCallbackData *mergeCallbackData = listenerData.param0->to<ZFThreadTaskRequestMergeCallbackData *>();
-    mergeCallbackData->taskRequestDataMerged = zfRetainWithLeakTest(mergeCallbackData->taskRequestDataNew);
+    mergeCallbackData->taskRequestDataMerged = zfRetain(mergeCallbackData->taskRequestDataNew);
 }
 ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestMergeCallbackIgnoreNewTask)
 {
     ZFThreadTaskRequestMergeCallbackData *mergeCallbackData = listenerData.param0->to<ZFThreadTaskRequestMergeCallbackData *>();
-    mergeCallbackData->taskRequestDataMerged = zfRetainWithLeakTest(mergeCallbackData->taskRequestDataOld);
+    mergeCallbackData->taskRequestDataMerged = zfRetain(mergeCallbackData->taskRequestDataOld);
 }
 ZFLISTENER_FUNCTION_DEFINE(_ZFP_ZFThreadTaskRequestMergeCallbackDoNotMerge)
 {
@@ -177,7 +177,7 @@ zfidentity ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
     zfidentity taskId = zfidentityInvalid;
     if(oldTaskIndex != zfindexMax && mergeCallback != ZFThreadTaskRequestMergeCallbackDoNotMerge)
     {
-        zfblockedAllocInternal(ZFThreadTaskRequestMergeCallbackData, mergeCallbackData);
+        zfblockedAllocWithoutLeakTest(ZFThreadTaskRequestMergeCallbackData, mergeCallbackData);
         mergeCallbackData->taskRequestDataOld = _ZFP_ZFThread_taskDatas->get<ZFThreadTaskRequestData *>(oldTaskIndex);
         mergeCallbackData->taskRequestDataNew = taskRequestData;
         mergeCallback.execute(ZFListenerData(zfidentityInvalid, zfnull, mergeCallbackData));
@@ -188,7 +188,7 @@ zfidentity ZFThreadTaskRequest(ZF_IN ZFThreadTaskRequestData *taskRequestData,
 
             _ZFP_ZFThread_taskDatas->remove(oldTaskIndex);
             _ZFP_ZFThread_taskDatas->add(mergeCallbackData->taskRequestDataMerged);
-            zfReleaseWithLeakTest(mergeCallbackData->taskRequestDataMerged);
+            zfRelease(mergeCallbackData->taskRequestDataMerged);
             mergeCallbackData->taskRequestDataMerged = zfnull;
         }
         else

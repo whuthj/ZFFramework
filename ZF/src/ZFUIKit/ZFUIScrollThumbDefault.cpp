@@ -96,18 +96,18 @@ ZFObject *ZFUIScrollThumbDefault::objectOnInit(void)
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIScrollThumbDefaultPrivate);
 
-    d->thumbView = zfAllocInternal(ZFUIImageView);
+    d->thumbView = zfAllocWithoutLeakTest(ZFUIImageView);
 
     if(ZFProtocolIsAvailable(zfText("ZFAnimationNativeView")))
     {
-        d->thumbHideAni = zfAllocInternal(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, d->thumbView);
+        d->thumbHideAni = zfAllocWithoutLeakTest(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, d->thumbView);
     }
     else
     {
-        d->thumbHideAni = zfAllocInternal(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, d->thumbView);
+        d->thumbHideAni = zfAllocWithoutLeakTest(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, d->thumbView);
     }
     {
-        zfblockedAllocInternal(ZFPointerHolder, userData, d);
+        zfblockedAllocWithoutLeakTest(ZFPointerHolder, userData, d);
 
         ZFLISTENER_LOCAL(aniOnStop, {
             const _ZFP_ZFUIScrollThumbDefaultPrivate *d = userData->to<ZFPointerHolder *>()->holdedDataPointer<const _ZFP_ZFUIScrollThumbDefaultPrivate *>();
@@ -131,8 +131,8 @@ void ZFUIScrollThumbDefault::objectOnDealloc(void)
     ZFGlobalEventCenter::instance()->observerRemove(ZFUIWindow::EventWindowOnHide(), d->thumbHideAniAutoStopListener);
 
     d->thumbHideAni->aniStop();
-    zfReleaseInternal(d->thumbHideAni);
-    zfReleaseInternal(d->thumbView);
+    zfReleaseWithoutLeakTest(d->thumbHideAni);
+    zfReleaseWithoutLeakTest(d->thumbView);
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }

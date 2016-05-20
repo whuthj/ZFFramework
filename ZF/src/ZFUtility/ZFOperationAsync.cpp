@@ -122,14 +122,14 @@ ZFObject *ZFOperationAsync::objectOnInit(void)
 {
     zfsuper::objectOnInit();
 
-    d = zfAllocInternal(_ZFP_ZFOperationAsyncPrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFOperationAsyncPrivate);
     d->ownerOperation = this;
 
     return this;
 }
 void ZFOperationAsync::objectOnDealloc(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     zfsuper::objectOnDealloc();
 }
 void ZFOperationAsync::objectOnDeallocPrepare(void)

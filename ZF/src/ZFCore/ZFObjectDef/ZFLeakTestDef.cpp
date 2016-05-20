@@ -20,7 +20,17 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool ZFLeakTestEnable = zftrue;
+static zfbool _ZFP_ZFLeakTestEnable = zftrue;
+zfbool ZFLeakTestEnable(void)
+{
+    return _ZFP_ZFLeakTestEnable;
+}
+void ZFLeakTestEnableSet(ZF_IN zfbool enable)
+{
+    zfCoreAssertWithMessageTrim(!_ZFP_ZFLeakTestEnableCache,
+        zfText("[ZFLeakTest] you must not change ZFLeakTestEnable while ZFLeakTest already started"));
+    _ZFP_ZFLeakTestEnable = enable;
+}
 
 // ============================================================
 static zfbool _ZFP_ZFLeakTestVerboseObserverEnabled = zffalse;
@@ -714,17 +724,17 @@ void _ZFP_ZFLeakTestBegin(ZF_IN const zfcharA *callerFile,
                           ZF_IN zfindex callerLine,
                           ZF_IN_OPT const ZFLeakTestBeginParam &param /* = ZFLeakTestBeginParam() */)
 {
-    if(!ZFLeakTestEnable)
-    {
-        return ;
-    }
-
+    ZFCoreMutexLocker();
     if(!_ZFP_ZFLeakTestInitFlag)
     {
         return ;
     }
 
-    ZFCoreMutexLocker();
+    if(!_ZFP_ZFLeakTestEnable)
+    {
+        return ;
+    }
+
     ZFCorePointerForObject<_ZFP_ZFLeakTestSectionData *> _sectionData(zfnew(_ZFP_ZFLeakTestSectionData));
     _ZFP_ZFLeakTestSectionData *sectionData = _sectionData.pointerValueGet();
     sectionData->callerFile = callerFile;

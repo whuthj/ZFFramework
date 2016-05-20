@@ -50,7 +50,7 @@ void ZFUIPageBasic::pageAniSet(ZF_IN ZFAnimation *pageAni)
         zfTextA(" Page::pageAniOnUpdateForSiblingPageResume")
         zfTextA("or Page::pageAniOnUpdateForResume")
         zfTextA("or Manager::pageAniOnUpdate"));
-    ZFPropertyChangeWithLeakTest(d->pageAni, pageAni);
+    ZFPropertyChange(d->pageAni, pageAni);
 }
 ZFAnimation *ZFUIPageBasic::pageAni(void)
 {

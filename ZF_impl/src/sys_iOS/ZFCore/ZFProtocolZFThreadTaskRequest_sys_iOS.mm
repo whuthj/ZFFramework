@@ -29,11 +29,11 @@
 }
 - (void)setParam0:(ZFObject *)newParam0 ZFImpl_sys_iOS_overrideProperty
 {
-    ZFPropertyChangeWithLeakTest(self->param0, newParam0);
+    ZFPropertyChange(self->param0, newParam0);
 }
 - (void)setParam1:(ZFObject *)newParam1 ZFImpl_sys_iOS_overrideProperty
 {
-    ZFPropertyChangeWithLeakTest(self->param1, newParam1);
+    ZFPropertyChange(self->param1, newParam1);
 }
 - (void)taskCallback
 {

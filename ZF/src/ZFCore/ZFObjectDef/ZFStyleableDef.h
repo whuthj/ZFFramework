@@ -239,7 +239,7 @@ private:
         { \
             if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateAvailable) \
             { \
-                zfautoObject obj = ZFClass::newInstanceForNameWithLeakTest(ZFMACRO_TOSTRING(YourStyleHolder), \
+                zfautoObject obj = ZFClass::newInstanceForName(ZFMACRO_TOSTRING(YourStyleHolder), \
                                                                            ZF_CALLER_FILE, zfTextA("DefaultStyle"), ZF_CALLER_LINE); \
                 if(obj != zfautoObjectNull && obj.toObject()->classData()->classIsTypeOf(YourStyle::ClassData())) \
                 { \
@@ -269,7 +269,7 @@ private:
         cleanerRef = zfnull; \
         if(newInstance != zfnull) \
         { \
-            holder->d = zfRetainWithLeakTest(newInstance); \
+            holder->d = zfRetain(newInstance); \
             newInstance->toObject()->objectCachedSet(zftrue); \
             cleanerRef = ZFObjectGlobalInstanceAdd(ZFCorePointerForObject<_ZFP_ZFStyleableDefaultDeleteCallbackHolder *>( \
                 zfnew(_ZFP_ZFStyleableDefaultDeleteCallbackHolder, YourStyle::_ZFP_ZFStyleableDefaultOnDelete, holder->d)), \
@@ -294,7 +294,7 @@ private:
         } \
         YourStyle *tmp = ZFCastStatic(YourStyle *, instance); \
         tmp->toObject()->objectCachedSet(zffalse); \
-        zfReleaseWithLeakTest(tmp); \
+        zfRelease(tmp); \
     }
 
 /**

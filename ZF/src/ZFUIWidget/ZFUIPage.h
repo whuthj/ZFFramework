@@ -128,7 +128,7 @@ public:
 private:
     zffinal void pageCreateParamSet(ZF_IN ZFObject *pageCreateParam)
     {
-        ZFPropertyChangeWithLeakTest(this->_ZFP_ZFUIPage_pageCreateParam, pageCreateParam);
+        ZFPropertyChange(this->_ZFP_ZFUIPage_pageCreateParam, pageCreateParam);
     }
 public:
     /**
@@ -205,13 +205,13 @@ protected:
     virtual inline void pageAfterResume(ZF_IN ZFUIPageResumeReasonEnum reason)
     {
         this->toObject()->observerNotify(ZFUIPage::EventPageAfterResume(),
-                                         zflineAllocInternal(ZFUIPageResumeReason, reason));
+                                         zflineAllocWithoutLeakTest(ZFUIPageResumeReason, reason));
     }
     /** @brief see #EventPageBeforePause */
     virtual inline void pageBeforePause(ZF_IN ZFUIPagePauseReasonEnum reason)
     {
         this->toObject()->observerNotify(ZFUIPage::EventPageBeforePause(),
-                                         zflineAllocInternal(ZFUIPagePauseReason, reason));
+                                         zflineAllocWithoutLeakTest(ZFUIPagePauseReason, reason));
     }
     /** @brief see #EventPageBeforeDestroy */
     virtual inline void pageBeforeDestroy(void)

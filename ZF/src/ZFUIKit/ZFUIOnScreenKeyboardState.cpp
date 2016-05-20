@@ -24,7 +24,7 @@ ZFUIOnScreenKeyboardState *ZFUIOnScreenKeyboardState::instanceForSysWindow(ZF_IN
     ZFUIOnScreenKeyboardState *ret = ownerSysWindow->tagGet<ZFUIOnScreenKeyboardState *>(zfText("_ZFP_ZFUIOnScreenKeyboardState"));
     if(ret == zfnull)
     {
-        zfblockedAllocInternal(ZFUIOnScreenKeyboardState, tmp);
+        zfblockedAllocWithoutLeakTest(ZFUIOnScreenKeyboardState, tmp);
         ownerSysWindow->tagSetMarkCached(zfText("_ZFP_ZFUIOnScreenKeyboardState"), tmp);
         tmp->_ZFP_ZFUIOnScreenKeyboardState_ownerSysWindow = ownerSysWindow;
         ret = tmp;

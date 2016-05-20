@@ -248,7 +248,7 @@ void ZFUIPageManager::embededDestroy(void)
         {
             ZFUIPage *page = pageList[i];
             d->pageDestroy(page);
-            zfReleaseWithLeakTest(page);
+            zfRelease(page);
         }
     }
 
@@ -262,7 +262,7 @@ void ZFUIPageManager::embededDestroy(void)
         for(zfindex i = 0; i < tmp.count(); ++i)
         {
             this->managerUIEnableSet(zftrue);
-            zfReleaseWithLeakTest(tmp[i]);
+            zfRelease(tmp[i]);
         }
     }
 
@@ -314,7 +314,7 @@ ZFCoreArrayPOD<ZFUIPage *> &ZFUIPageManager::pageList(void)
 // page request
 void ZFUIPageManager::requestPageCreate(ZF_IN const RequestPageCreateParam &createParam)
 {
-    zfblockedAllocWithLeakTest(_ZFP_ZFUIPageRequestPageCreate, request);
+    zfblockedAlloc(_ZFP_ZFUIPageRequestPageCreate, request);
     request->createParam = createParam;
     this->requestPost(request);
 }
@@ -326,7 +326,7 @@ void ZFUIPageManager::requestPageCreate(ZF_IN const ZFClass *pageClass,
     {
         return ;
     }
-    zfblockedAllocWithLeakTest(_ZFP_ZFUIPageRequestPageCreate, request);
+    zfblockedAlloc(_ZFP_ZFUIPageRequestPageCreate, request);
     request->createParam
         .pageClassSet(pageClass)
         .pageCreateParamSet(pageCreateParam)
@@ -339,13 +339,13 @@ void ZFUIPageManager::requestPageResume(ZF_IN ZFUIPage *page)
     {
         return ;
     }
-    zfblockedAllocWithLeakTest(_ZFP_ZFUIPageRequestPageResume, request);
+    zfblockedAlloc(_ZFP_ZFUIPageRequestPageResume, request);
     request->pageSet(page);
     this->requestPost(request);
 }
 void ZFUIPageManager::requestPageGroupResume(ZF_IN const zfchar *pageGroupId)
 {
-    zfblockedAllocWithLeakTest(_ZFP_ZFUIPageRequestPageGroupResume, request);
+    zfblockedAlloc(_ZFP_ZFUIPageRequestPageGroupResume, request);
     request->pageGroupIdSet(zfstring(pageGroupId));
     this->requestPost(request);
 }
@@ -355,7 +355,7 @@ void ZFUIPageManager::requestPageDestroy(ZF_IN ZFUIPage *page)
     {
         return ;
     }
-    zfblockedAllocWithLeakTest(_ZFP_ZFUIPageRequestPageDestroy, request);
+    zfblockedAlloc(_ZFP_ZFUIPageRequestPageDestroy, request);
     request->pageSet(page);
     this->requestPost(request);
 }
@@ -365,7 +365,7 @@ void ZFUIPageManager::requestPost(ZF_IN ZFUIPageRequest *request)
     {
         zfsynchronizedObject(this->toObject());
         this->managerUIEnableSet(zffalse);
-        d->requestQueue.queuePut(zfRetainWithLeakTest(request));
+        d->requestQueue.queuePut(zfRetain(request));
         d->requestDoPost(this->toObject());
     }
 }
@@ -438,10 +438,10 @@ void ZFUIPageManager::resolvePageCreate(ZF_IN const ZFUIPageManager::RequestPage
         zfsCoreZ2A((createParam.pageClass() == zfnull) ? ZFTOKEN_zfnull : createParam.pageClass()->objectInfo().cString()),
         zfsCoreZ2A(ZFUIPage::ClassData()->objectInfo().cString()));
 
-    zfautoObject pageObj = createParam.pageClass()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject pageObj = createParam.pageClass()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     ZFUIPage *page = pageObj.to<ZFUIPage *>();
     page->_ZFP_ZFUIPage_pageManager = this;
-    zfRetainWithLeakTest(page);
+    zfRetain(page);
     d->pageList.add(0, page);
 
     d->pageCreate(page, createParam);
@@ -538,7 +538,7 @@ void ZFUIPageManager::resolvePageDestroy(ZF_IN ZFUIPage *page)
         else
         {
             d->pageDestroy(page);
-            zfReleaseWithLeakTest(page);
+            zfRelease(page);
         }
     }
     else
@@ -555,7 +555,7 @@ void ZFUIPageManager::resolvePageDestroy(ZF_IN ZFUIPage *page)
         }
 
         d->pageDestroy(page);
-        zfReleaseWithLeakTest(page);
+        zfRelease(page);
     }
 }
 

@@ -74,7 +74,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString *nativeStringNew = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    zfblockedAllocInternal(ZFString, stringNew, nativeStringNew);
+    zfblockedAllocWithoutLeakTest(ZFString, stringNew, nativeStringNew);
     return ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(self.ownerZFUITextEdit, stringNew);
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -85,7 +85,7 @@
 
 - (void)_textFieldTextChanged:(UITextField *)textField
 {
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(self.ownerZFUITextEdit, zflineAllocInternal(ZFString, textField.text));
+    ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(self.ownerZFUITextEdit, zflineAllocWithoutLeakTest(ZFString, textField.text));
 }
 @end
 

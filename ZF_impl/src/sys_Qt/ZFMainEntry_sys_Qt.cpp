@@ -120,19 +120,19 @@ int ZFMainEntry_sys_Qt(int argc, char **argv)
     window.show();
 
     ZFFrameworkInit();
-    ZFArrayEditable *params = zfAllocInternal(ZFArrayEditable);
+    ZFArrayEditable *params = zfAllocWithoutLeakTest(ZFArrayEditable);
 
     for(int i = 0; i < argc; ++i)
     {
-        ZFString *s = zfAllocInternal(ZFString, ZFStringA2Z(argv[i]));
+        ZFString *s = zfAllocWithoutLeakTest(ZFString, ZFStringA2Z(argv[i]));
         params->add(s);
-        zfReleaseInternal(s);
+        zfReleaseWithoutLeakTest(s);
     }
 
     ZFMainExecute(params);
 
     int ret = app.exec();
-    zfReleaseInternal(params);
+    zfReleaseWithoutLeakTest(params);
     ZFFrameworkCleanup();
 
     _ZFP_ZFImpl_sys_Qt_rootWindowInstance = zfnull;

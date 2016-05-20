@@ -102,7 +102,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFObjectInstanceObserverDataHolder)
         this->tasks = ZFCoreArrayPOD<_ZFP_I_ZFObjectInstanceObserverData *>();
         for(zfindex i = 0; i < tmp.count(); ++i)
         {
-            zfReleaseInternal(tmp[i]);
+            zfReleaseWithoutLeakTest(tmp[i]);
         }
     }
 }
@@ -117,13 +117,13 @@ zfidentity ZFObjectInstanceObserverStart(ZF_IN const ZFClass *cls,
         return zfidentityInvalid;
     }
     ZFCoreMutexLock();
-    _ZFP_I_ZFObjectInstanceObserverData *task = zfAllocInternal(_ZFP_I_ZFObjectInstanceObserverData);
+    _ZFP_I_ZFObjectInstanceObserverData *task = zfAllocWithoutLeakTest(_ZFP_I_ZFObjectInstanceObserverData);
     task->taskId = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectInstanceObserverDataHolder)->taskIdGenerator.nextMarkUsed();
     task->cls = cls;
     task->params.addFrom(params);
     for(zfindex i = 0; i < params.count(); ++i)
     {
-        zfRetainWithLeakTest(params[i].userData());
+        zfRetain(params[i].userData());
     }
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectInstanceObserverDataHolder)->tasks.add(task);
 
@@ -177,7 +177,7 @@ void ZFObjectInstanceObserverStop(ZF_IN zfidentity taskId)
     {
         _ZFP_I_ZFObjectInstanceObserverData *task = tasks[index];
         tasks.remove(index);
-        zfReleaseInternal(task);
+        zfReleaseWithoutLeakTest(task);
     }
 }
 

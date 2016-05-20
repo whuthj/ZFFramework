@@ -28,7 +28,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 static void ZFEnvInfoImpl_default_getVersion(ZF_IN_OUT zfstring &ret, ZF_IN const zfchar *src)
 {
-    zfblockedAllocInternal(ZFRegExp, reg);
+    zfblockedAllocWithoutLeakTest(ZFRegExp, reg);
     reg->regExpCompile(zfText("^.*?([0-9]+(\\.[0-9]+)*).*?$"));
     ZFRegExpResult result;
     reg->regExpMatch(result, src);

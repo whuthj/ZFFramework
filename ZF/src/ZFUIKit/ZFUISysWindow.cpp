@@ -63,7 +63,7 @@ ZFOBJECT_REGISTER(ZFUISysWindow)
 
 zfautoObject ZFUISysWindow::nativeWindowEmbed(ZF_IN ZFUISysWindow::NativeWindowEmbedImpl *impl)
 {
-    zfautoObject tmp = ZFUISysWindow::ClassData()->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject tmp = ZFUISysWindow::ClassData()->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     ZFUISysWindow *ret = tmp.to<ZFUISysWindow *>();
     ret->d->embedImpl = impl;
     impl->_ZFP_ownerZFUISysWindow = ret;
@@ -118,8 +118,8 @@ ZFObject *ZFUISysWindow::objectOnInit(void)
 {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUISysWindowPrivate);
-    d->windowRootView = zfAllocWithLeakTest(ZFUIRootView);
-    d->windowLayoutParam = zfAllocInternal(ZFUIViewLayoutParam);
+    d->windowRootView = zfAlloc(ZFUIRootView);
+    d->windowLayoutParam = zfAllocWithoutLeakTest(ZFUIViewLayoutParam);
     d->windowLayoutParam->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
     d->impl->updateSuggestedWindowLayoutParam(this);
     d->windowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnChange(), d->windowLayoutParamOnChangeListener, this->objectHolder());
@@ -131,8 +131,8 @@ void ZFUISysWindow::objectOnDealloc(void)
     {
         d->embedImpl->nativeWindowOnCleanup();
     }
-    zfReleaseInternal(d->windowLayoutParam);
-    zfReleaseWithLeakTest(d->windowRootView);
+    zfReleaseWithoutLeakTest(d->windowLayoutParam);
+    zfRelease(d->windowRootView);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -221,7 +221,7 @@ void ZFUISysWindow::modalWindowFinish(void)
     d->modalWindowOwner->d->modalWindowShowing = zfnull;
     d->modalWindowOwner = zfnull;
 
-    zfReleaseWithLeakTest(this);
+    zfRelease(this);
 }
 ZFUISysWindow *ZFUISysWindow::modalWindowGetShowing(void)
 {

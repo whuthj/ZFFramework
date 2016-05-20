@@ -496,7 +496,7 @@ protected:
     {
         this->toObject()->observerNotifyWithCustomSender(
             page->toObject(), ZFUIPageManager::EventPageAfterResume(),
-            zflineAllocInternal(ZFUIPageResumeReason, reason),
+            zflineAllocWithoutLeakTest(ZFUIPageResumeReason, reason),
             this->toObject());
     }
     /** @brief see #EventPageBeforePause */
@@ -504,7 +504,7 @@ protected:
     {
         this->toObject()->observerNotifyWithCustomSender(
             page->toObject(), ZFUIPageManager::EventPageBeforePause(),
-            zflineAllocInternal(ZFUIPagePauseReason, reason),
+            zflineAllocWithoutLeakTest(ZFUIPagePauseReason, reason),
             this->toObject());
     }
     /** @brief see #EventPageBeforeDestroy */

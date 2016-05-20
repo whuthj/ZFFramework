@@ -121,7 +121,7 @@ inline zfidentity ZFThreadTaskRequest(ZF_IN const ZFListener &taskCallback,
                                       ZF_IN_OPT ZFObject *taskOwner = zfnull,
                                       ZF_IN_OPT const ZFListener &taskMergeCallback = ZFThreadTaskRequestMergeCallbackDefault)
 {
-    zfblockedAllocInternal(ZFThreadTaskRequestData, taskRequestData);
+    zfblockedAllocWithoutLeakTest(ZFThreadTaskRequestData, taskRequestData);
     taskRequestData->taskCallbackSet(taskCallback);
     taskRequestData->taskUserDataSet(taskUserData);
     taskRequestData->taskParam0Set(taskParam0);

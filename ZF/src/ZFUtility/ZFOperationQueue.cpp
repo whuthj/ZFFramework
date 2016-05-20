@@ -143,21 +143,21 @@ public:
         zfsuper::objectOnInit();
         this->ownerQueue = zfnull;
         this->childToStartMaxFixed = 1;
-        this->childRunning = zfAllocInternal(ZFArrayEditable);
-        this->childToRun = zfAllocInternal(ZFArrayEditable);
+        this->childRunning = zfAllocWithoutLeakTest(ZFArrayEditable);
+        this->childToRun = zfAllocWithoutLeakTest(ZFArrayEditable);
         this->observerChildOnStart = ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, childOnStart));
         this->observerChildOnProgress = ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, childOnProgress));
         this->observerChildOnStop = ZFCallbackForMemberMethod(this, ZFMethodAccessClassMember(zfself, childOnStop));
-        this->taskCategory = zfRetainWithLeakTest(ZFValue::identityValueCreate(zfidentityCalcPointer(this)).to<ZFValue *>());
+        this->taskCategory = zfRetain(ZFValue::identityValueCreate(zfidentityCalcPointer(this)).to<ZFValue *>());
         return this;
     }
     virtual void objectOnDealloc(void)
     {
-        zfReleaseInternal(this->childRunning);
+        zfReleaseWithoutLeakTest(this->childRunning);
         this->childRunning = zfnull;
-        zfReleaseInternal(this->childToRun);
+        zfReleaseWithoutLeakTest(this->childToRun);
         this->childToRun = zfnull;
-        zfReleaseWithLeakTest(this->taskCategory);
+        zfRelease(this->taskCategory);
         this->taskCategory = zfnull;
         zfsuper::objectOnDealloc();
     }
@@ -207,9 +207,9 @@ void ZFOperationQueue::taskOnStart(ZF_IN ZFOperationTaskData *operationTaskData)
     ZFOperationQueueProgress *queueProgress = queueProgressTmp.to<ZFOperationQueueProgress *>();
     operationTaskData->tagSet(_ZFP_ZFOperationQueueKey_queueProgress, queueProgress);
 
-    _ZFP_ZFOperationQueueTaskState *taskState = zfAllocWithLeakTest(_ZFP_ZFOperationQueueTaskState);
+    _ZFP_ZFOperationQueueTaskState *taskState = zfAlloc(_ZFP_ZFOperationQueueTaskState);
     operationTaskData->tagSet(_ZFP_ZFOperationQueueKey_taskState, taskState);
-    zfReleaseWithLeakTest(taskState);
+    zfRelease(taskState);
 
     taskState->ownerQueue = this;
     taskState->childToRun->addFrom(queueParam->childTaskDatas());
@@ -246,7 +246,7 @@ void ZFOperationQueue::taskOnStop(ZF_IN ZFOperationTaskData *operationTaskData)
         case ZFResultType::e_Cancel:
         {
             _ZFP_ZFOperationQueueTaskState *taskState = operationTaskData->tagGet<_ZFP_ZFOperationQueueTaskState *>(_ZFP_ZFOperationQueueKey_taskState);
-            zfblockedAllocInternal(ZFArrayEditable, childTaskDatasTmp);
+            zfblockedAllocWithoutLeakTest(ZFArrayEditable, childTaskDatasTmp);
             childTaskDatasTmp->addFrom(taskState->childRunning);
             childTaskDatasTmp->addFrom(taskState->childToRun);
             taskState->childRunning->removeAll();
@@ -255,7 +255,7 @@ void ZFOperationQueue::taskOnStop(ZF_IN ZFOperationTaskData *operationTaskData)
             {
                 ZFOperationQueueChildTaskData *childTaskData = childTaskDatasTmp->get<ZFOperationQueueChildTaskData *>(i);
                 ZFOperationTaskData *childOperationTaskData = childTaskData->childTaskData()->operationTaskData();
-                zfblockedReleaseWithLeakTest(zfRetainWithLeakTest(childOperationTaskData));
+                zfblockedRelease(zfRetain(childOperationTaskData));
                 childTaskData->childOperation()->taskStopForCategory(taskState->taskCategory);
 
                 zfindex childIndex = childOperationTaskData->tagGet<ZFValue *>(_ZFP_ZFOperationQueueKey_childIndex)->indexValue();

@@ -201,7 +201,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusAutoHighlightPauseForTimeData
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewFocusAutoHighlightPauseForTimeDataHolder)
 {
-    zfReleaseInternal(this->delayTimer);
+    zfReleaseWithoutLeakTest(this->delayTimer);
 }
 zfbool started;
 ZFTimer *delayTimer;
@@ -230,7 +230,7 @@ void ZFUIViewFocusAutoHighlightPauseForTime(ZF_IN zftimet time /* = 0 */)
 
     if(d->delayTimer == zfnull)
     {
-        d->delayTimer = zfAllocInternal(ZFTimer);
+        d->delayTimer = zfAllocWithoutLeakTest(ZFTimer);
         d->delayTimer->observerAdd(ZFTimer::EventTimerOnActivate(), d->doStopListener);
         d->delayTimer->timerActivateInMainThreadSet(zftrue);
     }

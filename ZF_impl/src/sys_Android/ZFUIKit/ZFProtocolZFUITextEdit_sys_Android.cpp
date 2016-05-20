@@ -276,7 +276,7 @@ JNI_METHOD_DECLARE(jboolean, ZFImpl_sys_Android_JNI_ID_ZFUITextEdit, native_1not
                    JNIPointer zfjniPointerOwnerZFUITextEdit,
                    jobject jobjNewString)
 {
-    zfblockedAllocWithLeakTest(ZFString, newString, ZFCastStatic(void *, ZFCastStatic(jstring, jobjNewString)));
+    zfblockedAlloc(ZFString, newString, ZFCastStatic(void *, ZFCastStatic(jstring, jobjNewString)));
     return (jboolean)ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)),
         newString);
@@ -286,7 +286,7 @@ JNI_METHOD_DECLARE(void, ZFImpl_sys_Android_JNI_ID_ZFUITextEdit, native_1notifyT
                    JNIPointer zfjniPointerOwnerZFUITextEdit,
                    jobject jobjNewString)
 {
-    zfblockedAllocWithLeakTest(ZFString, newString, ZFCastStatic(void *, ZFCastStatic(jstring, jobjNewString)));
+    zfblockedAlloc(ZFString, newString, ZFCastStatic(void *, ZFCastStatic(jstring, jobjNewString)));
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)),
         newString);

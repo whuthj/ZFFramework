@@ -940,9 +940,9 @@ ZFCompareResult ZFValue::serializableDataValueCompare(ZF_IN const ZFSerializable
 #define _ZFP_ZFValue_create_noCache_DEFINE(TypeName, Type) \
     zfautoObject ZFValue::TypeName##ValueCreate(ZF_IN Type const &v) \
     { \
-        zfblockedAllocWithLeakTest(ZFValue, value); \
+        zfblockedAlloc(ZFValue, value); \
         value->TypeName##ValueSet(v); \
-        return zfautoObjectCreateWithLeakTest(value); \
+        return zfautoObjectCreate(value); \
     }
 #define _ZFP_ZFValue_create_hasCache_DEFINE(TypeName, Type, negativeCount, positiveCount) \
     zfautoObject ZFValue::TypeName##ValueCreate(ZF_IN Type const &v) \
@@ -958,11 +958,11 @@ ZFCompareResult ZFValue::serializableDataValueCompare(ZF_IN const ZFSerializable
                 s_value[i]->TypeName##ValueSet(v); \
                 _ZFP_ZFValueAddToDestroyArray(s_value[i]); \
             } \
-            return zfautoObjectCreateWithLeakTest(s_value[i]); \
+            return zfautoObjectCreate(s_value[i]); \
         } \
-        zfblockedAllocWithLeakTest(ZFValue, value); \
+        zfblockedAlloc(ZFValue, value); \
         value->TypeName##ValueSet(v); \
-        return zfautoObjectCreateWithLeakTest(value); \
+        return zfautoObjectCreate(value); \
     }
 zfautoObject ZFValue::boolValueCreate(ZF_IN zfbool const &v)
 {
@@ -976,7 +976,7 @@ zfautoObject ZFValue::boolValueCreate(ZF_IN zfbool const &v)
         s_value[i]->boolValueSet(v);
         _ZFP_ZFValueAddToDestroyArray(s_value[i]);
     }
-    return zfautoObjectCreateWithLeakTest(s_value[i]);
+    return zfautoObjectCreate(s_value[i]);
 }
 _ZFP_ZFVALUE_DUMMY_FLAG_TO_ADD_TYPE
 _ZFP_ZFValue_create_noCache_DEFINE(char, zfchar)
@@ -1276,9 +1276,9 @@ void ZFValue::serializableDataValueSet(ZF_IN const ZFSerializableData &v)
 #define _ZFP_ZFValueEditable_create_DEFINE(TypeName, Type) \
     zfautoObject ZFValueEditable::TypeName##ValueCreate(ZF_IN Type const &v) \
     { \
-        zfblockedAllocWithLeakTest(ZFValueEditable, ret); \
+        zfblockedAlloc(ZFValueEditable, ret); \
         ret->TypeName##ValueSet(v); \
-        return zfautoObjectCreateWithLeakTest(ret); \
+        return zfautoObjectCreate(ret); \
     }
 
 _ZFP_ZFVALUE_DUMMY_FLAG_TO_ADD_TYPE

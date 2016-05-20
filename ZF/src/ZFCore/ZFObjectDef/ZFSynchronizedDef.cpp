@@ -16,11 +16,11 @@ ZFObject *_ZFP_zfsynchronizeObject = zfnull;
 ZFCoreArrayPOD<ZFSynchronizeLogCallback> ZFSynchronizeLogCallbackList;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfsynchronizeDataHolder, ZFLevelZFFrameworkNormal)
 {
-    _ZFP_zfsynchronizeObject = zfAllocInternal(ZFObject);
+    _ZFP_zfsynchronizeObject = zfAllocWithoutLeakTest(ZFObject);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfsynchronizeDataHolder)
 {
-    zfReleaseInternal(_ZFP_zfsynchronizeObject);
+    zfReleaseWithoutLeakTest(_ZFP_zfsynchronizeObject);
     _ZFP_zfsynchronizeObject = zfnull;
     ZFSynchronizeLogCallbackList.removeAll();
 }

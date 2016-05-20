@@ -38,8 +38,8 @@ private:
         ZFEnum *reason = userData->tagGet<ZFEnum *>(zfText("reason"));
         ZFUIPageManagerBasic *pageManager = page->pageManager<ZFUIPageManagerBasic *>();
 
-        zfRetainWithLeakTest(userData);
-        zfblockedReleaseWithLeakTest(userData);
+        zfRetain(userData);
+        zfblockedRelease(userData);
         page->pageManager<ZFUIPageManagerBasic *>()->d->pageAniListenerDetach(page);
 
         if(reason->classData()->classIsSubclassOf(ZFUIPageResumeReason::ClassData()))
@@ -100,12 +100,12 @@ public:
         if(this->pageAniLastResume != zfnull)
         {
             this->pageAniLastResume->aniStop();
-            ZFPropertyChangeWithLeakTest(this->pageAniLastResume, zfnull);
+            ZFPropertyChange(this->pageAniLastResume, zfnull);
         }
         if(this->pageAniLastPause != zfnull)
         {
             this->pageAniLastPause->aniStop();
-            ZFPropertyChangeWithLeakTest(this->pageAniLastPause, zfnull);
+            ZFPropertyChange(this->pageAniLastPause, zfnull);
         }
         if(resumePageOrNull != zfnull && resumePageOrNull->pageAni() != zfnull)
         {
@@ -178,7 +178,7 @@ public:
             }
             if(pausePageOrNull->pageAni() != zfnull)
             {
-                this->pageAniListenerAttach(pausePageOrNull, zflineAllocWithLeakTest(ZFUIPagePauseReason, pauseReason));
+                this->pageAniListenerAttach(pausePageOrNull, zflineAlloc(ZFUIPagePauseReason, pauseReason));
                 pausePageOrNull->pageAni()->aniStart();
             }
             else
@@ -188,7 +188,7 @@ public:
         }
         if(resumePageOrNull != zfnull && resumePageOrNull->pageAni() != zfnull)
         {
-            this->pageAniListenerAttach(resumePageOrNull, zflineAllocWithLeakTest(ZFUIPageResumeReason, reason));
+            this->pageAniListenerAttach(resumePageOrNull, zflineAlloc(ZFUIPageResumeReason, reason));
             resumePageOrNull->pageAni()->aniStart();
         }
     }
@@ -236,15 +236,15 @@ void ZFUIPageManagerBasic::pageAniOverrideForOnce(ZF_IN ZFAnimation *pageAniResu
                                                   ZF_IN_OPT zfbool pageAniPauseHasHigherPriority /* = zffalse */)
 {
     d->pageAniOverrideForOnce = zftrue;
-    ZFPropertyChangeWithLeakTest(d->pageAniOverrideForOnceResumeAni, pageAniResume);
-    ZFPropertyChangeWithLeakTest(d->pageAniOverrideForOncePauseAni, pageAniPause);
+    ZFPropertyChange(d->pageAniOverrideForOnceResumeAni, pageAniResume);
+    ZFPropertyChange(d->pageAniOverrideForOncePauseAni, pageAniPause);
     d->pageAniOverrideForOncePauseAniHasHigherPriority = pageAniPauseHasHigherPriority;
 }
 void ZFUIPageManagerBasic::pageAniOverrideForOnceCancel(void)
 {
     d->pageAniOverrideForOnce = zffalse;
-    ZFPropertyChangeWithLeakTest(d->pageAniOverrideForOnceResumeAni, zfnull);
-    ZFPropertyChangeWithLeakTest(d->pageAniOverrideForOncePauseAni, zfnull);
+    ZFPropertyChange(d->pageAniOverrideForOnceResumeAni, zfnull);
+    ZFPropertyChange(d->pageAniOverrideForOncePauseAni, zfnull);
 }
 zfbool ZFUIPageManagerBasic::pageAniOverrideForOnceCheckUpdate(ZF_IN ZFUIPageBasic *resumePageOrNull,
                                                                ZF_IN ZFUIPageBasic *siblingPausePageOrNull,
@@ -265,8 +265,8 @@ zfbool ZFUIPageManagerBasic::pageAniOverrideForOnceCheckUpdate(ZF_IN ZFUIPageBas
         siblingPausePageOrNull->pageAniSet(d->pageAniOverrideForOncePauseAni);
         siblingPausePageOrNull->pageAniPriorityNeedHigher = d->pageAniOverrideForOncePauseAniHasHigherPriority;
     }
-    ZFPropertyChangeWithLeakTest(d->pageAniOverrideForOnceResumeAni, zfnull);
-    ZFPropertyChangeWithLeakTest(d->pageAniOverrideForOncePauseAni, zfnull);
+    ZFPropertyChange(d->pageAniOverrideForOnceResumeAni, zfnull);
+    ZFPropertyChange(d->pageAniOverrideForOncePauseAni, zfnull);
     return zftrue;
 }
 void ZFUIPageManagerBasic::pageAniOnUpdate(ZF_IN ZFUIPageBasic *resumePageOrNull,
@@ -342,7 +342,7 @@ void ZFUIPageManagerBasic::pageOnResume(ZF_IN ZFUIPage *page,
 void ZFUIPageManagerBasic::pageOnAttach(ZF_IN ZFUIPage *page,
                                         ZF_IN ZFUIPageResumeReasonEnum reason)
 {
-    this->observerNotifyWithCustomSender(page->toObject(), ZFUIPageManagerBasic::EventPageOnAttach(), zflineAllocInternal(ZFUIPageResumeReason, reason));
+    this->observerNotifyWithCustomSender(page->toObject(), ZFUIPageManagerBasic::EventPageOnAttach(), zflineAllocWithoutLeakTest(ZFUIPageResumeReason, reason));
 }
 void ZFUIPageManagerBasic::pageOnPause(ZF_IN ZFUIPage *page,
                                        ZF_IN ZFUIPagePauseReasonEnum reason)
@@ -352,7 +352,7 @@ void ZFUIPageManagerBasic::pageOnPause(ZF_IN ZFUIPage *page,
 void ZFUIPageManagerBasic::pageOnDetach(ZF_IN ZFUIPage *page,
                                         ZF_IN ZFUIPagePauseReasonEnum reason)
 {
-    this->observerNotifyWithCustomSender(page->toObject(), ZFUIPageManagerBasic::EventPageOnDetach(), zflineAllocInternal(ZFUIPagePauseReason, reason));
+    this->observerNotifyWithCustomSender(page->toObject(), ZFUIPageManagerBasic::EventPageOnDetach(), zflineAllocWithoutLeakTest(ZFUIPagePauseReason, reason));
 }
 void ZFUIPageManagerBasic::pageOnDestroy(ZF_IN ZFUIPage *page)
 {

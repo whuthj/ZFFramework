@@ -39,7 +39,7 @@ void ZFTestCase::testCaseStart(void)
         return ;
     }
     this->_testCaseIsRunning = zftrue;
-    zfRetainWithLeakTest(this);
+    zfRetain(this);
     this->testCaseOnStart();
 }
 
@@ -51,7 +51,7 @@ void ZFTestCase::testCaseProgress(ZF_IN_OPT ZFObject *progress /* = zfnull */)
     }
     this->testCaseOnProgress(progress);
 
-    zfReleaseWithLeakTest(progress);
+    zfRelease(progress);
 }
 
 void ZFTestCase::testCaseStop(ZF_IN_OPT ZFResultTypeEnum testCaseResult /* = ZFResultType::e_Success */)

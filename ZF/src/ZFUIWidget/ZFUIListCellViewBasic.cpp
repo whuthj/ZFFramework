@@ -70,32 +70,32 @@ ZFObject *ZFUIListCellViewBasic::objectOnInit(void)
 
     d = zfpoolNew(_ZFP_ZFUIListCellViewBasicPrivate);
 
-    d->cellIconContainer = zfAllocInternal(ZFUIViewLayout);
+    d->cellIconContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
 
     {
-        d->cellCenterContainer = zfAllocInternal(ZFUILinearLayout);
+        d->cellCenterContainer = zfAllocWithoutLeakTest(ZFUILinearLayout);
         d->cellCenterContainer->layoutOrientationSet(ZFUIOrientation::e_Top);
 
-        d->cellLabelMainContainer = zfAllocInternal(ZFUIViewLayout);
+        d->cellLabelMainContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
         d->cellCenterContainer->childAdd(d->cellLabelMainContainer);
         d->cellLabelMainContainer->layoutParam()->layoutAlignSet(ZFUIAlign::e_LeftInner);
 
-        d->cellLabelSubContainer = zfAllocInternal(ZFUIViewLayout);
+        d->cellLabelSubContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
         d->cellCenterContainer->childAdd(d->cellLabelSubContainer);
         d->cellLabelSubContainer->layoutParam()->layoutAlignSet(ZFUIAlign::e_LeftInner);
     }
 
-    d->cellAccessoryContainer = zfAllocInternal(ZFUIViewLayout);
+    d->cellAccessoryContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
 
     return this;
 }
 void ZFUIListCellViewBasic::objectOnDealloc(void)
 {
-    zfReleaseInternal(d->cellIconContainer);
-    zfReleaseInternal(d->cellCenterContainer);
-    zfReleaseInternal(d->cellLabelMainContainer);
-    zfReleaseInternal(d->cellLabelSubContainer);
-    zfReleaseInternal(d->cellAccessoryContainer);
+    zfReleaseWithoutLeakTest(d->cellIconContainer);
+    zfReleaseWithoutLeakTest(d->cellCenterContainer);
+    zfReleaseWithoutLeakTest(d->cellLabelMainContainer);
+    zfReleaseWithoutLeakTest(d->cellLabelSubContainer);
+    zfReleaseWithoutLeakTest(d->cellAccessoryContainer);
 
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();

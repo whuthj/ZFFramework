@@ -40,7 +40,7 @@ public:
                              ZF_IN ZFObject *param0,
                              ZF_IN ZFObject *param1)
     {
-        ZFListenerHolder *listenerData = zfAllocInternal(ZFListenerHolder, task, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
+        ZFListenerHolder *listenerData = zfAllocWithoutLeakTest(ZFListenerHolder, task, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, zfTextA("native_taskRequest"),
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -62,7 +62,7 @@ JNI_METHOD_DECLARE(void, ZFImpl_sys_Android_JNI_ID_ZFThreadTaskRequest, native_1
 {
     ZFListenerHolder *listenerData = ZFCastZFObject(ZFListenerHolder *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerToken));
     listenerData->runnableExecute();
-    zfReleaseInternal(listenerData);
+    zfReleaseWithoutLeakTest(listenerData);
 }
 
 #endif // #if ZF_ENV_sys_Android

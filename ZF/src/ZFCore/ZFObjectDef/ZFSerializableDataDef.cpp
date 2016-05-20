@@ -401,7 +401,7 @@ void ZFSerializableData::serializableDataTagSet(ZF_IN const zfchar *key,
             }
             else
             {
-                m[key] = zfautoObjectCreateWithLeakTest(tag);
+                m[key] = zfautoObjectCreate(tag);
             }
         }
     }
@@ -423,7 +423,7 @@ void ZFSerializableData::serializableDataTagSet(ZF_IN const zfchar *key,
             }
             else
             {
-                it->second = zfautoObjectCreateWithLeakTest(tag);
+                it->second = zfautoObjectCreate(tag);
             }
         }
     }
@@ -459,7 +459,7 @@ zfautoObject ZFSerializableData::serializableDataTagRemoveAndGet(ZF_IN const zfc
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
         if(it != m.end())
         {
-            zfautoObject ret = zfautoObjectCreateWithLeakTest(it->second.toObject());
+            zfautoObject ret = zfautoObjectCreate(it->second.toObject());
             m.erase(it);
             return ret;
         }

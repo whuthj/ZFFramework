@@ -107,24 +107,24 @@ public:
 ZFIOBridgeCallbackUsingTmpFile::ZFIOBridgeCallbackUsingTmpFile(void)
 : ZFIOBridgeCallbackAbs()
 {
-    d = zfAllocInternal(_ZFP_ZFIOBridgeCallbackUsingTmpFilePrivate);
+    d = zfAllocWithoutLeakTest(_ZFP_ZFIOBridgeCallbackUsingTmpFilePrivate);
 }
 ZFIOBridgeCallbackUsingTmpFile::ZFIOBridgeCallbackUsingTmpFile(ZF_IN const ZFIOBridgeCallbackUsingTmpFile &ref)
 : ZFIOBridgeCallbackAbs(ref)
 {
-    d = zfRetainInternal(ref.d);
+    d = zfRetainWithoutLeakTest(ref.d);
 }
 ZFIOBridgeCallbackUsingTmpFile &ZFIOBridgeCallbackUsingTmpFile::operator =(ZF_IN const ZFIOBridgeCallbackUsingTmpFile &ref)
 {
-    zfRetainInternal(ref.d);
-    zfReleaseInternal(d);
+    zfRetainWithoutLeakTest(ref.d);
+    zfReleaseWithoutLeakTest(d);
     d = ref.d;
     return *this;
 }
 /** @endcond */
 ZFIOBridgeCallbackUsingTmpFile::~ZFIOBridgeCallbackUsingTmpFile(void)
 {
-    zfReleaseInternal(d);
+    zfReleaseWithoutLeakTest(d);
     d = zfnull;
 }
 

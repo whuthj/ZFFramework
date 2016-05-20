@@ -72,14 +72,12 @@ public:
      *   for more information, please refer to #classForName and #ZFOBJECT_REGISTER
      * @see ZFOBJECT_DECLARE, ZFOBJECT_REGISTER, classForName
      */
-    static zfautoObject newInstanceForName(ZF_IN const zfchar *className);
+    static zfautoObject newInstanceForName(ZF_IN const zfchar *className,
+                                           ZF_IN_OPT const zfcharA *callerFile = zfnull,
+                                           ZF_IN_OPT const zfcharA *callerFunction = zfnull,
+                                           ZF_IN_OPT zfindex callerLine = 0);
     /** @brief see #newInstanceForName */
     static zfautoObject newInstanceForNameWithoutLeakTest(ZF_IN const zfchar *className);
-    /** @brief see #newInstanceForName */
-    static zfautoObject newInstanceForNameWithLeakTest(ZF_IN const zfchar *className,
-                                                       ZF_IN const zfcharA *callerFile,
-                                                       ZF_IN const zfcharA *callerFunction,
-                                                       ZF_IN zfindex callerLine);
 
     /**
      * @brief get all class currently registered
@@ -230,13 +228,11 @@ public:
      * @note object's no param version of objectOnInit would be called,
      *   ZFClass doesn't support newInstance with params
      */
-    zfautoObject newInstance(void) const;
+    zfautoObject newInstance(ZF_IN const zfcharA *callerFile = zfnull,
+                             ZF_IN const zfcharA *callerFunction = zfnull,
+                             ZF_IN zfindex callerLine = 0) const;
     /** @brief see #newInstance */
     zfautoObject newInstanceWithoutLeakTest(void) const;
-    /** @brief see #newInstance */
-    zfautoObject newInstanceWithLeakTest(ZF_IN const zfcharA *callerFile,
-                                         ZF_IN const zfcharA *callerFunction,
-                                         ZF_IN zfindex callerLine) const;
 
     /**
      * @brief get implemented interface count

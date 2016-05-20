@@ -63,15 +63,15 @@ static _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType _ZFP_ZFThreadImpl_sys_An
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_Android_DataHolder, ZFLevelZFFrameworkHigh)
 {
-    mainThread = zfAllocInternal(ZFThreadMainThread);
-    syncObj = zfAllocInternal(ZFObject);
+    mainThread = zfAllocWithoutLeakTest(ZFThreadMainThread);
+    syncObj = zfAllocWithoutLeakTest(ZFObject);
     threadMap[_ZFP_ZFThreadImpl_sys_Android_getNativeThreadId()] = mainThread;
     executeId = 1;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_Android_DataHolder)
 {
-    zfReleaseInternal(syncObj);
-    zfReleaseInternal(mainThread);
+    zfReleaseWithoutLeakTest(syncObj);
+    zfReleaseWithoutLeakTest(mainThread);
     mainThread = zfnull;
 }
 ZFThread *mainThread;
@@ -250,7 +250,7 @@ public:
                 .add(JNIPointerJNIType)
             ).c_str());
 
-        ZFListenerHolder *nativeData = zfAllocInternal(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
+        ZFListenerHolder *nativeData = zfAllocWithoutLeakTest(ZFListenerHolder, runnable, ZFListenerData(zfidentityInvalid, zfnull, param0, param1));
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
             this->jclsOwner,
             jmId,
@@ -342,7 +342,7 @@ JNI_METHOD_DECLARE(void, ZFImpl_sys_Android_JNI_ID_ZFThread, native_1executeInMa
                    JNIPointer zfjniPointerNativeData)
 {
     ZFListenerHolder *nativeDataTmp = ZFCastZFObjectUnchecked(ZFListenerHolder *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerNativeData));
-    zfReleaseInternal(nativeDataTmp);
+    zfReleaseWithoutLeakTest(nativeDataTmp);
 }
 
 #endif // #if ZF_ENV_sys_Android

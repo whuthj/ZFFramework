@@ -94,10 +94,10 @@ protected:
     /** @brief see #EventTestCaseOnStop */
     virtual inline void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult)
     {
-        zfblockedAllocInternal(ZFResultType, testCaseResultTmp, testCaseResult);
+        zfblockedAllocWithoutLeakTest(ZFResultType, testCaseResultTmp, testCaseResult);
         this->observerNotify(ZFTestCase::EventTestCaseOnStop(), testCaseResultTmp);
         ZFGlobalEventCenter::instance()->observerNotifyWithCustomSender(this, ZFTestCase::EventTestCaseOnStop(), testCaseResultTmp);
-        zfReleaseWithLeakTest(this);
+        zfRelease(this);
     }
 
 public:

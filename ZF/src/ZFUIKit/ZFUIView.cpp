@@ -154,7 +154,7 @@ public:
             }
             this->layoutParam->observerRemove(ZFUILayoutParam::EventLayoutParamOnChange(), listenerHolder->layoutParamChangedListener);
         }
-        ZFPropertyChangeWithLeakTest(this->layoutParam, newLayoutParam);
+        ZFPropertyChange(this->layoutParam, newLayoutParam);
         if(newLayoutParam != zfnull)
         {
             if(this->thisView->objectCached())
@@ -200,7 +200,7 @@ public:
             zfTextA("[ZFUIView] add child during parent's dealloc is not allowed"));
         zfCoreAssertWithMessageTrim(view != zfnull, zfTextA("[ZFUIView] add null child"));
         zfCoreAssertWithMessageTrim(view->viewParent() == zfnull, zfTextA("[ZFUIView] add child which already has parent, you should remove it first"));
-        zfRetainWithLeakTest(view);
+        zfRetain(view);
 
         zfbool layoutParamNeedRelease = zffalse;
         if(layoutParam == zfnull)
@@ -209,7 +209,7 @@ public:
         }
         if(layoutParam == zfnull)
         {
-            layoutParam = zfRetainWithLeakTest(this->thisView->layoutParamCreate().to<ZFUIViewLayoutParam *>());
+            layoutParam = zfRetain(this->thisView->layoutParamCreate().to<ZFUIViewLayoutParam *>());
             layoutParamNeedRelease = zftrue;
         }
         else
@@ -217,7 +217,7 @@ public:
             if(!layoutParam->classData()->classIsSubclassOf(this->layoutParamClass))
             {
                 layoutParamNeedRelease = zftrue;
-                ZFUIViewLayoutParam *tmp = zfRetainWithLeakTest(this->thisView->layoutParamCreate().to<ZFUIViewLayoutParam *>());
+                ZFUIViewLayoutParam *tmp = zfRetain(this->thisView->layoutParamCreate().to<ZFUIViewLayoutParam *>());
                 tmp->styleableCopyFrom(layoutParam);
             }
         }
@@ -234,7 +234,7 @@ public:
 
         if(layoutParamNeedRelease)
         {
-            zfReleaseWithLeakTest(layoutParam);
+            zfRelease(layoutParam);
         }
 
         this->checkUpdateChildScale(view);
@@ -269,7 +269,7 @@ public:
         virtualParent->viewChildOnRemove(view, childLayer);
         view->viewOnRemoveFromParent(virtualParent);
         virtualParent->viewChildOnChange();
-        zfReleaseWithLeakTest(view);
+        zfRelease(view);
     }
     void removeAllView(ZF_IN ZFUIViewChildLayerEnum childLayer,
                        ZF_IN _ZFP_ZFUIViewLayerData &layer)
@@ -298,7 +298,7 @@ public:
             ZFUIView *child = tmp[i];
             virtualParent->viewChildOnRemove(child, childLayer);
             child->viewOnRemoveFromParent(virtualParent);
-            zfReleaseWithLeakTest(child);
+            zfRelease(child);
         }
         virtualParent->viewChildOnChange();
     }
@@ -375,7 +375,7 @@ public:
         toReplace->viewOnAddToParent(virtualParent);
         virtualParent->viewChildOnChange();
 
-        zfReleaseWithLeakTest(old);
+        zfRelease(old);
     }
 
     zfindex viewCount(ZF_IN _ZFP_ZFUIViewLayerData &layer)
@@ -736,7 +736,7 @@ ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIView, zfstring, viewDelegateClass)
 {
     zfsuperI(ZFUIViewStyle)::viewDelegateClassSet(newValue);
 
-    zfautoObject viewDelegateTmp = ZFClass::newInstanceForNameWithLeakTest(this->viewDelegateClass(),
+    zfautoObject viewDelegateTmp = ZFClass::newInstanceForName(this->viewDelegateClass(),
         ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(!this->viewDelegateSupported() && viewDelegateTmp != zfautoObjectNull)
     {
@@ -841,7 +841,7 @@ void ZFUIView::objectOnDealloc(void)
         ZFUIView *viewDelegate = d->viewDelegate;
         d->viewDelegate = zfnull;
         viewDelegate->d->viewDelegateParent = zfnull;
-        zfReleaseWithLeakTest(viewDelegate);
+        zfRelease(viewDelegate);
     }
 
     this->nativeImplViewSet(zfnull, zfnull);
@@ -850,15 +850,15 @@ void ZFUIView::objectOnDealloc(void)
 
     for(zfindex i = d->layerNormal.views.count() - 1; i != zfindexMax; --i)
     {
-        zfReleaseWithLeakTest(d->layerNormal.views.get(i));
+        zfRelease(d->layerNormal.views.get(i));
     }
     for(zfindex i = d->layerInternalBg.views.count() - 1; i != zfindexMax; --i)
     {
-        zfReleaseWithLeakTest(d->layerInternalBg.views.get(i));
+        zfRelease(d->layerInternalBg.views.get(i));
     }
     for(zfindex i = d->layerInternalFg.views.count() - 1; i != zfindexMax; --i)
     {
-        zfReleaseWithLeakTest(d->layerInternalFg.views.get(i));
+        zfRelease(d->layerInternalFg.views.get(i));
     }
     d->layoutParamSet(zfnull);
     zfpoolDelete(d);
@@ -1055,13 +1055,13 @@ void ZFUIView::nativeViewNotifyBeforeAdd(ZF_IN ZFUIView *view,
 {
     zfCoreAssert(view != zfnull && nativeParentView != zfnull);
 
-    zfRetainWithLeakTest(view);
+    zfRetain(view);
     view->_ZFP_ZFUIView_scaleSetRecursively(view->scaleGet(), view->d->impl->nativeViewScaleForImpl(nativeParentView));
 }
 void ZFUIView::nativeViewNotifyAfterRemove(ZF_IN ZFUIView *view)
 {
     zfCoreAssert(view != zfnull);
-    zfReleaseWithLeakTest(view);
+    zfRelease(view);
 }
 
 // ============================================================
@@ -1078,8 +1078,8 @@ void ZFUIView::viewDelegateSet(ZF_IN ZFUIView *viewDelegate)
 
     ZFUIView *viewDelegateOld = d->viewDelegate;
     d->viewDelegate = zfnull;
-    zfblockedAllocInternal(ZFArrayEditable, children);
-    zfblockedAllocInternal(ZFArrayEditable, childLayoutParams);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, children);
+    zfblockedAllocWithoutLeakTest(ZFArrayEditable, childLayoutParams);
     if(viewDelegateOld != zfnull)
     {
         for(zfindex i = 0; i < viewDelegateOld->childCount(); ++i)
@@ -1101,7 +1101,7 @@ void ZFUIView::viewDelegateSet(ZF_IN ZFUIView *viewDelegate)
         }
         this->childRemoveAll();
 
-        d->viewDelegate = zfRetainWithLeakTest(viewDelegate);
+        d->viewDelegate = zfRetain(viewDelegate);
     }
 
     ZFUIView *viewToAdd = this;
@@ -1126,7 +1126,7 @@ void ZFUIView::viewDelegateSet(ZF_IN ZFUIView *viewDelegate)
     }
     this->viewDelegateOnDealloc(viewDelegateOld);
     this->viewDelegateOnInit(d->viewDelegate);
-    zfReleaseWithLeakTest(viewDelegateOld);
+    zfRelease(viewDelegateOld);
 }
 
 ZFUIView *ZFUIView::viewDelegateParent(void)
@@ -1320,7 +1320,7 @@ void ZFUIView::_ZFP_ZFUIView_scaleSetRecursively(ZF_IN zffloat scaleForApp,
 // layout logic
 zfautoObject ZFUIView::layoutParamCreate(void)
 {
-    zfautoObject layoutParam = d->layoutParamClass->newInstanceWithLeakTest(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
+    zfautoObject layoutParam = d->layoutParamClass->newInstance(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE);
     if(layoutParam == zfautoObjectNull || !layoutParam.toObject()->classData()->classIsSubclassOf(ZFUIViewLayoutParam::ClassData()))
     {
         return zfautoObjectNull;
@@ -1407,7 +1407,7 @@ const ZFUISize &ZFUIView::layoutMeasure(ZF_IN const ZFUISize &sizeHint,
         this->layoutOnMeasureFinish(d->lastMeasuredSize, sizeHint, sizeParam);
         if(ZFOBSERVER_HAS_ADD(HasAdd_ViewLayoutOnMeasureFinish))
         {
-            zfblockedAllocInternal(ZFUIViewMeasureResult, data);
+            zfblockedAllocWithoutLeakTest(ZFUIViewMeasureResult, data);
             data->sizeHint = sizeHint;
             data->sizeParam = sizeParam;
             data->measuredSize = d->lastMeasuredSize;

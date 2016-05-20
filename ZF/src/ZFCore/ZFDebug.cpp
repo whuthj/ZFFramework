@@ -292,11 +292,11 @@ const ZFDebugCallback &ZFDebugCallback::appendV(ZF_IN const zfchar *format,
 // ============================================================
 ZFDebugCallback _ZFP_ZFDebugCallbackCreate(ZF_IN_OUT ZFDebugSession &session)
 {
-    _ZFP_I_ZFDebugCallbackOwner *owner = zfAllocInternal(_ZFP_I_ZFDebugCallbackOwner);
+    _ZFP_I_ZFDebugCallbackOwner *owner = zfAllocWithoutLeakTest(_ZFP_I_ZFDebugCallbackOwner);
     owner->session = session;
     ZFDebugCallback callback = ZFCallbackForMemberMethod(owner, ZFMethodAccessClassMember(_ZFP_I_ZFDebugCallbackOwner, onOutput));
     callback.callbackOwnerObjectRetain();
-    zfReleaseInternal(owner);
+    zfReleaseWithoutLeakTest(owner);
     return callback;
 }
 

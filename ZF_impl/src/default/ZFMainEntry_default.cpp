@@ -24,19 +24,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLin
     return ZFMainCommonEntry(argc, argv);
 #else
     ZFFrameworkInit();
-    ZFArrayEditable *params = zfAllocInternal(ZFArrayEditable);
+    ZFArrayEditable *params = zfAllocWithoutLeakTest(ZFArrayEditable);
 
     ZFCoreArray<zfstring> tmpList;
     ZFCoreArgSplit(tmpList, ZFStringW2Z(lpCmdLine));
     for(zfindex i = 0; i < tmpList.count(); ++i)
     {
-        ZFString *s = zfAllocInternal(ZFString, tmpList.get(i).cString());
+        ZFString *s = zfAllocWithoutLeakTest(ZFString, tmpList.get(i).cString());
         params->add(s);
-        zfReleaseInternal(s);
+        zfReleaseWithoutLeakTest(s);
     }
 
     zfint result = ZFMainExecute(params);
-    zfReleaseInternal(params);
+    zfReleaseWithoutLeakTest(params);
     ZFFrameworkCleanup();
     return result;
 #endif // #if ZF_ENV_sys_WindowsCE #else

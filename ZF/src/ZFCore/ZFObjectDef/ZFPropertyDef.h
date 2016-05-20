@@ -328,49 +328,6 @@ private:
 
 // ============================================================
 /**
- * @brief ensured be logged by ZFLeakTest
- * @see ZFPropertyChange
- */
-#define ZFPropertyChangeWithLeakTest(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        ZFCoreMutexLock(); \
-        zflockfree_zfRetainWithLeakTest(property = newValue); \
-        zflockfree_zfReleaseWithLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-        ZFCoreMutexUnlock(); \
-    } while(zffalse)
-/** @brief no lock version of #ZFPropertyChangeWithLeakTest, use with causion */
-#define zflockfree_ZFPropertyChangeWithLeakTest(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        zflockfree_zfRetainWithLeakTest(property = newValue); \
-        zflockfree_zfReleaseWithLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-    } while(zffalse)
-/**
- * @brief ensured not be logged by ZFLeakTest
- * @see ZFPropertyChange
- */
-#define ZFPropertyChangeWithoutLeakTest(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        ZFCoreMutexLock(); \
-        zflockfree_zfRetainWithoutLeakTest(property = newValue); \
-        zflockfree_zfReleaseWithoutLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-        ZFCoreMutexUnlock(); \
-    } while(zffalse)
-/** @brief no lock version of #ZFPropertyChangeWithoutLeakTest, use with causion */
-#define zflockfree_ZFPropertyChangeWithoutLeakTest(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        zflockfree_zfRetainWithoutLeakTest(property = newValue); \
-        zflockfree_zfReleaseWithoutLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-    } while(zffalse)
-
-/**
  * @brief for retain property only,
  *   release property's old value, retain newValue, then set to property
  *
@@ -399,27 +356,41 @@ private:
  * @endcode
  * @see zfRetain, zfRelease, ZFPROPERTY_RETAIN
  */
-#if ZF_LEAKTEST_ENABLE
-    #define ZFPropertyChange(property, newValue) ZFPropertyChangeWithLeakTest(property, newValue)
-#else
-    #define ZFPropertyChange(property, newValue) ZFPropertyChangeWithoutLeakTest(property, newValue)
-#endif
-
-/**
- * @brief log leak test if ZF_LEAKTEST_ENABLE_INTERNAL is zftrue,
- *   internal use only
- */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define ZFPropertyChangeInternal(property, newValue) zflockfree_ZFPropertyChangeWithLeakTest(property, newValue)
-#else
-    #define ZFPropertyChangeInternal(property, newValue) zflockfree_ZFPropertyChangeWithoutLeakTest(property, newValue)
-#endif
-/** @brief no lock version of #ZFPropertyChangeInternal, use with causion */
-#if ZF_LEAKTEST_ENABLE_INTERNAL
-    #define zflocked_ZFPropertyChangeInternal(property, newValue) ZFPropertyChangeWithLeakTest(property, newValue)
-#else
-    #define zflocked_ZFPropertyChangeInternal(property, newValue) ZFPropertyChangeWithoutLeakTest(property, newValue)
-#endif
+#define ZFPropertyChange(property, newValue) \
+    do \
+    { \
+        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
+        ZFCoreMutexLock(); \
+        zflockfree_zfRetain(property = newValue); \
+        zflockfree_zfRelease(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
+        ZFCoreMutexUnlock(); \
+    } while(zffalse)
+/** @brief no lock version of #ZFPropertyChange, use with causion */
+#define zflockfree_ZFPropertyChange(property, newValue) \
+    do \
+    { \
+        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
+        zflockfree_zfRetain(property = newValue); \
+        zflockfree_zfRelease(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
+    } while(zffalse)
+/** @see ZFPropertyChange */
+#define ZFPropertyChangeWithoutLeakTest(property, newValue) \
+    do \
+    { \
+        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
+        ZFCoreMutexLock(); \
+        zflockfree_zfRetainWithoutLeakTest(property = newValue); \
+        zflockfree_zfReleaseWithoutLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
+        ZFCoreMutexUnlock(); \
+    } while(zffalse)
+/** @brief no lock version of #ZFPropertyChangeWithoutLeakTest, use with causion */
+#define zflockfree_ZFPropertyChangeWithoutLeakTest(property, newValue) \
+    do \
+    { \
+        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
+        zflockfree_zfRetainWithoutLeakTest(property = newValue); \
+        zflockfree_zfReleaseWithoutLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
+    } while(zffalse)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPropertyDef_h_
