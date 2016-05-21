@@ -921,24 +921,28 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
 // ============================================================
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_OVERRIDE_SETTER_DECLARE_WITH_DEFAULT(AccessType, Type, Name, ZFPropertyDefaultValueOrNoDefaultValue) \
-    AccessType: \
-        zfoverride \
-        virtual void _ZFP_ZFPROPERTY_SETTER_NAME(Type, Name) (ZF_IN Type const &newValue ZFPropertyDefaultValueOrNoDefaultValue)
+    ZFMETHOD_MEMBER_OVERRIDE_DECLARE_DETAIL_1( \
+        AccessType, ZFMethodNotStatic, ZFMethodIsVirtual, ZFMethodNotConst, \
+        void, _ZFP_ZFPROPERTY_SETTER_NAME(Type, Name), ZFMethodNoId, \
+        Type const &, newValue, ZFPropertyDefaultValueOrNoDefaultValue)
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_OVERRIDE_SETTER_DECLARE(AccessType, Type, Name) \
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE_WITH_DEFAULT(AccessType, Type, Name, ZFPropertyNoDefaultValue)
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_OVERRIDE_SETTER_DEFINE(OwnerClass, Type, Name) \
-    void OwnerClass::_ZFP_ZFPROPERTY_SETTER_NAME(Type, Name) (ZF_IN Type const &newValue)
+    ZFMETHOD_MEMBER_OVERRIDE_DEFINE_1( \
+        OwnerClass, void, _ZFP_ZFPROPERTY_SETTER_NAME(Type, Name), \
+        Type const &, newValue)
 
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_OVERRIDE_GETTER_DECLARE(AccessType, Type, Name) \
-    AccessType: \
-        zfoverride \
-        virtual Type const &_ZFP_ZFPROPERTY_GETTER_NAME(Type, Name) (void)
+    ZFMETHOD_MEMBER_OVERRIDE_DECLARE_DETAIL_0( \
+        AccessType, ZFMethodNotStatic, ZFMethodIsVirtual, ZFMethodNotConst, \
+        Type const &, _ZFP_ZFPROPERTY_GETTER_NAME(Type, Name), ZFMethodNoId)
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_OVERRIDE_GETTER_DEFINE(OwnerClass, Type, Name) \
-    Type const &OwnerClass::_ZFP_ZFPROPERTY_GETTER_NAME(Type, Name) (void)
+    ZFMETHOD_MEMBER_OVERRIDE_DEFINE_0( \
+        OwnerClass, Type const &, _ZFP_ZFPROPERTY_GETTER_NAME(Type, Name))
 
 // ============================================================
 #define _ZFP_ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE(TypeFix, Type, Name, autoInitOrNot) \
