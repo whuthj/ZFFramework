@@ -231,7 +231,7 @@ ZFCallbackSerializeCustomSerializeCallback ZFCallbackSerializeCustomTypeGet(ZF_I
     }
     else
     {
-        return *(value->pointerValueConstT<const ZFCallbackSerializeCustomSerializeCallback *>());
+        return *(value->pointerValueT<const ZFCallbackSerializeCustomSerializeCallback *>());
     }
 }
 

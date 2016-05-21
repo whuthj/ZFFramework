@@ -35,6 +35,7 @@ typedef void (*_ZFP_ZFPropertyInitStepCallback)(ZF_IN const ZFProperty *property
                                                 ZF_IN ZFObject *obj,
                                                 ZF_IN_OUT void *valueAddr);
 
+// ============================================================
 zfclassFwd _ZFP_ZFClassPrivate;
 /**
  * @brief ZFObject's class info
@@ -44,6 +45,8 @@ zffinal zfclassNotPOD ZF_ENV_EXPORT ZFClass
 {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFClass)
 
+    // ============================================================
+    // static methods
 public:
     /**
      * @brief get class info by name
@@ -84,6 +87,8 @@ public:
      */
     static ZFCoreArrayPOD<const ZFClass *> allClass(void);
 
+    // ============================================================
+    // instance observer
 public:
     /** @brief see #ZFClass::instanceObserverAdd */
     zffinal zfclassLikePOD ZF_ENV_EXPORT InstanceObserverAddParam
@@ -133,6 +138,8 @@ public:
     void instanceObserverRemoveAll(void) const;
     void _ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const;
 
+    // ============================================================
+    // class info
 public:
     /**
      * @brief return a short string describe the object
@@ -243,6 +250,9 @@ public:
      */
     const ZFClass *implementedInterfaceAtIndex(ZF_IN zfindex index) const;
 
+    // ============================================================
+    // ZFMethod
+public:
     /**
      * @brief get the count of method registered to this ZFClass
      *
@@ -284,6 +294,9 @@ public:
     const ZFMethod *methodForName(ZF_IN const zfchar *methodName,
                                   ZF_IN_OPT const zfchar *methodId = zfnull) const;
 
+    // ============================================================
+    // ZFProperty
+public:
     /**
      * @brief get ZFProperty count registered to this class
      *
@@ -323,6 +336,9 @@ public:
      */
     const ZFProperty *propertyForName(const zfchar *propertyName) const;
 
+    // ============================================================
+    // class instance methods
+public:
     /**
      * @brief set a classTag for the class, internal use only
      *
@@ -381,6 +397,7 @@ public:
     zffinal void classTagRemoveAll(void) const;
 
     // ============================================================
+    // private
 public:
     /** @cond ZFPrivateDoc */
     static ZFClass *_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,

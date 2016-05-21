@@ -21,6 +21,38 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
+template<typename T_Pointer>
+zfclassNotPOD _ZFP_ZFCorePointerHelper;
+template<typename T_Pointer>
+zfclassNotPOD _ZFP_ZFCorePointerHelper<T_Pointer *>
+{
+public:
+    static inline void *toNonConstRaw(ZF_IN T_Pointer *p)
+    {
+        return p;
+    }
+    template<typename T_ZFCorePointer>
+    static inline T_Pointer *toPointer(ZF_IN T_ZFCorePointer p)
+    {
+        return ZFCastStatic(T_Pointer *, p->pointerValueNonConst());
+    }
+};
+template<typename T_Pointer>
+zfclassNotPOD _ZFP_ZFCorePointerHelper<const T_Pointer *>
+{
+public:
+    static inline void *toNonConstRaw(ZF_IN const T_Pointer *p)
+    {
+        return zfnull;
+    }
+    template<typename T_ZFCorePointer>
+    static inline const T_Pointer *toPointer(ZF_IN T_ZFCorePointer p)
+    {
+        return ZFCastStatic(const T_Pointer *, p->pointerValue());
+    }
+};
+
+// ============================================================
 /**
  * @brief dummy base class for ZFCorePointer
  *
@@ -42,7 +74,7 @@ public:
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const
     {
         zfstringAppend(ret, zfText("<%p (%zi), content: %s>"),
-            this->pointerValueConst(),
+            this->pointerValue(),
             this->objectRetainCount(),
             this->objectInfoOfContent().cString());
     }
@@ -74,14 +106,14 @@ public:
      */
     virtual zfidentity objectHash(void) const
     {
-        return zfidentityCalcPointer(this->pointerValueConst());
+        return zfidentityCalcPointer(this->pointerValue());
     }
     /**
      * @brief compare by internal pointer value
      */
     virtual ZFCompareResult objectCompare(ZF_IN const ZFCorePointerBase &another) const
     {
-        return ((this->pointerValueConst() == another.pointerValueConst())
+        return ((this->pointerValue() == another.pointerValue())
             ? ZFCompareTheSame
             : ZFCompareUncomparable);
     }
@@ -106,15 +138,13 @@ public:
         zfdelete(this);
     }
     /**
-     * @brief get the internal pointer by #ZFCastStatic,
-     *   may be null if the internal pointer is const type,
-     *   always use #pointerValueConst is recommended
+     * @brief get the internal pointer
      */
-    virtual void *pointerValue(void) const = 0;
+    virtual const void *pointerValue(void) const = 0;
     /**
-     * @brief get the internal pointer by #ZFCastStatic
+     * @brief get the internal pointer
      */
-    virtual const void *pointerValueConst(void) const = 0;
+    virtual void *pointerValueNonConst(void) const = 0;
 
     /**
      * @brief util method to get and cast to desired type
@@ -122,15 +152,7 @@ public:
     template<typename T_PointerDesired>
     inline T_PointerDesired pointerValueT(void) const
     {
-        return ZFCastStatic(T_PointerDesired, this->pointerValue());
-    }
-    /**
-     * @brief util method to get and cast to desired type
-     */
-    template<typename T_PointerDesired>
-    inline T_PointerDesired pointerValueConstT(void) const
-    {
-        return ZFCastStatic(T_PointerDesired, this->pointerValueConst());
+        return _ZFP_ZFCorePointerHelper<T_PointerDesired>::toPointer(this);
     }
 
     /**
@@ -138,18 +160,6 @@ public:
      */
     virtual zfindex objectRetainCount(void) const = 0;
 };
-
-// ============================================================
-template<typename T_Pointer>
-inline void *_ZFP_ZFCorePointer_pointerValueWrapper(T_Pointer *p)
-{
-    return p;
-}
-template<typename T_Pointer>
-inline void *_ZFP_ZFCorePointer_pointerValueWrapper(const T_Pointer *p)
-{
-    return zfnull;
-}
 
 // ============================================================
 template<typename T_Pointer>
@@ -323,14 +333,14 @@ public:
         return zfnew((ZFCorePointer<T_Pointer, T_ZFCorePointerType>), *this);
     }
     zfoverride
-    virtual void *pointerValue(void) const
-    {
-        return _ZFP_ZFCorePointer_pointerValueWrapper(d->pointerValue);
-    }
-    zfoverride
-    virtual const void *pointerValueConst(void) const
+    virtual inline const void *pointerValue(void) const
     {
         return d->pointerValue;
+    }
+    zfoverride
+    virtual inline void *pointerValueNonConst(void) const
+    {
+        return _ZFP_ZFCorePointerHelper<T_Pointer>::toNonConstRaw(d->pointerValue);
     }
 
     zfoverride
@@ -343,12 +353,7 @@ public:
     template<typename T_PointerDesired>
     inline T_PointerDesired pointerValueT(void) const
     {
-        return ZFCastStatic(T_PointerDesired, this->pointerValue());
-    }
-    template<typename T_PointerDesired>
-    inline T_PointerDesired pointerValueConstT(void) const
-    {
-        return ZFCastStatic(T_PointerDesired, this->pointerValueConst());
+        return _ZFP_ZFCorePointerHelper<T_PointerDesired>::toPointer(this);
     }
     /** @endcond */
 
@@ -436,12 +441,7 @@ private:
         template<typename T_PointerDesired> \
         inline T_PointerDesired pointerValueT(void) const \
         { \
-            return ZFCastStatic(T_PointerDesired, this->pointerValue()); \
-        } \
-        template<typename T_PointerDesired> \
-        inline T_PointerDesired pointerValueConstT(void) const \
-        { \
-            return ZFCastStatic(T_PointerDesired, this->pointerValueConst()); \
+            return _ZFP_ZFCorePointerHelper<T_PointerDesired>::toPointer(this); \
         } \
         /** @endcond */ \
     };

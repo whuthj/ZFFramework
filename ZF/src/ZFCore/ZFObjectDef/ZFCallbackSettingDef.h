@@ -81,7 +81,7 @@ extern ZF_ENV_EXPORT const ZFCorePointerBase *_ZFP_ZFCallbackSettingGet(ZF_IN co
     inline const T_SettingName &T_SettingName##Get(ZF_IN const ZFCallback &o) \
     { \
         const ZFCorePointerBase *sp = _ZFP_ZFCallbackSettingGet(o, #T_SettingName); \
-        return (sp ? *(sp->pointerValueConstT<const T_SettingName *>()) : T_SettingName::_ZFP_ZFCallbackSettingDefault()); \
+        return (sp ? *(sp->pointerValueT<const T_SettingName *>()) : T_SettingName::_ZFP_ZFCallbackSettingDefault()); \
     }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -145,7 +145,7 @@ public:
         ZFCorePointerBase *t = this->get(key);
         if(t != zfnull)
         {
-            return ZFCastStatic(T_Element, t->pointerValue());
+            return t->pointerValueT<T_Element>();
         }
         return zfnull;
     }
@@ -260,7 +260,7 @@ public:
         ZFCorePointerBase *t = this->iteratorGetValue(it);
         if(t != zfnull)
         {
-            return ZFCastStatic(T_Element, t->pointerValue());
+            return t->pointerValueT<T_Element>();
         }
         return zfnull;
     }
@@ -271,7 +271,7 @@ public:
         ZFCorePointerBase *t = this->iteratorNextValue(it);
         if(t != zfnull)
         {
-            return ZFCastStatic(T_Element, t->pointerValue());
+            return t->pointerValueT<T_Element>();
         }
         return zfnull;
     }
@@ -282,7 +282,7 @@ public:
         ZFCorePointerBase *t = this->iteratorPrevValue(it);
         if(t != zfnull)
         {
-            return ZFCastStatic(T_Element, t->pointerValue());
+            return t->pointerValueT<T_Element>();
         }
         return zfnull;
     }

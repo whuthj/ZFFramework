@@ -73,6 +73,26 @@ zfclassFwd ZFClass;
 #define _ZFP_ZFMETHOD_INVOKER(N) \
     /** @brief see #ZFMethod */ \
     template<typename T_ReturnType ZFMACRO_REPEAT(N, ZFMARCO_REPEAT_TEMPLATE, ZFMACRO_COMMA)> \
+    inline T_ReturnType execute(ZFObject *obj ZFMACRO_REPEAT(N, ZFMACRO_REPEAT_PARAM, ZFMACRO_COMMA)) const \
+    { \
+        switch(this->_ZFP_ZFMethod_methodType) \
+        { \
+            case ZFMethodTypeClassStatic: \
+            case ZFMethodTypeClassMember: \
+                return ZFCastReinterpret( \
+                        T_ReturnType (*)(ZFObject * ZFMACRO_REPEAT(N, ZFMACRO_REPEAT_PARAM, ZFMACRO_COMMA)), \
+                        this->_ZFP_ZFMethod_invoker) \
+                    (obj ZFMACRO_REPEAT(N, ZFMACRO_REPEAT_NAME, ZFMACRO_COMMA)); \
+            case ZFMethodTypeRawFunction: \
+            default: \
+                return ZFCastReinterpret( \
+                        T_ReturnType (*)(ZFMACRO_REPEAT(N, ZFMACRO_REPEAT_PARAM, ZFMACRO_EMPTY)), \
+                        this->_ZFP_ZFMethod_functionAddr) \
+                    (ZFMACRO_REPEAT(N, ZFMACRO_REPEAT_NAME, ZFMACRO_EMPTY)); \
+        } \
+    } \
+    /** @brief see #ZFMethod */ \
+    template<typename T_ReturnType ZFMACRO_REPEAT(N, ZFMARCO_REPEAT_TEMPLATE, ZFMACRO_COMMA)> \
     inline T_ReturnType executeClassMember(ZFObject *obj ZFMACRO_REPEAT(N, ZFMACRO_REPEAT_PARAM, ZFMACRO_COMMA)) const \
     { \
         return ZFCastReinterpret( \
@@ -108,11 +128,6 @@ zfclassFwd ZFClass;
 /**
  * @brief reflectable method for ZFObject
  *
- * ZFObject support dynamic binding for method,
- * and ZFMethod is the meta data for it,
- * you must declare it by ZFMETHOD_MEMBER_DECLARE_XXX
- * and access it by ZFClass's member functions\n
- * \n
  * to use ZFMethod, you must first declare it in your class:
  * @code
  *   zfclass YourClass : zfextends ZFObject
@@ -226,6 +241,9 @@ zfclassFwd ZFClass;
  *   { // or executeClassStatic if the method is static
  *       YourReturnType result = method->executeClassStatic<YourReturnType, ParamType...>(someParam...);
  *   }
+ *
+ *   // or, you may use generic version:
+ *   method->execute<YourReturnType, ParamType...>(obj, someParam...);
  * @endcode
  * @warning you take the full responsibility to make sure
  *   the ReturnType and ParamType exactly match the method,

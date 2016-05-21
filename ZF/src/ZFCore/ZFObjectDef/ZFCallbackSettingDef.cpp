@@ -33,7 +33,7 @@ public:
 
 void _ZFP_ZFCallbackSettingSet(ZF_IN_OUT const ZFCallback &o, ZF_IN const zfchar *name, ZF_IN const ZFCorePointerBase &sp)
 {
-    if(sp.pointerValueConst() == zfnull)
+    if(sp.pointerValue() == zfnull)
     {
         ZFCallback(o).callbackTagSet(name, zfnull);
     }

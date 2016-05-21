@@ -111,7 +111,7 @@ public:
     zfbool internalTypesNeedRegister;
     zfbool needFinalInit;
     ZFCoreArrayPOD<const ZFClass *> implementedInterface;
-    ZFCoreMap methodMap; // map to ZFCoreArrayPOD<const ZFMethod *> *, methods with same name and different method ids
+    ZFCoreMap methodMap; // ZFCoreMap<methodName, ZFCoreMap<methodId, const ZFMethod *> >, methods with same name and different method ids
     ZFCoreArrayPOD<const ZFMethod *> methodList;
     ZFCoreArrayPOD<const ZFProperty *> propertyList;
     ZFCoreMap propertyMap; // map to const ZFProperty **
@@ -285,7 +285,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFClassTagClearLevelHigh)
 ZF_GLOBAL_INITIALIZER_END(ZFClassTagClearLevelHigh)
 
 // ============================================================
-// ZFClass
+// static methods
 const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className)
 {
     ZFCoreMutexLocker();
@@ -310,6 +310,8 @@ ZFCoreArrayPOD<const ZFClass *> ZFClass::allClass(void)
     return _ZFP_ZFClassMap.allValue<const ZFClass *>();
 }
 
+// ============================================================
+// instance observer
 void ZFClass::instanceObserverAdd(ZF_IN const ZFListener &observer,
                                   ZF_IN_OPT ZFObject *userData /* = zfnull */,
                                   ZF_IN_OPT ZFObject *owner /* = zfnull */,
@@ -380,6 +382,8 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const
     }
 }
 
+// ============================================================
+// class info
 static void _ZFP_ZFClassGetInfo(ZF_IN_OUT zfstring &s,
                                 ZF_IN const ZFClass *cls)
 {
@@ -538,6 +542,8 @@ const ZFClass *ZFClass::implementedInterfaceAtIndex(ZF_IN zfindex index) const
     return d->implementedInterface.get(index);
 }
 
+// ============================================================
+// ZFMethod
 zfindex ZFClass::methodCount(void) const
 {
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
@@ -560,27 +566,10 @@ const ZFMethod *ZFClass::methodForNameIgnoreParent(ZF_IN const zfchar *methodNam
 
     if(!d->methodMap.isEmpty())
     {
-        ZFCoreArrayPOD<const ZFMethod *> *methodList = d->methodMap.get<ZFCoreArrayPOD<const ZFMethod *> *>(methodName);
+        ZFCoreMap *methodList = d->methodMap.get<ZFCoreMap *>(methodName);
         if(methodList != zfnull)
         {
-            if(methodId == zfnull)
-            {
-                if(methodList->isEmpty())
-                {
-                    return zfnull;
-                }
-                else
-                {
-                    return methodList->get(0);
-                }
-            }
-            for(zfindex i = methodList->count() - 1; i != zfindexMax; --i)
-            {
-                if(zfscmpTheSame(methodId, methodList->get(i)->methodId()))
-                {
-                    return methodList->get(i);
-                }
-            }
+            return methodList->get<const ZFMethod *>(methodId);
         }
     }
     return zfnull;
@@ -597,6 +586,8 @@ const ZFMethod *ZFClass::methodForName(ZF_IN const zfchar *methodName,
     return ret;
 }
 
+// ============================================================
+// ZFProperty
 zfindex ZFClass::propertyCount(void) const
 {
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
@@ -636,6 +627,8 @@ const ZFProperty *ZFClass::propertyForName(const zfchar *propertyName) const
     return ret;
 }
 
+// ============================================================
+// class instance methods
 void ZFClass::classTagSet(ZF_IN const zfchar *key,
                           ZF_IN ZFObject *tag,
                           ZF_IN_OPT zfbool autoMarkCached /* = zffalse */) const
@@ -736,6 +729,8 @@ void ZFClass::classTagRemoveAll(void) const
     }
 }
 
+// ============================================================
+// private
 /** @cond ZFPrivateDoc */
 ZFClass::ZFClass(void)
 : d(zfnull)
@@ -1080,13 +1075,13 @@ void ZFClass::_ZFP_ZFClassInitFinish_instanceObserverCache(ZF_IN ZFClass *cls)
 
 void ZFClass::_ZFP_ZFClass_methodRegister(ZF_IN const ZFMethod *method)
 {
-    ZFCoreArrayPOD<const ZFMethod *> *methodList = d->methodMap.get<ZFCoreArrayPOD<const ZFMethod *> *>(method->methodName());
+    ZFCoreMap *methodList = d->methodMap.get<ZFCoreMap *>(method->methodName());
     if(methodList == zfnull)
     {
-        methodList = zfnew(ZFCoreArrayPOD<const ZFMethod *>);
-        d->methodMap.set(method->methodName(), ZFCorePointerForObject<ZFCoreArrayPOD<const ZFMethod *> *>(methodList));
+        methodList = zfnew(ZFCoreMap);
+        d->methodMap.set(method->methodName(), ZFCorePointerForObject<ZFCoreMap *>(methodList));
     }
-    methodList->add(method);
+    methodList->set(method->methodId(), ZFCorePointerForPointerRef<const ZFMethod *>(method));
     d->methodList.add(method);
 }
 
