@@ -1817,17 +1817,38 @@ zfbool ZFUIView::internalViewShouldLayout(ZF_IN ZFUIView *internalView)
 // events
 void ZFUIView::viewEventSend(ZF_IN ZFUIEvent *event)
 {
-    if(event)
+    if(event == zfnull)
     {
-        zfRetainWithoutLeakTest(this);
-        this->viewEventOnEvent(event);
+        return ;
+    }
+
+    zfRetainWithoutLeakTest(this);
+    zfblockedReleaseWithoutLeakTest(this);
+    ZFGlobalEventCenter *eventCenter = ZFGlobalEventCenter::instance();
+
+    this->viewEventOnEventFilter(event);
+    if(ZFOBSERVER_HAS_ADD(HasAdd_ViewOnEventFilter))
+    {
+        this->observerNotify(ZFUIView::EventViewOnEventFilter(), event);
+    }
+    eventCenter->observerNotifyWithCustomSender(this, ZFUIView::EventViewOnEventFilter(), event);
+
+    if(event->eventResolved())
+    {
+        return ;
+    }
+
+    this->viewEventOnEvent(event);
+    if(ZFOBSERVER_HAS_ADD(HasAdd_ViewOnEvent))
+    {
         this->observerNotify(ZFUIView::EventViewOnEvent(), event);
-        ZFGlobalEventCenter::instance()->observerNotifyWithCustomSender(this, ZFUIView::EventViewOnEvent(), event);
-        if(!event->eventResolved())
-        {
-            zfCoreLog(zfTextA("unresolved event: %s"), zfsCoreZ2A(event->objectInfo().cString()));
-        }
-        zfReleaseWithoutLeakTest(this);
+    }
+    eventCenter->observerNotifyWithCustomSender(this, ZFUIView::EventViewOnEvent(), event);
+
+    if(!event->eventResolved())
+    {
+        // output log only, not critical error
+        zfCoreLog(zfTextA("unresolved event: %s"), zfsCoreZ2A(event->objectInfo().cString()));
     }
 }
 void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event)

@@ -265,6 +265,15 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * param0 is the #ZFUIEvent\n
+     * you may resolve the event by #ZFEvent::eventResolvedSet
+     * to prevent the event from being sent to its original receiver
+     * @note this event would also be fired to #ZFGlobalEventCenter
+     */
+    ZFOBSERVER_EVENT(ViewOnEventFilter)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * param0 is the #ZFUIEvent
      * @note this event would also be fired to #ZFGlobalEventCenter
      */
@@ -1041,6 +1050,12 @@ public:
     zffinal void viewEventSend(ZF_IN ZFUIEvent *event);
 protected:
     /**
+     * @brief see #EventViewOnEventFilter
+     */
+    virtual inline void viewEventOnEventFilter(ZF_IN ZFUIEvent *event)
+    {
+    }
+    /**
      * @brief notified when a ZFUIEvent occurred
      *
      * default behavior is to dispatch event depends on event type\n
@@ -1127,6 +1142,8 @@ private:
     friend zfclassFwd _ZFP_ZFUIViewPrivate;
 
     ZFOBSERVER_HAS_ADD_BEGIN()
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewOnEventFilter)
+        ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewOnEvent)
         ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnMeasureFinish)
         ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnLayoutPrepare)
         ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewLayoutOnLayout)
@@ -1139,6 +1156,8 @@ private:
         ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewOnRemoveFromParent)
         ZFOBSERVER_HAS_ADD_VALUE(HasAdd_ViewPropertyOnUpdate)
     ZFOBSERVER_HAS_ADD_SEPARATOR()
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewOnEventFilter, ZFUIView::EventViewOnEventFilter())
+        ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewOnEvent, ZFUIView::EventViewOnEvent())
         ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnMeasureFinish, ZFUIView::EventViewLayoutOnMeasureFinish())
         ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnLayoutPrepare, ZFUIView::EventViewLayoutOnLayoutPrepare())
         ZFOBSERVER_HAS_ADD_VALUE_REGISTER(HasAdd_ViewLayoutOnLayout, ZFUIView::EventViewLayoutOnLayout())

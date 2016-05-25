@@ -653,7 +653,13 @@ public:
         {
             _needMethodSwizzling = zffalse;
             _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzlePrepare();
-       }
+        }
+
+        ZFUIKeyboardStateBuiltinImplRegister();
+    }
+    virtual ~ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFUIViewImpl_sys_iOS)(void)
+    {
+        ZFUIKeyboardStateBuiltinImplUnregister();
     }
 
 public:

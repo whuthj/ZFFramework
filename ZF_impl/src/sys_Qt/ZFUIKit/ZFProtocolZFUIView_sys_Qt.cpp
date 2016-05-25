@@ -469,9 +469,6 @@ private:
             ev->keyCode = ZFUIViewImpl_sys_Qt_ZFUIKeyCodeFromQKeyCode(event->key());
             ev->keyCodeRaw = (zfuint32)event->key();
             this->_ZFP_impl->notifyUIEvent(this->_ZFP_ownerZFUIView, ev);
-
-            ZFUIKeyboardStateImplNotifyKeyEvent(ev);
-
             event->setAccepted(ev->eventResolved());
         }
     }
@@ -855,6 +852,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_Qt, ZFUIView, ZFProtocolLevelSystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT(zfText("Qt:QWidget"))
+
+public:
+    ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFUIViewImpl_sys_Qt)(void)
+    {
+        ZFUIKeyboardStateBuiltinImplRegister();
+    }
+    virtual ~ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFUIViewImpl_sys_Qt)(void)
+    {
+        ZFUIKeyboardStateBuiltinImplUnregister();
+    }
 
 public:
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view)

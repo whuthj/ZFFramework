@@ -8,69 +8,87 @@
  * ====================================================================== */
 #include "../ZFPrivate_ZFUIKit.hh"
 #include "ZFProtocolZFUIKeyboardState.h"
+#include "../ZFUIView.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFUIKeyboardState)
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIKeyboardStateImpl_default_DataHolder, ZFLevelZFFrameworkNormal)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIKeyboardStateBuiltinImpl_DataHolder, ZFLevelZFFrameworkNormal)
 {
+    this->viewOnEventFilterListener = ZFCallbackForRawFunction(zfself::viewOnEventFilter);
 }
 ZFCoreArrayPOD<ZFUIKeyCodeEnum> keyPressed;
 ZFCoreArrayPOD<zfuint32> keyPressedRaw;
-ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardStateImpl_default_DataHolder)
+ZFListener viewOnEventFilterListener;
+static ZFLISTENER_PROTOTYPE_EXPAND(viewOnEventFilter)
+{
+    ZFUIKeyEvent *event = ZFCastZFObject(ZFUIKeyEvent *, listenerData.param0);
+    if(event != zfnull)
+    {
+        ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);
+    }
+}
+ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardStateBuiltinImpl_DataHolder)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIKeyboardStateImpl_default, ZFUIKeyboardState, ZFProtocolLevelDefault)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIKeyboardStateBuiltinImpl, ZFUIKeyboardState, ZFProtocolLevelDefault)
 public:
     virtual zfbool keyPressed(ZF_IN ZFUIKeyCodeEnum keyCode)
     {
-        return (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateImpl_default_DataHolder)->keyPressed.find(keyCode) != zfindexMax);
+        return (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->keyPressed.find(keyCode) != zfindexMax);
     }
     virtual zfbool keyPressedRaw(ZF_IN zfuint32 keyCodeRaw)
     {
-        return (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateImpl_default_DataHolder)->keyPressedRaw.find(keyCodeRaw) != zfindexMax);
+        return (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->keyPressedRaw.find(keyCodeRaw) != zfindexMax);
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFUIKeyboardStateImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIKeyboardStateImpl_default)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFUIKeyboardStateBuiltinImpl)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIKeyboardStateBuiltinImpl)
 
 // ============================================================
-void ZFUIKeyboardStateImplNotifyKeyDown(ZF_IN ZFUIKeyCodeEnum keyCode, ZF_IN zfuint32 keyCodeRaw)
+void ZFUIKeyboardStateBuiltinImplRegister(void)
 {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIKeyboardStateImpl_default_DataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateImpl_default_DataHolder);
-    d->keyPressed.add(keyCode);
-    d->keyPressedRaw.add(keyCodeRaw);
+    ZFGlobalEventCenter::instance()->observerAdd(
+        ZFUIView::EventViewOnEventFilter(),
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->viewOnEventFilterListener);
 }
-void ZFUIKeyboardStateImplNotifyKeyUp(ZF_IN ZFUIKeyCodeEnum keyCode, ZF_IN zfuint32 keyCodeRaw)
+void ZFUIKeyboardStateBuiltinImplUnregister(void)
 {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIKeyboardStateImpl_default_DataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateImpl_default_DataHolder);
-    zfindex index = 0;
-    for( ; index < d->keyPressed.count(); ++index)
-    {
-        if(d->keyPressed[index] == keyCode
-            && d->keyPressedRaw[index] == keyCodeRaw)
-        {
-            break;
-        }
-    }
-    if(index < d->keyPressed.count())
-    {
-        d->keyPressed.remove(index);
-        d->keyPressedRaw.remove(index);
-    }
+    ZFGlobalEventCenter::instance()->observerRemove(
+        ZFUIView::EventViewOnEventFilter(),
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->viewOnEventFilterListener);
 }
 
-void ZFUIKeyboardStateImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event)
+void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event)
 {
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIKeyboardStateBuiltinImpl_DataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder);
     switch(event->keyAction)
     {
         case ZFUIKeyAction::e_KeyDown:
         case ZFUIKeyAction::e_KeyRepeat:
-            ZFUIKeyboardStateImplNotifyKeyDown(event->keyCode, event->keyCodeRaw);
+        {
+            d->keyPressed.add(event->keyCode);
+            d->keyPressedRaw.add(event->keyCodeRaw);
+        }
             break;
         case ZFUIKeyAction::e_KeyUp:
         case ZFUIKeyAction::e_KeyCancel:
-            ZFUIKeyboardStateImplNotifyKeyUp(event->keyCode, event->keyCodeRaw);
+        {
+            zfindex index = 0;
+            for( ; index < d->keyPressed.count(); ++index)
+            {
+                if(d->keyPressed[index] == event->keyCode
+                    && d->keyPressedRaw[index] == event->keyCodeRaw)
+                {
+                    break;
+                }
+            }
+            if(index < d->keyPressed.count())
+            {
+                d->keyPressed.remove(index);
+                d->keyPressedRaw.remove(index);
+            }
+        }
             break;
         default:
             zfCoreCriticalShouldNotGoHere();

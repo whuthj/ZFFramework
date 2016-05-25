@@ -36,9 +36,13 @@ public:
         tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFUIScrollView).c_str());
         this->jclsZFUIScrollView = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
+
+        ZFUIKeyboardStateBuiltinImplRegister();
     }
     virtual ~ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFUIViewImpl_sys_Android)(void)
     {
+        ZFUIKeyboardStateBuiltinImplUnregister();
+
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFUIView);
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFUIScrollView);
@@ -475,9 +479,6 @@ JNI_METHOD_DECLARE(jboolean, ZFImpl_sys_Android_JNI_ID_ZFUIView, native_1ZFUIVie
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
         ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView)),
         event);
-
-    ZFUIKeyboardStateImplNotifyKeyEvent(event);
-
     return event->eventResolved();
 }
 
