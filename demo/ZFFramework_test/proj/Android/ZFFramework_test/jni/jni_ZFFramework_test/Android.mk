@@ -43,6 +43,7 @@ ZF_BUILD_SHARED         = true
 
 # extra include path setting, separated by space
 ZF_INCLUDES             =
+ZF_INCLUDES             += ../../../../../src
 ifeq ($(ZF_NEED_ZFFramework),1)
     ZF_INCLUDES         += libs/ZF/include
 endif

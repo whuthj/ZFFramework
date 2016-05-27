@@ -47,6 +47,7 @@ ZF_BUILD_SHARED         = true
 
 # extra include path setting, separated by space
 ZF_INCLUDES             =
+ZF_INCLUDES             += ../../../../../src
 
 # compiler flags
 ZF_CFLAGS               = -Os

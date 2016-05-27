@@ -350,7 +350,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ZFFramework.iOS.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/../../../../../_release/iOS/ZF/include ${SRCROOT}/../../../../../_release/iOS/ZF_impl/include";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../src ${SRCROOT}/../../../../../_release/iOS/ZF/include ${SRCROOT}/../../../../../_release/iOS/ZF_impl/include";
 			};
 			name = Debug;
 		};
@@ -378,7 +378,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ZFFramework.iOS.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/../../../../../_release/iOS/ZF/include ${SRCROOT}/../../../../../_release/iOS/ZF_impl/include";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../src ${SRCROOT}/../../../../../_release/iOS/ZF/include ${SRCROOT}/../../../../../_release/iOS/ZF_impl/include";
 			};
 			name = Release;
 		};

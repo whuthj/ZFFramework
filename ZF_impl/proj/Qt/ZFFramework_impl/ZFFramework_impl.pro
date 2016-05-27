@@ -63,6 +63,8 @@ QT += gui widgets
 # ======================================================================
 # Qt project settings, no need to change for most case
 # ======================================================================
+INCLUDEPATH += $$_PRO_FILE_PWD_/../../../src
+
 QT += core
 equals(ZF_NEED_ZFFramework, 1) {
 }

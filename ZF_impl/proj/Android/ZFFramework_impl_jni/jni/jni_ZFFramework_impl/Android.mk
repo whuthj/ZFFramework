@@ -38,7 +38,9 @@ ZF_SRC_EXTS             = c cpp cxx
 ZF_BUILD_SHARED         = true
 
 # extra include path setting, separated by space
-ZF_INCLUDES             = $(LOCAL_PATH)/../../../../../_release/Android/ZF/libs/ZF/include
+ZF_INCLUDES             =
+ZF_INCLUDES             += ../../../../../src
+ZF_INCLUDES             += $(LOCAL_PATH)/../../../../../_release/Android/ZF/libs/ZF/include
 
 # compiler flags
 ZF_CFLAGS               = -Os

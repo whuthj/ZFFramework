@@ -213,5 +213,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_GLOBAL_END
 
+#if 0 // test only
+    #if (defined(ANDROID) || defined(__ANDROID__))
+        #include <jni.h>
+        #include <android/log.h>
+        #define zfzfzfLog(fmt, ...) \
+            ((void)__android_log_print(ANDROID_LOG_ERROR, "test", fmt, ##__VA_ARGS__))
+    #elif (defined(QT_VERSION) || defined(QT_CORE_LIB))
+        #include <QDebug>
+        #define zfzfzfLog(fmt, ...) \
+            qDebug(fmt, ##__VA_ARGS__)
+    #else
+        #include <stdio.h>
+        #define zfzfzfLog(fmt, ...) \
+            do { \
+                printf(fmt, ##__VA_ARGS__); \
+                printf("\n"); \
+            } while(false)
+    #endif
+#endif
+
 #endif // #ifndef _ZFI_ZFCoreLogDef_CommonLog_h_
 
