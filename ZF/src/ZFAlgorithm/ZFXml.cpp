@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFAlgorithm.hh"
 #include "ZFXml.h"
 #include "protocol/ZFProtocolZFXml.h"
 #include "protocol/ZFProtocolZFXmlEscapeChar.h"

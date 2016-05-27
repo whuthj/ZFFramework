@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFAlgorithm.hh"
 #include "ZFRegExp.h"
 #include "protocol/ZFProtocolZFRegExp.h"
 

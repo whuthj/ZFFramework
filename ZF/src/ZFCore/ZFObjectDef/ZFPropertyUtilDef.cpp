@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore_ZFObjectDef.hh"
 #include "ZFPropertyUtilDef.h"
 #include "ZFObjectDef.h"
 #include "ZFClassUtilDef.h"

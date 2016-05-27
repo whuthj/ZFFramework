@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore.hh"
 #include "ZFThread_taskRequest.h"
 #include "protocol/ZFProtocolZFThreadTaskRequest.h"
 #include "ZFArray.h"

@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFUIKit.hh"
 #include "ZFUIRootView.h"
 #include "protocol/ZFProtocolZFUIView.h"
 

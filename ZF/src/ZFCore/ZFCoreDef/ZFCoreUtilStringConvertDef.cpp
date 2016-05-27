@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore_ZFCoreDef.hh"
 #include "ZFCoreUtilStringConvertDef.h"
 #include "ZFCoreUtilDef.h"
 #include "ZFCoreArrayDef.h"

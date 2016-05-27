@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFAddition.hh"
 #include "ZFTimeLineCurve_ZFBezier.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN

@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFUIWidget.hh"
 #include "ZFUIDialog.h"
 #include "ZFUIButton.h"
 #include "ZFUIViewLayout.h"

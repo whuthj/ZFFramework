@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFAlgorithm.hh"
 #include "ZFBase64.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN

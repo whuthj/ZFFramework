@@ -6,7 +6,6 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPrivate_ZFCore.hh"
 #include "ZFArray.h"
 #include "ZFSTLWrapper/zfstl_deque.h"
 
