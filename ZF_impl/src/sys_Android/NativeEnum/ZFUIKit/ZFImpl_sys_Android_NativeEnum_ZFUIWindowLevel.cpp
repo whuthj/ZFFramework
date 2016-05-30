@@ -36,5 +36,7 @@ ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUIWindowLevel, 
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUIWindowLevel, ZFUIWindowLevel, ZFFrameworkFgHigh)
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUIWindowLevel, ZFUIWindowLevel, ZFFrameworkFgHighest)
 
+ZFImpl_sys_Android_NativeEnum_EXPAND_Default(ZFImpl_sys_Android_JNI_ID_ZFUIWindowLevel, ZFUIWindowLevel)
+
 #endif // #if ZF_ENV_sys_Android
 

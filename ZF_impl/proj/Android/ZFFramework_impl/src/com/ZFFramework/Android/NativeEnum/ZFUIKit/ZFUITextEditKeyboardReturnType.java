@@ -21,4 +21,8 @@ public class ZFUITextEditKeyboardReturnType {
     private native static int native_e_Go();
     public static final int e_Send = ZFUITextEditKeyboardReturnType.native_e_Send();
     private native static int native_e_Send();
+
+    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    private native static int native_e_Default();
 }
+

@@ -27,12 +27,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 #define ZFImpl_sys_Android_NativeEnum_EXPAND(EnumClassJniId, EnumName, EnumValue) \
-    _ZFP_ZFImpl_sys_Android_NativeEnum_EXPAND(EnumClassJniId, EnumName, EnumValue)
-#define _ZFP_ZFImpl_sys_Android_NativeEnum_EXPAND(EnumClassJniId, EnumName, EnumValue) \
     JNI_METHOD_DECLARE(jint, EnumClassJniId, native_1e_1##EnumValue, \
                        JNIEnv *jniEnv, jclass jniCls) \
     { \
         return EnumName::e_##EnumValue; \
+    }
+#define ZFImpl_sys_Android_NativeEnum_EXPAND_Default(EnumClassJniId, EnumName) \
+    JNI_METHOD_DECLARE(jint, EnumClassJniId, native_1e_1##Default, \
+                       JNIEnv *jniEnv, jclass jniCls) \
+    { \
+        return EnumName::e_Default(); \
     }
 
 ZF_NAMESPACE_GLOBAL_END

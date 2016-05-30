@@ -6,17 +6,13 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-package com.ZFFramework.Android.NativeEnum.ZFUIKit;
+package com.ZFFramework.Android.NativeEnum.ZFUIWidget;
 
-public class ZFUITextEditKeyboardType {
-    public static final int e_Normal = ZFUITextEditKeyboardType.native_e_Normal();
+public class ZFUIButtonGroupType {
+    public static final int e_Normal = ZFUIButtonGroupType.native_e_Normal();
     private native static int native_e_Normal();
-    public static final int e_CharBased = ZFUITextEditKeyboardType.native_e_CharBased();
-    private native static int native_e_CharBased();
-    public static final int e_PhonePad = ZFUITextEditKeyboardType.native_e_PhonePad();
-    private native static int native_e_PhonePad();
-    public static final int e_NumberPad = ZFUITextEditKeyboardType.native_e_NumberPad();
-    private native static int native_e_NumberPad();
+    public static final int e_Tab = ZFUIButtonGroupType.native_e_Tab();
+    private native static int native_e_Tab();
 
     public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
     private native static int native_e_Default();

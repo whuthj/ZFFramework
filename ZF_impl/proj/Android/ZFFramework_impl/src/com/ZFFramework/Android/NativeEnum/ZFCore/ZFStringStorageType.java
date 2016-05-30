@@ -15,4 +15,8 @@ public class ZFStringStorageType {
     private native static int native_e_Copy();
     public static final int e_CharBufferRef = ZFStringStorageType.native_e_CharBufferRef();
     private native static int native_e_CharBufferRef();
+
+    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    private native static int native_e_Default();
 }
+

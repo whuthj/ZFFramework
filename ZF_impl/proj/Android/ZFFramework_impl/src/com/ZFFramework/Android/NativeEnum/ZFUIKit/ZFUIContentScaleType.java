@@ -27,5 +27,8 @@ public class ZFUIContentScaleType {
     private native static int native_e_FillY();
     public static final int e_FitY = ZFUIContentScaleType.native_e_FitY();
     private native static int native_e_FitY();
+
+    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    private native static int native_e_Default();
 }
 

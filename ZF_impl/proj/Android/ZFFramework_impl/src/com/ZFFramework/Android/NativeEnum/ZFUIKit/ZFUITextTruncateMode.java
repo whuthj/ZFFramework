@@ -17,4 +17,8 @@ public class ZFUITextTruncateMode {
     private static native int native_e_Middle();
     public static final int e_Tail = ZFUITextTruncateMode.native_e_Tail();
     private static native int native_e_Tail();
+
+    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    private native static int native_e_Default();
 }
+

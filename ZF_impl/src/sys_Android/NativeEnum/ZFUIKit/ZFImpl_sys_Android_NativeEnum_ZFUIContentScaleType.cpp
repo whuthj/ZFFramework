@@ -28,5 +28,7 @@ ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUIContentScaleT
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUIContentScaleType, ZFUIContentScaleType, FillY)
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUIContentScaleType, ZFUIContentScaleType, FitY)
 
+ZFImpl_sys_Android_NativeEnum_EXPAND_Default(ZFImpl_sys_Android_JNI_ID_ZFUIContentScaleType, ZFUIContentScaleType)
+
 #endif // #if ZF_ENV_sys_Android
 

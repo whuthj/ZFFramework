@@ -17,4 +17,8 @@ public class ZFUITextAppearance {
     private native static int native_e_Italic();
     public static final int e_BoldItalic = ZFUITextAppearance.native_e_BoldItalic();
     private native static int native_e_BoldItalic();
+
+    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    private native static int native_e_Default();
 }
+

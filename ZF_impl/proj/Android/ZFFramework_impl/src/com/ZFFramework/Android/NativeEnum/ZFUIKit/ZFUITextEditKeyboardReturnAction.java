@@ -15,4 +15,8 @@ public class ZFUITextEditKeyboardReturnAction {
     private native static int native_e_FocusNext();
     public static final int e_HideKeyboard = ZFUITextEditKeyboardReturnAction.native_e_HideKeyboard();
     private native static int native_e_HideKeyboard();
+
+    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    private native static int native_e_Default();
 }
+

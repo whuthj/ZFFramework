@@ -22,5 +22,7 @@ ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFStringStorageTy
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFStringStorageType, ZFStringStorageType, Copy)
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFStringStorageType, ZFStringStorageType, CharBufferRef)
 
+ZFImpl_sys_Android_NativeEnum_EXPAND_Default(ZFImpl_sys_Android_JNI_ID_ZFStringStorageType, ZFStringStorageType)
+
 #endif // #if ZF_ENV_sys_Android
 

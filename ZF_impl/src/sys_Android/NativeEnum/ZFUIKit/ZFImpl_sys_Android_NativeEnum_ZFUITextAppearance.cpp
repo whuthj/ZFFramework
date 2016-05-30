@@ -23,5 +23,7 @@ ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUITextAppearanc
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUITextAppearance, ZFUITextAppearance, Italic)
 ZFImpl_sys_Android_NativeEnum_EXPAND(ZFImpl_sys_Android_JNI_ID_ZFUITextAppearance, ZFUITextAppearance, BoldItalic)
 
+ZFImpl_sys_Android_NativeEnum_EXPAND_Default(ZFImpl_sys_Android_JNI_ID_ZFUITextAppearance, ZFUITextAppearance)
+
 #endif // #if ZF_ENV_sys_Android
 
