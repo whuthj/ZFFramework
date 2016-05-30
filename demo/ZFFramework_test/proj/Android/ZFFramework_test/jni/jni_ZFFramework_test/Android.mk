@@ -11,10 +11,6 @@
 # project settings
 #============================================================
 
-ZF_NEED_ZFFramework = 1
-ZF_NEED_ZFFramework_impl = 1
-ZF_NEED_ZFFramework_impl_ZFUIWebKit = 1
-
 # module name
 # use System.loadLibrary("module_name"); to load it
 ZF_MODULE_NAME          = ZFFramework_test
@@ -44,15 +40,38 @@ ZF_BUILD_SHARED         = true
 # extra include path setting, separated by space
 ZF_INCLUDES             =
 ZF_INCLUDES             += ../../../../../src
-ifeq ($(ZF_NEED_ZFFramework),1)
-    ZF_INCLUDES         += libs/ZF/include
-endif
-ifeq ($(ZF_NEED_ZFFramework_impl),1)
-    ZF_INCLUDES         += libs/ZF_impl/include
-endif
-ifeq ($(ZF_NEED_ZFFramework_impl_ZFUIWebKit),1)
-    ZF_INCLUDES         += libs/ZF_impl_ZFUIWebKit/include
-endif
+ZF_INCLUDES += libs/ZF/include
+ZF_INCLUDES += libs/ZF_impl/include
+ZF_INCLUDES += libs/ZF_impl_ZFUIWebKit/include
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # compiler flags
@@ -64,15 +83,38 @@ ZF_LFLAGS               = -landroid -llog
 # third-party libs to load
 ZF_LOAD_STATIC_LIB      =
 ZF_LOAD_SHARED_LIB      =
-ifeq ($(ZF_NEED_ZFFramework),1)
-    ZF_LOAD_SHARED_LIB  += ZFFramework
-endif
-ifeq ($(ZF_NEED_ZFFramework_impl),1)
-    ZF_LOAD_SHARED_LIB  += ZFFramework_impl
-endif
-ifeq ($(ZF_NEED_ZFFramework_impl_ZFUIWebKit),1)
-    ZF_LOAD_SHARED_LIB  += ZFFramework_impl_ZFUIWebKit
-endif
+ZF_LOAD_SHARED_LIB += ZFFramework
+ZF_LOAD_SHARED_LIB += ZFFramework_impl
+ZF_LOAD_SHARED_LIB += ZFFramework_impl_ZFUIWebKit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #============================================================
@@ -83,26 +125,53 @@ endif
 #============================================================
 # other custom settings
 #============================================================
-ifeq ($(ZF_NEED_ZFFramework),1)
+
     include $(CLEAR_VARS)
     LOCAL_MODULE := ZFFramework
     LOCAL_SRC_FILES := ../libs/ZF/$(TARGET_ARCH_ABI)/libZFFramework.so
     include $(PREBUILT_SHARED_LIBRARY)
-endif
 
-ifeq ($(ZF_NEED_ZFFramework_impl),1)
+
     include $(CLEAR_VARS)
     LOCAL_MODULE := ZFFramework_impl
     LOCAL_SRC_FILES := ../libs/ZF_impl/$(TARGET_ARCH_ABI)/libZFFramework_impl.so
     include $(PREBUILT_SHARED_LIBRARY)
-endif
 
-ifeq ($(ZF_NEED_ZFFramework_impl_ZFUIWebKit),1)
+
     include $(CLEAR_VARS)
     LOCAL_MODULE := ZFFramework_impl_ZFUIWebKit
     LOCAL_SRC_FILES := ../libs/ZF_impl_ZFUIWebKit/$(TARGET_ARCH_ABI)/libZFFramework_impl_ZFUIWebKit.so
     include $(PREBUILT_SHARED_LIBRARY)
-endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

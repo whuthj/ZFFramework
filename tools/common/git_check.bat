@@ -16,14 +16,22 @@ exit /b 1
 
 set _OLD_DIR=%cd%
 if exist "%DST_PATH%\.git" (
-    cd "%DST_PATH%"
-    git checkout .
-    git reset --hard
-    git clean -xdf
-    git pull
+    call "%WORK_DIR%\timestamp_check.bat" "%DST_PATH%\.git" 3600
+
+    if errorlevel 1 (
+        cd "%DST_PATH%"
+        git checkout .
+        git reset --hard
+        git clean -xdf
+        git pull
+        cd "%_OLD_DIR%"
+
+        call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git" 3600
+    )
 ) else (
     rmdir /s/q "%DST_PATH%" >nul 2>nul
     git clone "%PROJ_GIT%" "%DST_PATH%"
+
+    call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git" 3600
 )
-cd "%_OLD_DIR%"
 

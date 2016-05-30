@@ -47,9 +47,41 @@ ZF_BUILD_SHARED         = true
 
 # extra include path setting, separated by space
 ZF_INCLUDES             =
+ZF_INCLUDES += ../../../../../ZF/src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # compiler flags
-ZF_CFLAGS               = -Os -DZF_LEAKTEST_ENABLE=1
+ZF_CFLAGS               = -Os
 
 # linker flags
 ZF_LFLAGS               = -landroid -llog
@@ -57,6 +89,36 @@ ZF_LFLAGS               = -landroid -llog
 # third-party libs to load
 ZF_LOAD_STATIC_LIB      =
 ZF_LOAD_SHARED_LIB      =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #============================================================

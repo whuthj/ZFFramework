@@ -29,10 +29,13 @@ ZF_TOOLS_PATH = $$ZF_ROOT_PATH/tools
 # name of your project
 ZF_PROJ_NAME = TestZF
 
+# build path
+ZF_BUILD_PATH = $$_PRO_FILE_PWD_/../../../../../_tmp
+
 # src path of your project
 # can hold one or more paths, separated by space
 ZF_PROJ_SRC_PATH =
-ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF
+ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF/src
 ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF_impl/src
 ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF_impl_ZFUIWebKit/src
 ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/demo/ZFFramework_test/src
@@ -44,15 +47,6 @@ ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/ZF/res
 ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/ZF_impl/res
 ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/ZF_impl_ZFUIWebKit/res
 ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/demo/ZFFramework_test/res
-
-# whether need this module
-ZF_NEED_ZFFramework = 0
-
-# whether need this module
-ZF_NEED_ZFFramework_impl = 0
-
-# whether need this module
-ZF_NEED_ZFFramework_impl_ZFUIWebKit = 0
 
 
 # ======================================================================
@@ -72,18 +66,11 @@ unix {
 
 
 
+
 # ======================================================================
 # Qt project settings, no need to change for most case
 # ======================================================================
 QT += core
-equals(ZF_NEED_ZFFramework, 1) {
-}
-equals(ZF_NEED_ZFFramework_impl, 1) {
-    QT += gui widgets
-}
-equals(ZF_NEED_ZFFramework_impl_ZFUIWebKit, 1) {
-    QT += webkitwidgets
-}
 
 TARGET = $$ZF_PROJ_NAME
 TEMPLATE = app
@@ -103,15 +90,12 @@ exists($${ZF_PROJ_NAME}_icon.icns) {
 # no need to change these
 # ======================================================================
 win32 {
-    system(call $$shell_path($$ZF_TOOLS_PATH/release/release_Qt_Windows_check.bat))
     _ZF_QT_TYPE=Qt_Windows
 }
 unix:!macx {
-    system(sh $$shell_path($$ZF_TOOLS_PATH/release/release_Qt_Posix_check.sh))
     _ZF_QT_TYPE=Qt_Posix
 }
 macx {
-    system(sh $$shell_path($$ZF_TOOLS_PATH/release/release_Qt_MacOS_check.command))
     _ZF_QT_TYPE=Qt_MacOS
 }
 
@@ -121,7 +105,7 @@ CONFIG(debug, debug|release) {
     _ZF_BUILD_TYPE=release
 }
 
-DESTDIR = $$_PRO_FILE_PWD_/../../../../../_tmp/$$ZF_PROJ_NAME/$$_ZF_QT_TYPE/$$_ZF_BUILD_TYPE
+DESTDIR = $$ZF_BUILD_PATH/$$ZF_PROJ_NAME/$$_ZF_QT_TYPE/$$_ZF_BUILD_TYPE
 OBJECTS_DIR = $${DESTDIR}/.obj
 MOC_DIR = $${DESTDIR}/.moc
 RCC_DIR = $${DESTDIR}/.rcc
@@ -200,25 +184,6 @@ equals(ZF_BUILD_STATIC_LIB, 1) {
     }
 } else {
     _ZF_LINKER_FLAGS =
-}
-
-equals(ZF_NEED_ZFFramework, 1) {
-    INCLUDEPATH += $$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF/include
-    LIBS += -L$$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF/lib $$_ZF_LINKER_FLAGS -lZFFramework
-    QMAKE_POST_LINK += $$_ZF_copy_res $$shell_path($$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF/res) $$_ZF_RES_DEPLOY_PATH $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += $$_ZF_install_lib ZFFramework ZF $$shell_path($$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF/lib) $$_ZF_LIB_DEPLOY_PATH $$escape_expand(\\n\\t)
-}
-equals(ZF_NEED_ZFFramework_impl, 1) {
-    INCLUDEPATH += $$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl/include
-    LIBS += -L$$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl/lib $$_ZF_LINKER_FLAGS -lZFFramework_impl
-    QMAKE_POST_LINK += $$_ZF_copy_res $$shell_path($$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl/res) $$_ZF_RES_DEPLOY_PATH $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += $$_ZF_install_lib ZFFramework_impl ZF_impl $$shell_path($$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl/lib) $$_ZF_LIB_DEPLOY_PATH $$escape_expand(\\n\\t)
-}
-equals(ZF_NEED_ZFFramework_impl_ZFUIWebKit, 1) {
-    INCLUDEPATH += $$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl_ZFUIWebKit/include
-    LIBS += -L$$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl_ZFUIWebKit/lib $$_ZF_LINKER_FLAGS -lZFFramework_impl_ZFUIWebKit
-    QMAKE_POST_LINK += $$_ZF_copy_res $$shell_path($$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl_ZFUIWebKit/res) $$_ZF_RES_DEPLOY_PATH $$escape_expand(\\n\\t)
-    QMAKE_POST_LINK += $$_ZF_install_lib ZFFramework_impl_ZFUIWebKit ZF_impl_ZFUIWebKit $$shell_path($$ZF_ROOT_PATH/_release/$$_ZF_QT_TYPE/ZF_impl_ZFUIWebKit/lib) $$_ZF_LIB_DEPLOY_PATH $$escape_expand(\\n\\t)
 }
 
 for(path, ZF_PROJ_RES_PATH) {

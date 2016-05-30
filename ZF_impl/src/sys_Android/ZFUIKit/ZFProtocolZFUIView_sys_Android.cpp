@@ -41,7 +41,7 @@ public:
     }
     virtual ~ZFPROTOCOL_IMPLEMENTATION_CLASS(ZFUIViewImpl_sys_Android)(void)
     {
-        ZFUIKeyboardStateBuiltinImplUnregister();
+        ZFUIKeyboardStateBuiltinImplUnregister(); // zfzfzf
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFUIView);

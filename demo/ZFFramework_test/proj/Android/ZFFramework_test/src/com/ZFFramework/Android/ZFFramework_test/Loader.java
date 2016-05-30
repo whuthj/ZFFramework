@@ -14,20 +14,42 @@ import android.os.Bundle;
 import com.ZFFramework.Android.ZFCore.ZFMainEntry;
 
 public class Loader extends Activity {
-    private static int ZF_NEED_ZFFramework = 1;
-    private static int ZF_NEED_ZFFramework_impl = 1;
-    private static int ZF_NEED_ZFFramework_impl_ZFUIWebKit = 1;
     static {
         System.loadLibrary("stlport_shared");
-        if(ZF_NEED_ZFFramework == 1) {
-            System.loadLibrary("ZFFramework");
-        }
-        if(ZF_NEED_ZFFramework_impl == 1) {
-            System.loadLibrary("ZFFramework_impl");
-        }
-        if(ZF_NEED_ZFFramework_impl_ZFUIWebKit == 1) {
-            System.loadLibrary("ZFFramework_impl_ZFUIWebKit");
-        }
+
+        System.loadLibrary("ZFFramework");
+        System.loadLibrary("ZFFramework_impl");
+        System.loadLibrary("ZFFramework_impl_ZFUIWebKit");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
         System.loadLibrary("ZFFramework_test");
     }
     @Override
@@ -38,3 +60,4 @@ public class Loader extends Activity {
         this.finish();
     }
 }
+

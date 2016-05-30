@@ -10,10 +10,6 @@
 			<triggers>clean,full,incremental,</triggers>
 			<arguments>
 				<dictionary>
-					<key>?children?</key>
-					<value>?name?=outputEntries\|?children?=?name?=entry\\\\\\\|\\\|?name?=entry\\\\\\\|\\\|\||</value>
-				</dictionary>
-				<dictionary>
 					<key>?name?</key>
 					<value></value>
 				</dictionary>
@@ -111,7 +107,7 @@
 			<locationURI>PARENT-5-PROJECT_LOC/ZF_impl_ZFUIWebKit/src</locationURI>
 		</link>
 		<link>
-			<name>zfsrcref_ZFFramework_test</name>
+			<name>zfsrcref_TestZF</name>
 			<type>2</type>
 			<locationURI>PARENT-5-PROJECT_LOC/demo/ZFFramework_test/src</locationURI>
 		</link>

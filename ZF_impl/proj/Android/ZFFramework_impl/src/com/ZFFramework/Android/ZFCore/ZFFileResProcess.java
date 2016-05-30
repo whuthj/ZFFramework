@@ -21,6 +21,9 @@ public final class ZFFileResProcess {
 
     public static String[] native_listAssets(String resPath) {
         try {
+            if(resPath.length() > 0 && resPath.charAt(resPath.length() - 1) == '/') {
+                resPath = resPath.substring(0, resPath.length() - 1);
+            }
             return ZFMainEntry.assetManager().list(resPath);
         }
         catch(IOException e) {

@@ -5,7 +5,7 @@ PROJ_NAME=$1
 PROJ_DIR_NAME=$2
 if test "x$PROJ_NAME" = "x" || test "x$PROJ_DIR_NAME" = "x" ; then
     echo usage:
-    echo   release_MacOS.command PROJ_NAME PROJ_DIR_NAME
+    echo   release_MacOS.sh PROJ_NAME PROJ_DIR_NAME
     exit 1
 fi
 

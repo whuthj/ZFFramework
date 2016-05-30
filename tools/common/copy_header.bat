@@ -17,5 +17,13 @@ exit /b 1
 rmdir /s/q "%DST_PATH%" >nul 2>nul
 mkdir "%DST_PATH%" >nul 2>nul
 xcopy /s/e/y/r/h "%SRC_PATH%\*.h" "%DST_PATH%" >nul 2>nul
+
 del /f/s/q "%DST_PATH%\*Private*" >nul 2>nul
+>nul 2>nul (
+    for /f "tokens=*" %%i in ('dir /s/b/ad') do (
+        if "%%~ni" == "_repo" (
+            rmdir /s/q "%%i" >nul 2>nul
+        )
+    )
+)
 

@@ -10,15 +10,6 @@
 
 int main(int argc, char **argv)
 {
-    #if 1
-        ZFImpl_sys_Qt_requireLib(ZFFramework)
-    #endif
-    #if 1
-        ZFImpl_sys_Qt_requireLib(ZFFramework_impl)
-    #endif
-    #if 0
-        ZFImpl_sys_Qt_requireLib(ZFFramework_impl_ZFUIWebKit)
-    #endif
     return ZFMainEntry_sys_Qt(argc, argv);
 }
 

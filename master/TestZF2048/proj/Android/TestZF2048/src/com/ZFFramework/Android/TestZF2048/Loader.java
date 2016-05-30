@@ -16,8 +16,40 @@ import com.ZFFramework.Android.ZFCore.ZFMainEntry;
 public class Loader extends Activity {
     static {
         System.loadLibrary("stlport_shared");
+
         System.loadLibrary("ZFFramework");
         System.loadLibrary("ZFFramework_impl");
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
         System.loadLibrary("TestZF2048");
     }
     @Override
@@ -28,3 +60,4 @@ public class Loader extends Activity {
         this.finish();
     }
 }
+

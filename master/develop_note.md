@@ -31,3 +31,4 @@ however, it cost much CPU for property comparing and copying
 
 so, for performance, most of styleable object won't copy it's default style during init,
 and most of default style are hard coded, only images are loaded from resource
+

@@ -1843,12 +1843,6 @@ void ZFUIView::viewEventSend(ZF_IN ZFUIEvent *event)
         this->observerNotify(ZFUIView::EventViewOnEvent(), event);
     }
     eventCenter->observerNotifyWithCustomSender(this, ZFUIView::EventViewOnEvent(), event);
-
-    if(!event->eventResolved())
-    {
-        // output log only, not critical error
-        zfCoreLog(zfTextA("unresolved event: %s"), zfsCoreZ2A(event->objectInfo().cString()));
-    }
 }
 void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event)
 {

@@ -8,5 +8,5 @@ RELEASE_PATH=$ZF_ROOT_PATH/_release/iOS
 rm -rf "$RELEASE_PATH" >/dev/null 2>&1
 
 sh "$ZF_ROOT_PATH/thirdparty_setup.sh"
-sh "$ZF_TOOLS_PATH/common/run_recursive.sh" "$ZF_ROOT_PATH" "zfautoscript_release_iOS*.command"
+sh "$ZF_TOOLS_PATH/common/run_recursive.sh" "$ZF_ROOT_PATH" "zfautoscript_release_iOS*.sh"
 

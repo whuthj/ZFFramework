@@ -8,5 +8,15 @@ if test "x$RES_PATH" = "x" ; then
     exit 1
 fi
 
-find "$RES_PATH" -type f 2>&1 | xargs -i mv {} {}.mp2 >/dev/null 2>&1
+_res_fix_action() {
+    filename=$(basename "$1")
+    fileextension=${filename##*.}
+    if test ! "$fileextension" = "mp2" ; then
+        rm $1.mp2 >/dev/null 2>&1
+        mv $1 $1.mp2 >/dev/null 2>&1
+    fi
+}
+export -f _res_fix_action
+
+find "$RES_PATH" -type f 2>&1 | xargs -i bash -c '_res_fix_action $@' _ {} >/dev/null 2>&1
 

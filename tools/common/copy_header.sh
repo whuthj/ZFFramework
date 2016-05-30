@@ -13,10 +13,13 @@ fi
 
 rm -rf "$DST_PATH" >/dev/null 2>&1
 cp -rf "$SRC_PATH/." "$DST_PATH/" >/dev/null 2>&1
+
 find "$DST_PATH" -type f -name "*.c" 2>&1 | xargs rm >/dev/null 2>&1
 find "$DST_PATH" -type f -name "*.cpp" 2>&1 | xargs rm >/dev/null 2>&1
 find "$DST_PATH" -type f -name "*.m" 2>&1 | xargs rm >/dev/null 2>&1
 find "$DST_PATH" -type f -name "*.mm" 2>&1 | xargs rm >/dev/null 2>&1
+
 find "$DST_PATH" -type f -name "*Private*" 2>&1 | xargs rm >/dev/null 2>&1
+find "$DST_PATH" -type d -name "_repo" 2>&1 | xargs rm -rf >/dev/null 2>&1
 find "$DST_PATH" -depth -type d -empty -exec rm -rf {} ';' >/dev/null 2>&1
 

@@ -7,14 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		049749211AC8020100A52F5F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 049749201AC8020000A52F5F /* Default-568h@2x.png */; };
-		04B3F45E18F5328200086F26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B3F45D18F5328200086F26 /* Foundation.framework */; };
-		04B3F46018F5328300086F26 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B3F45F18F5328300086F26 /* CoreGraphics.framework */; };
-		04B3F46218F5328300086F26 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B3F46118F5328300086F26 /* UIKit.framework */; };
-		04D1E2391C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */; };
-		04D1E23A1C3A6E7500B3AD34 /* zfgensrc_ZFFramework_test.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2371C3A6E7500B3AD34 /* zfgensrc_ZFFramework_test.mm */; };
 		04D1E23B1C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2381C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm */; };
-		84D8C1D11A4BECC000FF88AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84D8C1D01A4BECC000FF88AB /* QuartzCore.framework */; };
+		04D1E2391C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */; };
+		04D1E2471C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2461C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm */; };
+		0482D81B1B4CC82700464BD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D81A1B4CC82700464BD1 /* Foundation.framework */; };
+		0482D81D1B4CC82C00464BD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D81C1B4CC82C00464BD1 /* UIKit.framework */; };
+		0482D81F1B4CC83100464BD1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D81E1B4CC83100464BD1 /* QuartzCore.framework */; };
+		0482D8211B4CC83700464BD1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D8201B4CC83700464BD1 /* CoreGraphics.framework */; };
+		0482D8171B4CC75700464BD1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0482D8151B4CC75700464BD1 /* Default-568h@2x.png */; };
+		04D7BF731B5BE4ED004C4C51 /* Icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF6E1B5BE4ED004C4C51 /* Icon-29.png */; };
+		04D7BF741B5BE4ED004C4C51 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF6F1B5BE4ED004C4C51 /* Icon-50.png */; };
+		04D7BF751B5BE4ED004C4C51 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF701B5BE4ED004C4C51 /* Icon-72.png */; };
+		04D7BF761B5BE4ED004C4C51 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF711B5BE4ED004C4C51 /* Icon.png */; };
+		04D7BF771B5BE4ED004C4C51 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF721B5BE4ED004C4C51 /* Icon@2x.png */; };
 		84E73E841A4D34410014C790 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E73E7E1A4D34410014C790 /* AppDelegate.mm */; };
 		84E73E861A4D34410014C790 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E73E801A4D34410014C790 /* main.m */; };
 		84E73E871A4D34410014C790 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E73E821A4D34410014C790 /* RootViewController.m */; };
@@ -22,18 +27,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		049749201AC8020000A52F5F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		04B3F45A18F5328200086F26 /* TestZF2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestZF2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		04B3F45D18F5328200086F26 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		04B3F45F18F5328300086F26 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		04B3F46118F5328300086F26 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		04C8E3191C3B98D900CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../../../ZF/src; sourceTree = "<group>"; };
-		04C8E31B1C3B98DF00CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../../../ZF_impl/src; sourceTree = "<group>"; };
 		04C8E31D1C3B98EB00CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../../../demo/ZF2048/src; sourceTree = "<group>"; };
-		04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_impl.mm; sourceTree = SOURCE_ROOT; };
-		04D1E2371C3A6E7500B3AD34 /* zfgensrc_ZFFramework_test.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_test.mm; sourceTree = SOURCE_ROOT; };
 		04D1E2381C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework.mm; sourceTree = SOURCE_ROOT; };
-		84D8C1D01A4BECC000FF88AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_impl.mm; sourceTree = SOURCE_ROOT; };
+		04D1E2461C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_TestZF2048.mm; sourceTree = SOURCE_ROOT; };
+		0482D7EB1B4CC65F00464BD1 /* TestZF2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestZF2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0482D81A1B4CC82700464BD1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0482D81C1B4CC82C00464BD1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0482D81E1B4CC83100464BD1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0482D8201B4CC83700464BD1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0482D8151B4CC75700464BD1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		04D7BF6E1B5BE4ED004C4C51 /* Icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29.png"; sourceTree = "<group>"; };
+		04D7BF6F1B5BE4ED004C4C51 /* Icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-50.png"; sourceTree = "<group>"; };
+		04D7BF701B5BE4ED004C4C51 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
+		04D7BF711B5BE4ED004C4C51 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		04D7BF721B5BE4ED004C4C51 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		84E73E7D1A4D34410014C790 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		84E73E7E1A4D34410014C790 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		84E73E7F1A4D34410014C790 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -44,84 +52,52 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		04B3F45718F5328200086F26 /* Frameworks */ = {
+		0482D7E81B4CC65F00464BD1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84D8C1D11A4BECC000FF88AB /* QuartzCore.framework in Frameworks */,
-				04B3F46018F5328300086F26 /* CoreGraphics.framework in Frameworks */,
-				04B3F46218F5328300086F26 /* UIKit.framework in Frameworks */,
-				04B3F45E18F5328200086F26 /* Foundation.framework in Frameworks */,
+				0482D81B1B4CC82700464BD1 /* Foundation.framework in Frameworks */,
+				0482D81D1B4CC82C00464BD1 /* UIKit.framework in Frameworks */,
+				0482D8211B4CC83700464BD1 /* CoreGraphics.framework in Frameworks */,
+				0482D81F1B4CC83100464BD1 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04B3F45118F5328200086F26 = {
+		0482D7E21B4CC65F00464BD1 = {
 			isa = PBXGroup;
 			children = (
-				04C8E3161C3B98B400CA64A1 /* ZFFramework */,
-				04C8E3171C3B98BA00CA64A1 /* ZFFramework_impl */,
-				04C8E3181C3B98C000CA64A1 /* ZF2048 */,
-				84E73E7C1A4D34410014C790 /* ProjectFiles */,
-				04B3F45C18F5328200086F26 /* Frameworks */,
-				04B3F45B18F5328200086F26 /* Products */,
+				04C8E31F1C3B990200CA64A1 /* TestZF2048 */,
+				0482D8141B4CC75700464BD1 /* ProjectFiles */,
+				0482D8191B4CC81500464BD1 /* Frameworks */,
+				0482D7EC1B4CC65F00464BD1 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		04B3F45B18F5328200086F26 /* Products */ = {
+		0482D7EC1B4CC65F00464BD1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				04B3F45A18F5328200086F26 /* TestZF2048.app */,
+				0482D7EB1B4CC65F00464BD1 /* TestZF2048.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		04B3F45C18F5328200086F26 /* Frameworks */ = {
+		0482D8141B4CC75700464BD1 /* ProjectFiles */ = {
 			isa = PBXGroup;
 			children = (
-				84D8C1D01A4BECC000FF88AB /* QuartzCore.framework */,
-				04B3F45D18F5328200086F26 /* Foundation.framework */,
-				04B3F45F18F5328300086F26 /* CoreGraphics.framework */,
-				04B3F46118F5328300086F26 /* UIKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		04C8E3161C3B98B400CA64A1 /* ZFFramework */ = {
-			isa = PBXGroup;
-			children = (
-				04C8E3191C3B98D900CA64A1 /* src */,
-			);
-			name = ZFFramework;
-			sourceTree = "<group>";
-		};
-		04C8E3171C3B98BA00CA64A1 /* ZFFramework_impl */ = {
-			isa = PBXGroup;
-			children = (
-				04C8E31B1C3B98DF00CA64A1 /* src */,
-			);
-			name = ZFFramework_impl;
-			sourceTree = "<group>";
-		};
-		04C8E3181C3B98C000CA64A1 /* ZF2048 */ = {
-			isa = PBXGroup;
-			children = (
-				04C8E31D1C3B98EB00CA64A1 /* src */,
-			);
-			name = ZF2048;
-			sourceTree = "<group>";
-		};
-		84E73E7C1A4D34410014C790 /* ProjectFiles */ = {
-			isa = PBXGroup;
-			children = (
-				04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */,
-				04D1E2371C3A6E7500B3AD34 /* zfgensrc_ZFFramework_test.mm */,
 				04D1E2381C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm */,
+				04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */,
+				04D1E2461C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm */,
+				0482D8151B4CC75700464BD1 /* Default-568h@2x.png */,
+				04D7BF6E1B5BE4ED004C4C51 /* Icon-29.png */,
+				04D7BF6F1B5BE4ED004C4C51 /* Icon-50.png */,
+				04D7BF701B5BE4ED004C4C51 /* Icon-72.png */,
+				04D7BF711B5BE4ED004C4C51 /* Icon.png */,
+				04D7BF721B5BE4ED004C4C51 /* Icon@2x.png */,
 				84E73E7D1A4D34410014C790 /* AppDelegate.h */,
 				84E73E7E1A4D34410014C790 /* AppDelegate.mm */,
-				049749201AC8020000A52F5F /* Default-568h@2x.png */,
 				84E73E7F1A4D34410014C790 /* Info.plist */,
 				84E73E801A4D34410014C790 /* main.m */,
 				84E73E811A4D34410014C790 /* RootViewController.h */,
@@ -131,69 +107,99 @@
 			path = ProjectFiles;
 			sourceTree = "<group>";
 		};
+		0482D8191B4CC81500464BD1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0482D81A1B4CC82700464BD1 /* Foundation.framework */,
+				0482D81C1B4CC82C00464BD1 /* UIKit.framework */,
+				0482D8201B4CC83700464BD1 /* CoreGraphics.framework */,
+				0482D81E1B4CC83100464BD1 /* QuartzCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		04C8E31F1C3B990200CA64A1 /* TestZF2048 */ = {
+			isa = PBXGroup;
+			children = (
+				04C8E3201C3B990B00CA64A1 /* src */,
+			);
+			name = TestZF2048;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		04B3F45918F5328200086F26 /* TestZF2048 */ = {
+		0482D7EA1B4CC65F00464BD1 /* TestZF2048 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 04B3F48618F5328300086F26 /* Build configuration list for PBXNativeTarget "TestZF2048" */;
+			buildConfigurationList = 0482D80E1B4CC65F00464BD1 /* Build configuration list for PBXNativeTarget "TestZF2048" */;
 			buildPhases = (
-				04664D5A1CE6F9F50006EE50 /* ZFThirdPartySetup */,
-				04D1E2351C3A6E2300B3AD34 /* ZFCompileSource */,
-				04B3F45618F5328200086F26 /* Sources */,
-				04B3F45718F5328200086F26 /* Frameworks */,
-				04B3F45818F5328200086F26 /* Resources */,
-				84E73E891A4D39350014C790 /* ZFCopyResource */,
+				04664D591CE6F9BF0006EE50 /* ZFThirdPartySetup */,
+				04D1E2451C3A70E800B3AD34 /* ZFCompileSource */,
+				0482D7E71B4CC65F00464BD1 /* Sources */,
+				0482D7E81B4CC65F00464BD1 /* Frameworks */,
+				0482D7E91B4CC65F00464BD1 /* Resources */,
+				0482D8291B4CC87F00464BD1 /* ZFCopyResource */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TestZF2048;
-			productName = TestZF;
-			productReference = 04B3F45A18F5328200086F26 /* TestZF2048.app */;
+			productName = TestZF2048;
+			productReference = 0482D7EB1B4CC65F00464BD1 /* TestZF2048.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		04B3F45218F5328200086F26 /* Project object */ = {
+		0482D7E31B4CC65F00464BD1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0700;
-				ORGANIZATIONNAME = zerofighter;
+				ORGANIZATIONNAME = ZFFramework;
+				TargetAttributes = {
+					0482D7EA1B4CC65F00464BD1 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+				};
 			};
-			buildConfigurationList = 04B3F45518F5328200086F26 /* Build configuration list for PBXProject "TestZF2048" */;
+			buildConfigurationList = 0482D7E61B4CC65F00464BD1 /* Build configuration list for PBXProject "TestZF2048" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = 04B3F45118F5328200086F26;
-			productRefGroup = 04B3F45B18F5328200086F26 /* Products */;
+			mainGroup = 0482D7E21B4CC65F00464BD1;
+			productRefGroup = 0482D7EC1B4CC65F00464BD1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				04B3F45918F5328200086F26 /* TestZF2048 */,
+				0482D7EA1B4CC65F00464BD1 /* TestZF2048 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		04B3F45818F5328200086F26 /* Resources */ = {
+		0482D7E91B4CC65F00464BD1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0482D8171B4CC75700464BD1 /* Default-568h@2x.png in Resources */,
+				04D7BF731B5BE4ED004C4C51 /* Icon-29.png in Resources */,
+				04D7BF741B5BE4ED004C4C51 /* Icon-50.png in Resources */,
+				04D7BF751B5BE4ED004C4C51 /* Icon-72.png in Resources */,
+				04D7BF761B5BE4ED004C4C51 /* Icon.png in Resources */,
+				04D7BF771B5BE4ED004C4C51 /* Icon@2x.png in Resources */,
 				84E73E881A4D34410014C790 /* RootViewController.xib in Resources */,
-				049749211AC8020100A52F5F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04664D5A1CE6F9F50006EE50 /* ZFThirdPartySetup */ = {
+		04664D591CE6F9BF0006EE50 /* ZFThirdPartySetup */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -207,21 +213,7 @@
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../thirdparty_setup.sh\n";
 		};
-		04D1E2351C3A6E2300B3AD34 /* ZFCompileSource */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = ZFCompileSource;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../tools/common/unity_build.sh zfgensrc_ZFFramework.mm \"${SRCROOT}/../../../../../ZF/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh zfgensrc_ZFFramework_impl.mm \"${SRCROOT}/../../../../../ZF_impl/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh zfgensrc_ZFFramework_test.mm \"${SRCROOT}/../../../../../demo/ZF2048/src\"\n";
-		};
-		84E73E891A4D39350014C790 /* ZFCopyResource */ = {
+		0482D8291B4CC87F00464BD1 /* ZFCopyResource */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -233,18 +225,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res\" >/dev/null 2>&1\ncp -rf \"${SRCROOT}/../../../../../ZF/res/.\" \"${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res/\" >/dev/null 2>&1\ncp -rf \"${SRCROOT}/../../../../../ZF_impl/res/.\" \"${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res/\" >/dev/null 2>&1\ncp -rf \"${SRCROOT}/../../../../../ZF_impl_ZFUIWebKit/res/.\" \"${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res/\" >/dev/null 2>&1\ncp -rf \"${SRCROOT}/../../../../../demo/ZF2048/res/.\" \"${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res/\" >/dev/null 2>&1\n";
+			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../..\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\nRES_DST_PATH=${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res\n\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF_impl/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/demo/ZF2048/res\" \"$RES_DST_PATH\"\n";
+		};
+		04D1E2451C3A70E800B3AD34 /* ZFCompileSource */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = ZFCompileSource;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ${SRCROOT}/../../../../../tools/common/unity_build.sh zfgensrc_ZFFramework.mm \"${SRCROOT}/../../../../../ZF/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh zfgensrc_ZFFramework_impl.mm \"${SRCROOT}/../../../../../ZF_impl/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh zfgensrc_TestZF2048.mm \"${SRCROOT}/../../../../../demo/ZF2048/src\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		04B3F45618F5328200086F26 /* Sources */ = {
+		0482D7E71B4CC65F00464BD1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				04D1E23B1C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm in Sources */,
 				04D1E2391C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm in Sources */,
-				04D1E23A1C3A6E7500B3AD34 /* zfgensrc_ZFFramework_test.mm in Sources */,
+				04D1E2471C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm in Sources */,
 				84E73E861A4D34410014C790 /* main.m in Sources */,
 				84E73E841A4D34410014C790 /* AppDelegate.mm in Sources */,
 				84E73E871A4D34410014C790 /* RootViewController.m in Sources */,
@@ -254,7 +260,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		04B3F48418F5328300086F26 /* Debug */ = {
+		0482D80C1B4CC65F00464BD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -268,17 +274,23 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -286,12 +298,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		04B3F48518F5328300086F26 /* Release */ = {
+		0482D80D1B4CC65F00464BD1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -305,11 +319,17 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -317,105 +337,105 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		04B3F48718F5328300086F26 /* Debug */ = {
+		0482D80F1B4CC65F00464BD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_PREFIX_HEADER = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"\"$(SRCROOT)/../../../../../ZF/src\"",
-					"\"$(SRCROOT)/../../../../../ZF_impl/src\"",
-				);
-				INFOPLIST_FILE = ProjectFiles/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProjectFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_CFLAGS = (
-					"-DZFLOG_STACKTRACE_SUPPORT=1",
-					"-DZF_LEAKTEST_ENABLE=1",
-					"-D_ZFP_ZFCoreString_stlwrap_debug=1",
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
 				);
-				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ZFFramework.iOS.TestZF2048;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DZFLOG_STACKTRACE_SUPPORT=1",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Objc",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ZFFramework.iOS.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				WRAPPER_EXTENSION = app;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SRCROOT}/../../../../../ZF/src",
+					"${SRCROOT}/../../../../../ZF_impl/src",
+				);
 			};
 			name = Debug;
 		};
-		04B3F48818F5328300086F26 /* Release */ = {
+		0482D8101B4CC65F00464BD1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_PREFIX_HEADER = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"\"$(SRCROOT)/../../../../../ZF/src\"",
-					"\"$(SRCROOT)/../../../../../ZF_impl/src\"",
-				);
-				INFOPLIST_FILE = ProjectFiles/Info.plist;
+				INFOPLIST_FILE = "${SRCROOT}/ProjectFiles/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				OTHER_CFLAGS = (
-					"-DZFLOG_STACKTRACE_SUPPORT=1",
-					"-DZF_LEAKTEST_ENABLE=1",
-					"-D_ZFP_ZFCoreString_stlwrap_debug=1",
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
 				);
-				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ZFFramework.iOS.TestZF2048;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DZFLOG_STACKTRACE_SUPPORT=1",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Objc",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ZFFramework.iOS.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-				WRAPPER_EXTENSION = app;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SRCROOT}/../../../../../ZF/src",
+					"${SRCROOT}/../../../../../ZF_impl/src",
+				);
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		04B3F45518F5328200086F26 /* Build configuration list for PBXProject "TestZF2048" */ = {
+		0482D7E61B4CC65F00464BD1 /* Build configuration list for PBXProject "TestZF2048" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				04B3F48418F5328300086F26 /* Debug */,
-				04B3F48518F5328300086F26 /* Release */,
+				0482D80C1B4CC65F00464BD1 /* Debug */,
+				0482D80D1B4CC65F00464BD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		04B3F48618F5328300086F26 /* Build configuration list for PBXNativeTarget "TestZF2048" */ = {
+		0482D80E1B4CC65F00464BD1 /* Build configuration list for PBXNativeTarget "TestZF2048" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				04B3F48718F5328300086F26 /* Debug */,
-				04B3F48818F5328300086F26 /* Release */,
+				0482D80F1B4CC65F00464BD1 /* Debug */,
+				0482D8101B4CC65F00464BD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 04B3F45218F5328200086F26 /* Project object */;
+	rootObject = 0482D7E31B4CC65F00464BD1 /* Project object */;
 }

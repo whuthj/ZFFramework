@@ -13,7 +13,7 @@
 
 # module name
 # use System.loadLibrary("module_name"); to load it
-ZF_MODULE_NAME          = ZFFramework_test
+ZF_MODULE_NAME          = TestZF
 
 # source directories to search, under project_path,
 # set to "jni" to search whole project_path/jni path
@@ -38,19 +38,82 @@ ZF_SRC_EXTS             = c cpp cxx
 ZF_BUILD_SHARED         = true
 
 # extra include path setting, separated by space
-ZF_INCLUDES             = $(LOCAL_PATH)/../../../../../../ZF/src
-ZF_INCLUDES             += $(LOCAL_PATH)/../../../../../../ZF_impl/src
-ZF_INCLUDES             += $(LOCAL_PATH)/../../../../../../ZF_impl_ZFUIWebKit/src
+ZF_INCLUDES             =
+ZF_INCLUDES += ../../../../../ZF/src
+ZF_INCLUDES += ../../../../../ZF_impl/src
+ZF_INCLUDES += ../../../../../ZF_impl_ZFUIWebKit/src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # compiler flags
-ZF_CFLAGS               = -Os -DZF_LEAKTEST_ENABLE=1
+ZF_CFLAGS               = -Os
 
 # linker flags
 ZF_LFLAGS               = -landroid -llog
 
 # third-party libs to load
 ZF_LOAD_STATIC_LIB      =
-ZF_LOAD_SHARED_LIB      = ZFFramework ZFFramework_impl ZFFramework_impl_ZFUIWebKit
+ZF_LOAD_SHARED_LIB      =
+ZF_LOAD_SHARED_LIB += ZFFramework
+ZF_LOAD_SHARED_LIB += ZFFramework_impl
+ZF_LOAD_SHARED_LIB += ZFFramework_impl_ZFUIWebKit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #============================================================
@@ -62,8 +125,8 @@ ZF_LOAD_SHARED_LIB      = ZFFramework ZFFramework_impl ZFFramework_impl_ZFUIWebK
 # other custom settings
 #============================================================
 #include $(CLEAR_VARS)
-#LOCAL_MODULE := ZFFramework
-#LOCAL_SRC_FILES := ../../ZFFramework_jni/libs/$(TARGET_ARCH_ABI)/libZFFramework.so
+#LOCAL_MODULE := YourDepModule
+#LOCAL_SRC_FILES := path/$(TARGET_ARCH_ABI)/libYourDepModule.so
 #include $(PREBUILT_SHARED_LIBRARY)
 
 

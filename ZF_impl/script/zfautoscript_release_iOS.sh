@@ -5,5 +5,6 @@ ZF_ROOT_PATH=$WORK_DIR/../..
 ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 RELEASE_PATH=$ZF_ROOT_PATH/_release/iOS
 
-sh "$ZF_TOOLS_PATH/spec/iOS/release.command" ZFFramework_impl_ZFUIWebKit ZF_impl_ZFUIWebKit
+sh "$ZF_TOOLS_PATH/spec/iOS/release.sh" ZFFramework_impl ZF_impl
+sh "$ZF_TOOLS_PATH/spec/iOS/release.sh" ZFFramework_loader ZF_impl
 

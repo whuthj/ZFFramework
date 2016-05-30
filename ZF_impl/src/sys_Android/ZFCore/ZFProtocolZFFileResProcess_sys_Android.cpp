@@ -340,11 +340,10 @@ private:
         zfindex srcLen = ((src == zfnull) ? 0 : zfslen(src));
         zfstring ret(srcLen + 8);
         ret += zfText("res");
-        ret += ZFFile::fileSeparator;
         if(srcLen > 0)
         {
-            ret += src;
             ret += ZFFile::fileSeparator;
+            ret += src;
         }
         return ret;
     }
@@ -353,9 +352,9 @@ private:
         zfindex srcLen = ((src == zfnull) ? 0 : zfslen(src));
         zfstring ret(srcLen + 16);
         ret += zfText("res");
-        ret += ZFFile::fileSeparator;
         if(srcLen > 0)
         {
+            ret += ZFFile::fileSeparator;
             ret += src;
         }
         return ret;
@@ -365,9 +364,9 @@ private:
         zfindex srcLen = ((src == zfnull) ? 0 : zfslen(src));
         zfstring ret(srcLen + 16);
         ret += zfText("res");
-        ret += ZFFile::fileSeparator;
         if(srcLen > 0)
         {
+            ret += ZFFile::fileSeparator;
             ret += src;
         }
         ret += _ZFP_ZFProtocolZFFileResProcess_sys_Android_autoPostfix;

@@ -11,14 +11,21 @@ fi
 
 _OLD_DIR=$(pwd)
 if test -e "$DST_PATH/.git"; then
-    cd "$DST_PATH"
-    git checkout .
-    git reset --hard
-    git clean -xdf
-    git pull
+    sh "$WORK_DIR/timestamp_check.sh" "$DST_PATH/.git" 3600
+
+    if test ! $? = "0" ; then
+        cd "$DST_PATH"
+        git checkout .
+        git reset --hard
+        git clean -xdf
+        git pull
+        cd "$_OLD_DIR"
+
+        sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git" 3600
+    fi
 else
     rm -rf "$DST_PATH" >/dev/null 2>&1
     git clone "$PROJ_GIT" "$DST_PATH"
+    sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git" 3600
 fi
-cd "$_OLD_DIR"
 

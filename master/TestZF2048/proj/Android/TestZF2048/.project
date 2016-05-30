@@ -10,10 +10,6 @@
 			<triggers>clean,full,incremental,</triggers>
 			<arguments>
 				<dictionary>
-					<key>?children?</key>
-					<value>?name?=outputEntries\|?children?=?name?=entry\\\\\\\|\\\|?name?=entry\\\\\\\|\\\|\||</value>
-				</dictionary>
-				<dictionary>
 					<key>?name?</key>
 					<value></value>
 				</dictionary>
@@ -96,7 +92,7 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>zfsrcref_ZF2048</name>
+			<name>zfsrcref_TestZF2048</name>
 			<type>2</type>
 			<locationURI>PARENT-5-PROJECT_LOC/demo/ZF2048/src</locationURI>
 		</link>

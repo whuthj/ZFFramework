@@ -14,9 +14,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_REGISTER(ZFUIKeyboardState)
 
 // ============================================================
+static zfbool _ZFP_ZFUIKeyboardStateBuiltinImpl_available = zffalse;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIKeyboardStateBuiltinImpl_DataHolder, ZFLevelZFFrameworkNormal)
 {
+    _ZFP_ZFUIKeyboardStateBuiltinImpl_available = zftrue;
+    this->implRegisterFlag = zffalse;
     this->viewOnEventFilterListener = ZFCallbackForRawFunction(zfself::viewOnEventFilter);
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardStateBuiltinImpl_DataHolder)
+{
+    this->implUnregister();
+    _ZFP_ZFUIKeyboardStateBuiltinImpl_available = zffalse;
 }
 ZFCoreArrayPOD<ZFUIKeyCodeEnum> keyPressed;
 ZFCoreArrayPOD<zfuint32> keyPressedRaw;
@@ -28,6 +36,32 @@ static ZFLISTENER_PROTOTYPE_EXPAND(viewOnEventFilter)
     {
         ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);
     }
+}
+
+zfbool implRegisterFlag;
+void implRegister(void)
+{
+    if(this->implRegisterFlag)
+    {
+        return ;
+    }
+    this->implRegisterFlag = zftrue;
+
+    ZFGlobalEventCenter::instance()->observerAdd(
+        ZFUIView::EventViewOnEventFilter(),
+        this->viewOnEventFilterListener);
+}
+void implUnregister(void)
+{
+    if(!this->implRegisterFlag)
+    {
+        return ;
+    }
+    this->implRegisterFlag = zffalse;
+
+    ZFGlobalEventCenter::instance()->observerRemove(
+        ZFUIView::EventViewOnEventFilter(),
+        this->viewOnEventFilterListener);
 }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardStateBuiltinImpl_DataHolder)
 
@@ -47,15 +81,14 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIKeyboardStateBuiltinImpl)
 // ============================================================
 void ZFUIKeyboardStateBuiltinImplRegister(void)
 {
-    ZFGlobalEventCenter::instance()->observerAdd(
-        ZFUIView::EventViewOnEventFilter(),
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->viewOnEventFilterListener);
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->implRegister();
 }
 void ZFUIKeyboardStateBuiltinImplUnregister(void)
 {
-    ZFGlobalEventCenter::instance()->observerRemove(
-        ZFUIView::EventViewOnEventFilter(),
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->viewOnEventFilterListener);
+    if(_ZFP_ZFUIKeyboardStateBuiltinImpl_available)
+    {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->implUnregister();
+    }
 }
 
 void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event)
