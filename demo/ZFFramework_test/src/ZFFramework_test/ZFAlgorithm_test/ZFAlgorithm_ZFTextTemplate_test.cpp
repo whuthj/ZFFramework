@@ -41,6 +41,12 @@ protected:
             "<enableif_embeded_1>{ZFTT_C_enableif_false}{ZFTT_R_replace_exist}{ZFTT_CE}<enableif_embeded_1>\n"
             "<enableif_embeded_1>{ZFTT_C_enableif_false}{ZFTT_R_replace_not_exist}{ZFTT_CE}<enableif_embeded_1>\n"
             "---------- test enableif  end  ----------\n"
+            "\n"
+            "========== test index begin ==========\n"
+            "this is {ZFTT_I_test_index} item\n"
+            "this is {ZFTT_I_test_index} item\n"
+            "this is {ZFTT_I_test_index} item\n"
+            "---------- test index  end  ----------\n"
             );
 
         zfstring buf;

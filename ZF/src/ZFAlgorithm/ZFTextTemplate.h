@@ -17,6 +17,72 @@
 #include "ZFAlgorithmDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/**
+ * @brief see #ZFPROPERTY_TYPE_DECLARE
+ *
+ * serializable data:
+ * @code
+ *   <ZFTextTemplateIndexFlagEnum value="value">
+ *   </ZFTextTemplateIndexFlagEnum>
+ * @endcode
+ */
+#define ZFPropertyTypeId_ZFTextTemplateIndexFlagEnum zfText("ZFTextTemplateIndexFlagEnum")
+/**
+ * @brief index output flags for #ZFTextTemplateIndexData
+ */
+ZFENUM_BEGIN(ZFTextTemplateIndexFlag)
+    ZFENUM_VALUE(LeadingZero)
+    ZFENUM_VALUE(LeadingSpace)
+    ZFENUM_VALUE(TailSpace)
+ZFENUM_SEPARATOR(ZFTextTemplateIndexFlag)
+    ZFENUM_VALUE_REGISTER(LeadingZero)
+    ZFENUM_VALUE_REGISTER(LeadingSpace)
+    ZFENUM_VALUE_REGISTER(TailSpace)
+ZFENUM_END_WITH_DEFAULT(ZFTextTemplateIndexFlag, LeadingZero)
+
+/** @brief see #ZFTextTemplateApply */
+zfclassLikePOD ZF_ENV_EXPORT ZFTextTemplateIndexData
+{
+public:
+    /**
+     * @brief start index, 0 by default
+     */
+    zfindex indexStart;
+    /**
+     * @brief increase or decrease the index, true by default
+     */
+    zfbool indexAscending;
+    /**
+     * @brief radix, 10 by default
+     */
+    zfindex indexRadix;
+    /**
+     * @brief upper case or not, zftrue by default
+     */
+    zfindex indexUpperCase;
+    /**
+     * @brief specify width, 0 to disable, 0 by default
+     */
+    zfindex indexWidth;
+    /**
+     * @brief flag to use when output index,
+     *   valid only if #indexWidth greater than 0,
+     *   #ZFTextTemplateIndexFlag::e_Default by default
+     */
+    ZFTextTemplateIndexFlagEnum indexFlag;
+
+public:
+    ZFTextTemplateIndexData(void)
+    : indexStart(0)
+    , indexAscending(zftrue)
+    , indexRadix(10)
+    , indexUpperCase(zftrue)
+    , indexWidth(0)
+    , indexFlag(ZFTextTemplateIndexFlag::e_Default())
+    {
+    }
+};
+
 /** @brief see #ZFTextTemplateApply */
 zfclassLikePOD ZF_ENV_EXPORT ZFTextTemplateParam
 {
@@ -24,13 +90,13 @@ public:
     /**
      * @brief see #ZFTextTemplateApply
      *
-     * map to zfstring that holds the replaced text
+     * map to zfstring, holds the replaced text
      */
     ZFCoreMap replaceDatas;
     /**
      * @brief see #ZFTextTemplateApply
      *
-     * map to zfbool that shows whether the key should be enabled
+     * map to zfbool, shows whether the key should be enabled
      */
     ZFCoreMap enableIfDatas;
     /**
@@ -39,6 +105,16 @@ public:
      * whether the key should be enabled if not exists, false by default
      */
     zfbool enableIfByDefault;
+    /**
+     * @brief see #ZFTextTemplateApply
+     *
+     * map to #ZFTextTemplateIndexData
+     */
+    ZFCoreMap indexDatas;
+    /**
+     * @brief default setting if #indexDatas not set
+     */
+    ZFTextTemplateIndexData indexDataDefault;
 
 public:
     /** @cond ZFPrivateDoc */
@@ -46,6 +122,8 @@ public:
     : replaceDatas()
     , enableIfDatas()
     , enableIfByDefault(zffalse)
+    , indexDatas()
+    , indexDataDefault()
     {
     }
     /** @endcond */
@@ -60,7 +138,8 @@ public:
  * or zfindexMax if failed\n
  * \n
  * params of #ZFTextTemplateParam:
- * -  replaceDatas: a <string, string> map to show which to replace\n
+ * -  replaceDatas: a <string, string> map\n
+ *   replace the content with specified string\n
  *   assume we have a <"myKey", "myValue"> map,
  *   then the text would be applied like:
  *   @code
@@ -70,7 +149,8 @@ public:
  *     // applied:
  *     this is myValue, and this is {ZFTT_R_not_set}
  *   @endcode
- * -  enableIfDatas: a <string, bool> map to show whether we should keep or remove some text blocks\n
+ * -  enableIfDatas: a <string, bool> map\n
+ *   whether to enable text block\n
  *   assume we have a <"myCond0", true> map and a <"myCond1", false> map,
  *   then the text would be applied like:
  *   @code
@@ -84,6 +164,19 @@ public:
  *   @endcode
  * -  enableIfByDefault: for entries not exist in enableIfDatas,
  *   whether we should enable it, false by default
+ * -  indexDatas: a <string, ZFTextTemplateIndexData> map\n
+ *   replace the content with specified index value\n
+ *   the text would be applied like:
+ *   @code
+ *     // original:
+ *     this is {ZFTT_I_myKey} item
+ *     this is {ZFTT_I_myKey} item
+ *
+ *     // applied:
+ *     this is 0 item
+ *     this is 1 item
+ *   @endcode
+ * -  indexDataDefault: default setting if not set in indexDatas
  */
 extern ZF_ENV_EXPORT zfindex ZFTextTemplateApply(ZF_IN const ZFTextTemplateParam &param,
                                                  ZF_IN const ZFOutputCallback &output,
