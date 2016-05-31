@@ -109,7 +109,7 @@
 		<link>
 			<name>zfsrcref_TestZF</name>
 			<type>2</type>
-			<locationURI>PARENT-5-PROJECT_LOC/demo/ZFFramework_test/src</locationURI>
+			<locationURI>PARENT-5-PROJECT_LOC/demo/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

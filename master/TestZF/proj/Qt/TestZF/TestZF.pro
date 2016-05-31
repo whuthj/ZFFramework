@@ -38,7 +38,7 @@ ZF_PROJ_SRC_PATH =
 ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF/src
 ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF_impl/src
 ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/ZF_impl_ZFUIWebKit/src
-ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/demo/ZFFramework_test/src
+ZF_PROJ_SRC_PATH += $$ZF_ROOT_PATH/demo/src
 
 # res path of your project
 # can hold one or more paths, separated by space
@@ -46,7 +46,7 @@ ZF_PROJ_RES_PATH =
 ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/ZF/res
 ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/ZF_impl/res
 ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/ZF_impl_ZFUIWebKit/res
-ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/demo/ZFFramework_test/res
+ZF_PROJ_RES_PATH += $$ZF_ROOT_PATH/demo/res
 
 
 # ======================================================================

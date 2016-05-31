@@ -20,7 +20,7 @@ SRCDIRS         =
 SRCDIRS         += ../../../../../ZF/src
 SRCDIRS         += ../../../../../ZF_impl/src
 SRCDIRS         += ../../../../../ZF_impl_ZFUIWebKit/src
-SRCDIRS         += ../../../../../demo/ZFFramework_test/src
+SRCDIRS         += ../../../../../demo/src
 # header search dirs, no recursive support
 HEADERDIRS      =
 HEADERDIRS      += ../../../../../ZF/src

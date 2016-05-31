@@ -21,7 +21,7 @@ ZF_MODULE_NAME          = TestZF2048
 # path must not contain spaces
 # path must use '/' as path separator
 # may contain more than one directories, separated by space
-ZF_SRC_DIRS             = ../../../../../demo/ZF2048/src
+ZF_SRC_DIRS             = ../../../../../demo_ZF2048/src
 
 # whether use unity build
 ZF_UNITY_BUILD          = false

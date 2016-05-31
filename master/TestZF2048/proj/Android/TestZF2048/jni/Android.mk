@@ -16,14 +16,14 @@ ifeq ($(OS),Windows_NT)
 
     $(info $(shell call ..\..\..\..\..\tools\spec\Android\res_copy.bat ..\..\..\..\..\ZF\res assets\res >nul 2>nul))
     $(info $(shell call ..\..\..\..\..\tools\spec\Android\res_copy.bat ..\..\..\..\..\ZF_impl\res assets\res >nul 2>nul))
-    $(info $(shell call ..\..\..\..\..\tools\spec\Android\res_copy.bat ..\..\..\..\..\demo\ZF2048\res assets\res >nul 2>nul))
+    $(info $(shell call ..\..\..\..\..\tools\spec\Android\res_copy.bat ..\..\..\..\..\demo_ZF2048\res assets\res >nul 2>nul))
     $(info $(shell call ..\..\..\..\..\tools\spec\Android\res_fix.bat assets\res >nul 2>nul))
 else
     $(info $(shell sh ../../../../../thirdparty_setup.sh))
 
     $(info $(shell sh ../../../../../tools/spec/Android/res_copy.sh ../../../../../ZF/res assets/res))
     $(info $(shell sh ../../../../../tools/spec/Android/res_copy.sh ../../../../../ZF_impl/res assets/res))
-    $(info $(shell sh ../../../../../tools/spec/Android/res_copy.sh ../../../../../demo/ZF2048/res assets/res))
+    $(info $(shell sh ../../../../../tools/spec/Android/res_copy.sh ../../../../../demo_ZF2048/res assets/res))
     $(info $(shell sh ../../../../../tools/spec/Android/res_fix.sh assets/res))
 endif
 

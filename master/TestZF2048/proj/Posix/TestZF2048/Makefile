@@ -19,7 +19,7 @@
 SRCDIRS         =
 SRCDIRS         += ../../../../../ZF/src
 SRCDIRS         += ../../../../../ZF_impl/src
-SRCDIRS         += ../../../../../demo/ZF2048/src
+SRCDIRS         += ../../../../../demo_ZF2048/src
 # header search dirs, no recursive support
 HEADERDIRS      =
 HEADERDIRS      += ../../../../../ZF/src

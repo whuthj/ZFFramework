@@ -28,7 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04C8E3201C3B990B00CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../../../demo/ZFFramework_test/src; sourceTree = "<group>"; };
+		04C8E3201C3B990B00CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../../../demo/src; sourceTree = "<group>"; };
 		04D10CCA1C3A6AC600D721E5 /* zfgensrc_ZFFramework.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework.mm; sourceTree = "<group>"; };
 		04D10CC81C3A6AC600D721E5 /* zfgensrc_ZFFramework_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_impl.mm; sourceTree = "<group>"; };
 		04D10CC71C3A6AC600D721E5 /* zfgensrc_ZFFramework_impl_ZFUIWebKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_impl_ZFUIWebKit.mm; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../..\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\nRES_DST_PATH=${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res\n\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF_impl/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF_impl_ZFUIWebKit/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/demo/ZFFramework_test/res\" \"$RES_DST_PATH\"\n";
+			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../..\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\nRES_DST_PATH=${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res\n\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF_impl/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF_impl_ZFUIWebKit/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/demo/res\" \"$RES_DST_PATH\"\n";
 		};
 		04D1E2451C3A70E800B3AD34 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -241,7 +241,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework.mm \"${SRCROOT}/../../../../../ZF/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework_impl.mm \"${SRCROOT}/../../../../../ZF_impl/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework_impl_ZFUIWebKit.mm \"${SRCROOT}/../../../../../ZF_impl_ZFUIWebKit/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_TestZF.mm \"${SRCROOT}/../../../../../demo/ZFFramework_test/src\"\n";
+			shellScript = "sh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework.mm \"${SRCROOT}/../../../../../ZF/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework_impl.mm \"${SRCROOT}/../../../../../ZF_impl/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework_impl_ZFUIWebKit.mm \"${SRCROOT}/../../../../../ZF_impl_ZFUIWebKit/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_TestZF.mm \"${SRCROOT}/../../../../../demo/src\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

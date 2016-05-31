@@ -94,7 +94,7 @@
 		<link>
 			<name>zfsrcref_TestZF2048</name>
 			<type>2</type>
-			<locationURI>PARENT-5-PROJECT_LOC/demo/ZF2048/src</locationURI>
+			<locationURI>PARENT-5-PROJECT_LOC/demo_ZF2048/src</locationURI>
 		</link>
 		<link>
 			<name>zfsrcref_ZFFramework</name>

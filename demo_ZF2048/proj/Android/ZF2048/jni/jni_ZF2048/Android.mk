@@ -13,7 +13,7 @@
 
 # module name
 # use System.loadLibrary("module_name"); to load it
-ZF_MODULE_NAME          = TestZF
+ZF_MODULE_NAME          = ZF2048
 
 # source directories to search, under project_path,
 # set to "jni" to search whole project_path/jni path
@@ -21,14 +21,14 @@ ZF_MODULE_NAME          = TestZF
 # path must not contain spaces
 # path must use '/' as path separator
 # may contain more than one directories, separated by space
-ZF_SRC_DIRS             = ../../../../../demo/src
+ZF_SRC_DIRS             = ../../../src
 
 # whether use unity build
-ZF_UNITY_BUILD          = false
+ZF_UNITY_BUILD          = true
 ifeq ($(OS),Windows_NT)
-ZF_UNITY_BUILD_SCRIPT   = ../../../../../tools/common/unity_build.bat
+ZF_UNITY_BUILD_SCRIPT   = ../../../../../ZFFramework/tools/common/unity_build.bat
 else
-ZF_UNITY_BUILD_SCRIPT   = ../../../../../tools/common/unity_build.sh
+ZF_UNITY_BUILD_SCRIPT   = ../../../../../ZFFramework/tools/common/unity_build.sh
 endif
 
 # source extensions, separated by space
@@ -39,9 +39,10 @@ ZF_BUILD_SHARED         = true
 
 # extra include path setting, separated by space
 ZF_INCLUDES             =
-ZF_INCLUDES += ../../../../../ZF/src
-ZF_INCLUDES += ../../../../../ZF_impl/src
-ZF_INCLUDES += ../../../../../ZF_impl_ZFUIWebKit/src
+ZF_INCLUDES             += ../../../../../src
+ZF_INCLUDES += libs/ZF/include
+ZF_INCLUDES += libs/ZF_impl/include
+
 
 
 
@@ -84,7 +85,7 @@ ZF_LOAD_STATIC_LIB      =
 ZF_LOAD_SHARED_LIB      =
 ZF_LOAD_SHARED_LIB += ZFFramework
 ZF_LOAD_SHARED_LIB += ZFFramework_impl
-ZF_LOAD_SHARED_LIB += ZFFramework_impl_ZFUIWebKit
+
 
 
 
@@ -124,10 +125,48 @@ ZF_LOAD_SHARED_LIB += ZFFramework_impl_ZFUIWebKit
 #============================================================
 # other custom settings
 #============================================================
-#include $(CLEAR_VARS)
-#LOCAL_MODULE := YourDepModule
-#LOCAL_SRC_FILES := path/$(TARGET_ARCH_ABI)/libYourDepModule.so
-#include $(PREBUILT_SHARED_LIBRARY)
+
+    include $(CLEAR_VARS)
+    LOCAL_MODULE := ZFFramework
+    LOCAL_SRC_FILES := ../libs/ZF/$(TARGET_ARCH_ABI)/libZFFramework.so
+    include $(PREBUILT_SHARED_LIBRARY)
+
+
+    include $(CLEAR_VARS)
+    LOCAL_MODULE := ZFFramework_impl
+    LOCAL_SRC_FILES := ../libs/ZF_impl/$(TARGET_ARCH_ABI)/libZFFramework_impl.so
+    include $(PREBUILT_SHARED_LIBRARY)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

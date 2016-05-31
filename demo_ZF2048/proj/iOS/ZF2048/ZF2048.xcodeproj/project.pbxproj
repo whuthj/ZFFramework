@@ -7,9 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04D1E23B1C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2381C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm */; };
-		04D1E2391C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */; };
-		04D1E2471C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2461C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm */; };
+		0420AA421C76B844007E0F00 /* libZFFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0420AA411C76B844007E0F00 /* libZFFramework.a */; };
+		0420AA421C76B844007E0F01 /* libZFFramework_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0420AA411C76B844007E0F01 /* libZFFramework_impl.a */; };
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		0420AA481C76B858007E0FC8 /* libZFFramework_loader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0420AA471C76B858007E0FC8 /* libZFFramework_loader.a */; };
+		04D1E2471C3A710F00B3AD34 /* zfgensrc_ZF2048.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04D1E2461C3A710F00B3AD34 /* zfgensrc_ZF2048.mm */; };
 		0482D81B1B4CC82700464BD1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D81A1B4CC82700464BD1 /* Foundation.framework */; };
 		0482D81D1B4CC82C00464BD1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D81C1B4CC82C00464BD1 /* UIKit.framework */; };
 		0482D81F1B4CC83100464BD1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0482D81E1B4CC83100464BD1 /* QuartzCore.framework */; };
@@ -20,18 +51,45 @@
 		04D7BF751B5BE4ED004C4C51 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF701B5BE4ED004C4C51 /* Icon-72.png */; };
 		04D7BF761B5BE4ED004C4C51 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF711B5BE4ED004C4C51 /* Icon.png */; };
 		04D7BF771B5BE4ED004C4C51 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D7BF721B5BE4ED004C4C51 /* Icon@2x.png */; };
-		84E73E841A4D34410014C790 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84E73E7E1A4D34410014C790 /* AppDelegate.mm */; };
-		84E73E861A4D34410014C790 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E73E801A4D34410014C790 /* main.m */; };
-		84E73E871A4D34410014C790 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E73E821A4D34410014C790 /* RootViewController.m */; };
-		84E73E881A4D34410014C790 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84E73E831A4D34410014C790 /* RootViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04C8E31D1C3B98EB00CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../../../demo_ZF2048/src; sourceTree = "<group>"; };
-		04D1E2381C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework.mm; sourceTree = "<group>"; };
-		04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_impl.mm; sourceTree = "<group>"; };
-		04D1E2461C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_TestZF2048.mm; sourceTree = "<group>"; };
-		0482D7EB1B4CC65F00464BD1 /* TestZF2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestZF2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0420AA411C76B844007E0F00 /* libZFFramework.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFFramework.a; path = ../../../../../ZFFramework/_release/iOS/ZF/lib/libZFFramework.a; sourceTree = "<group>"; };
+		0420AA411C76B844007E0F01 /* libZFFramework_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFFramework_impl.a; path = ../../../../../ZFFramework/_release/iOS/ZF_impl/lib/libZFFramework_impl.a; sourceTree = "<group>"; };
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		0420AA471C76B858007E0FC8 /* libZFFramework_loader.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFFramework_loader.a; path = ../../../../../ZFFramework/_release/iOS/ZF_loader/lib/libZFFramework_loader.a; sourceTree = "<group>"; };
+		04C8E3201C3B990B00CA64A1 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../../src; sourceTree = "<group>"; };
+		04D1E2461C3A710F00B3AD34 /* zfgensrc_ZF2048.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZF2048.mm; sourceTree = "<group>"; };
+		0482D7EB1B4CC65F00464BD1 /* ZF2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZF2048.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0482D81A1B4CC82700464BD1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0482D81C1B4CC82C00464BD1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0482D81E1B4CC83100464BD1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -42,13 +100,6 @@
 		04D7BF701B5BE4ED004C4C51 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		04D7BF711B5BE4ED004C4C51 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		04D7BF721B5BE4ED004C4C51 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		84E73E7D1A4D34410014C790 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		84E73E7E1A4D34410014C790 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		84E73E7F1A4D34410014C790 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84E73E801A4D34410014C790 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		84E73E811A4D34410014C790 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		84E73E821A4D34410014C790 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		84E73E831A4D34410014C790 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +107,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0420AA421C76B844007E0F00 /* libZFFramework.a in Frameworks */,
+				0420AA421C76B844007E0F01 /* libZFFramework_impl.a in Frameworks */,
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				0420AA481C76B858007E0FC8 /* libZFFramework_loader.a in Frameworks */,
 				0482D81B1B4CC82700464BD1 /* Foundation.framework in Frameworks */,
 				0482D81D1B4CC82C00464BD1 /* UIKit.framework in Frameworks */,
 				0482D8211B4CC83700464BD1 /* CoreGraphics.framework in Frameworks */,
@@ -69,7 +153,7 @@
 		0482D7E21B4CC65F00464BD1 = {
 			isa = PBXGroup;
 			children = (
-				04C8E31F1C3B990200CA64A1 /* TestZF2048 */,
+				04C8E31F1C3B990200CA64A1 /* ZF2048 */,
 				0482D8141B4CC75700464BD1 /* ProjectFiles */,
 				0482D8191B4CC81500464BD1 /* Frameworks */,
 				0482D7EC1B4CC65F00464BD1 /* Products */,
@@ -79,7 +163,7 @@
 		0482D7EC1B4CC65F00464BD1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0482D7EB1B4CC65F00464BD1 /* TestZF2048.app */,
+				0482D7EB1B4CC65F00464BD1 /* ZF2048.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,22 +171,13 @@
 		0482D8141B4CC75700464BD1 /* ProjectFiles */ = {
 			isa = PBXGroup;
 			children = (
-				04D1E2381C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm */,
-				04D1E2361C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm */,
-				04D1E2461C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm */,
+				04D1E2461C3A710F00B3AD34 /* zfgensrc_ZF2048.mm */,
 				0482D8151B4CC75700464BD1 /* Default-568h@2x.png */,
 				04D7BF6E1B5BE4ED004C4C51 /* Icon-29.png */,
 				04D7BF6F1B5BE4ED004C4C51 /* Icon-50.png */,
 				04D7BF701B5BE4ED004C4C51 /* Icon-72.png */,
 				04D7BF711B5BE4ED004C4C51 /* Icon.png */,
 				04D7BF721B5BE4ED004C4C51 /* Icon@2x.png */,
-				84E73E7D1A4D34410014C790 /* AppDelegate.h */,
-				84E73E7E1A4D34410014C790 /* AppDelegate.mm */,
-				84E73E7F1A4D34410014C790 /* Info.plist */,
-				84E73E801A4D34410014C790 /* main.m */,
-				84E73E811A4D34410014C790 /* RootViewController.h */,
-				84E73E821A4D34410014C790 /* RootViewController.m */,
-				84E73E831A4D34410014C790 /* RootViewController.xib */,
 			);
 			path = ProjectFiles;
 			sourceTree = "<group>";
@@ -110,6 +185,39 @@
 		0482D8191B4CC81500464BD1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0420AA411C76B844007E0F00 /* libZFFramework.a */,
+				0420AA411C76B844007E0F01 /* libZFFramework_impl.a */,
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				0420AA471C76B858007E0FC8 /* libZFFramework_loader.a */,
 				0482D81A1B4CC82700464BD1 /* Foundation.framework */,
 				0482D81C1B4CC82C00464BD1 /* UIKit.framework */,
 				0482D8201B4CC83700464BD1 /* CoreGraphics.framework */,
@@ -118,22 +226,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		04C8E31F1C3B990200CA64A1 /* TestZF2048 */ = {
+		04C8E31F1C3B990200CA64A1 /* ZF2048 */ = {
 			isa = PBXGroup;
 			children = (
 				04C8E3201C3B990B00CA64A1 /* src */,
 			);
-			name = TestZF2048;
+			name = ZF2048;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0482D7EA1B4CC65F00464BD1 /* TestZF2048 */ = {
+		0482D7EA1B4CC65F00464BD1 /* ZF2048 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0482D80E1B4CC65F00464BD1 /* Build configuration list for PBXNativeTarget "TestZF2048" */;
+			buildConfigurationList = 0482D80E1B4CC65F00464BD1 /* Build configuration list for PBXNativeTarget "ZF2048" */;
 			buildPhases = (
-				04664D591CE6F9BF0006EE50 /* ZFThirdPartySetup */,
+				040BF4CC1C5A1DEF00140981 /* ZFSetup */,
+				0452F9E61C57D8B700C46C65 /* ZFCheckRelease */,
 				04D1E2451C3A70E800B3AD34 /* ZFCompileSource */,
 				0482D7E71B4CC65F00464BD1 /* Sources */,
 				0482D7E81B4CC65F00464BD1 /* Frameworks */,
@@ -144,9 +253,9 @@
 			);
 			dependencies = (
 			);
-			name = TestZF2048;
-			productName = TestZF2048;
-			productReference = 0482D7EB1B4CC65F00464BD1 /* TestZF2048.app */;
+			name = ZF2048;
+			productName = ZF2048;
+			productReference = 0482D7EB1B4CC65F00464BD1 /* ZF2048.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -163,7 +272,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0482D7E61B4CC65F00464BD1 /* Build configuration list for PBXProject "TestZF2048" */;
+			buildConfigurationList = 0482D7E61B4CC65F00464BD1 /* Build configuration list for PBXProject "ZF2048" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -175,7 +284,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0482D7EA1B4CC65F00464BD1 /* TestZF2048 */,
+				0482D7EA1B4CC65F00464BD1 /* ZF2048 */,
 			);
 		};
 /* End PBXProject section */
@@ -191,26 +300,39 @@
 				04D7BF751B5BE4ED004C4C51 /* Icon-72.png in Resources */,
 				04D7BF761B5BE4ED004C4C51 /* Icon.png in Resources */,
 				04D7BF771B5BE4ED004C4C51 /* Icon@2x.png in Resources */,
-				84E73E881A4D34410014C790 /* RootViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04664D591CE6F9BF0006EE50 /* ZFThirdPartySetup */ = {
+		040BF4CC1C5A1DEF00140981 /* ZFSetup */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = ZFThirdPartySetup;
+			name = ZFSetup;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../thirdparty_setup.sh\n";
+			shellScript = "sh ${SRCROOT}/../../../ZFSetup.sh";
+		};
+		0452F9E61C57D8B700C46C65 /* ZFCheckRelease */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = ZFCheckRelease;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/release/release_iOS_check.sh";
 		};
 		0482D8291B4CC87F00464BD1 /* ZFCopyResource */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -224,7 +346,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../..\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\nRES_DST_PATH=${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res\n\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/ZF_impl/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/demo_ZF2048/res\" \"$RES_DST_PATH\"\n";
+			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../ZFFramework\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\nRES_DST_PATH=${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/res\n\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/_release/iOS/ZF/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"$ZF_ROOT_PATH/_release/iOS/ZF_impl/res\" \"$RES_DST_PATH\"\nsh \"$ZF_TOOLS_PATH/common/copy_res.sh\" \"${SRCROOT}/../../../res\" \"$RES_DST_PATH\"\n";
 		};
 		04D1E2451C3A70E800B3AD34 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -238,7 +360,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework.mm \"${SRCROOT}/../../../../../ZF/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_ZFFramework_impl.mm \"${SRCROOT}/../../../../../ZF_impl/src\"\nsh ${SRCROOT}/../../../../../tools/common/unity_build.sh ProjectFiles/zfgensrc_TestZF2048.mm \"${SRCROOT}/../../../../../demo_ZF2048/src\"\n";
+			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/common/unity_build.sh ProjectFiles/zfgensrc_ZF2048.mm \"${SRCROOT}/../../../src\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -247,12 +369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04D1E23B1C3A6E7500B3AD34 /* zfgensrc_ZFFramework.mm in Sources */,
-				04D1E2391C3A6E7500B3AD34 /* zfgensrc_ZFFramework_impl.mm in Sources */,
-				04D1E2471C3A710F00B3AD34 /* zfgensrc_TestZF2048.mm in Sources */,
-				84E73E861A4D34410014C790 /* main.m in Sources */,
-				84E73E841A4D34410014C790 /* AppDelegate.mm in Sources */,
-				84E73E871A4D34410014C790 /* RootViewController.m in Sources */,
+				04D1E2471C3A710F00B3AD34 /* zfgensrc_ZF2048.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,10 +470,42 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF/lib",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF_impl/lib",
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF_loader/lib",
 				);
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-DZFLOG_STACKTRACE_SUPPORT=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -367,8 +516,39 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"${SRCROOT}/../../../../../ZF/src",
-					"${SRCROOT}/../../../../../ZF_impl/src",
+					"${SRCROOT}/../../../src",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF/include",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF_impl/include",
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				);
 			};
 			name = Debug;
@@ -385,10 +565,42 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF/lib",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF_impl/lib",
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF_loader/lib",
 				);
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-DZFLOG_STACKTRACE_SUPPORT=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -399,8 +611,39 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"${SRCROOT}/../../../../../ZF/src",
-					"${SRCROOT}/../../../../../ZF_impl/src",
+					"${SRCROOT}/../../../src",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF/include",
+					"${SRCROOT}/../../../../../ZFFramework/_release/iOS/ZF_impl/include",
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 				);
 			};
 			name = Release;
@@ -408,7 +651,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0482D7E61B4CC65F00464BD1 /* Build configuration list for PBXProject "TestZF2048" */ = {
+		0482D7E61B4CC65F00464BD1 /* Build configuration list for PBXProject "ZF2048" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0482D80C1B4CC65F00464BD1 /* Debug */,
@@ -417,7 +660,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0482D80E1B4CC65F00464BD1 /* Build configuration list for PBXNativeTarget "TestZF2048" */ = {
+		0482D80E1B4CC65F00464BD1 /* Build configuration list for PBXNativeTarget "ZF2048" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0482D80F1B4CC65F00464BD1 /* Debug */,
