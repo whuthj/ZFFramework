@@ -30,7 +30,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 extern ZF_ENV_EXPORT ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN const ZFCorePointerBase &sp,
                                                                   ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
 /** @brief see #ZFObjectGlobalInstanceAdd */
-extern ZF_ENV_EXPORT ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN const zfautoObject &obj,
+extern ZF_ENV_EXPORT ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN ZFObject *obj,
                                                                   ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
 /** @brief see #ZFObjectGlobalInstanceAdd */
 extern ZF_ENV_EXPORT void ZFObjectGlobalInstanceRemove(ZF_IN ZFCorePointerBase *sp,

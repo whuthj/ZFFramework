@@ -94,23 +94,17 @@ ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN const ZFCorePointerBase &sp,
     return t;
 }
 
-ZFCOREPOINTER_DECLARE(_ZFP_ZFCorePointerForGlobalInstance, {
-        // nothing to do
-    }, {
-        if(p->toObject() != zfnull)
-        {
-            p->toObject()->objectCachedSet(zffalse);
-        }
-        zfdelete(ZFCastStatic(zfautoObject *, p));
-    })
-ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN const zfautoObject &obj,
+ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN ZFObject *obj,
                                              ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */)
 {
-    if(obj != zfautoObjectNull)
+    if(obj)
     {
-        obj.toObject()->objectCachedSet(zftrue);
+        return ZFObjectGlobalInstanceAdd(ZFCorePointerForZFObjectMarkCached<ZFObject *>(obj), level);
     }
-    return ZFObjectGlobalInstanceAdd(_ZFP_ZFCorePointerForGlobalInstance<zfautoObject *>(zfnew(zfautoObject, obj)), level);
+    else
+    {
+        return zfnull;
+    }
 }
 
 void ZFObjectGlobalInstanceRemove(ZF_IN ZFCorePointerBase *sp,

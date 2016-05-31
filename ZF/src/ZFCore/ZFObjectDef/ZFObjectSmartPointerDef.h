@@ -23,6 +23,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
+        ZFCoreMutexLock();
+        zflockfree_ZFLeakTestLogRetainVerbose(p, zfTextA("unknown"), zfTextA("ZFCorePointerOnRetain"), 0);
+        zflockfree_zfRetainWithoutLeakTest(p);
+        ZFCoreMutexUnlock();
     }, {
         ZFCoreMutexLock();
         zflockfree_ZFLeakTestLogReleaseVerbose(p, zfTextA("unknown"), zfTextA("ZFCorePointerOnDelete"), 0);
@@ -30,11 +34,15 @@ ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
         ZFCoreMutexUnlock();
     })
 ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObjectWithoutLeakTest, {
+        zfRetainWithoutLeakTest(p);
     }, {
         zfReleaseWithoutLeakTest(p);
     })
 ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObjectMarkCached, {
+        ZFCoreMutexLock();
+        zflockfree_zfRetainWithoutLeakTest(p);
         p->objectCachedSet(zftrue);
+        ZFCoreMutexUnlock();
     }, {
         ZFCoreMutexLock();
         p->objectCachedSet(zffalse);
