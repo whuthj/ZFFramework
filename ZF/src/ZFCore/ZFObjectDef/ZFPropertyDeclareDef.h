@@ -39,6 +39,9 @@ extern ZF_ENV_EXPORT const ZFProperty *ZFPropertyGet(ZF_IN const ZFClass *cls,
 
 // ============================================================
 extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPropertyId);
+extern ZF_ENV_EXPORT void _ZFP_ZFPropertyCallbackGetInfoRetainDefault(ZF_IN const ZFProperty *property,
+                                                                      ZF_IN ZFObject *ownerObj,
+                                                                      ZF_IN_OUT zfstring &ret);
 
 #define _ZFP_ZFPROPERTY_DECLARE(Type, ZFPropertyTypeId_noneOrType, Name, \
                                propertyClassOfRetainProperty) \
@@ -57,12 +60,12 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
                     ZFPropertyTypeId_noneOrType, \
                     ZFMethodAccessClassMember(zfself, _ZFP_ZFPROPERTY_SETTER_NAME(Type, Name)), \
                     ZFMethodAccessClassMember(zfself, _ZFP_ZFPROPERTY_GETTER_NAME(Type, Name)), \
-                    propertyClassOfRetainProperty, \
-                    &zfself::_ZFP_ZFPropertyCallbackIsValueAccessed_##Name, \
-                    &zfself::_ZFP_ZFPropertyCallbackIsInitValue_##Name, \
-                    &zfself::_ZFP_ZFPropertyCallbackResetInitValue_##Name, \
-                    &zfself::_ZFP_ZFPropertyCallbackCompare_##Name, \
-                    &zfself::_ZFP_ZFPropertyCallbackCopy_##Name); \
+                    propertyClassOfRetainProperty); \
+                _propertyInfo->callbackIsValueAccessed = zfself::_ZFP_ZFPropertyCallbackIsValueAccessed_##Name; \
+                _propertyInfo->callbackIsInitValue = zfself::_ZFP_ZFPropertyCallbackIsInitValue_##Name; \
+                _propertyInfo->callbackResetInitValue = zfself::_ZFP_ZFPropertyCallbackResetInitValue_##Name; \
+                _propertyInfo->callbackCompare = zfself::_ZFP_ZFPropertyCallbackCompare_##Name; \
+                _propertyInfo->callbackCopy = zfself::_ZFP_ZFPropertyCallbackCopy_##Name; \
                 zfself::_ZFP_ZFPropertyCallbackSetup_##Name(_propertyInfo); \
                 zfself::_ZFP_ZFObjectGetClass()->_ZFP_ZFClass_propertyRegister(_propertyInfo); \
             } \
@@ -427,6 +430,7 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
         { \
             propertyInfo->callbackRetainSet = zfself::_ZFP_ZFPropertyCallbackRetainSet_##Name; \
             propertyInfo->callbackRetainGet = zfself::_ZFP_ZFPropertyCallbackRetainGet_##Name; \
+            propertyInfo->callbackGetInfo = _ZFP_ZFPropertyCallbackGetInfoRetainDefault; \
         }
 #define _ZFP_ZFPROPERTY_DECLARE_CALLBACK_ASSIGN(Type, Name) \
     private: \
@@ -441,10 +445,18 @@ extern ZF_ENV_EXPORT ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPro
         { \
             return &(property->getterMethod()->executeClassMember<Type const &>(ownerObj)); \
         } \
+        static void _ZFP_ZFPropertyCallbackGetInfoAssign_##Name(ZF_IN const ZFProperty *property, \
+                                                                ZF_IN ZFObject *ownerObj, \
+                                                                ZF_IN_OUT zfstring &ret) \
+        { \
+            ZFCoreElementInfoGetter<Type>::elementInfoGetter(ret, \
+                property->getterMethod()->executeClassMember<Type const &>(ownerObj)); \
+        } \
         static void _ZFP_ZFPropertyCallbackSetup_##Name(ZFProperty *propertyInfo) \
         { \
             propertyInfo->callbackAssignSet = zfself::_ZFP_ZFPropertyCallbackAssignSet_##Name; \
             propertyInfo->callbackAssignGet = zfself::_ZFP_ZFPropertyCallbackAssignGet_##Name; \
+            propertyInfo->callbackGetInfo = zfself::_ZFP_ZFPropertyCallbackGetInfoAssign_##Name; \
         }
 
 #define _ZFP_ZFPROPERTY_DECLARE_RETAIN(Type, ZFPropertyTypeId_noneOrType, Name, \

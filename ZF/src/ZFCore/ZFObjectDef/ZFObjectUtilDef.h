@@ -67,7 +67,7 @@ inline ZFCompareResult ZFObjectCompare(ZF_IN T_ZFObject0 * const &e0, ZF_IN T_ZF
  *   or return ZFTOKEN_zfnull if obj is null
  * @see ZFObject::objectInfoOfInstance
  */
-inline void ZFobjectInfoOfInstanceT(ZF_IN_OUT zfstring &ret,
+inline void ZFObjectInfoOfInstanceT(ZF_IN_OUT zfstring &ret,
                                     ZF_IN ZFObject *obj)
 {
     if(obj == zfnull)
@@ -93,7 +93,7 @@ inline zfstring ZFObjectInfoOfInstance(ZF_IN ZFObject *obj)
  *   or return ZFTOKEN_zfnull if obj is null
  * @see ZFObject::objectInfo
  */
-inline void ZFobjectInfoT(ZF_IN_OUT zfstring &ret,
+inline void ZFObjectInfoT(ZF_IN_OUT zfstring &ret,
                           ZF_IN ZFObject *obj)
 {
     if(obj == zfnull)
@@ -330,7 +330,7 @@ zfclassNotPOD ZFCoreElementInfoGetter<T_ZFObject
 public:
     static void elementInfoGetter(ZF_IN_OUT zfstring &ret, ZF_IN T_ZFObject const &v)
     {
-        ZFobjectInfoT(ret, ZFObjectToObject(v));
+        ZFObjectInfoT(ret, ZFObjectToObject(v));
     }
 };
 /** @endcond */

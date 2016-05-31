@@ -33,10 +33,21 @@ const zfchar *ZFUIPointFromString(ZF_OUT ZFUIPoint &ret,
     return errPos;
 }
 
-// ============================================================
 ZFPROPERTY_TYPE_DEFINE(ZFUIPoint, ZFUIPoint)
 ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(ZFUIPoint, ZFUIPoint, ZFPropertyTypeId_ZFUIPoint)
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFUIPoint, ZFUIPoint)
+
+ZFOUTPUT_TYPE_DEFINE(ZFUIPoint, {output << ZFUIPointToString(v);})
+ZFINPUT_TYPE_DEFINE(ZFUIPoint, ZFUIPoint, {
+    v = ZFUIPointZero;
+    ZFCoreArrayPOD<zfint> elementsTmp;
+    if(!ZFInputCallbackReadDataPairInt(elementsTmp, input, 2))
+    {
+        return zffalse;
+    }
+    v.x = elementsTmp[0];
+    v.y = elementsTmp[1];
+    return zftrue;
+})
 
 // ============================================================
 // ZFUIMargin
@@ -63,10 +74,23 @@ const zfchar *ZFUIMarginFromString(ZF_OUT ZFUIMargin &ret,
     return errPos;
 }
 
-// ============================================================
 ZFPROPERTY_TYPE_DEFINE(ZFUIMargin, ZFUIMargin)
 ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(ZFUIMargin, ZFUIMargin, ZFPropertyTypeId_ZFUIMargin)
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFUIMargin, ZFUIMargin)
+
+ZFOUTPUT_TYPE_DEFINE(ZFUIMargin, {output << ZFUIMarginToString(v);})
+ZFINPUT_TYPE_DEFINE(ZFUIMargin, ZFUIMargin, {
+    v = ZFUIMarginZero;
+    ZFCoreArrayPOD<zfint> elementsTmp;
+    if(!ZFInputCallbackReadDataPairInt(elementsTmp, input, 2))
+    {
+        return zffalse;
+    }
+    v.left = elementsTmp[0];
+    v.top = elementsTmp[1];
+    v.right = elementsTmp[2];
+    v.bottom = elementsTmp[3];
+    return zftrue;
+})
 
 // ============================================================
 // ZFUISize
@@ -121,10 +145,21 @@ void ZFUISizeApplyAspectRatio(ZF_OUT ZFUISize &ret,
     }
 }
 
-// ============================================================
 ZFPROPERTY_TYPE_DEFINE(ZFUISize, ZFUISize)
 ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(ZFUISize, ZFUISize, ZFPropertyTypeId_ZFUISize)
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFUISize, ZFUISize)
+
+ZFOUTPUT_TYPE_DEFINE(ZFUISize, {output << ZFUISizeToString(v);})
+ZFINPUT_TYPE_DEFINE(ZFUISize, ZFUISize, {
+    v = ZFUISizeZero;
+    ZFCoreArrayPOD<zfint> elementsTmp;
+    if(!ZFInputCallbackReadDataPairInt(elementsTmp, input, 2))
+    {
+        return zffalse;
+    }
+    v.width = elementsTmp[0];
+    v.height = elementsTmp[1];
+    return zftrue;
+})
 
 // ============================================================
 // ZFUIRect
@@ -151,10 +186,23 @@ const zfchar *ZFUIRectFromString(ZF_OUT ZFUIRect &ret,
     return errPos;
 }
 
-// ============================================================
 ZFPROPERTY_TYPE_DEFINE(ZFUIRect, ZFUIRect)
 ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(ZFUIRect, ZFUIRect, ZFPropertyTypeId_ZFUIRect)
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFUIRect, ZFUIRect)
+
+ZFOUTPUT_TYPE_DEFINE(ZFUIRect, {output << ZFUIRectToString(v);})
+ZFINPUT_TYPE_DEFINE(ZFUIRect, ZFUIRect, {
+    v = ZFUIRectZero;
+    ZFCoreArrayPOD<zfint> elementsTmp;
+    if(!ZFInputCallbackReadDataPairInt(elementsTmp, input, 4))
+    {
+        return zffalse;
+    }
+    v.point.x = elementsTmp[0];
+    v.point.y = elementsTmp[1];
+    v.size.width = elementsTmp[2];
+    v.size.height = elementsTmp[3];
+    return zftrue;
+})
 
 // ============================================================
 // ZFUIAlignFlags
@@ -355,10 +403,23 @@ const zfchar *ZFUIColorFromString(ZF_OUT ZFUIColor &color,
     return zfnull;
 }
 
-// ============================================================
 ZFPROPERTY_TYPE_DEFINE(ZFUIColor, ZFUIColor)
 ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(ZFUIColor, ZFUIColor, ZFPropertyTypeId_ZFUIColor)
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFUIColor, ZFUIColor)
+
+ZFOUTPUT_TYPE_DEFINE(ZFUIColor, {output << ZFUIColorToString(v);})
+ZFINPUT_TYPE_DEFINE(ZFUIColor, ZFUIColor, {
+    v = ZFUIColorZero;
+    zfchar buf[16] = {0};
+    if((buf[0] = ZFInputCallbackSkipChars(input)) == 0)
+    {
+        return zffalse;
+    }
+    if(input.execute(buf + 1, 8) != 8)
+    {
+        return zffalse;
+    }
+    return (ZFUIColorFromString(v, buf) == zfnull);
+})
 
 // ============================================================
 ZFENUM_DEFINE(ZFUIOrientation)

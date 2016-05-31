@@ -38,7 +38,6 @@ ZFPROPERTY_TYPE_DECLARE_SERIALIZE_TO_DEFINE(ZF2048Value, ZF2048Value)
     serializableData.propertyValueSet(zfintToString(v));
     return zftrue;
 }
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZF2048Value, ZF2048Value)
 
 ZF_NAMESPACE_GLOBAL_END
 

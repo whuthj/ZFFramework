@@ -198,7 +198,6 @@ ZFPROPERTY_TYPE_DECLARE_SERIALIZE_TO_DEFINE(ZFCallback, ZFCallback)
 
     return zftrue;
 }
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFCallback, ZFCallback)
 
 // ============================================================
 // custom serialize logic

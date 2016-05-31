@@ -138,6 +138,11 @@ public:
 #define ZFPropertyTypeId_ZFUIPoint zfText("ZFUIPoint")
 ZFPROPERTY_TYPE_DECLARE(ZFUIPoint, ZFUIPoint)
 
+ZFOUTPUT_TYPE_DECLARE(ZFUIPoint)
+ZFOUTPUT_TYPE(const ZFUIPoint *, {if(v) {output << *v;} else {output.execute(ZFTOKEN_zfnull);}})
+ZFOUTPUT_TYPE(ZFUIPoint *, {output << (const ZFUIPoint *)v;})
+ZFINPUT_TYPE_DECLARE(ZFUIPoint, ZFUIPoint)
+
 ZFCORE_POD_COMPARER_DECLARE(ZFUIPoint)
 ZFCOMPARER_DEFAULT_DECLARE_BEGIN(ZFUIPoint, e0, ZFUIPoint, e1)
 {
@@ -222,6 +227,11 @@ public:
  */
 #define ZFPropertyTypeId_ZFUIMargin zfText("ZFUIMargin")
 ZFPROPERTY_TYPE_DECLARE(ZFUIMargin, ZFUIMargin)
+
+ZFOUTPUT_TYPE_DECLARE(ZFUIMargin)
+ZFOUTPUT_TYPE(const ZFUIMargin *, {if(v) {output << *v;} else {output.execute(ZFTOKEN_zfnull);}})
+ZFOUTPUT_TYPE(ZFUIMargin *, {output << (const ZFUIMargin *)v;})
+ZFINPUT_TYPE_DECLARE(ZFUIMargin, ZFUIMargin)
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUIMargin)
 ZFCOMPARER_DEFAULT_DECLARE_BEGIN(ZFUIMargin, e0, ZFUIMargin, e1)
@@ -438,6 +448,11 @@ public:
 #define ZFPropertyTypeId_ZFUISize zfText("ZFUISize")
 ZFPROPERTY_TYPE_DECLARE(ZFUISize, ZFUISize)
 
+ZFOUTPUT_TYPE_DECLARE(ZFUISize)
+ZFOUTPUT_TYPE(const ZFUISize *, {if(v) {output << *v;} else {output.execute(ZFTOKEN_zfnull);}})
+ZFOUTPUT_TYPE(ZFUISize *, {output << (const ZFUISize *)v;})
+ZFINPUT_TYPE_DECLARE(ZFUISize, ZFUISize)
+
 ZFCORE_POD_COMPARER_DECLARE(ZFUISize)
 ZFCOMPARER_DEFAULT_DECLARE_BEGIN(ZFUISize, e0, ZFUISize, e1)
 {
@@ -630,6 +645,11 @@ public:
  */
 #define ZFPropertyTypeId_ZFUIRect zfText("ZFUIRect")
 ZFPROPERTY_TYPE_DECLARE(ZFUIRect, ZFUIRect)
+
+ZFOUTPUT_TYPE_DECLARE(ZFUIRect)
+ZFOUTPUT_TYPE(const ZFUIRect *, {if(v) {output << *v;} else {output.execute(ZFTOKEN_zfnull);}})
+ZFOUTPUT_TYPE(ZFUIRect *, {output << (const ZFUIRect *)v;})
+ZFINPUT_TYPE_DECLARE(ZFUIRect, ZFUIRect)
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUIRect)
 ZFCOMPARER_DEFAULT_DECLARE_BEGIN(ZFUIRect, e0, ZFUIRect, e1)
@@ -1160,6 +1180,11 @@ private:
 #define ZFPropertyTypeId_ZFUIColor zfText("ZFUIColor")
 ZFPROPERTY_TYPE_DECLARE(ZFUIColor, ZFUIColor)
 
+ZFOUTPUT_TYPE_DECLARE(ZFUIColor)
+ZFOUTPUT_TYPE(const ZFUIColor *, {if(v) {output << *v;} else {output.execute(ZFTOKEN_zfnull);}})
+ZFOUTPUT_TYPE(ZFUIColor *, {output << (const ZFUIColor *)v;})
+ZFINPUT_TYPE_DECLARE(ZFUIColor, ZFUIColor)
+
 /**
  * @brief true if two color is equal
  */
@@ -1381,6 +1406,5 @@ inline ZFUIRect ZFUIContentScaleTypeApply(ZF_IN ZFUIContentScaleTypeEnum scaleTy
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUITypeDef_h_
 
-#include "ZFUITypeDef_IODef.h"
 #include "ZFUIColor_common.h"
 

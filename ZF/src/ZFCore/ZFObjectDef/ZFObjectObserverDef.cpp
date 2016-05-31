@@ -26,17 +26,17 @@ void ZFListenerData::objectInfoT(ZF_IN_OUT zfstring &ret) const
     if(this->sender != zfnull)
     {
         ret += zfText(", sender: ");
-        ZFobjectInfoT(ret, this->sender);
+        ZFObjectInfoT(ret, this->sender);
     }
     if(this->param0 != zfnull)
     {
         ret += zfText(", param0: ");
-        ZFobjectInfoT(ret, this->param0);
+        ZFObjectInfoT(ret, this->param0);
     }
     if(this->param1 != zfnull)
     {
         ret += zfText(", param1: ");
-        ZFobjectInfoT(ret, this->param1);
+        ZFObjectInfoT(ret, this->param1);
     }
     ret += ZFTOKEN_ZFObjectInfoRight;
 }

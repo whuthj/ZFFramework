@@ -453,7 +453,6 @@ extern ZF_ENV_EXPORT _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(const zfchar *name);
 #define ZFENUM_DEFINE(ChildEnum) \
     ZFPROPERTY_TYPE_DEFINE(ChildEnum##Enum, ChildEnum##Enum) \
     ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(ChildEnum##Enum, ChildEnum##Enum, ZFPropertyTypeId_##ChildEnum##Enum) \
-    ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ChildEnum##Enum, ChildEnum##Enum) \
     _ZFP_ZFENUM_CONVERTER_DEFINE(ChildEnum) \
     ZFOBJECT_REGISTER(ChildEnum)
 
@@ -740,7 +739,6 @@ extern ZF_ENV_EXPORT const zfchar *zfflagsFromString(ZF_OUT zfflags &ret,
 #define ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName) \
     ZFPROPERTY_TYPE_DEFINE(EnumFlagsName, EnumFlagsName) \
     ZFPROPERTY_TYPE_DECLARE_SERIALIZE_CONVERTER_DEFINE(EnumFlagsName, EnumFlagsName, ZFPropertyTypeId_##EnumFlagsName) \
-    ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(EnumFlagsName, EnumFlagsName) \
     _ZFP_ZFENUM_FLAGS_CONVERTER_DEFINE(EnumName, EnumFlagsName) \
     void EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const \
     { \

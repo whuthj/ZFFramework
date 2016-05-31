@@ -50,6 +50,12 @@ ZFProperty *_ZFP_ZFPropertyAccess(const zfchar *internalPropertyId)
     }
     return v;
 }
+void _ZFP_ZFPropertyCallbackGetInfoRetainDefault(ZF_IN const ZFProperty *property,
+                                                 ZF_IN ZFObject *ownerObj,
+                                                 ZF_IN_OUT zfstring &ret)
+{
+    ZFObjectInfoT(ret, property->callbackRetainGet(property, ownerObj));
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

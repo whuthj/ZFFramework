@@ -51,6 +51,7 @@ ZFProperty::ZFProperty(void)
 , callbackRetainGet(zfnull)
 , callbackAssignSet(zfnull)
 , callbackAssignGet(zfnull)
+, callbackGetInfo(zfnull)
 , _ZFP_ZFPropertyNeedInit(zftrue)
 , _ZFP_ZFProperty_ownerClass(zfnull)
 , _ZFP_ZFProperty_name()
@@ -70,12 +71,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN const ZFClass *ownerClass,
                                      ZF_IN const zfcharA *typeIdName,
                                      ZF_IN const ZFMethod *setterMethod,
                                      ZF_IN const ZFMethod *getterMethod,
-                                     ZF_IN const ZFClass *propertyClassOfRetainProperty,
-                                     ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed,
-                                     ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue,
-                                     ZF_IN ZFPropertyCallbackResetInitValue callbackResetInitValue,
-                                     ZF_IN ZFPropertyCallbackCompare callbackCompare,
-                                     ZF_IN ZFPropertyCallbackCopy callbackCopy)
+                                     ZF_IN const ZFClass *propertyClassOfRetainProperty)
 {
     this->_ZFP_ZFProperty_ownerClass = ownerClass;
     this->_ZFP_ZFProperty_name = name;
@@ -93,11 +89,6 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN const ZFClass *ownerClass,
     this->_ZFP_ZFProperty_setterMethod = setterMethod;
     this->_ZFP_ZFProperty_getterMethod = getterMethod;
     this->_ZFP_ZFProperty_propertyClassOfRetainProperty = propertyClassOfRetainProperty;
-    this->callbackIsValueAccessed = callbackIsValueAccessed;
-    this->callbackIsInitValue = callbackIsInitValue;
-    this->callbackResetInitValue = callbackResetInitValue;
-    this->callbackCompare = callbackCompare;
-    this->callbackCopy = callbackCopy;
 }
 /** @endcond */
 

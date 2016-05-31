@@ -14,120 +14,12 @@
 #ifndef _ZFI_ZFPropertyDef_h_
 #define _ZFI_ZFPropertyDef_h_
 
+#include "ZFPropertyCallbackTypeDef.h"
 #include "ZFMethodDef.h"
 #include "ZFObjectClassTypeFwd.h"
 #include "ZFObjectCastDef.h"
 #include "ZFAnyDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
-
-zfclassFwd ZFProperty;
-// ============================================================
-/**
- * @brief used to check whether the property has been accessed
- *
- * usage:
- * @code
- *   const ZFProperty *propertyInfo = ...;
- *   propertyInfo->callbackIsValueAccessed(propertyInfo, ownerObj);
- * @endcode
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyIsValueAccessed if necessary
- */
-typedef zfbool (*ZFPropertyCallbackIsValueAccessed)(ZF_IN const ZFProperty *property,
-                                                    ZF_IN ZFObject *ownerObj);
-/**
- * @brief used to check whether the property is in init value state
- *
- * usage:
- * @code
- *   const ZFProperty *propertyInfo = ...;
- *   propertyInfo->callbackIsInitValue(propertyInfo, ownerObj);
- * @endcode
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyIsInitValue if necessary
- */
-typedef zfbool (*ZFPropertyCallbackIsInitValue)(ZF_IN const ZFProperty *property,
-                                                ZF_IN ZFObject *ownerObj);
-/**
- * @brief used to reset the property to its init value state
- *
- * usage:
- * @code
- *   const ZFProperty *propertyInfo = ...;
- *   propertyInfo->callbackResetInitValue(propertyInfo, ownerObj);
- * @endcode
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyResetInitValue if necessary
- */
-typedef void (*ZFPropertyCallbackResetInitValue)(ZF_IN const ZFProperty *property,
-                                                 ZF_IN ZFObject *ownerObj);
-/**
- * @brief used to compare two object's property
- *
- * usage:
- * @code
- *   const ZFProperty *propertyInfo = ...;
- *   propertyInfo->callbackCompare(propertyInfo, obj0, obj1);
- * @endcode
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyCompare if necessary
- */
-typedef ZFCompareResult (*ZFPropertyCallbackCompare)(ZF_IN const ZFProperty *property,
-                                                     ZF_IN ZFObject *obj0,
-                                                     ZF_IN ZFObject *obj1);
-/**
- * @brief used to copy property from different object
- *
- * usage:
- * @code
- *   const ZFProperty *propertyInfo = ...;
- *   propertyInfo->callbackCopy(propertyInfo, dstObj, srcObj);
- * @endcode
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyCopyAll if necessary
- */
-typedef void (*ZFPropertyCallbackCopy)(ZF_IN const ZFProperty *property,
-                                       ZF_IN ZFObject *dstObj,
-                                       ZF_IN ZFObject *srcObj);
-/**
- * @brief used to set retain property without knowing the type
- *
- * do nothing if error
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyRetainSet if necessary
- */
-typedef void (*ZFPropertyCallbackRetainSet)(ZF_IN const ZFProperty *property,
-                                            ZF_IN ZFObject *dstObj,
-                                            ZF_IN ZFObject *src);
-/**
- * @brief used to get retain property without knowing the type
- *
- * return null if error
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyRetainGet if necessary
- */
-typedef ZFObject *(*ZFPropertyCallbackRetainGet)(ZF_IN const ZFProperty *property,
-                                                 ZF_IN ZFObject *ownerObj);
-/**
- * @brief used to set assign property without knowing the type
- *
- * you must ensure the src's type is correct
- * (or safe and valid to cast to desired type by reinterpret pointer cast),
- * otherwise, data may be invalid and app may crash
- * @note this method has no type or runtime safe check,
- *   use #ZFPropertyAssignSet if necessary
- */
-typedef void (*ZFPropertyCallbackAssignSet)(ZF_IN const ZFProperty *property,
-                                            ZF_IN ZFObject *dstObj,
-                                            ZF_IN void *src);
-/**
- * @brief used to get assign property without knowing the type
- *
- * return the property's address as (const void *) pointer,
- * or null if error
- */
-typedef const void *(*ZFPropertyCallbackAssignGet)(ZF_IN const ZFProperty *property,
-                                                   ZF_IN ZFObject *ownerObj);
 
 // ============================================================
 /**
@@ -295,6 +187,10 @@ public:
      * @brief see #ZFPropertyAssignGet
      */
     ZFPropertyCallbackAssignGet callbackAssignGet;
+    /**
+     * @brief see #ZFPropertyGetInfo
+     */
+    ZFPropertyCallbackGetInfo callbackGetInfo;
 
 public:
     /** @cond ZFPrivateDoc */
@@ -307,12 +203,7 @@ public:
                              ZF_IN const zfcharA *typeIdName,
                              ZF_IN const ZFMethod *setterMethod,
                              ZF_IN const ZFMethod *getterMethod,
-                             ZF_IN const ZFClass *propertyClassOfRetainProperty,
-                             ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed,
-                             ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue,
-                             ZF_IN ZFPropertyCallbackResetInitValue callbackResetInitValue,
-                             ZF_IN ZFPropertyCallbackCompare callbackCompare,
-                             ZF_IN ZFPropertyCallbackCopy callbackCopy);
+                             ZF_IN const ZFClass *propertyClassOfRetainProperty);
     /** @endcond */
 private:
     const ZFClass *_ZFP_ZFProperty_ownerClass;
@@ -325,72 +216,6 @@ private:
 
     const ZFClass *_ZFP_ZFProperty_propertyClassOfRetainProperty;
 };
-
-// ============================================================
-/**
- * @brief for retain property only,
- *   release property's old value, retain newValue, then set to property
- *
- * this macro is similar to the retain property in Object-C\n
- * typical usage:
- * @code
- *   ZFObject *property = ...;
- *   ZFObject *newProperty = ...;
- *
- *   // OK, release property, retain newProperty, then set to property
- *   ZFPropertyChange(property, newProperty);
- *
- *   // OK, use return value of a function as new value
- *   // but keep it in mind, that the new value will be retained
- *   ZFPropertyChange(property, funcThatReturnZFObject());
- *
- *   // OK, same as release old property and set it to zfnull
- *   ZFPropertyChange(property, zfnull);
- *
- *   // error, newValue must be ZFObject
- *   // ZFPropertyChange(property, 123);
- *
- *   // error, property must be a variable contains a (ZFObject *)
- *   // ZFPropertyChange(zfnull, newProperty);
- *   // ZFPropertyChange(funcThatReturnZFObject(), newProperty);
- * @endcode
- * @see zfRetain, zfRelease, ZFPROPERTY_RETAIN
- */
-#define ZFPropertyChange(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        ZFCoreMutexLock(); \
-        zflockfree_zfRetain(property = newValue); \
-        zflockfree_zfRelease(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-        ZFCoreMutexUnlock(); \
-    } while(zffalse)
-/** @brief no lock version of #ZFPropertyChange, use with causion */
-#define zflockfree_ZFPropertyChange(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        zflockfree_zfRetain(property = newValue); \
-        zflockfree_zfRelease(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-    } while(zffalse)
-/** @see ZFPropertyChange */
-#define ZFPropertyChangeWithoutLeakTest(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        ZFCoreMutexLock(); \
-        zflockfree_zfRetainWithoutLeakTest(property = newValue); \
-        zflockfree_zfReleaseWithoutLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-        ZFCoreMutexUnlock(); \
-    } while(zffalse)
-/** @brief no lock version of #ZFPropertyChangeWithoutLeakTest, use with causion */
-#define zflockfree_ZFPropertyChangeWithoutLeakTest(property, newValue) \
-    do \
-    { \
-        ZFAny _ZFP_ZFPropertyChangeTmpValue = property; \
-        zflockfree_zfRetainWithoutLeakTest(property = newValue); \
-        zflockfree_zfReleaseWithoutLeakTest(_ZFP_ZFPropertyChangeTmpValue.toObject()); \
-    } while(zffalse)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPropertyDef_h_

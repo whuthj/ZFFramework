@@ -12,6 +12,32 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFENUM_DEFINE(ZFTextTemplateIndexFlag)
 
+// ============================================================
+void ZFTextTemplateIndexData::objectInfoT(ZF_IN_OUT zfstring &ret) const
+{
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+
+    zfstringAppend(ret, zfText("%%%zi[%zi%s]"),
+        this->indexWidth,
+        this->indexRadix,
+        this->indexUpperCase ? zfText("x") : zfText("X"));
+
+    if(this->indexOffset >= 0)
+    {
+        zfstringAppend(ret, zfText("[%zi, %d)"), this->indexStart, this->indexOffset);
+    }
+    else
+    {
+        zfstringAppend(ret, zfText("(%d, %zi]"), this->indexOffset, this->indexStart);
+    }
+
+    ret += zfText(" ");
+    ZFTextTemplateIndexFlagEnumToString(ret, this->indexFlag);
+
+    ret += ZFTOKEN_ZFObjectInfoRight;
+}
+
+// ============================================================
 zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFTextTemplateIndexDataState
 {
 public:
@@ -51,6 +77,7 @@ static void _ZFP_ZFTextTemplateApply_index(ZF_IN const ZFTextTemplateParam &para
                                            ZF_IN_OUT const zfchar *&p,
                                            ZF_IN_OUT zfindex &size);
 
+// ============================================================
 zfindex ZFTextTemplateApply(ZF_IN const ZFTextTemplateParam &param,
                             ZF_IN const ZFOutputCallback &output,
                             ZF_IN const ZFInputCallback &input)
@@ -336,14 +363,8 @@ static void _ZFP_ZFTextTemplateApply_index(ZF_IN const ZFTextTemplateParam &para
                 indexDataState->indexData->indexUpperCase
             ).cString());
 
-        if(indexDataState->indexData->indexAscending)
-        {
-            ++(indexDataState->indexCur);
-        }
-        else
-        {
-            --(indexDataState->indexCur);
-        }
+        zfCoreAssertWithMessage(indexDataState->indexData->indexOffset, zfText("indexOffset must not be 0"));
+        indexDataState->indexCur += indexDataState->indexData->indexOffset;
     }
 
     output.execute(value.cString(), value.length());

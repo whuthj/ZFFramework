@@ -10,6 +10,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFENUM_DEFINE(ZFUIButtonGroupType)
+
 ZFOBJECT_REGISTER(ZFUIButtonGroup)
 
 // ============================================================

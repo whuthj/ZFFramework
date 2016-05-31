@@ -265,7 +265,6 @@ ZFPROPERTY_TYPE_DECLARE_SERIALIZE_TO_DEFINE(ZFBezier, ZFBezier)
 
     return zftrue;
 }
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFBezier, ZFBezier)
 
 // ============================================================
 ZFINPUT_TYPE_DEFINE(ZFBezier, ZFBezier, {

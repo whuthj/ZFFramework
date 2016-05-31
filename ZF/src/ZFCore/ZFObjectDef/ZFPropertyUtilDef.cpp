@@ -195,5 +195,17 @@ void ZFPropertyCopyAll(ZF_IN ZFObject *dstObj,
     }
 }
 
+// ============================================================
+// ZFPropertyGetInfo
+void ZFPropertyGetInfo(ZF_IN_OUT zfstring &ret,
+                       ZF_IN const ZFProperty *propertyInfo,
+                       ZF_IN ZFObject *ownerObject)
+{
+    if(ownerObject != zfnull && propertyInfo != zfnull)
+    {
+        propertyInfo->callbackGetInfo(propertyInfo, ownerObject, ret);
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

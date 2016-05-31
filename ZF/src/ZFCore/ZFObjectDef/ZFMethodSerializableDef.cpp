@@ -114,7 +114,6 @@ ZFPROPERTY_TYPE_DECLARE_SERIALIZE_TO_DEFINE(ZFMethod, const ZFMethod *)
     serializableData.attributeSet(ZFSerializableKeyword_ZFMethod_methodId, v->methodId());
     return zftrue;
 }
-ZFPROPERTY_TYPE_INFO_GETTER_REGISTER(ZFMethod, const ZFMethod *)
 
 ZF_NAMESPACE_GLOBAL_END
 

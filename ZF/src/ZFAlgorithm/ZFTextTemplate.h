@@ -17,6 +17,7 @@
 #include "ZFAlgorithmDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+// ============================================================
 /**
  * @brief see #ZFPROPERTY_TYPE_DECLARE
  *
@@ -40,6 +41,7 @@ ZFENUM_SEPARATOR(ZFTextTemplateIndexFlag)
     ZFENUM_VALUE_REGISTER(TailSpace)
 ZFENUM_END_WITH_DEFAULT(ZFTextTemplateIndexFlag, LeadingZero)
 
+// ============================================================
 /** @brief see #ZFTextTemplateApply */
 zfclassLikePOD ZF_ENV_EXPORT ZFTextTemplateIndexData
 {
@@ -49,9 +51,10 @@ public:
      */
     zfindex indexStart;
     /**
-     * @brief increase or decrease the index, true by default
+     * @brief increase or decrease the index, 1 by default,
+     *   must not be 0
      */
-    zfbool indexAscending;
+    zfint indexOffset;
     /**
      * @brief radix, 10 by default
      */
@@ -74,15 +77,39 @@ public:
 public:
     ZFTextTemplateIndexData(void)
     : indexStart(0)
-    , indexAscending(zftrue)
+    , indexOffset(zftrue)
     , indexRadix(10)
     , indexUpperCase(zftrue)
     , indexWidth(0)
     , indexFlag(ZFTextTemplateIndexFlag::e_Default())
     {
     }
+
+public:
+    /** @brief copy from another */
+    void copyFrom(ZF_IN const ZFTextTemplateIndexData &ref)
+    {
+        this->indexStart = ref.indexStart;
+        this->indexOffset = ref.indexOffset;
+        this->indexRadix = ref.indexRadix;
+        this->indexUpperCase = ref.indexUpperCase;
+        this->indexWidth = ref.indexWidth;
+        this->indexFlag = ref.indexFlag;
+    }
+
+public:
+    /** @brief see #ZFObject::objectInfoT */
+    void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief see #ZFObject::objectInfo */
+    inline zfstring objectInfo(void) const
+    {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
 };
 
+// ============================================================
 /** @brief see #ZFTextTemplateApply */
 zfclassLikePOD ZF_ENV_EXPORT ZFTextTemplateParam
 {
@@ -129,6 +156,7 @@ public:
     /** @endcond */
 };
 
+// ============================================================
 /**
  * @brief util method to apply template to plain text
  *
