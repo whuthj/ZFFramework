@@ -40,6 +40,8 @@ public:
 
     /** @brief duration to blink, #ZFUIGlobalStyle::aniDurationNormal by default */
     ZFCORE_PARAM_WITH_INIT(zftimet, blinkDuration, ZFUIGlobalStyle::DefaultStyle()->aniDurationNormal())
+    /** @brief blink count, 1 by default */
+    ZFCORE_PARAM_WITH_INIT(zfindex, blinkCount, 1)
 };
 /**
  * @brief blink view so that it's easy to be noticed
@@ -50,12 +52,14 @@ extern ZF_ENV_EXPORT void ZFUIViewBlink(ZF_IN ZFUIView *view,
  * @brief blink view so that it's easy to be noticed
  */
 inline void ZFUIViewBlink(ZF_IN ZFUIView *view,
-                          ZF_IN_OPT ZFUIImage *blinkImage,
-                          ZF_IN_OPT zftimet blinkDuration = ZFUIGlobalStyle::DefaultStyle()->aniDurationNormal())
+                          ZF_IN ZFUIImage *blinkImage,
+                          ZF_IN_OPT zftimet blinkDuration = ZFUIGlobalStyle::DefaultStyle()->aniDurationNormal(),
+                          ZF_IN_OPT zfindex blinkCount = 1)
 {
     ZFUIViewBlink(view, ZFUIViewBlinkParam()
             .blinkImageSet(blinkImage)
             .blinkDurationSet(blinkDuration)
+            .blinkCountSet(blinkCount)
         );
 }
 

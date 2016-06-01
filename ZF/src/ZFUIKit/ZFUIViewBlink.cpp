@@ -22,6 +22,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFUIViewBlink_tag_blinkView zfText("_ZFP_ZFUIViewBlink_tag_blinkView")
 #define _ZFP_ZFUIViewBlink_tag_delayTaskId zfText("_ZFP_ZFUIViewBlink_tag_delayTaskId")
 #define _ZFP_ZFUIViewBlink_tag_delayId zfText("_ZFP_ZFUIViewBlink_tag_delayId")
+#define _ZFP_ZFUIViewBlink_tag_blinkCountLeft zfText("_ZFP_ZFUIViewBlink_tag_blinkCountLeft")
 
 zfclass _ZFP_ZFUIViewBlinkView : zfextends ZFUIImageView
 {
@@ -47,6 +48,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkDataHolder)
 void ZFUIViewBlink(ZF_IN ZFUIView *view,
                    ZF_IN const ZFUIViewBlinkParam &blinkParam /* = ZFUIViewBlinkParam() */)
 {
+    if(blinkParam.blinkCount() <= 0 || blinkParam.blinkDuration() <= 0)
+    {
+        return ;
+    }
     if(view)
     {
         _ZFP_ZFUIViewBlinkDoOff(view);
@@ -65,6 +70,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
         _ZFP_ZFUIViewBlinkDoOff(view);
         return ;
     }
+
     {
         zfblockedAllocWithoutLeakTest(_ZFP_ZFUIViewBlinkView, t);
         view->internalForegroundViewAdd(t);
@@ -78,6 +84,11 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
 
     if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView) && !_ZFP_ZFUIViewBlink_DEBUG_noAni)
     {
+        if(blinkParam.blinkCount() > 1)
+        {
+            view->tagSet(_ZFP_ZFUIViewBlink_tag_blinkCountLeft, ZFValueEditable::indexValueCreate(blinkParam.blinkCount() - 1).toObject());
+        }
+
         zfblockedAllocWithoutLeakTest(ZFAnimationNativeView, ani);
         view->tagSetMarkCached(_ZFP_ZFUIViewBlink_tag_ani, ani);
         ani->aniAlphaToSet(0);
@@ -90,14 +101,30 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
         ZFLISTENER_LOCAL(aniOnStopListener, {
             ZFAnimation *ani = listenerData.sender->to<ZFAnimation *>();
             ZFUIView *blinkView = ani->aniTarget()->to<ZFUIView *>();
-            ani->aniTargetSet(zfnull);
-
             ZFUIView *view = userData->to<ZFObjectHolder *>()->holdedObj;
+
+            ZFValueEditable *blinkCountLeft = view->tagGet<ZFValueEditable *>(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
+            if(blinkCountLeft != zfnull)
+            {
+                if(blinkCountLeft->indexValue() <= 1)
+                {
+                    view->tagRemove(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
+                }
+                else
+                {
+                    blinkCountLeft->indexValueSet(blinkCountLeft->indexValue() - 1);
+                }
+
+                ani->aniStart();
+                return ;
+            }
+
             view->observerRemove(ZFObject::EventObjectBeforeDealloc(), ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->viewOnDeallocListener);
 
             view->tagRemove(_ZFP_ZFUIViewBlink_tag_ani);
             view->tagRemove(_ZFP_ZFUIViewBlink_tag_blinkView);
             blinkView->viewRemoveFromParent();
+            ani->aniTargetSet(zfnull);
 
             ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->blinkingViews.removeElement(view);
             ZFGlobalEventCenter::instance()->observerNotifyWithCustomSender(view, ZFGlobalEvent::EventViewBlinkOff());
@@ -133,7 +160,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
             #if _ZFP_ZFUIViewBlink_DEBUG_duration
                 5000
             #else
-                blinkParam.blinkDuration()
+                blinkParam.blinkDuration() * blinkParam.blinkCount()
             #endif
             ,
             blinkDelayOnFinish,
@@ -165,6 +192,7 @@ static void _ZFP_ZFUIViewBlinkDoOff(ZF_IN ZFUIView *view)
     ZFAnimation *ani = view->tagGet<ZFAnimation *>(_ZFP_ZFUIViewBlink_tag_ani);
     if(ani != zfnull)
     {
+        view->tagRemove(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
         ani->aniStop();
     }
     else
