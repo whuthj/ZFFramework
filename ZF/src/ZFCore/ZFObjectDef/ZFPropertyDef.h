@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFPropertyDef_h_
 #define _ZFI_ZFPropertyDef_h_
 
-#include "ZFPropertyCallbackTypeDef.h"
+#include "ZFPropertyFwdDef.h"
 #include "ZFMethodDef.h"
 #include "ZFObjectClassTypeFwd.h"
 #include "ZFObjectCastDef.h"
@@ -191,6 +191,17 @@ public:
      * @brief see #ZFPropertyGetInfo
      */
     ZFPropertyCallbackGetInfo callbackGetInfo;
+
+public:
+    /**
+     * @brief whether this property should be reflectable
+     *
+     * true by default, set #ZFPROPERTY_NO_REFLECT to disable it\n
+     * a non-reflectable property would be excluded
+     * while serializing or copying styleable objects,
+     * see #ZFSerializable, #ZFCopyable, #ZFStyleable
+     */
+    zfbool propertyReflectable;
 
 public:
     /** @cond ZFPrivateDoc */

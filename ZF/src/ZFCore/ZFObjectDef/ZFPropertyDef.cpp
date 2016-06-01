@@ -38,6 +38,10 @@ void ZFProperty::objectInfoT(ZF_IN_OUT zfstring &ret) const
     ret += this->ownerClass()->className();
     ret += zfText("::");
     ret += this->propertyName();
+    if(!this->propertyReflectable)
+    {
+        ret += zfText("(NoReflect)");
+    }
 }
 
 /** @cond ZFPrivateDoc */
@@ -52,6 +56,7 @@ ZFProperty::ZFProperty(void)
 , callbackAssignSet(zfnull)
 , callbackAssignGet(zfnull)
 , callbackGetInfo(zfnull)
+, propertyReflectable(zftrue)
 , _ZFP_ZFPropertyNeedInit(zftrue)
 , _ZFP_ZFProperty_ownerClass(zfnull)
 , _ZFP_ZFProperty_name()

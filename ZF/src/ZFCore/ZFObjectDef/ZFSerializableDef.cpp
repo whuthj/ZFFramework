@@ -527,6 +527,11 @@ const ZFCoreArrayPOD<const ZFProperty *> ZFSerializable::serializableGetAllSeria
 
 ZFSerializable::PropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property)
 {
+    if(!property->propertyReflectable)
+    {
+        return ZFSerializable::PropertyTypeNotSerializable;
+    }
+
     if(property->propertyIsRetainProperty())
     {
         if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFSerializable::ClassData()))

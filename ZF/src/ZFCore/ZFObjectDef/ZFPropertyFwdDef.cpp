@@ -6,7 +6,7 @@
  * Distributed under MIT license:
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
-#include "ZFPropertyCallbackTypeDef.h"
+#include "ZFPropertyFwdDef.h"
 #include "ZFObjectDef.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN

@@ -82,8 +82,9 @@ zfbool ZFPropertyCopy(ZF_IN const ZFProperty *propertyInfo,
                       ZF_IN ZFObject *srcObj)
 {
     if(propertyInfo == zfnull
-       || dstObj == zfnull || !dstObj->classData()->classIsTypeOf(propertyInfo->ownerClass())
-       || srcObj == zfnull || !srcObj->classData()->classIsTypeOf(propertyInfo->ownerClass()))
+        || !propertyInfo->propertyReflectable
+        || dstObj == zfnull || !dstObj->classData()->classIsTypeOf(propertyInfo->ownerClass())
+        || srcObj == zfnull || !srcObj->classData()->classIsTypeOf(propertyInfo->ownerClass()))
     {
         return zffalse;
     }
@@ -183,7 +184,8 @@ void ZFPropertyCopyAll(ZF_IN ZFObject *dstObj,
     for(zfindex i = 0; i < allProperty.count(); ++i)
     {
         const ZFProperty *property = allProperty.get(i);
-        if(!srcClass->classIsTypeOf(property->ownerClass()))
+        if(!property->propertyReflectable
+            || !srcClass->classIsTypeOf(property->ownerClass()))
         {
             continue;
         }

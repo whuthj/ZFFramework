@@ -66,6 +66,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFPropertyCallbackGetInfoRetainDefault(ZF_IN cons
                 _propertyInfo->callbackResetInitValue = zfself::_ZFP_ZFPropertyCallbackResetInitValue_##Name; \
                 _propertyInfo->callbackCompare = zfself::_ZFP_ZFPropertyCallbackCompare_##Name; \
                 _propertyInfo->callbackCopy = zfself::_ZFP_ZFPropertyCallbackCopy_##Name; \
+                _propertyInfo->propertyReflectable = !ZFMACRO_CLASS_HAS_MEMBER(_, _ZFP_ZFPropertyNoReflect_##Name, zfself); \
                 zfself::_ZFP_ZFPropertyCallbackSetup_##Name(_propertyInfo); \
                 zfself::_ZFP_ZFObjectGetClass()->_ZFP_ZFClass_propertyRegister(_propertyInfo); \
             } \
@@ -76,6 +77,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFPropertyCallbackGetInfoRetainDefault(ZF_IN cons
             static ZFProperty *_propertyInfo = zfself::_ZFP_ZFPropertyAccess_##Name(); \
             return _propertyInfo; \
         } \
+        ZFMACRO_CLASS_HAS_MEMBER_DECLARE(_, _ZFP_ZFPropertyNoReflect_##Name, void (*F)(void)) \
     private: \
         _ZFP_ZFPROPERTY_DECLARE_CALLBACK_IS_INIT_VALUE(Type, Name) \
         _ZFP_ZFPROPERTY_DECLARE_CALLBACK_RESET_INIT_VALUE(Type, Name) \
@@ -1109,6 +1111,16 @@ extern ZF_ENV_EXPORT void _ZFP_ZFPropertyCallbackGetInfoRetainDefault(ZF_IN cons
  */
 #define ZFPROPERTY_OVERRIDE_VALUE_COMPARER_ACCESS_ANOTHER_VALUE(Type, Name) \
     (ZFCastZFObjectUnchecked(zfself *, anotherObj)->_ZFP_ZFPROPERTY_GETTER_NAME(Type, Name)())
+
+// ============================================================
+/**
+ * @brief dummy macro to mark the property should not be reflected,
+ *   see #ZFProperty::propertyReflectable
+ */
+#define ZFPROPERTY_NO_REFLECT(Type, Name) \
+    private: \
+        static void _ZFP_ZFPropertyNoReflect_##Name(void) {} \
+    public:
 
 // ============================================================
 /**

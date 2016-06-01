@@ -7,12 +7,12 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 /**
- * @file ZFPropertyCallbackTypeDef.h
+ * @file ZFPropertyFwdDef.h
  * @brief property for ZFObject type
  */
 
-#ifndef _ZFI_ZFPropertyCallbackTypeDef_h_
-#define _ZFI_ZFPropertyCallbackTypeDef_h_
+#ifndef _ZFI_ZFPropertyFwdDef_h_
+#define _ZFI_ZFPropertyFwdDef_h_
 
 #include "../ZFCoreDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -173,5 +173,5 @@ extern ZF_ENV_EXPORT void ZFPropertyCallbackGetInfoChange(ZF_IN const ZFProperty
                                                           ZFPropertyCallbackGetInfo callback);
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFPropertyCallbackTypeDef_h_
+#endif // #ifndef _ZFI_ZFPropertyFwdDef_h_
 

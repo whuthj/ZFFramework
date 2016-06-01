@@ -82,7 +82,11 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable)
 }
 ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const ZFProperty *property)
 {
-    if(property->propertyIsRetainProperty()
+    if(!property->propertyReflectable)
+    {
+        return ZFStyleable::PropertyTypeNotCopyable;
+    }
+    else if(property->propertyIsRetainProperty()
         && property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())
         && property->setterMethod()->methodPrivilegeType() == ZFMethodPrivilegeTypePrivate
         && property->getterMethod()->methodPrivilegeType() != ZFMethodPrivilegeTypePrivate)

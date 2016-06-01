@@ -40,7 +40,7 @@
 #include "ZFObjectDef/ZFObjectUtilDef.h"
 #include "ZFObjectDef/ZFObjectUtilTypeDef.h"
 #include "ZFObjectDef/ZFOutputCallbackDefault.h"
-#include "ZFObjectDef/ZFPropertyCallbackTypeDef.h"
+#include "ZFObjectDef/ZFPropertyFwdDef.h"
 #include "ZFObjectDef/ZFPropertyDef.h"
 #include "ZFObjectDef/ZFPropertyDeclareDef.h"
 #include "ZFObjectDef/ZFPropertySerializableDef.h"
