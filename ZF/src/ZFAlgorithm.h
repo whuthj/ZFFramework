@@ -25,6 +25,7 @@
 #include "ZFAlgorithm/ZFMd5.h"
 #include "ZFAlgorithm/ZFRegExp.h"
 #include "ZFAlgorithm/ZFTextTemplate.h"
+#include "ZFAlgorithm/ZFTextTemplateTypeDef.h"
 #include "ZFAlgorithm/ZFXml.h"
 #include "ZFAlgorithm/ZFXmlHandle.h"
 #include "ZFAlgorithm/ZFXmlSerializableConverterDef.h"
