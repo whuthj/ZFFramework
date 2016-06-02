@@ -205,7 +205,7 @@ zfclass ZF_ENV_EXPORT ZFUIDialogBasic : zfextends ZFUIDialog
                                       , zfimplements ZFUIDialogContent
 {
     ZFOBJECT_DECLARE(ZFUIDialogBasic, ZFUIDialog)
-    ZFIMPLEMENTS_DECLARE(ZFUIDialogBasicStyle)
+    ZFIMPLEMENTS_DECLARE(ZFUIDialogBasicStyle, ZFUIDialogContent)
 
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIDialogContent *, dialogContent);
 
@@ -240,7 +240,7 @@ public:
     virtual inline void dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType) {this->dialogContent()->dialogButtonRemove(dialogButtonType);}
 
     // ============================================================
-    // button with ZFUIDialogButtonType::e_Normal type
+    // button
     zfoverride
     virtual inline zfindex dialogButtonCount(void) {return this->dialogContent()->dialogButtonCount();}
     zfoverride
