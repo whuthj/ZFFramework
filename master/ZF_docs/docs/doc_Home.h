@@ -34,26 +34,13 @@
  * @endcode
  * \n
  * and here are screenshot of demo 2048 game built by ZFFramework:\n
- * <div>
- *     <div style="float:left; border:20px solid transparent;">
- *         <div style="float:left; border:5px solid transparent;">
- *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_iOS.png">
- *         </div>
- *         <div style="float:left; border:5px solid transparent;">
- *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Android.png">
- *         </div>
- *         <div style="float:left; border:5px solid transparent;">
- *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_Windows.png">
- *         </div>
- *         <div style="float:left; border:5px solid transparent;">
- *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_MacOS.png">
- *         </div>
- *         <div style="float:left; border:5px solid transparent;">
- *             <img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_Ubuntu.png">
- *         </div>
- *     </div>
- * </div>
- * \n
+ * <table border="0"><tr>
+ *     <td><img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_iOS.png"></td>
+ *     <td><img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Android.png"></td>
+ *     <td><img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_Windows.png"></td>
+ *     <td><img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_MacOS.png"></td>
+ *     <td><img src="https://raw.githubusercontent.com/ZFFramework/zfframework.github.com/master/res/ZFFramework/ZF2048_Qt_Ubuntu.png"></td>
+ * </tr></table>
  *
  * @section DocTag_Home_Requirement Requirement
  * -  for the core modlue:
