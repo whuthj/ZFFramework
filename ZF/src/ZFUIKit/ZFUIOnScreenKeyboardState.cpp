@@ -53,6 +53,13 @@ const ZFUIRect &ZFUIOnScreenKeyboardState::keyboardFramePrev(void)
     return this->_ZFP_ZFUIOnScreenKeyboardState_keyboardFramePrev;
 }
 
+void ZFUIOnScreenKeyboardState::keyboardFixClientFrame(ZF_OUT ZFUIMargin &margin)
+{
+    zffloat scale = this->ownerSysWindow()->rootView()->scaleGetFixed();
+    ZFPROTOCOL_ACCESS(ZFUIOnScreenKeyboardState)->keyboardFixClientFrame(this, margin);
+    ZFUIMarginApplyScaleReversely(margin, margin, scale);
+}
+
 void ZFUIOnScreenKeyboardState::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 {
     zfsFromPointerT(ret, this->ownerSysWindow());

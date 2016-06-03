@@ -112,9 +112,16 @@ public:
                                  ZF_IN ZFUIOnScreenKeyboardState *keyboardState)
     {
         ZFUIMargin ret = ZFUIMarginZero;
-        if(keyboardState->keyboardShowing() && ZFUIRectGetBottom(orgRect) > ZFUIRectGetTop(keyboardState->keyboardFrame()))
+        if(keyboardState->keyboardShowing())
         {
-            ret.bottom = ZFUIRectGetBottom(orgRect) - ZFUIRectGetTop(keyboardState->keyboardFrame());
+            ZFUIRect available = ZFUIRectGetBounds(keyboardState->ownerSysWindow()->rootView()->layoutedFrame());
+            ZFUIMargin margin = ZFUIMarginZero;
+            keyboardState->keyboardFixClientFrame(margin);
+            ZFUIRectApplyMargin(available, available, margin);
+            if(ZFUIRectGetBottom(orgRect) > ZFUIRectGetBottom(available))
+            {
+                ret.bottom = ZFUIRectGetBottom(orgRect) - ZFUIRectGetBottom(available);
+            }
         }
         return ret;
     }

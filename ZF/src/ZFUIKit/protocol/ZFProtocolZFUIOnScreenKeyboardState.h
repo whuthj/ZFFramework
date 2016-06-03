@@ -32,6 +32,19 @@ public:
      */
     virtual ZFUIRect keyboardFrame(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) = 0;
 
+    /**
+     * @brief see #ZFUIOnScreenKeyboardState::keyboardFixClientFrame
+     */
+    virtual void keyboardFixClientFrame(ZF_IN ZFUIOnScreenKeyboardState *keyboardState,
+                                        ZF_IN_OUT ZFUIMargin &margin)
+    {
+        margin = ZFUIMarginZero;
+        if(keyboardState->keyboardShowing())
+        {
+            margin.bottom = this->keyboardFrame(keyboardState).size.height;
+        }
+    }
+
     // ============================================================
     // callbacks that implementations must notify
 public:

@@ -112,6 +112,13 @@ public:
      */
     ZFPROPERTY_RETAIN(ZFAnimation *, hintAniHide)
 
+    /**
+     * @brief whether automatically fix frame accorrding to #ZFUIOnScreenKeyboardAutoFit,
+     *   true by default
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, hintFrameAutoFix, ZFPropertyInitValue(zftrue))
+    ZFPROPERTY_CUSTOM_SETTER_DECLARE(zfbool, hintFrameAutoFix);
+
 public:
     /**
      * @brief show the hint with animation, do nothing if showing

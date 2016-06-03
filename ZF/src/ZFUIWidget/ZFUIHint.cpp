@@ -13,24 +13,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zftimet ZFUIHintDurationDefault = 1500;
 
 // ============================================================
-static void _ZFP_ZFUIHint_onScreenKeyboardApply(ZF_IN ZFUIHint *hint,
-                                                ZF_IN const ZFUIRect &keyboardFrame,
-                                                ZF_IN const ZFUIRect &keyboardFramePrev)
-{
-    ZFUIViewLayoutParam *lp = hint->hintWindow()->windowLayoutParam();
-    ZFUIMargin newMargin = lp->layoutMargin();
-    if(newMargin.bottom >= keyboardFramePrev.size.height)
-    {
-        newMargin.bottom -= keyboardFramePrev.size.height;
-    }
-    newMargin.bottom += keyboardFrame.size.height;
-    if(newMargin != lp->layoutMargin())
-    {
-        lp->layoutMarginSet(newMargin);
-    }
-}
-
-// ============================================================
 static ZFArray *_ZFP_ZFUIHint_hintListForRead(ZF_IN ZFUISysWindow *inSysWindow)
 {
     if(inSysWindow == zfnull)
@@ -113,6 +95,7 @@ zfclassNotPOD _ZFP_ZFUIHintPrivate
 public:
     ZFUIHint *ownerZFUIHint;
     _ZFP_ZFUIHintWindow *hintWindow;
+    zfbool hintFrameAutoFixFlag;
     zfbool hintShowing;
     zfbool hintDelaying;
     ZFAnimation *hintAnimating; // auto retain
@@ -125,6 +108,7 @@ public:
     _ZFP_ZFUIHintPrivate(void)
     : ownerZFUIHint(zfnull)
     , hintWindow(zfnull)
+    , hintFrameAutoFixFlag(zffalse)
     , hintShowing(zffalse)
     , hintDelaying(zffalse)
     , hintAnimating(zfnull)
@@ -136,6 +120,22 @@ public:
     }
 
 public:
+    void hintFrameAutoFixUpdate(ZF_IN zfbool value)
+    {
+        if(value != this->hintFrameAutoFixFlag)
+        {
+            this->hintFrameAutoFixFlag = value;
+
+            if(value)
+            {
+                ZFUIOnScreenKeyboardAutoFit(this->hintWindow);
+            }
+            else
+            {
+                ZFUIOnScreenKeyboardAutoFitCancel(this->hintWindow);
+            }
+        }
+    }
     void hintDoDelay(void)
     {
         this->hintShowing = zftrue;
@@ -148,10 +148,6 @@ public:
         this->hintShowing = zftrue;
         this->hintDelaying = zffalse;
         this->ownerZFUIHint->hintWindow()->windowShow();
-        _ZFP_ZFUIHint_onScreenKeyboardApply(
-            this->ownerZFUIHint,
-            ZFUIOnScreenKeyboardState::instanceForSysWindow(this->ownerZFUIHint->hintWindow()->ownerSysWindow())->keyboardFrame(),
-            ZFUIRectZero);
         ZFPropertyChangeWithoutLeakTest(this->hintAnimating, this->ownerZFUIHint->hintAniShow());
         if(this->hintAnimating != zfnull)
         {
@@ -221,10 +217,6 @@ public:
         zfRetainWithoutLeakTest(this->ownerZFUIHint);
         zfblockedReleaseWithoutLeakTest(this->ownerZFUIHint);
         hintList->removeElement(this->ownerZFUIHint, ZFComparerCheckEqualOnly);
-        _ZFP_ZFUIHint_onScreenKeyboardApply(
-            this->ownerZFUIHint,
-            ZFUIRectZero,
-            ZFUIOnScreenKeyboardState::instanceForSysWindow(this->ownerZFUIHint->hintWindow()->ownerSysWindow())->keyboardFrame());
         this->ownerZFUIHint->hintOnHide();
         this->ownerZFUIHint->hintWindow()->windowHide();
         if(!hintList->isEmpty())
@@ -278,6 +270,11 @@ ZFPROPERTY_CUSTOM_SETTER_DEFINE(ZFUIHint, ZFUIView *, hintContent)
         this->hintWindow()->childAdd(this->hintContent());
     }
 }
+ZFPROPERTY_CUSTOM_SETTER_DEFINE(ZFUIHint, zfbool, hintFrameAutoFix)
+{
+    this->hintFrameAutoFixSet(newValue);
+    d->hintFrameAutoFixUpdate(this->hintFrameAutoFix());
+}
 
 ZFUIWindow *ZFUIHint::hintWindow(void)
 {
@@ -318,10 +315,6 @@ void ZFUIHint::hintHide(void)
             zfblockedReleaseWithoutLeakTest(this);
             ZFArrayEditable *hintList = _ZFP_ZFUIHint_hintListForWrite(this->hintWindow()->ownerSysWindow());
             hintList->removeElement(this, ZFComparerCheckEqualOnly);
-            _ZFP_ZFUIHint_onScreenKeyboardApply(
-                this,
-                ZFUIRectZero,
-                ZFUIOnScreenKeyboardState::instanceForSysWindow(this->hintWindow()->ownerSysWindow())->keyboardFrame());
             zfRelease(this);
         }
         else
@@ -380,10 +373,6 @@ ZFObject *ZFUIHint::objectOnInit(void)
         ZFArrayEditable *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->hintWindow()->ownerSysWindow());
         hintListNew->add(hint);
         hintListOld->removeElement(hint, ZFComparerCheckEqualOnly);
-        _ZFP_ZFUIHint_onScreenKeyboardApply(
-            hint,
-            ZFUIOnScreenKeyboardState::instanceForSysWindow(hint->hintWindow()->ownerSysWindow())->keyboardFrame(),
-            ZFUIOnScreenKeyboardState::instanceForSysWindow(sysWindowOld)->keyboardFrame());
         if(!hintListOld->isEmpty())
         {
             ZFUIHint *hint = hintListOld->getFirst<ZFUIHint *>();
@@ -415,10 +404,12 @@ ZFObject *ZFUIHint::objectOnInit(void)
 void ZFUIHint::objectOnInitFinish(void)
 {
     zfsuper::objectOnInitFinish();
+    d->hintFrameAutoFixUpdate(this->hintFrameAutoFix());
     this->hintOnInit();
 }
 void ZFUIHint::objectOnDealloc(void)
 {
+    d->hintFrameAutoFixUpdate(zffalse);
     if(d->hintAnimating != zfnull)
     {
         d->hintAnimating->aniStop();
@@ -435,33 +426,6 @@ void ZFUIHint::objectOnDealloc(void)
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
-
-// ============================================================
-// auto adjust hint position when on screen keyboard showed
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIHintPositionAdjustHolder, ZFLevelZFFrameworkNormal)
-{
-    this->onScreenKeyboardOnChangeListener = ZFCallbackForRawFunction(zfself::onScreenKeyboardOnChange);
-    ZFGlobalEventCenter::instance()->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), this->onScreenKeyboardOnChangeListener);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIHintPositionAdjustHolder)
-{
-    ZFGlobalEventCenter::instance()->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), this->onScreenKeyboardOnChangeListener);
-}
-ZFListener onScreenKeyboardOnChangeListener;
-static ZFLISTENER_PROTOTYPE_EXPAND(onScreenKeyboardOnChange)
-{
-    ZFUIOnScreenKeyboardState *onScreenKeyboardState = listenerData.sender->toAny();
-    ZFCoreArrayPOD<ZFUIHint *> hintList = ZFUIHint::hintList(onScreenKeyboardState->ownerSysWindow());
-    for(zfindex i = 0; i < hintList.count(); ++i)
-    {
-        ZFUIHint *hint = hintList[i];
-        _ZFP_ZFUIHint_onScreenKeyboardApply(
-            hint,
-            ZFUIOnScreenKeyboardState::instanceForSysWindow(hint->hintWindow()->ownerSysWindow())->keyboardFrame(),
-            ZFUIOnScreenKeyboardState::instanceForSysWindow(hint->hintWindow()->ownerSysWindow())->keyboardFramePrev());
-    }
-}
-ZF_GLOBAL_INITIALIZER_END(ZFUIHintPositionAdjustHolder)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -63,7 +63,7 @@ zfclass ZF_ENV_EXPORT ZFUIHintContentBasic : zfextends ZFUIButtonBasic, zfimplem
  * -  have an alpha change animation as the hint's show and hide animation
  */
 extern ZF_ENV_EXPORT zfautoObject ZFUIHintMake(ZF_IN const zfchar *text,
-                                             ZF_IN_OPT ZFUIImage *icon = zfnull);
+                                               ZF_IN_OPT ZFUIImage *icon = zfnull);
 /**
  * @brief #ZFUIHintMake and show the hint
  */

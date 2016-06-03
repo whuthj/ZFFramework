@@ -65,6 +65,13 @@ public:
      */
     virtual const ZFUIRect &keyboardFramePrev(void);
 
+    /**
+     * @brief fix client frame accorrding to current keyboard frame
+     *
+     * output is the margin that required to ensure client not covered by the keyboard
+     */
+    virtual void keyboardFixClientFrame(ZF_OUT ZFUIMargin &margin);
+
 protected:
     zfoverride
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);

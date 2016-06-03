@@ -16,6 +16,8 @@
 
 #include "ZFUIWidgetDef.h"
 #include "ZFUIButton.h"
+#include "ZFUIAutoFitLayout.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -152,6 +154,15 @@ public:
     ZFPROPERTY_ASSIGN(zfbool, dialogHideWhenClickBack)
 
     /**
+     * @brief see #ZFUIAutoFitLayout
+     */
+    ZFPROPERTY_RETAIN_READONLY(ZFUIAutoFitLayoutStyle *, dialogAutoFitLayout, ZFPropertyNoInitValue)
+    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUIAutoFitLayoutStyle *, dialogAutoFitLayout)
+    {
+        propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUIAutoFitLayoutStyleHolder));
+    }
+
+    /**
      * @brief dialog content, null by default
      *
      * note that this content would be saved when serializing the dialog,
@@ -214,6 +225,10 @@ public:
     // styles
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIColor, dialogWindowColor);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIImage *, dialogBackgroundImage);
+    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUIAutoFitLayoutStyle *, dialogAutoFitLayout)
+    {
+        propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUIAutoFitLayout));
+    }
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIView *, dialogView);
 
 public:

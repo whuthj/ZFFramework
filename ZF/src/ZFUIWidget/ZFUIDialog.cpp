@@ -91,10 +91,11 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAutoHide)
  * memo:
  *
  * _ZFP_ZFUIDialogPrivate (ZFUIWindow, handle all key event)
- * ^ dialogWindowBg (focusable, exclude from ZFUIViewFocusNextFind)
- *   dialogBg
- *   ^ dialogContainer
- *     ^ (fg) dialogView
+ * ^ dialogAutoFitLayout
+ *   ^ dialogWindowBg (focusable, exclude from ZFUIViewFocusNextFind)
+ *     dialogBg
+ *     ^ dialogContainer
+ *       ^ (fg) dialogView
  */
 zfclass _ZFP_ZFUIDialogPrivate : zfextends ZFUIWindow
 {
@@ -414,8 +415,12 @@ ZFObject *ZFUIDialog::objectOnInit(void)
     d->owner = this;
     d->windowLevelSet(ZFUIWindowLevel::e_AppHigh);
 
+    ZFUIView *dialogAutoFitLayout = this->dialogAutoFitLayout()->to<ZFUIView *>();
+    d->childAdd(dialogAutoFitLayout);
+    dialogAutoFitLayout->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
+
     d->dialogWindowBg = zfAllocWithoutLeakTest(_ZFP_ZFUIDialog_DialogWindowBg);
-    d->childAdd(d->dialogWindowBg);
+    dialogAutoFitLayout->childAdd(d->dialogWindowBg);
     d->dialogWindowBg->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
     d->dialogWindowBg->observerAdd(ZFUIButton::EventButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFUIDialogPrivate, dialogWindowBgOnClick)));

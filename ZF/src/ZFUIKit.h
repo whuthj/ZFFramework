@@ -32,6 +32,7 @@
 #include "ZFUIKit/ZFUILayoutParam.h"
 #include "ZFUIKit/ZFUIMouseEvent.h"
 #include "ZFUIKit/ZFUINativeViewWrapper.h"
+#include "ZFUIKit/ZFUIOnScreenKeyboardAutoFit.h"
 #include "ZFUIKit/ZFUIOnScreenKeyboardState.h"
 #include "ZFUIKit/ZFUIRootView.h"
 #include "ZFUIKit/ZFUIScroller.h"
