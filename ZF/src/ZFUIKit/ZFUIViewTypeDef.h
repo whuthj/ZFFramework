@@ -15,7 +15,6 @@
 #define _ZFI_ZFUIViewTypeDef_h_
 
 #include "ZFUITypeDef.h"
-#include "ZFUIStyle.h"
 #include "ZFUIGlobalStyle.h"
 #include "ZFUILayoutParam.h"
 

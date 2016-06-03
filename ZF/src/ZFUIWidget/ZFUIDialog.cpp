@@ -46,7 +46,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogDefaultCreatorInit)
 
 // ============================================================
 // ZFUIDialogStyle
-ZFSTYLE_DEFAULT_DEFINE(ZFUIDialogStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_DEFINE(ZFUIDialogStyle, ZFStyleable)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogAllDialog, ZFLevelZFFrameworkHigh)

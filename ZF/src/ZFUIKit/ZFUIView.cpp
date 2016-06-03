@@ -15,7 +15,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFSTYLE_DEFAULT_DEFINE(ZFUIViewStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_DEFINE(ZFUIViewStyle, ZFStyleable)
 
 // ============================================================
 // attached listeners

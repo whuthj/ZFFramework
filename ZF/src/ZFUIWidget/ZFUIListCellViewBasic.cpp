@@ -12,20 +12,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void _ZFP_ZFUIListCellViewBasic_cellIconInit(ZF_IN ZFUIViewStyle *cellIcon)
-{
-    cellIcon->viewSizeMaxSet(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
-}
-void _ZFP_ZFUIListCellViewBasic_cellLabelMainInit(ZF_IN ZFUITextViewStyle *cellLabelMain)
-{
-    // nothing to do
-}
-void _ZFP_ZFUIListCellViewBasic_cellLabelSubInit(ZF_IN ZFUITextViewStyle *cellLabelSub)
-{
-    cellLabelSub->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorTextSecondary());
-    cellLabelSub->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
-}
-
 ZFSTYLE_DEFAULT_DEFINE(ZFUIListCellViewBasicStyle, ZFUIViewStyle)
 
 // ============================================================

@@ -36,9 +36,9 @@ public:
 /**
  * @brief abstract list cell updater to update #ZFUIListCell
  */
-zfclass ZF_ENV_EXPORT ZFUIListCellUpdater : zfextends ZFUIStyleObject
+zfclass ZF_ENV_EXPORT ZFUIListCellUpdater : zfextends ZFStyleableObject
 {
-    ZFOBJECT_DECLARE(ZFUIListCellUpdater, ZFUIStyleObject)
+    ZFOBJECT_DECLARE(ZFUIListCellUpdater, ZFStyleableObject)
 
 public:
     /**

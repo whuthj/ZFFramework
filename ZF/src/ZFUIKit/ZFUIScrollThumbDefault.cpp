@@ -12,7 +12,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFSTYLE_DEFAULT_DEFINE(ZFUIScrollThumbDefaultStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_DEFINE(ZFUIScrollThumbDefaultStyle, ZFStyleable)
 
 // ============================================================
 zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextends ZFAnimationTimeLine

@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if the source image have nine patch,
  * scale would use the nine patch setting\n
  * return null if source image or newSize invalid\n
- * newSize is applied with #ZFUIImageGlobalScale\n
+ * newSize is applied with #ZFUIGlobalStyle::imageScale\n
  * this method would create a new image even if size not changed
  */
 extern ZF_ENV_EXPORT zfautoObject ZFUIImageScale(ZF_IN ZFUIImage *image,
@@ -87,7 +87,7 @@ extern ZF_ENV_EXPORT zfautoObject ZFUIImageLoadFromInput(ZF_IN const ZFInputCall
 /**
  * @brief load image from color
  *
- * size is applied with #ZFUIImageGlobalScale
+ * size is applied with #ZFUIGlobalStyle::imageScale
  * @note this method has no cache logic
  */
 extern ZF_ENV_EXPORT zfautoObject ZFUIImageLoadFromColor(ZF_IN const ZFUIColor &color,

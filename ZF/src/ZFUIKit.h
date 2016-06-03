@@ -40,7 +40,6 @@
 #include "ZFUIKit/ZFUIScrollThumb.h"
 #include "ZFUIKit/ZFUIScrollThumbDefault.h"
 #include "ZFUIKit/ZFUIScrollView.h"
-#include "ZFUIKit/ZFUIStyle.h"
 #include "ZFUIKit/ZFUISysWindow.h"
 #include "ZFUIKit/ZFUITextEdit.h"
 #include "ZFUIKit/ZFUITextView.h"

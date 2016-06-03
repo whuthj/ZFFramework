@@ -543,17 +543,5 @@ zfbool ZFUIImageEncodeToBinary(ZF_OUT const ZFOutputCallback &outputCallback,
     return zffalse;
 }
 
-zffloat ZFUIImageGlobalScale()
-{
-    return ZFUIGlobalStyle::DefaultStyle()->imageScale();
-}
-void ZFUIImageGlobalScaleSet(ZF_IN zffloat scale)
-{
-    if(scale > 0)
-    {
-        ZFUIGlobalStyle::DefaultStyle()->imageScaleSet(scale);
-    }
-}
-
 ZF_NAMESPACE_GLOBAL_END
 

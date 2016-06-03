@@ -28,8 +28,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zfinterface ZF_ENV_EXPORT ZFUIViewStyle : zfextends ZFInterface
 {
-    ZFINTERFACE_DECLARE(ZFUIViewStyle, ZFUIStyle)
-    ZFSTYLE_DEFAULT_DECLARE(ZFUIViewStyle, ZFUIStyle)
+    ZFINTERFACE_DECLARE(ZFUIViewStyle, ZFStyleable)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUIViewStyle, ZFStyleable)
 
 public:
     /**
@@ -130,7 +130,7 @@ public:
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, viewBackgroundColor,
                                 ZFPropertyInitValue(ZFUIColorTransparent))
 };
-ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIViewStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIViewStyle, ZFStyleable)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIView_internalBackgroundView zfText("internalBackgroundView")
@@ -200,9 +200,9 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * we also allow add ZFUIView to native view,
  * for how to, refer to #nativeViewNotifyBeforeAdd
  */
-zfclass ZF_ENV_EXPORT ZFUIView : zfextends ZFUIStyleObject, zfimplements ZFUIViewStyle
+zfclass ZF_ENV_EXPORT ZFUIView : zfextends ZFStyleableObject, zfimplements ZFUIViewStyle
 {
-    ZFOBJECT_DECLARE(ZFUIView, ZFUIStyleObject)
+    ZFOBJECT_DECLARE(ZFUIView, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFUIViewStyle)
 
 public:

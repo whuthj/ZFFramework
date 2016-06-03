@@ -21,19 +21,6 @@ zfclassFwd ZFUIImage;
 
 // ============================================================
 /**
- * @brief image's scale,
- *   should be set manually according to your resource's resolution, 2 by default to suit most case,
- *   see #ZFUIImage::imageScale
- *
- * this method is a equalvant to #ZFUIGlobalStyle::imageScale
- */
-extern ZF_ENV_EXPORT zffloat ZFUIImageGlobalScale();
-/**
- * @brief see #ZFUIImageGlobalScale
- */
-extern ZF_ENV_EXPORT void ZFUIImageGlobalScaleSet(ZF_IN zffloat scale);
-
-/**
  * @brief internal use only, see #ZFUIImageSerializeTypeRegister
  */
 typedef zfbool (*ZFUIImageSerializeFromCallback)(ZF_IN_OUT ZFUIImage *image,
@@ -119,7 +106,7 @@ extern ZF_ENV_EXPORT ZFCoreArrayPOD<const zfchar *> ZFUIImageSerializeTypeGetAll
 zfclassFwd _ZFP_ZFUIImagePrivate;
 /**
  * @brief image storage
- * @note #ZFUIImage always use custom scale value, see #ZFUIImageGlobalScale
+ * @note #ZFUIImage always use custom scale value, see #ZFUIGlobalStyle::imageScale
  *
  * \n
  * serializable data:
@@ -158,7 +145,7 @@ public:
     /**
      * @brief image's scale
      *
-     * 0 or less means not set, and #ZFUIImageGlobalScale would be used
+     * 0 or less means not set, and #ZFUIGlobalStyle::imageScale would be used
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, imageScale, ZFPropertyInitValue(0))
 public:
@@ -167,11 +154,11 @@ public:
      */
     virtual zffloat imageScaleFixed(void)
     {
-        return (this->imageScale() > 0 ? this->imageScale() : ZFUIImageGlobalScale());
+        return (this->imageScale() > 0 ? this->imageScale() : ZFUIGlobalStyle::DefaultStyle()->imageScale());
     }
     /**
      * @brief nine patch described by a margin value, disabled if zero margin or margin exceeds image size
-     * @note #ZFUIImage always use custom scale value, see #ZFUIImageGlobalScale
+     * @note #ZFUIImage always use custom scale value, see #ZFUIGlobalStyle::imageScale
      */
     ZFPROPERTY_ASSIGN(ZFUIMargin, imageNinePatch)
     ZFPROPERTY_CUSTOM_SETTER_DECLARE(ZFUIMargin, imageNinePatch)
@@ -184,7 +171,7 @@ public:
 
     /**
      * @brief get size of the image
-     * @note #ZFUIImage always use custom scale value, see #ZFUIImageGlobalScale
+     * @note #ZFUIImage always use custom scale value, see #ZFUIGlobalStyle::imageScale
      */
     virtual ZFUISize imageSize(void);
     /**

@@ -60,7 +60,7 @@ public:
     ZFPROPERTY_RAW_INIT_STEP_RETAIN_DECLARE(ZFUITextViewStyle *, buttonLabelStyleNormal)
     {
         ZFUITextViewStyle *v = propertyValue.to<ZFUITextViewStyle *>();
-        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorControlNormal());
+        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->controlColorNormal());
     }
     /** @brief label style in highlighted state */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, buttonLabelStyleHighlighted,
@@ -68,7 +68,7 @@ public:
     ZFPROPERTY_RAW_INIT_STEP_RETAIN_DECLARE(ZFUITextViewStyle *, buttonLabelStyleHighlighted)
     {
         ZFUITextViewStyle *v = propertyValue.to<ZFUITextViewStyle *>();
-        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorControlNormal());
+        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->controlColorHighlighted());
     }
     /** @brief label style in checked state */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, buttonLabelStyleChecked,
@@ -76,7 +76,7 @@ public:
     ZFPROPERTY_RAW_INIT_STEP_RETAIN_DECLARE(ZFUITextViewStyle *, buttonLabelStyleChecked)
     {
         ZFUITextViewStyle *v = propertyValue.to<ZFUITextViewStyle *>();
-        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorControlNormal());
+        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->controlColorChecked());
     }
     /** @brief label style in checked highlighted state */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, buttonLabelStyleCheckedHighlighted,
@@ -84,7 +84,7 @@ public:
     ZFPROPERTY_RAW_INIT_STEP_RETAIN_DECLARE(ZFUITextViewStyle *, buttonLabelStyleCheckedHighlighted)
     {
         ZFUITextViewStyle *v = propertyValue.to<ZFUITextViewStyle *>();
-        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorControlNormal());
+        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->controlColorCheckedHighlighted());
     }
     /** @brief label style in disabled state */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, buttonLabelStyleDisabled,
@@ -92,7 +92,7 @@ public:
     ZFPROPERTY_RAW_INIT_STEP_RETAIN_DECLARE(ZFUITextViewStyle *, buttonLabelStyleDisabled)
     {
         ZFUITextViewStyle *v = propertyValue.to<ZFUITextViewStyle *>();
-        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorControlDisabled());
+        v->textColorSet(ZFUIGlobalStyle::DefaultStyle()->controlColorDisabled());
     }
 
     // ============================================================

@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFUILayoutParam_h_
 #define _ZFI_ZFUILayoutParam_h_
 
-#include "ZFUIStyle.h"
+#include "ZFUIKitDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -134,9 +134,9 @@ ZFINPUT_TYPE_DECLARE(ZFUISizeParam, ZFUISizeParam)
  *   and must be serializable
  * @note by default, a layout param would be compared by comparing all property
  */
-zfclass ZF_ENV_EXPORT ZFUILayoutParam : zfextends ZFUIStyleObject
+zfclass ZF_ENV_EXPORT ZFUILayoutParam : zfextends ZFStyleableObject
 {
-    ZFOBJECT_DECLARE(ZFUILayoutParam, ZFUIStyleObject)
+    ZFOBJECT_DECLARE(ZFUILayoutParam, ZFStyleableObject)
 
 public:
     // ============================================================

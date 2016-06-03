@@ -19,8 +19,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFUIDialogContentBasicStyle
-extern ZF_ENV_EXPORT void _ZFP_ZFUIDialogContentBasic_dialogTitleViewInit(ZF_IN ZFUITextViewStyle *dialogTitleView);
-extern ZF_ENV_EXPORT void _ZFP_ZFUIDialogContentBasic_dialogContentViewInit(ZF_IN ZFUITextViewStyle *dialogContentView);
 /**
  * @brief style for #ZFUIDialogContentBasic
  */
@@ -33,20 +31,29 @@ zfinterface ZF_ENV_EXPORT ZFUIDialogContentBasicStyle : zfextends ZFInterface
      * @brief dialog title view
      */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, dialogTitleView, ZFPropertyNoInitValue)
+    static void _ZFP_dialogTitleViewInit(ZF_IN ZFUITextViewStyle *dialogTitleView)
+    {
+        dialogTitleView->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeBig());
+        dialogTitleView->textAppearanceSet(ZFUITextAppearance::e_Bold);
+    }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogTitleView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        _ZFP_ZFUIDialogContentBasic_dialogTitleViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_dialogTitleViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
     /**
      * @brief dialog content view
      */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, dialogContentView, ZFPropertyNoInitValue)
+    static void _ZFP_dialogContentViewInit(ZF_IN ZFUITextViewStyle *dialogContentView)
+    {
+        dialogContentView->textSingleLineSet(zffalse);
+    }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogContentView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        _ZFP_ZFUIDialogContentBasic_dialogContentViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_dialogContentViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 };
 ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIDialogContentBasicStyle, ZFUIViewStyle)
@@ -71,12 +78,12 @@ public:
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogTitleView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        _ZFP_ZFUIDialogContentBasic_dialogTitleViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_dialogTitleViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogContentView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        _ZFP_ZFUIDialogContentBasic_dialogContentViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_dialogContentViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
 public:

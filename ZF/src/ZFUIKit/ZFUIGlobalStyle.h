@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFUIGlobalStyle_h_
 #define _ZFI_ZFUIGlobalStyle_h_
 
-#include "ZFUIStyle.h"
+#include "ZFUIKitDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -22,14 +22,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zfinterface ZF_ENV_EXPORT ZFUIGlobalStyle : zfextends ZFInterface
 {
-    ZFINTERFACE_DECLARE(ZFUIGlobalStyle, ZFUIStyle)
-    ZFSTYLE_DEFAULT_DECLARE(ZFUIGlobalStyle, ZFUIStyle)
+    ZFINTERFACE_DECLARE(ZFUIGlobalStyle, ZFStyleable)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUIGlobalStyle, ZFStyleable)
 
 public:
     // ============================================================
     // image scale
     /**
-     * @brief resource image's base scale
+     * @brief resource image's base scale, 2 by default to suit most case
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, imageScale, ZFPropertyInitValue(2.0f))
 
@@ -128,19 +128,6 @@ public:
     // ============================================================
     // generanl colors
     /**
-     * @brief light color alpha
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfuint, colorAlphaLight, ZFPropertyInitValue(64))
-    /**
-     * @brief normal color alpha
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfuint, colorAlphaNormal, ZFPropertyInitValue(128))
-    /**
-     * @brief dark color alpha
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfuint, colorAlphaDark, ZFPropertyInitValue(192))
-
-    /**
      * @brief default background color
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorBgDefault, ZFPropertyInitValue(ZFUIColorGrayLight))
@@ -161,60 +148,32 @@ public:
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorMask, ZFPropertyInitValue(ZFUIColorChangeA(ZFUIColorBlack, 128)))
     /**
-     * @brief hint color
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorHint, ZFPropertyInitValue(ZFUIColorGrayLight))
-    /**
      * @brief tint color
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTint, ZFPropertyInitValue(ZFUIColorGrayLight))
-    /**
-     * @brief normal control color
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorControlNormal, ZFPropertyInitValue(ZFUIColorBlack))
-    /**
-     * @brief reverted normal control color
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorControlNormalReverted, ZFPropertyInitValue(ZFUIColorWhite))
-    /**
-     * @brief disabled control color
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorControlDisabled, ZFPropertyInitValue(ZFUIColorGray))
 
     // ============================================================
     // text colors
     /**
      * @brief default text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextDefault, ZFPropertyInitValue(ZFUIColorBlack))
-    /**
-     * @brief reverted default text color
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextDefaultReverted, ZFPropertyInitValue(ZFUIColorWhite))
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorDefault, ZFPropertyInitValue(ZFUIColorBlack))
     /**
      * @brief secondary default text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextSecondary, ZFPropertyInitValue(ZFUIColorGray))
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorSecondary, ZFPropertyInitValue(ZFUIColorGray))
     /**
-     * @brief reverted secondary default text color
+     * @brief hint text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextSecondaryReverted, ZFPropertyInitValue(ZFUIColorGray))
-    /**
-     * @brief alert text color, typically easy to be noticed
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextAlert, ZFPropertyInitValue(ZFUIColorBlack))
-    /**
-     * @brief notice text color, typically easy to be noticed but less than alert text
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextNotice, ZFPropertyInitValue(ZFUIColorBlack))
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorHint, ZFPropertyInitValue(ZFUIColorGrayLight))
     /**
      * @brief link text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextLink, ZFPropertyInitValue(ZFUIColorBlue))
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorLink, ZFPropertyInitValue(ZFUIColorBlue))
     /**
      * @brief visited link text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTextLinkVisited, ZFPropertyInitValue(ZFUIColorMagenta))
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorLinkVisited, ZFPropertyInitValue(ZFUIColorMagenta))
 
     // ============================================================
     // animations
@@ -243,8 +202,31 @@ public:
      * @brief long animation duration in miliseconds
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, aniDurationLong, ZFPropertyInitValue(500))
+
+    // ============================================================
+    // control
+    /**
+     * @brief normal control color
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorNormal, ZFPropertyInitValue(ZFUIColorBlack))
+    /**
+     * @brief highlighted control color
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorHighlighted, ZFPropertyInitValue(ZFUIColorBlack))
+    /**
+     * @brief checked control color
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorChecked, ZFPropertyInitValue(ZFUIColorBlack))
+    /**
+     * @brief checked highlighted control color
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorCheckedHighlighted, ZFPropertyInitValue(ZFUIColorBlack))
+    /**
+     * @brief disabled control color
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorDisabled, ZFPropertyInitValue(ZFUIColorGray))
 };
-ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIGlobalStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIGlobalStyle, ZFStyleable)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIGlobalStyle_h_

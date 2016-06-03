@@ -155,7 +155,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ZFUIImageSerializeType_color)
         }
     }
 
-    void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImageIO)->imageLoadFromColor(ZFUIImageGlobalScale(), color, size);
+    void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImageIO)->imageLoadFromColor(ZFUIGlobalStyle::DefaultStyle()->imageScale(), color, size);
     result->nativeImageSet(nativeImage);
     result->imageSerializableDataSet(&imageData);
     ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(nativeImage);
@@ -167,9 +167,9 @@ zfautoObject ZFUIImageLoadFromColor(ZF_IN const ZFUIColor &color,
 {
     ZFUISize sizeTmp = ZFUISizeMake(zfmMax(1, size.width), zfmMax(1, size.height));
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImageIO)->imageLoadFromColor(
-        ZFUIImageGlobalScale(),
+        ZFUIGlobalStyle::DefaultStyle()->imageScale(),
         color,
-        ZFUISizeApplyScale(sizeTmp, ZFUIImageGlobalScale()));
+        ZFUISizeApplyScale(sizeTmp, ZFUIGlobalStyle::DefaultStyle()->imageScale()));
     if(nativeImage == zfnull)
     {
         return zfautoObjectNull;

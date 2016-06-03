@@ -21,12 +21,6 @@ ZFENUM_DEFINE(ZFUITextEditKeyboardReturnAction)
 
 ZFSTYLE_DEFAULT_DEFINE(ZFUITextEditStyle, ZFUIViewStyle)
 
-void _ZFP_ZFUITextEdit_textPlaceHolderInit(ZF_IN_OUT ZFUITextViewStyle *textPlaceHolder)
-{
-    textPlaceHolder->textColorSet(ZFUIGlobalStyle::DefaultStyle()->colorHint());
-    textPlaceHolder->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
-}
-
 // ============================================================
 // _ZFP_ZFUITextEditPrivate
 zfclassNotPOD _ZFP_ZFUITextEditPrivate

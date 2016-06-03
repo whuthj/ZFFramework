@@ -25,8 +25,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zfinterface ZF_ENV_EXPORT ZFUIScrollThumbDefaultStyle : zfextends ZFInterface
 {
-    ZFINTERFACE_DECLARE(ZFUIScrollThumbDefaultStyle, ZFUIStyle)
-    ZFSTYLE_DEFAULT_DECLARE(ZFUIScrollThumbDefaultStyle, ZFUIStyle)
+    ZFINTERFACE_DECLARE(ZFUIScrollThumbDefaultStyle, ZFStyleable)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUIScrollThumbDefaultStyle, ZFStyleable)
 
 public:
     /**
@@ -62,15 +62,15 @@ public:
     ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, scrollThumbAutoHideDurationVertical,
                                 ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->aniDurationNormal()))
 };
-ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIScrollThumbDefaultStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIScrollThumbDefaultStyle, ZFStyleable)
 
 zfclassFwd _ZFP_ZFUIScrollThumbDefaultPrivate;
 /**
  * @brief default scroll thumb for #ZFUIScroller
  */
-zfclass ZF_ENV_EXPORT ZFUIScrollThumbDefault : zfextends ZFUIStyleObject, zfimplements ZFUIScrollThumbDefaultStyle, zfimplements ZFUIScrollThumb
+zfclass ZF_ENV_EXPORT ZFUIScrollThumbDefault : zfextends ZFStyleableObject, zfimplements ZFUIScrollThumbDefaultStyle, zfimplements ZFUIScrollThumb
 {
-    ZFOBJECT_DECLARE(ZFUIScrollThumbDefault, ZFUIStyleObject)
+    ZFOBJECT_DECLARE(ZFUIScrollThumbDefault, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFUIScrollThumbDefaultStyle, ZFUIScrollThumb)
 
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIImage *, scrollThumbImageHorizontal);

@@ -110,7 +110,6 @@ ZFENUM_END_WITH_DEFAULT(ZFUITextEditKeyboardReturnAction, FocusNext)
 
 // ============================================================
 // ZFUITextEditStyle
-extern ZF_ENV_EXPORT void _ZFP_ZFUITextEdit_textPlaceHolderInit(ZF_IN_OUT ZFUITextViewStyle *textPlaceHolder);
 /**
  * @brief style for #ZFUITextEdit
  */
@@ -147,10 +146,15 @@ public:
      * @brief text place holder
      */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, textPlaceHolder, ZFPropertyNoInitValue)
+    static void _ZFP_textPlaceHolderInit(ZF_IN ZFUITextViewStyle *textPlaceHolder)
+    {
+        textPlaceHolder->textColorSet(ZFUIGlobalStyle::DefaultStyle()->textColorHint());
+        textPlaceHolder->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
+    }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, textPlaceHolder)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        _ZFP_ZFUITextEdit_textPlaceHolderInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_textPlaceHolderInit(propertyValue.to<ZFUITextViewStyle *>());
     }
     /**
      * @brief see #textPlaceHolder
@@ -216,10 +220,10 @@ public:
                                 ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->textAlign()))
 
     /**
-     * @brief text color, #ZFUIGlobalStyle::colorTextDefault by default
+     * @brief text color, #ZFUIGlobalStyle::textColorDefault by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor,
-                                ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->colorTextDefault()))
+                                ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->textColorDefault()))
 
     /**
      * @brief text shadow color, #ZFUIColorTransparent by default, use transparent to disable text shadow
@@ -338,7 +342,7 @@ public:
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, textPlaceHolder)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        _ZFP_ZFUITextEdit_textPlaceHolderInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_textPlaceHolderInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, zfbool, textEditEnable);

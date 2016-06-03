@@ -38,7 +38,7 @@ public:
             return zfnull;
         }
         dataBuf.bufferGiveUp(); // should be free-ed by nsData
-        UIImage *uiImage = [UIImage imageWithData:nsData scale:ZFUIImageGlobalScale()];
+        UIImage *uiImage = [UIImage imageWithData:nsData scale:ZFUIGlobalStyle::DefaultStyle()->imageScale()];
         if(uiImage == nil)
         {
             return zfnull;

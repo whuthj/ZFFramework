@@ -17,9 +17,6 @@
 #include "ZFUIListCellView.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZF_ENV_EXPORT void _ZFP_ZFUIListCellViewBasic_cellIconInit(ZF_IN ZFUIViewStyle *cellIcon);
-extern ZF_ENV_EXPORT void _ZFP_ZFUIListCellViewBasic_cellLabelMainInit(ZF_IN ZFUITextViewStyle *cellLabelMain);
-extern ZF_ENV_EXPORT void _ZFP_ZFUIListCellViewBasic_cellLabelSubInit(ZF_IN ZFUITextViewStyle *cellLabelSub);
 // ============================================================
 // ZFUIListCellViewBasicStyle
 /**
@@ -34,30 +31,42 @@ zfinterface ZF_ENV_EXPORT ZFUIListCellViewBasicStyle : zfextends ZFInterface
      * @brief cell's icon
      */
     ZFPROPERTY_RETAIN_READONLY(ZFUIImageViewStyle *, cellIcon, ZFPropertyNoInitValue)
+    static void _ZFP_cellIconInit(ZF_IN ZFUIViewStyle *cellIcon)
+    {
+        cellIcon->viewSizeMaxSet(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
+    }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUIImageViewStyle *, cellIcon)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUIImageViewStyleHolder));
-        _ZFP_ZFUIListCellViewBasic_cellIconInit(propertyValue.to<ZFUIViewStyle *>());
+        zfself::_ZFP_cellIconInit(propertyValue.to<ZFUIViewStyle *>());
     }
 
     /**
      * @brief cell's main label
      */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, cellLabelMain, ZFPropertyNoInitValue)
+    static void _ZFP_cellLabelMainInit(ZF_IN ZFUITextViewStyle *cellLabelMain)
+    {
+    }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, cellLabelMain)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        _ZFP_ZFUIListCellViewBasic_cellLabelMainInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_cellLabelMainInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
     /**
      * @brief cell's sub label
      */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, cellLabelSub, ZFPropertyNoInitValue)
+    static void _ZFP_cellLabelSubInit(ZF_IN ZFUITextViewStyle *cellLabelSub)
+    {
+        cellLabelSub->textColorSet(ZFUIGlobalStyle::DefaultStyle()->textColorSecondary());
+        cellLabelSub->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
+    }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, cellLabelSub)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        _ZFP_ZFUIListCellViewBasic_cellLabelSubInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_cellLabelSubInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 };
 ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIListCellViewBasicStyle, ZFUIListCellViewStyle)
@@ -79,17 +88,17 @@ public:
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUIImageViewStyle *, cellIcon)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUIImageView));
-        _ZFP_ZFUIListCellViewBasic_cellIconInit(propertyValue.to<ZFUIViewStyle *>());
+        zfself::_ZFP_cellIconInit(propertyValue.to<ZFUIViewStyle *>());
     }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, cellLabelMain)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        _ZFP_ZFUIListCellViewBasic_cellLabelMainInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_cellLabelMainInit(propertyValue.to<ZFUITextViewStyle *>());
     }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, cellLabelSub)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        _ZFP_ZFUIListCellViewBasic_cellLabelSubInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_cellLabelSubInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
 public:

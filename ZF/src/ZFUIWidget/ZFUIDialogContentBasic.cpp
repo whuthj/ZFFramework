@@ -17,15 +17,6 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIDialogContentBasicStyle, ZFUIViewStyle)
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIDialogContentBasic)
-void _ZFP_ZFUIDialogContentBasic_dialogTitleViewInit(ZF_IN ZFUITextViewStyle *dialogTitleView)
-{
-    dialogTitleView->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeBig());
-    dialogTitleView->textAppearanceSet(ZFUITextAppearance::e_Bold);
-}
-void _ZFP_ZFUIDialogContentBasic_dialogContentViewInit(ZF_IN ZFUITextViewStyle *dialogContentView)
-{
-    dialogContentView->textSingleLineSet(zffalse);
-}
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFUIDialogContentBasicPrivate

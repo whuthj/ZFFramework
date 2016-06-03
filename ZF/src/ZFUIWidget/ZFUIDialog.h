@@ -95,8 +95,8 @@ inline zfautoObject ZFUIDialogDefaultAniHide(void)
  */
 zfinterface ZF_ENV_EXPORT ZFUIDialogStyle : zfextends ZFInterface
 {
-    ZFINTERFACE_DECLARE(ZFUIDialogStyle, ZFUIStyle)
-    ZFSTYLE_DEFAULT_DECLARE(ZFUIDialogStyle, ZFUIStyle)
+    ZFINTERFACE_DECLARE(ZFUIDialogStyle, ZFStyleable)
+    ZFSTYLE_DEFAULT_DECLARE(ZFUIDialogStyle, ZFStyleable)
 
 public:
     /**
@@ -171,7 +171,7 @@ public:
      */
     ZFPROPERTY_RETAIN(ZFUIView *, dialogView)
 };
-ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIDialogStyle, ZFUIStyle)
+ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIDialogStyle, ZFStyleable)
 
 // ============================================================
 // ZFUIDialog
@@ -183,9 +183,9 @@ zfclassFwd _ZFP_ZFUIDialogPrivate;
  * during #ZFFrameworkCleanup's #ZFLevelZFFrameworkLow step
  * for safe resource cleanup
  */
-zfclass ZF_ENV_EXPORT ZFUIDialog : zfextends ZFUIStyleObject, zfimplements ZFUIDialogStyle
+zfclass ZF_ENV_EXPORT ZFUIDialog : zfextends ZFStyleableObject, zfimplements ZFUIDialogStyle
 {
-    ZFOBJECT_DECLARE(ZFUIDialog, ZFUIStyleObject)
+    ZFOBJECT_DECLARE(ZFUIDialog, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFUIDialogStyle)
 
 public:

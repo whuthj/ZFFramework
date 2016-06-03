@@ -71,10 +71,10 @@ public:
                                 ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->textAlign()))
 
     /**
-     * @brief text color, #ZFUIGlobalStyle::colorTextDefault by default
+     * @brief text color, #ZFUIGlobalStyle::textColorDefault by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor,
-                                ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->colorTextDefault()))
+                                ZFPropertyInitValue(ZFUIGlobalStyle::DefaultStyle()->textColorDefault()))
 
     /**
      * @brief text shadow color, #ZFUIColorTransparent by default, use transparent to disable text shadow
