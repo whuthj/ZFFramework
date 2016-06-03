@@ -1100,9 +1100,14 @@ static void _ZFP_ZFClass_propertyInitStepMapMerge(ZF_IN_OUT _ZFP_ZFPropertyInitS
         {
             mergeTo[it->first] = it->second;
         }
-        else if(it->second.autoInitOrNot)
+        else
         {
-            itTo->second.autoInitOrNot = zftrue;
+            zfbool autoInitOrNot = (it->second.autoInitOrNot || itTo->second.autoInitOrNot);
+            itTo->second = it->second;
+            if(autoInitOrNot)
+            {
+                itTo->second.autoInitOrNot = zftrue;
+            }
         }
     }
 }
@@ -1151,19 +1156,24 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
 }
 void ZFClass::_ZFP_ZFClass_propertyInitStepDataInit(void) const
 {
-    // implemented interface should have higher priority than direct parent
+    _ZFP_ZFPropertyInitStepMapType propertyInitStepMapTmp;
+
     for(zfindex i = 0; i < this->implementedInterfaceCount(); ++i)
     {
         const ZFClass *interfaceClass = this->implementedInterfaceAtIndex(i);
         interfaceClass->_ZFP_ZFClass_propertyInitStepDataInit();
-        _ZFP_ZFClass_propertyInitStepMapMerge(d->propertyInitStepMap, interfaceClass->d->propertyInitStepMap);
+        _ZFP_ZFClass_propertyInitStepMapMerge(propertyInitStepMapTmp, interfaceClass->d->propertyInitStepMap);
     }
 
     if(this->parentClass() != zfnull)
     {
         this->parentClass()->_ZFP_ZFClass_propertyInitStepDataInit();
-        _ZFP_ZFClass_propertyInitStepMapMerge(d->propertyInitStepMap, this->parentClass()->d->propertyInitStepMap);
+        _ZFP_ZFClass_propertyInitStepMapMerge(propertyInitStepMapTmp, this->parentClass()->d->propertyInitStepMap);
     }
+
+    _ZFP_ZFClass_propertyInitStepMapMerge(propertyInitStepMapTmp, d->propertyInitStepMap);
+
+    d->propertyInitStepMap.swap(propertyInitStepMapTmp);
 }
 void ZFClass::_ZFP_ZFClass_propertyInitStepCheckAutoInit(ZF_IN ZFObject *obj) const
 {

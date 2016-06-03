@@ -63,9 +63,11 @@ ZFOBJECT_REGISTER(ZFNull)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkHigh)
 {
     this->nullObject = zfAlloc(ZFNull);
+    this->nullObject->objectCachedSet(zftrue);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder)
 {
+    this->nullObject->objectCachedSet(zffalse);
     zfRelease(this->nullObject);
     this->nullObject = zfnull;
 }
