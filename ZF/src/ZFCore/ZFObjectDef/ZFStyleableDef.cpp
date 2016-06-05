@@ -36,6 +36,7 @@ zfclass _ZFP_ZFStyleable_PropertyTypeHolder : zfextends ZFObject
 public:
     ZFCoreArrayPOD<const ZFProperty *> normalProperty;
     ZFCoreArrayPOD<const ZFProperty *> styleableProperty;
+    ZFCoreArrayPOD<const ZFProperty *> copyableProperty;
 };
 
 // ============================================================
@@ -77,6 +78,19 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable)
             this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeStyleable);
         }
     }
+    for(zfindex i = holderTmp->copyableProperty.count() - 1; i != zfindexMax; --i)
+    {
+        property = holderTmp->copyableProperty[i];
+        if(!anotherCls->classIsTypeOf(property->ownerClass()))
+        {
+            continue;
+        }
+        if(!thisCls->_ZFP_ZFClass_propertyInitStepIsTheSame(property, anotherCls)
+            || property->callbackIsValueAccessed(property, anotherStyleableObject))
+        {
+            this->styleableOnCopyPropertyFrom(anotherStyleable, property, ZFStyleable::PropertyTypeCopyable);
+        }
+    }
 
     this->styleableOnCopyFrom(anotherStyleable);
 }
@@ -84,24 +98,27 @@ ZFStyleable::PropertyType ZFStyleable::styleableOnCheckPropertyType(ZF_IN const 
 {
     if(!property->propertyReflectable)
     {
-        return ZFStyleable::PropertyTypeNotCopyable;
+        return ZFStyleable::PropertyTypeNotStyleable;
     }
-    else if(property->propertyIsRetainProperty()
-        && property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData())
+    if(property->propertyIsRetainProperty()
         && property->setterMethod()->methodPrivilegeType() == ZFMethodPrivilegeTypePrivate
         && property->getterMethod()->methodPrivilegeType() != ZFMethodPrivilegeTypePrivate)
     {
-        return ZFStyleable::PropertyTypeStyleable;
+        if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFStyleable::ClassData()))
+        {
+            return ZFStyleable::PropertyTypeStyleable;
+        }
+        else if(property->propertyClassOfRetainProperty()->classIsTypeOf(ZFCopyable::ClassData()))
+        {
+            return ZFStyleable::PropertyTypeCopyable;
+        }
     }
-    else if(property->setterMethod()->methodPrivilegeType() == ZFMethodPrivilegeTypePrivate
+    if(property->setterMethod()->methodPrivilegeType() == ZFMethodPrivilegeTypePrivate
         || property->getterMethod()->methodPrivilegeType() == ZFMethodPrivilegeTypePrivate)
     {
-        return ZFStyleable::PropertyTypeNotCopyable;
+        return ZFStyleable::PropertyTypeNotStyleable;
     }
-    else
-    {
-        return ZFStyleable::PropertyTypeNormal;
-    }
+    return ZFStyleable::PropertyTypeNormal;
 }
 
 void ZFStyleable::styleableOnCopyPropertyFrom(ZF_IN ZFStyleable *anotherStyleable,
@@ -119,13 +136,23 @@ void ZFStyleable::styleableOnCopyPropertyFrom(ZF_IN ZFStyleable *anotherStyleabl
         {
             ZFStyleable *selfPropertyValue = ZFCastZFObject(ZFStyleable *, property->callbackRetainGet(property, this->toObject()));
             ZFStyleable *anotherPropertyValue = ZFCastZFObject(ZFStyleable *, property->callbackRetainGet(property, anotherStyleable->toObject()));
-            if(selfPropertyValue != zfnull && anotherStyleable != zfnull)
+            if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull)
             {
                 selfPropertyValue->styleableCopyFrom(anotherPropertyValue);
             }
         }
             break;
-        case ZFStyleable::PropertyTypeNotCopyable:
+        case ZFStyleable::PropertyTypeCopyable:
+        {
+            ZFCopyable *selfPropertyValue = ZFCastZFObject(ZFCopyable *, property->callbackRetainGet(property, this->toObject()));
+            ZFObject *anotherPropertyValue = property->callbackRetainGet(property, anotherStyleable->toObject());
+            if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull)
+            {
+                selfPropertyValue->copyFrom(anotherPropertyValue);
+            }
+        }
+            break;
+        case ZFStyleable::PropertyTypeNotStyleable:
         default:
             zfCoreCriticalShouldNotGoHere();
             return ;
@@ -150,13 +177,16 @@ _ZFP_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getPropertyTy
                 propertyTmp = allProperty[i];
                 switch(this->styleableOnCheckPropertyType(propertyTmp))
                 {
-                    case ZFStyleable::PropertyTypeNotCopyable:
+                    case ZFStyleable::PropertyTypeNotStyleable:
                         break;
                     case ZFStyleable::PropertyTypeNormal:
                         holderTmp->normalProperty.add(propertyTmp);
                         break;
                     case ZFStyleable::PropertyTypeStyleable:
                         holderTmp->styleableProperty.add(propertyTmp);
+                        break;
+                    case ZFStyleable::PropertyTypeCopyable:
+                        holderTmp->copyableProperty.add(propertyTmp);
                         break;
                 }
             }

@@ -84,29 +84,36 @@ public:
 protected:
     /** @brief see #ZFStyleable::styleableOnCheckPropertyType */
     typedef enum {
-        PropertyTypeNotCopyable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
+        PropertyTypeNotStyleable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
         PropertyTypeNormal, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
         PropertyTypeStyleable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
+        PropertyTypeCopyable, /**< @brief see #ZFStyleable::styleableOnCheckPropertyType */
     } PropertyType;
     /**
      * @brief check property type
      *
      * property type shows how styleable would act while copying from another styleable:
-     * -  PropertyTypeNotCopyable:
+     * -  PropertyTypeNotStyleable:
      *   shows the property should not be copied
      * -  PropertyTypeNormal:
      *   shows the property should be copied normally,
      *   i.e. use getter and setter to copy value
      * -  PropertyTypeStyleable:
      *   shows the property itself is styleable,
-     *   we would access its value and copy style by #styleableCopyFrom
+     *   we would access its value and copy style by #styleableCopyFrom\n
+     *   if the property is both #ZFStyleable and #ZFCopyable,
+     *   it would be treated as #ZFStyleable
+     * -  PropertyTypeCopyable:
+     *   shows the property itself is copyable,
+     *   we would access its value and copy style by #ZFCopyable::copyFrom
      *
      * \n
      * by default, a property is treated as not copyable if matches any of conditions below:
      * -  getter or setter method is private
+     * -  #ZFPROPERTY_NO_REFLECT has been declared
      *
-     * a property is treated as styleable property if matches all of conditions below:
-     * -  is retain property and the type is ZFStyleable
+     * a property is treated as styleable/copyable property if matches all of conditions below:
+     * -  is retain property and the type is ZFStyleable/ZFCopyable
      * -  getter method is not private and setter method is private
      *
      * all other property are treated as normal property
