@@ -59,6 +59,7 @@ public:
     void *nativeView;
     void *nativeImplView;
     ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback;
+    ZFUIMargin nativeImplViewMargin;
 
     ZFUIView *viewDelegateParent;
     ZFUIView *viewDelegate;
@@ -115,6 +116,7 @@ public:
     , nativeView(zfnull)
     , nativeImplView(zfnull)
     , nativeImplViewDeleteCallback(zfnull)
+    , nativeImplViewMargin(ZFUIMarginZero)
     , viewDelegateParent(zfnull)
     , viewDelegate(zfnull)
     , viewParent(zfnull)
@@ -999,6 +1001,17 @@ void ZFUIView::objectCachedOnChange(void)
     }
 }
 
+void ZFUIView::_ZFP_ZFUIView_notifyLayoutNativeImplView(ZF_OUT ZFUIRect &result)
+{
+    ZFUIRect bounds = ZFUIRectGetBounds(this->layoutedFrame());
+    ZFUIRectApplyMargin(bounds, bounds, this->nativeImplViewMargin());
+    result = bounds;
+    this->nativeImplViewOnLayout(result, bounds);
+}
+void *ZFUIView::nativeImplView(void)
+{
+    return d->nativeImplView;
+}
 void ZFUIView::nativeImplViewSet(ZF_IN void *nativeImplView,
                                  ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback)
 {
@@ -1012,15 +1025,16 @@ void ZFUIView::nativeImplViewSet(ZF_IN void *nativeImplView,
         nativeImplViewDeleteCallbackOld(this, nativeImplViewOld);
     }
 }
-void *ZFUIView::nativeImplView(void)
+void ZFUIView::nativeImplViewMarginUpdate(void)
 {
-    return d->nativeImplView;
+    d->nativeImplViewMargin = ZFUIMarginZero;
+    this->nativeImplViewMarginOnUpdate(d->nativeImplViewMargin);
+    d->impl->nativeImplViewMarginSet(this, d->nativeImplViewMargin);
+    this->layoutRequest();
 }
-void ZFUIView::_ZFP_ZFUIView_notifyLayoutNativeImplView(ZF_OUT ZFUIRect &result)
+const ZFUIMargin &ZFUIView::nativeImplViewMargin(void)
 {
-    ZFUIRect bounds = ZFUIRectGetBounds(this->layoutedFrame());
-    result = bounds;
-    this->nativeImplViewOnLayout(result, bounds);
+    return d->nativeImplViewMargin;
 }
 
 // ============================================================

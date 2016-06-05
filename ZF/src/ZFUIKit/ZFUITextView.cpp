@@ -206,7 +206,8 @@ void ZFUITextView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
 void ZFUITextView::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {
     zfsuper::layoutOnLayout(bounds);
-    d->impl->layoutNativeTextView(this, ZFUISizeApplyScale(bounds.size, this->scaleGetFixed()));
+    d->impl->layoutNativeTextView(this,
+        ZFUISizeApplyScale(ZFUISizeApplyMargin(bounds.size, this->nativeImplViewMargin()), this->scaleGetFixed()));
 }
 
 ZF_NAMESPACE_GLOBAL_END

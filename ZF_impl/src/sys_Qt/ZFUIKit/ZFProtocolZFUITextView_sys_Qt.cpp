@@ -238,7 +238,7 @@ public:
     }
 
     virtual void layoutNativeTextView(ZF_IN ZFUITextView *textView,
-                                   ZF_IN const ZFUISize &viewSize)
+                                      ZF_IN const ZFUISize &viewSize)
     {
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = ZFCastStatic(_ZFP_ZFUITextViewImpl_sys_Qt_TextView *, textView->nativeImplView());
         zfint fixedTextSize = this->calcTextSizeAutoChange(textView, viewSize);

@@ -87,6 +87,14 @@ public:
     virtual void nativeImplViewSet(ZF_IN ZFUIView *view,
                                    ZF_IN void *nativeImplViewOld,
                                    ZF_IN void *nativeImplView) = 0;
+    /**
+     * @brief see #ZFUIView::nativeImplViewMarginUpdate
+     */
+    virtual void nativeImplViewMarginSet(ZF_IN ZFUIView *view,
+                                         ZF_IN const ZFUIMargin &nativeImplViewMargin)
+    {
+        // optional
+    }
 
     /**
      * @brief get proper scale for the view

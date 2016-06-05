@@ -372,21 +372,6 @@ protected:
     zfoverride
     virtual void objectCachedOnChange(void);
 
-protected:
-    /**
-     * @brief see #nativeImplView
-     */
-    zffinal void nativeImplViewSet(ZF_IN void *nativeImplView,
-                                   ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback);
-    /**
-     * @brief called to layout native impl view, which would fill parent by default
-     *
-     * you may override default behavior without calling super
-     */
-    virtual inline void nativeImplViewOnLayout(ZF_OUT ZFUIRect &result,
-                                               ZF_IN const ZFUIRect &bounds)
-    {
-    }
 public:
     zffinal void _ZFP_ZFUIView_notifyLayoutNativeImplView(ZF_OUT ZFUIRect &result);
     /**
@@ -402,6 +387,38 @@ public:
      * @see nativeView
      */
     zffinal void *nativeImplView(void);
+protected:
+    /**
+     * @brief see #nativeImplView
+     */
+    zffinal void nativeImplViewSet(ZF_IN void *nativeImplView,
+                                   ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback);
+    /**
+     * @brief called to layout native impl view, which would fill parent by default
+     *
+     * you may override default behavior without calling super
+     */
+    virtual inline void nativeImplViewOnLayout(ZF_OUT ZFUIRect &result,
+                                               ZF_IN const ZFUIRect &bounds)
+    {
+    }
+    /**
+     * @brief update native impl view's margin
+     *
+     * invoke #nativeImplViewMarginOnUpdate to update the margin value,
+     * for subclass to achieve complex layout logic
+     */
+    zffinal void nativeImplViewMarginUpdate(void);
+    /**
+     * @brief see #nativeImplViewMarginUpdate
+     */
+    virtual inline void nativeImplViewMarginOnUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin)
+    {
+    }
+    /**
+     * @brief access the margin without update it, see #nativeImplViewMarginUpdate
+     */
+    zffinal const ZFUIMargin &nativeImplViewMargin(void);
 
 public:
     /**

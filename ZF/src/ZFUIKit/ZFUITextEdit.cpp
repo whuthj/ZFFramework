@@ -162,7 +162,7 @@ ZFObject *ZFUITextEdit::objectOnInit(void)
         }
     };
     this->nativeImplViewSet(d->impl->nativeTextEditCreate(this),
-                            _ZFP_ZFUITextEdit_nativeImplViewDestroy::action);
+        _ZFP_ZFUITextEdit_nativeImplViewDestroy::action);
 
     zfautoObject textPlaceHolderLayoutParamTmp = this->layoutParamCreate();
     ZFUIViewLayoutParam *textPlaceHolderLayoutParam = textPlaceHolderLayoutParamTmp.to<ZFUIViewLayoutParam *>();
@@ -224,10 +224,17 @@ void ZFUITextEdit::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 
 ZFUISize ZFUITextEdit::measureTextEdit(ZF_IN const ZFUISize &sizeHint)
 {
-    return ZFUISizeApplyScaleReversely(d->impl->measureNativeTextEdit(this,
-        ZFUISizeApplyScale(sizeHint, this->scaleGetFixed()),
+    ZFUISize ret = ZFUISizeZero;
+    ZFUISizeApplyScaleReversely(ret, d->impl->measureNativeTextEdit(this,
+        ZFUISizeApplyScale(ZFUIViewLayoutParam::sizeHintOffset(sizeHint, ZFUISizeMake(
+                    0 - ZFUIMarginGetX(this->nativeImplViewMargin()),
+                    0 - ZFUIMarginGetY(this->nativeImplViewMargin())
+                )),
+            this->scaleGetFixed()),
         ZFUISizeApplyScale(this->textSize(), this->scaleGetFixed())),
         this->scaleGetFixed());
+    ZFUISizeApplyMarginReversely(ret, ret, this->nativeImplViewMargin());
+    return ret;
 }
 
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyBeginEdit(void)

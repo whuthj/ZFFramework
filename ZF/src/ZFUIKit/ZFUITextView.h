@@ -134,7 +134,8 @@ zfclassFwd _ZFP_ZFUITextViewPrivate;
  * @brief view to display plain text
  *
  * for editable or selectable text view, you should use #ZFUITextView,
- * for rich text, you should supply you own native view
+ * for rich text, you should supply you own native view,
+ * or use web view with html strings
  */
 zfclass ZF_ENV_EXPORT ZFUITextView : zfextends ZFUIView, zfimplements ZFUITextViewStyle
 {

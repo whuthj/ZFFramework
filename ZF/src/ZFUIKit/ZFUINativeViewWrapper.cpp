@@ -62,8 +62,15 @@ void ZFUINativeViewWrapper::layoutOnMeasure(ZF_OUT ZFUISize &ret,
     ZFPROTOCOL_ACCESS(ZFUIView)->measureNativeView(
         ret,
         this->wrappedNativeView(),
-        ZFUISizeApplyScale(sizeHint, this->scaleGetFixed()),
+        ZFUISizeApplyScale(
+            ZFUIViewLayoutParam::sizeHintOffset(sizeHint, ZFUISizeMake(
+                    0 - ZFUIMarginGetX(this->nativeImplViewMargin()),
+                    0 - ZFUIMarginGetY(this->nativeImplViewMargin())
+                )),
+            this->scaleGetFixed()),
         sizeParam);
+    ZFUISizeApplyScaleReversely(ret, ret, this->scaleGetFixed());
+    ZFUISizeApplyMarginReversely(ret, ret, this->nativeImplViewMargin());
 }
 void ZFUINativeViewWrapper::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {

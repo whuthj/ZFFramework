@@ -65,6 +65,11 @@ ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIImageView, ZFUIContentScaleTypeEnum, image
     zfsuperI(ZFUIImageViewStyle)::imageScaleTypeSet(newValue);
     this->layoutRequest();
 }
+ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIImageView, ZFUIMargin, imageContentMargin)
+{
+    zfsuperI(ZFUIImageViewStyle)::imageContentMarginSet(newValue);
+    this->nativeImplViewMarginUpdate();
+}
 
 ZFObject *ZFUIImageView::objectOnInit(ZF_IN ZFUIImage *image)
 {
@@ -119,6 +124,11 @@ void ZFUIImageView::nativeImplViewOnLayout(ZF_OUT ZFUIRect &result,
     }
 
     ZFUIContentScaleTypeApply(result, this->imageScaleType(), bounds, this->imageContent()->imageSize());
+}
+void ZFUIImageView::nativeImplViewMarginOnUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin)
+{
+    zfsuper::nativeImplViewMarginOnUpdate(nativeImplViewMargin);
+    ZFUIMarginInc(nativeImplViewMargin, nativeImplViewMargin, this->imageContentMargin());
 }
 void ZFUIImageView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
                                     ZF_IN const ZFUISize &sizeHint,

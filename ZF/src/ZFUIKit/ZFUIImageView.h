@@ -46,6 +46,11 @@ public:
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIContentScaleTypeEnum, imageScaleType,
                                 ZFPropertyInitValue(ZFUIContentScaleType::e_Default()))
+
+    /**
+     * @brief margin of the content image
+     */
+    ZFPROPERTY_ASSIGN(ZFUIMargin, imageContentMargin)
 };
 ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIImageViewStyle, ZFUIViewStyle)
 
@@ -64,6 +69,7 @@ public:
     // styles
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIImage *, imageContent);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIContentScaleTypeEnum, imageScaleType);
+    ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIMargin, imageContentMargin);
 
 public:
     /**
@@ -87,6 +93,8 @@ protected:
     zfoverride
     virtual void nativeImplViewOnLayout(ZF_OUT ZFUIRect &result,
                                         ZF_IN const ZFUIRect &bounds);
+    zfoverride
+    virtual void nativeImplViewMarginOnUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin);
     /**
      * @brief image view would measure accorrding image size
      */
