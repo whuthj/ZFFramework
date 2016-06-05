@@ -14,7 +14,7 @@ public class ZFUIButtonGroupType {
     public static final int e_Tab = ZFUIButtonGroupType.native_e_Tab();
     private native static int native_e_Tab();
 
-    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    public static final int e_Default = ZFUIButtonGroupType.native_e_Default();
     private native static int native_e_Default();
 }
 

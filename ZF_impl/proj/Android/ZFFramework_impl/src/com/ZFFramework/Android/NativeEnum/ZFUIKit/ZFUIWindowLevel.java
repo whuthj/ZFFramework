@@ -48,7 +48,7 @@ public class ZFUIWindowLevel {
     public static final int e_ZFFrameworkFgEssential = ZFUIWindowLevel.native_e_ZFFrameworkFgEssential();
     private native static int native_e_ZFFrameworkFgEssential();
 
-    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    public static final int e_Default = ZFUIWindowLevel.native_e_Default();
     private native static int native_e_Default();
 }
 

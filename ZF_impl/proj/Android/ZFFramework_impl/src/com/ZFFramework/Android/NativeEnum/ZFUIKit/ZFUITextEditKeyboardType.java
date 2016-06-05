@@ -18,7 +18,7 @@ public class ZFUITextEditKeyboardType {
     public static final int e_NumberPad = ZFUITextEditKeyboardType.native_e_NumberPad();
     private native static int native_e_NumberPad();
 
-    public static final int e_Default = ZFTextTemplateIndexFlag.native_e_Default();
+    public static final int e_Default = ZFUITextEditKeyboardType.native_e_Default();
     private native static int native_e_Default();
 }
 
