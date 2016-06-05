@@ -92,10 +92,11 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAutoHide)
  *
  * _ZFP_ZFUIDialogPrivate (ZFUIWindow, handle all key event)
  * ^ dialogAutoFitLayout
- *   ^ dialogWindowBg (focusable, exclude from ZFUIViewFocusNextFind)
- *     dialogBg
- *     ^ dialogContainer
- *       ^ (fg) dialogView
+ *   ^ dialogWindowBg (internal bg, focusable, exclude from ZFUIViewFocusNextFind)
+ *     _ZFP_ZFUIDialogContentHolder (supply layout logic)
+ *     ^ dialogBg
+ *       ^ dialogContainer
+ *         ^ (fg) dialogView
  */
 zfclass _ZFP_ZFUIDialogPrivate : zfextends ZFUIWindow
 {
@@ -182,12 +183,9 @@ public:
         }
     }
 
-protected:
-    zfoverride
-    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds)
+public:
+    void layoutDialog(ZF_IN const ZFUIRect &bounds)
     {
-        this->dialogWindowBg->layout(bounds);
-
         ZFUIMargin dialogMargin = this->owner->dialogLayoutParam()->layoutMargin();
         ZFUIMargin contentMargin = ZFUIMarginZero;
         if(this->owner->dialogBackgroundImage() != zfnull)
@@ -248,6 +246,18 @@ protected:
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFUIDialogPrivate)
+
+zfclass _ZFP_ZFUIDialogContentHolder : zfextends ZFUIView
+{
+    ZFOBJECT_DECLARE(_ZFP_ZFUIDialogContentHolder, ZFUIView)
+
+protected:
+    zfoverride
+    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds)
+    {
+        this->viewParent()->viewParent()->to<_ZFP_ZFUIDialogPrivate *>()->layoutDialog(bounds);
+    }
+};
 
 zfclass _ZFP_ZFUIDialog_DialogWindowBg : zfextends ZFUIButton
 {
@@ -420,13 +430,17 @@ ZFObject *ZFUIDialog::objectOnInit(void)
     dialogAutoFitLayout->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
 
     d->dialogWindowBg = zfAllocWithoutLeakTest(_ZFP_ZFUIDialog_DialogWindowBg);
-    dialogAutoFitLayout->childAdd(d->dialogWindowBg);
+    dialogAutoFitLayout->internalBackgroundViewAdd(d->dialogWindowBg);
     d->dialogWindowBg->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
     d->dialogWindowBg->observerAdd(ZFUIButton::EventButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccessClassMember(_ZFP_ZFUIDialogPrivate, dialogWindowBgOnClick)));
 
+    zfblockedAlloc(_ZFP_ZFUIDialogContentHolder, dialogContentHolder);
+    dialogAutoFitLayout->childAdd(dialogContentHolder);
+    dialogContentHolder->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
+
     d->dialogBg = zfAllocWithoutLeakTest(ZFUIImageView);
-    d->childAdd(d->dialogBg);
+    dialogContentHolder->childAdd(d->dialogBg);
     d->dialogBg->viewUIEnableTreeSet(zftrue);
     d->dialogBg->viewUIEnableSet(zftrue);
 

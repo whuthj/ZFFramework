@@ -22,7 +22,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief auto fit #ZFUIWindow accorrding to ZFUIOnScreenKeyboardState
  *
- * adjust window's layout param when on screen keyboard show or hide
+ * adjust window's layout param when on screen keyboard show or hide\n
+ * you must not modify window's layout param's #ZFUIViewLayoutParam::layoutMargin
+ * while the auto fit is activated,
+ * it would be restored during #ZFUIOnScreenKeyboardAutoFitCancel
+ * and your modification would be lost
  */
 extern ZF_ENV_EXPORT void ZFUIOnScreenKeyboardAutoFit(ZF_IN ZFUIWindow *window);
 /** @brief cancel #ZFUIOnScreenKeyboardAutoFit */

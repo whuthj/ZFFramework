@@ -102,6 +102,20 @@ public:
      */
     virtual ZFUIButton *dialogButton(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
                                      ZF_IN_OPT zfbool autoCreateIfNotExist = zftrue) = 0;
+    /**
+     * @brief text of the button
+     */
+    virtual const zfchar *dialogButtonText(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType) = 0;
+    /**
+     * @brief see #dialogButtonText
+     */
+    virtual void dialogButtonTextSet(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
+                                     ZF_IN const zfchar *text) = 0;
+    /**
+     * @brief remove specified button type, see #dialogButton
+     */
+    virtual void dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType) = 0;
+
     /** @brief util method to access #dialogButton */
     virtual inline ZFUIButton *dialogButton_Yes(ZF_IN_OPT zfbool autoCreateIfNotExist = zftrue)
     {
@@ -122,10 +136,47 @@ public:
     {
         return this->dialogButton(ZFUIDialogButtonType::e_Destructive, autoCreateIfNotExist);
     }
-    /**
-     * @brief remove specified button type, see #dialogButton
-     */
-    virtual void dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType) = 0;
+
+    /** @brief util method to access #dialogButtonText */
+    virtual inline const zfchar *dialogButtonText_Yes(void)
+    {
+        return this->dialogButtonText(ZFUIDialogButtonType::e_Yes);
+    }
+    /** @brief util method to access #dialogButtonTextSet */
+    virtual inline void dialogButtonTextSet_Yes(ZF_IN const zfchar *text)
+    {
+        this->dialogButtonTextSet(ZFUIDialogButtonType::e_Yes, text);
+    }
+    /** @brief util method to access #dialogButtonText */
+    virtual inline const zfchar *dialogButtonText_No(void)
+    {
+        return this->dialogButtonText(ZFUIDialogButtonType::e_No);
+    }
+    /** @brief util method to access #dialogButtonTextSet */
+    virtual inline void dialogButtonTextSet_No(ZF_IN const zfchar *text)
+    {
+        this->dialogButtonTextSet(ZFUIDialogButtonType::e_No, text);
+    }
+    /** @brief util method to access #dialogButtonText */
+    virtual inline const zfchar *dialogButtonText_Cancel(void)
+    {
+        return this->dialogButtonText(ZFUIDialogButtonType::e_Cancel);
+    }
+    /** @brief util method to access #dialogButtonTextSet */
+    virtual inline void dialogButtonTextSet_Cancel(ZF_IN const zfchar *text)
+    {
+        this->dialogButtonTextSet(ZFUIDialogButtonType::e_Cancel, text);
+    }
+    /** @brief util method to access #dialogButtonText */
+    virtual inline const zfchar *dialogButtonText_Destructive(void)
+    {
+        return this->dialogButtonText(ZFUIDialogButtonType::e_Destructive);
+    }
+    /** @brief util method to access #dialogButtonTextSet */
+    virtual inline void dialogButtonTextSet_Destructive(ZF_IN const zfchar *text)
+    {
+        this->dialogButtonTextSet(ZFUIDialogButtonType::e_Destructive, text);
+    }
 
     // ============================================================
     // button with ZFUIDialogButtonType::e_Normal type
@@ -236,6 +287,13 @@ public:
     virtual inline ZFUIButton *dialogButton(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
                                             ZF_IN_OPT zfbool autoCreateIfNotExist = zftrue)
     {return this->dialogContent()->dialogButton(dialogButtonType, autoCreateIfNotExist);}
+    zfoverride
+    virtual inline const zfchar *dialogButtonText(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType)
+    {return this->dialogContent()->dialogButtonText(dialogButtonType);}
+    zfoverride
+    virtual inline void dialogButtonTextSet(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
+                                            ZF_IN const zfchar *text)
+    {this->dialogContent()->dialogButtonTextSet(dialogButtonType, text);}
     zfoverride
     virtual inline void dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType) {this->dialogContent()->dialogButtonRemove(dialogButtonType);}
 

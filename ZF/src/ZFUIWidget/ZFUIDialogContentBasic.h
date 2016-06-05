@@ -113,6 +113,11 @@ public:
     virtual ZFUIButton *dialogButton(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
                                      ZF_IN_OPT zfbool autoCreateIfNotExist = zftrue);
     zfoverride
+    virtual const zfchar *dialogButtonText(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType);
+    zfoverride
+    virtual void dialogButtonTextSet(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
+                                     ZF_IN const zfchar *text);
+    zfoverride
     virtual void dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType);
 
     // ============================================================

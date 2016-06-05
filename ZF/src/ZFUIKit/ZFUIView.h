@@ -445,7 +445,8 @@ protected:
      *
      * note, this method is not serializable,
      * this method and #ZFUIViewStyle::viewDelegateClass is exclusive
-     * and would override with each other
+     * and would override with each other\n
+     * this method is not affected by #viewDelegateSupported
      */
     virtual void viewDelegateSet(ZF_IN ZFUIView *viewDelegate);
     /**

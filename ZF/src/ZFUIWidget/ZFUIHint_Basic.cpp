@@ -28,8 +28,8 @@ zfautoObject ZFUIHintMake(ZF_IN const zfchar *text,
 
     zfblockedAlloc(ZFUIHintContentBasic, hintContent);
     hint->hintContentSet(hintContent);
-    hintContent->buttonLabelStyleNormal()->textContentStringSet(text);
-    hintContent->buttonIconStyleNormal()->imageContentSet(icon);
+    hintContent->buttonLabelTextStringSet(text);
+    hintContent->buttonIconImageSet(icon);
 
     return zfautoObjectCreate(hint);
 }

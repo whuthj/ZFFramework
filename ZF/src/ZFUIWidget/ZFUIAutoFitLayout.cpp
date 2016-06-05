@@ -10,6 +10,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+#define _ZFP_ZFUIAutoFitLayout_DEBUG 0
+
 // ============================================================
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoFitLayoutStyle, ZFUIViewStyle)
 
@@ -70,6 +72,9 @@ public:
                 return ;
             }
             this->autoFitMargin = ZFUIMarginZero;
+            #if _ZFP_ZFUIAutoFitLayout_DEBUG
+                zfLogTrimT() << zfText("[ZFUIAutoFitLayout] margin changed to") << this->autoFitMargin;
+            #endif
             this->scrollView->layoutParam()->layoutMarginSet(this->autoFitMargin);
         }
     }
@@ -87,6 +92,9 @@ public:
             ZFGlobalEventCenter::instance()->observerRemove(
                 ZFUIView::EventViewFocusOnChange(),
                 this->viewFocusOnChangeListener);
+            #if _ZFP_ZFUIAutoFitLayout_DEBUG
+                zfLogTrimT() << zfText("[ZFUIAutoFitLayout] focused view changed to") << (void *)zfnull;
+            #endif
             this->autoFitFocusedView = zfnull;
         }
     }
@@ -106,6 +114,9 @@ public:
         }
 
         this->autoFitMargin = this->autoFitMarginCalc(orgRect, ZFUIOnScreenKeyboardState::instanceForView(this->owner));
+        #if _ZFP_ZFUIAutoFitLayout_DEBUG
+            zfLogTrimT() << zfText("[ZFUIAutoFitLayout] margin changed to") << this->autoFitMargin;
+        #endif
         this->scrollView->layoutParam()->layoutMarginSet(this->autoFitMargin);
     }
     ZFUIMargin autoFitMarginCalc(ZF_IN const ZFUIRect &orgRect,
@@ -143,6 +154,9 @@ public:
         else
         {
             layout->d->scrollView->scrollEnableSet(zffalse);
+            #if _ZFP_ZFUIAutoFitLayout_DEBUG
+                zfLogTrimT() << zfText("[ZFUIAutoFitLayout] margin changed to") << ZFUIMarginZero;
+            #endif
             layout->d->scrollView->layoutParam()->layoutMarginSet(ZFUIMarginZero);
             layout->d->scrollView->scrollContentFrameSet(ZFUIRectGetBounds(layout->layoutedFrame()));
         }
@@ -172,6 +186,9 @@ public:
             }
         }
 
+        #if _ZFP_ZFUIAutoFitLayout_DEBUG
+            zfLogTrimT() << zfText("[ZFUIAutoFitLayout] margin changed to") << view;
+        #endif
         layout->d->autoFitFocusedView = view;
         layout->d->autoFitFocusedViewNeedUpdate = zftrue;
         layout->layoutRequest();
@@ -181,6 +198,9 @@ public:
         ZFUIAutoFitLayout *layout = userData->to<ZFObjectHolder *>()->holdedObj.to<ZFUIAutoFitLayout *>();
         if(layout->autoFitFocusedView() != zfnull)
         {
+            #if _ZFP_ZFUIAutoFitLayout_DEBUG
+                zfLogTrimT() << zfText("[ZFUIAutoFitLayout] scrollFocusedViewToVisible") << layout->autoFitFocusedView();
+            #endif
             layout->d->scrollView->scrollChildToVisible(layout->autoFitFocusedView());
         }
     }

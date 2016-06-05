@@ -142,6 +142,16 @@ ZFUIButton *ZFUIDialogContentBasic::dialogButton(ZF_IN ZFUIDialogButtonTypeEnum 
             return zfnull;
     }
 }
+const zfchar *ZFUIDialogContentBasic::dialogButtonText(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType)
+{
+    ZFUIButtonBasic *button = ZFCastZFObjectUnchecked(ZFUIButtonBasic *, this->dialogButton(dialogButtonType, zffalse));
+    return ((button != zfnull) ? button->buttonLabelTextString() : zfnull);
+}
+void ZFUIDialogContentBasic::dialogButtonTextSet(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType,
+                                                 ZF_IN const zfchar *text)
+{
+    this->dialogButton(dialogButtonType)->to<ZFUIButtonBasic *>()->buttonLabelTextStringSet(text);
+}
 void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType)
 {
     switch(dialogButtonType)
@@ -307,6 +317,11 @@ ZFObject *ZFUIDialogContentBasic::objectOnInit(void)
 }
 void ZFUIDialogContentBasic::objectOnDealloc(void)
 {
+    zfReleaseWithoutLeakTest(d->dialogButton_Yes);
+    zfReleaseWithoutLeakTest(d->dialogButton_No);
+    zfReleaseWithoutLeakTest(d->dialogButton_Cancel);
+    zfReleaseWithoutLeakTest(d->dialogButton_Destructive);
+
     zfReleaseWithoutLeakTest(d->dialogButtonLayout);
     zfReleaseWithoutLeakTest(d->dialogButtonContainer);
     zfReleaseWithoutLeakTest(d->dialogContentContainer);

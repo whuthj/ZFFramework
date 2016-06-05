@@ -174,6 +174,17 @@ protected:
         ZFGlobalEventCenter::instance()->observerNotifyWithCustomSender(this, ZFUIHint::EventHintOnHide());
     }
 
+protected:
+    zfoverride
+    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
+    {
+        if(this->hintContent() != zfnull)
+        {
+            ret += zfText(", content: ");
+            this->hintContent()->objectInfoT(ret);
+        }
+    }
+
 public:
     zfoverride
     virtual ZFObject *objectOnInit(void);

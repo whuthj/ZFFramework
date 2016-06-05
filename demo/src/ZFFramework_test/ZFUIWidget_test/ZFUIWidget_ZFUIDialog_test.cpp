@@ -27,9 +27,9 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         this->dialog()->dialogApplyAutoHide(this->dialog()->dialogButton_Cancel());
-        this->dialog()->dialogButton_Cancel()->to<ZFUIButtonBasic *>()->buttonLabelTextStringSet(zfText("cancel"));
+        this->dialog()->dialogButtonTextSet_Cancel(zfText("cancel"));
         this->dialog()->dialogApplyAutoHide(this->dialog()->dialogButton_Yes());
-        this->dialog()->dialogButton_Yes()->to<ZFUIButtonBasic *>()->buttonLabelTextStringSet(zfText("confirm"));
+        this->dialog()->dialogButtonTextSet_Yes(zfText("confirm"));
         ZFLISTENER_LOCAL(yesOnClick, {
             zfLogT() << zfText("onConfirm") << listenerData.sender;
         })

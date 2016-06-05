@@ -53,6 +53,18 @@ zfclass ZF_ENV_EXPORT ZFUIHintContentBasic : zfextends ZFUIButtonBasic, zfimplem
 {
     ZFOBJECT_DECLARE(ZFUIHintContentBasic, ZFUIButtonBasic)
     ZFIMPLEMENTS_DECLARE(ZFUIHintContentBasicStyle)
+
+protected:
+    zfoverride
+    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
+    {
+        if(this->buttonLabelTextString() != zfnull)
+        {
+            ret += zfText(" \"");
+            ret += this->buttonLabelTextString();
+            ret += zfText("\"");
+        }
+    }
 };
 
 /**
