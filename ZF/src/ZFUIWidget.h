@@ -25,6 +25,7 @@
 #include "ZFUIWidget/ZFUIDialogBasic.h"
 #include "ZFUIWidget/ZFUIDialogContentBasic.h"
 #include "ZFUIWidget/ZFUIDialogContentBasic_Buttons.h"
+#include "ZFUIWidget/ZFUIDialogForInput.h"
 #include "ZFUIWidget/ZFUIFlowLayout.h"
 #include "ZFUIWidget/ZFUIHint.h"
 #include "ZFUIWidget/ZFUIHint_Basic.h"
