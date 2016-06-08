@@ -10,11 +10,11 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIDialogForInput_test : zfextends ZFFramework_test_TestCase
+zfclass ZFUIWidget_ZFUIDialogForChoice_test : zfextends ZFFramework_test_TestCase
 {
-    ZFOBJECT_DECLARE(ZFUIWidget_ZFUIDialogForInput_test, ZFFramework_test_TestCase)
+    ZFOBJECT_DECLARE(ZFUIWidget_ZFUIDialogForChoice_test, ZFFramework_test_TestCase)
 
-    ZFPROPERTY_RETAIN_READONLY(ZFUIDialogForInput *, dialog, ZFPropertyInitValue(zflineAlloc(ZFUIDialogForInput)))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIDialogForChoice *, dialog, ZFPropertyInitValue(zflineAlloc(ZFUIDialogForChoice)))
 
 protected:
     zfoverride
@@ -30,21 +30,27 @@ protected:
         this->dialog()->dialogButtonTextSet_Cancel(zfText("cancel"));
         this->dialog()->dialogApplyAutoHide(this->dialog()->dialogButton_Yes());
         this->dialog()->dialogButtonTextSet_Yes(zfText("confirm"));
-        ZFLISTENER_LOCAL(yesOnClick, {
-            ZFUIDialogForInput *dialog = userData->to<ZFObjectHolder *>()->holdedObj;
-            zfLogT() << zfText("onConfirm") << listenerData.sender
-                << zfText("text:") << dialog->inputView()->textContent();
+        ZFLISTENER_LOCAL(choiceOnConfirm, {
+            ZFUIDialogForChoice *dialog = userData->to<ZFObjectHolder *>()->holdedObj;
+            zfLogT() << zfText("onConfirm") << dialog->choiceSelectedNameList();
         })
-        this->dialog()->dialogButton_Yes()->observerAdd(ZFUIButton::EventButtonOnClick(), yesOnClick, this->dialog()->objectHolder());
+        ZFLISTENER_LOCAL(choiceOnChange, {
+            ZFUIDialogForChoice *dialog = userData->to<ZFObjectHolder *>()->holdedObj;
+            zfLogT() << zfText("onChange") << dialog->choiceSelectedNameList();
+        })
+        this->dialog()->observerAdd(ZFUIDialogForChoice::EventChoiceOnConfirm(), choiceOnConfirm, this->dialog()->objectHolder());
+        this->dialog()->observerAdd(ZFUIDialogForChoice::EventChoiceOnChange(), choiceOnChange, this->dialog()->objectHolder());
         this->dialog()->dialogTitleTextSet(zfText("i'm title"));
-        this->dialog()->dialogContentTextSet(zfText("i'm hint"));
-        this->dialog()->inputView()->textPlaceHolder()->textContentStringSet(zfText("input something here"));
+
+        this->dialog()->choiceAdd(zfText("id 0"), zfText("choice 0"));
+        this->dialog()->choiceAdd(zfText("id 1"), zfText("choice 1"));
+        this->dialog()->choiceAdd(zfText("id 2"), zfText("choice 2"));
 
         zfblockedAlloc(ZFUIKit_test_Button, showButton);
         container->childAdd(showButton);
         showButton->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthFillHeight);
         ZFLISTENER_LOCAL(showButtonOnClick, {
-            userData->to<ZFObjectHolder *>()->holdedObj.to<ZFUIDialogForInput *>()->dialogShow();
+            userData->to<ZFObjectHolder *>()->holdedObj.to<ZFUIDialogForChoice *>()->dialogShow();
         })
         showButton->observerAdd(ZFUIButton::EventButtonOnClick(), showButtonOnClick, this->dialog()->objectHolder());
 
@@ -53,14 +59,14 @@ protected:
 
 private:
     void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIDialogForInput *dialog)
+                              ZF_IN ZFUIDialogForChoice *dialog)
     {
         zfblockedAlloc(ZFArrayEditable, settings);
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);
     }
 };
-ZFOBJECT_REGISTER(ZFUIWidget_ZFUIDialogForInput_test)
+ZFOBJECT_REGISTER(ZFUIWidget_ZFUIDialogForChoice_test)
 
 ZF_NAMESPACE_GLOBAL_END
 
