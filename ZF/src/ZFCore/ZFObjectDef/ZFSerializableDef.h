@@ -358,6 +358,20 @@ protected:
     }
 
     /**
+     * @brief called to prepare serialize
+     */
+    virtual inline void serializableOnSerializeFromDataPrepare(ZF_IN const ZFSerializableData &serializableData)
+    {
+    }
+
+    /**
+     * @brief called to prepare serialize
+     */
+    virtual inline void serializableOnSerializeToDataPrepare(ZF_IN const ZFSerializableData &serializableData)
+    {
+    }
+
+    /**
      * @brief for serializable data that has "category" attribute,
      *   ZFSerializable would ignore it and leave it to subclass to resolve,
      *   see #ZFSerializable

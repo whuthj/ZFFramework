@@ -794,6 +794,15 @@ ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIView, zfbool, viewMouseHoverEventEnable)
     d->impl->viewMouseHoverEventEnableSet(this, this->viewMouseHoverEventEnable());
 }
 
+ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIView, ZFUISize, viewSizePrefered)
+{
+    zfbool changed = (this->viewSizePrefered() != newValue);
+    zfsuperI(ZFUIViewStyle)::viewSizePreferedSet(newValue);
+    if(changed)
+    {
+        this->layoutRequest();
+    }
+}
 ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIView, ZFUISize, viewSizeMin)
 {
     zfbool changed = (this->viewSizeMin() != newValue);
@@ -1396,6 +1405,7 @@ const ZFUISize &ZFUIView::layoutMeasure(ZF_IN const ZFUISize &sizeHint,
         || !ZFUISizeIsEqual(d->lastMeasuredSizeHint, sizeHint)
         || !ZFUISizeParamIsEqual(d->lastMeasuredSizeParam, sizeParam))
     {
+        d->lastMeasuredSize = ZFUISizeInvalid;
         d->lastMeasuredSizeHint = sizeHint;
         d->lastMeasuredSizeParam = sizeParam;
         if(sizeParam.width == ZFUISizeType::e_Fill && sizeParam.height == ZFUISizeType::e_Fill)
@@ -1428,7 +1438,31 @@ const ZFUISize &ZFUIView::layoutMeasure(ZF_IN const ZFUISize &sizeHint,
             d->lastMeasuredSize = data->measuredSize;
         }
 
-        d->lastMeasuredSize = ZFUISizeApplyRange(d->lastMeasuredSize, this->viewSizeMin(), this->viewSizeMax());
+        if(d->lastMeasuredSize.width < 0)
+        {
+            if(this->viewSizePrefered().width >= 0)
+            {
+                d->lastMeasuredSize.width = this->viewSizePrefered().width;
+            }
+            else
+            {
+                d->lastMeasuredSize.width = sizeHint.width;
+            }
+        }
+        if(d->lastMeasuredSize.height < 0)
+        {
+            if(this->viewSizePrefered().height >= 0)
+            {
+                d->lastMeasuredSize.height = this->viewSizePrefered().height;
+            }
+            else
+            {
+                d->lastMeasuredSize.height = sizeHint.height;
+            }
+        }
+
+        ZFUIViewLayoutParam::sizeHintApply(d->lastMeasuredSize, d->lastMeasuredSize, sizeHint, sizeParam);
+        ZFUISizeApplyRange(d->lastMeasuredSize, d->lastMeasuredSize, this->viewSizeMin(), this->viewSizeMax());
     }
     return d->lastMeasuredSize;
 }
@@ -1529,12 +1563,6 @@ void ZFUIView::layoutedFrameFixed(ZF_OUT ZFUIRect &ret)
     }
 }
 
-void ZFUIView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                               ZF_IN const ZFUISize &sizeHint,
-                               ZF_IN const ZFUISizeParam &sizeParam)
-{
-    ret = ZFUIViewLayoutParam::sizeHintApply(this->viewSizeMin(), sizeHint, sizeParam);
-}
 void ZFUIView::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {
     for(zfindex i = 0; i < this->childCount(); ++i)

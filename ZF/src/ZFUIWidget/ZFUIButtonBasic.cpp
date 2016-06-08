@@ -336,8 +336,6 @@ void ZFUIButtonBasic::layoutOnMeasure(ZF_OUT ZFUISize &ret,
         zfmMax(backgroundSize.height + ZFUIMarginGetY(this->buttonBackgroundMargin()),
             contentSize.height + ZFUIMarginGetY(this->buttonContentMargin()))
     );
-
-    ret = ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
 }
 void ZFUIButtonBasic::internalBackgroundViewOnLayout(ZF_IN const ZFUIRect &bounds)
 {

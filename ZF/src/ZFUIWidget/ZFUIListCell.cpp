@@ -37,7 +37,7 @@ void ZFUIListCell::layoutOnMeasure(ZF_OUT ZFUISize &ret,
     }
 
     this->cellView()->layoutMeasure(sizeHint, ZFUISizeParamWrapWidthWrapHeight);
-    ret = ZFUIViewLayoutParam::sizeHintApply(this->cellView()->layoutMeasuredSize(), sizeHint, sizeParam);
+    ret = this->cellView()->layoutMeasuredSize();
 }
 
 ZF_NAMESPACE_GLOBAL_END

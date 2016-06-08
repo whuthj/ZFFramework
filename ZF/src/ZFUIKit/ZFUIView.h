@@ -115,6 +115,14 @@ public:
                                 ZFPropertyInitValue(zftrue))
 
     /**
+     * @brief prefered size, #ZFUISizeInvalid by default
+     *
+     * if no actual rule to measure the view,
+     * the prefered size would be used to measure the view,
+     * if prefered size not set, size hint would be used
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, viewSizePrefered, ZFPropertyInitValue(ZFUISizeInvalid))
+    /**
      * @brief min size, #ZFUISizeZero by default
      */
     ZFPROPERTY_ASSIGN(ZFUISize, viewSizeMin)
@@ -339,6 +347,7 @@ public:
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, zfbool, viewUIEnable);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, zfbool, viewUIEnableTree);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, zfbool, viewMouseHoverEventEnable);
+    ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUISize, viewSizePrefered);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUISize, viewSizeMin);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUISize, viewSizeMax);
     ZFPROPERTY_OVERRIDE_SETTER_DECLARE(public, ZFUIColor, viewBackgroundColor);
@@ -796,14 +805,20 @@ protected:
      * \n
      * what sizeHint means, depends on sizeParam, see #ZFUISizeType for more info\n
      * \n
+     * return a negative value means the view doesn't care about size,
+     * let #ZFUIViewStyle::viewSizePrefered to decide final result size\n
+     * \n
      * @note there's some repeatly work that #layoutMeasure would have done for you,
      *   you should not repeat it again for performance:
      *   -  filter out the case that both sizeParam are fixed or fill parent
+     *   -  apply sizeHint by #ZFUIViewLayoutParam::sizeHintApply
      *   -  fix result size in range [viewSizeMin, viewSizeMax]
      */
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual inline void layoutOnMeasure(ZF_OUT ZFUISize &ret,
+                                        ZF_IN const ZFUISize &sizeHint,
+                                        ZF_IN const ZFUISizeParam &sizeParam)
+    {
+    }
     /** @brief see #EventViewLayoutOnMeasureFinish */
     virtual inline void layoutOnMeasureFinish(ZF_IN_OUT ZFUISize &measuredSize,
                                               ZF_IN const ZFUISize &sizeHint,

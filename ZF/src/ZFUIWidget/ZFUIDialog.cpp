@@ -400,7 +400,7 @@ void ZFUIDialog::dialogApplyAutoHide(ZF_IN ZFUIButton *button)
             .eventIdSet(ZFUIButton::EventButtonOnClick())
             .observerSet(buttonOnClick)
             .userDataSet(this->objectHolder())
-            .observerLevelSet(ZFLevelAppLow)
+            .observerLevelSet(ZFLevelZFFrameworkPostNormal)
         );
 }
 

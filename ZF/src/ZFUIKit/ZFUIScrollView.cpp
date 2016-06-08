@@ -711,12 +711,6 @@ void ZFUIScrollView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 
 // ============================================================
 // override ZFUIView
-void ZFUIScrollView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                     ZF_IN const ZFUISize &sizeHint,
-                                     ZF_IN const ZFUISizeParam &sizeParam)
-{
-    ret = ZFUIViewLayoutParam::sizeHintApply(this->scrollContentFrame().size, sizeHint, sizeParam);
-}
 void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
 {
     if(!ZFUISizeIsEqual(bounds.size, this->layoutedFramePrev().size))

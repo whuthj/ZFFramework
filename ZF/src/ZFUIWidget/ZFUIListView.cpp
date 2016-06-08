@@ -1277,6 +1277,11 @@ ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIListView, zfbool, listBounce)
     {
         zfsuperI(ZFUIListViewStyle)::listBounceSet(newValue);
         d->listBounceUpdate();
+        if(!this->listBounce())
+        {
+            this->scrollBounceVerticalAlwaysSet(zffalse);
+            this->scrollBounceHorizontalAlwaysSet(zffalse);
+        }
     }
 }
 
@@ -1319,12 +1324,6 @@ ZFSerializable::PropertyType ZFUIListView::serializableOnCheckPropertyType(ZF_IN
     }
 }
 
-void ZFUIListView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                   ZF_IN const ZFUISize &sizeHint,
-                                   ZF_IN const ZFUISizeParam &sizeParam)
-{
-    ret = ZFUISizeMake(zfmMax(sizeHint.width, 0), zfmMax(sizeHint.height, 0));
-}
 void ZFUIListView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
 {
     if(!this->listReloadRequested() && this->layoutedFrame().size != this->layoutedFramePrev().size)

@@ -246,6 +246,13 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void)
                 d->thumbView->layoutParam()->sizeHintSet(ZFUISizeMake(imageSize.width, size));
             }
         }
+
+        if(d->lastPos == 0 && d->lastSize == 0)
+        {
+            d->lastPos = pos;
+            d->lastSize = size;
+        }
+
         if(viewVisibleNew
             && (this->scrollView()->scrollViewState() == ZFUIScrollViewState::e_Idle
                 || size == sizeRange)

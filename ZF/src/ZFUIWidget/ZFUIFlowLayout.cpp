@@ -241,7 +241,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(ZF_IN ZFUIFlowLayout *pare
         ret.width = zfmMax(ret.width, lineSize.width);
         ret.height += lineSize.height;
     } // for each line
-    return ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
+    return ret;
 }
 static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(ZF_IN ZFUIFlowLayout *parent,
                                                     ZF_IN const ZFUISize &sizeHint,
@@ -319,7 +319,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVertical(ZF_IN ZFUIFlowLayout *parent
         ret.height = zfmMax(ret.height, lineSize.height);
         ret.width += lineSize.width;
     } // for each line
-    return ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
+    return ret;
 }
 
 // ============================================================

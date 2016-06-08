@@ -76,10 +76,8 @@ void ZFUIListCellView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
     ZFUISize cellCenterSize = ZFUISizeZero;
     ZFUISize cellAccessorySize = ZFUISizeZero;
     _ZFP_ZFUIListCellView_measureContent(this, sizeHint, cellIconSize, cellCenterSize, cellAccessorySize);
-    ret = ZFUIViewLayoutParam::sizeHintApply(ZFUISizeMake(
-            cellIconSize.width + cellCenterSize.width + cellAccessorySize.width,
-            zfmMax(zfmMax(cellIconSize.height, cellCenterSize.height), cellAccessorySize.height)
-        ), sizeHint, sizeParam);
+    ret.width = cellIconSize.width + cellCenterSize.width + cellAccessorySize.width;
+    ret.height = zfmMax(zfmMax(cellIconSize.height, cellCenterSize.height), cellAccessorySize.height);
 }
 void ZFUIListCellView::internalBackgroundViewOnLayout(ZF_IN const ZFUIRect &bounds)
 {

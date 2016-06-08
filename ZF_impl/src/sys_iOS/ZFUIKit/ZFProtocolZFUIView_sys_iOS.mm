@@ -860,7 +860,6 @@ public:
         ret = ZFUISizeMake(zfmMax(sizeHint.width, 0), zfmMax(sizeHint.height, 0));
         ret = ZFImpl_sys_iOS_ZFUIKit_ZFUISizeFromCGSize(
             [ZFCastStatic(UIView *, nativeView) sizeThatFits:ZFImpl_sys_iOS_ZFUIKit_ZFUISizeToCGSize(ret)]);
-        ret = ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_iOS)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewImpl_sys_iOS)

@@ -403,10 +403,7 @@ public:
             (jint)sizeHint.width,
             (jint)sizeHint.height);
         JNIBlockedDeleteLocalRef(jobjSize);
-        ret = ZFUIViewLayoutParam::sizeHintApply(
-            ZFImpl_sys_Android_ZFUISizeFromZFAndroidSize(jobjSize),
-            sizeHint,
-            sizeParam);
+        ret = ZFImpl_sys_Android_ZFUISizeFromZFAndroidSize(jobjSize);
     }
 
 private:

@@ -1114,7 +1114,7 @@ public:
         }
         QSize t = nativeViewTmp->sizeHint();
         nativeViewTmp->setMaximumSize(maxSizeSaved);
-        ret = ZFUIViewLayoutParam::sizeHintApply(ZFImpl_sys_Qt_ZFUIKit_ZFUISizeFromQSize(t), sizeHint, sizeParam);
+        ret = ZFImpl_sys_Qt_ZFUIKit_ZFUISizeFromQSize(t);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_Qt)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewImpl_sys_Qt)

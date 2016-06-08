@@ -7,7 +7,6 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 #include "ZFUIDialogForInput.h"
-#include "ZFUILinearLayout.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -17,18 +16,8 @@ ZFObject *ZFUIDialogForInput::objectOnInit(void)
 {
     zfsuper::objectOnInit();
 
-    zfblockedAlloc(ZFUILinearLayout, mainContainer);
-    this->dialogContentContainer()->childAdd(mainContainer);
-    mainContainer->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthWrapHeight);
-    mainContainer->layoutOrientationSet(ZFUIOrientation::e_Top);
-
-    ZFUIView *inputHintView = this->inputHintView()->to<ZFUIView *>();
-    mainContainer->childAdd(inputHintView);
-    inputHintView->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthWrapHeight);
-
     ZFUIView *inputView = this->inputView()->to<ZFUIView *>();
-    mainContainer->childAdd(inputView);
-    inputView->layoutParam()->sizeParamSet(ZFUISizeParamFillWidthWrapHeight);
+    this->dialogContentContainer()->childAdd(inputView);
 
     return this;
 }

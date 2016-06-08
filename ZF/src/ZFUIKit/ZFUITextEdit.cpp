@@ -222,7 +222,7 @@ void ZFUITextEdit::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
     }
 }
 
-ZFUISize ZFUITextEdit::measureTextEdit(ZF_IN const ZFUISize &sizeHint)
+ZFUISize ZFUITextEdit::measureTextEdit(ZF_IN_OPT const ZFUISize &sizeHint /* = ZFUISizeZero */)
 {
     ZFUISize ret = ZFUISizeZero;
     ZFUISizeApplyScaleReversely(ret, d->impl->measureNativeTextEdit(this,
@@ -233,6 +233,19 @@ ZFUISize ZFUITextEdit::measureTextEdit(ZF_IN const ZFUISize &sizeHint)
             this->scaleGetFixed()),
         ZFUISizeApplyScale(this->textSize(), this->scaleGetFixed())),
         this->scaleGetFixed());
+    if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUITextEditStyle, textPlaceHolder), this)
+        && this->textPlaceHolder()->textContentString() != zfnull)
+    {
+        ZFUISize hintSize = this->textPlaceHolder()->to<ZFUITextView *>()->measureTextView();
+        if(ret.width < hintSize.width)
+        {
+            ret.width = hintSize.width;
+        }
+        if(ret.height < hintSize.height)
+        {
+            ret.height = hintSize.height;
+        }
+    }
     ZFUISizeApplyMarginReversely(ret, ret, this->nativeImplViewMargin());
     return ret;
 }
@@ -366,8 +379,7 @@ void ZFUITextEdit::layoutOnMeasure(ZF_OUT ZFUISize &ret,
                                    ZF_IN const ZFUISize &sizeHint,
                                    ZF_IN const ZFUISizeParam &sizeParam)
 {
-    ret = this->measureTextEdit(sizeHint);
-    ret = ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
+    ret = ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeControl());
 }
 void ZFUITextEdit::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {

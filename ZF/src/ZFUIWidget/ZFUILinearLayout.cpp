@@ -157,7 +157,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(ZF_IN ZFUILinearLayout *
             ret.height = zfmMax(ret.height, child->layoutMeasuredSize().height + marginY);
         }
     } while(sizeHintLast != -1 && sizeHintLast != ret.height);
-    return ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
+    return ret;
 }
 static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(ZF_IN ZFUILinearLayout *parent,
                                                       ZF_IN const ZFUISize &sizeHint,
@@ -210,7 +210,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(ZF_IN ZFUILinearLayout *pa
             ret.height += prevSpace + child->layoutMeasuredSize().height + marginY;
         }
     } while(sizeHintLast != -1 && sizeHintLast != ret.width);
-    return ZFUIViewLayoutParam::sizeHintApply(ret, sizeHint, sizeParam);
+    return ret;
 }
 
 // ============================================================

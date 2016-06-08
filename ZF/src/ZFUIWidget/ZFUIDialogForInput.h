@@ -27,20 +27,13 @@ zfinterface ZF_ENV_EXPORT ZFUIDialogForInputStyle : zfextends ZFInterface
     ZFINTERFACE_DECLARE(ZFUIDialogForInputStyle, ZFUIDialogBasicStyle)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIDialogForInputStyle, ZFUIDialogBasicStyle)
 
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, inputHintView, ZFPropertyNoInitValue)
-    static void _ZFP_inputHintViewInit(ZF_IN ZFUITextViewStyle *inputHintView)
-    {
-        inputHintView->textColorSet(ZFUIGlobalStyle::DefaultStyle()->textColorSecondary());
-    }
-    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, inputHintView)
-    {
-        propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        zfself::_ZFP_inputHintViewInit(propertyValue.to<ZFUITextViewStyle *>());
-    }
-
     ZFPROPERTY_RETAIN_READONLY(ZFUITextEditStyle *, inputView, ZFPropertyNoInitValue)
     static void _ZFP_inputViewInit(ZF_IN ZFUITextEditStyle *inputView)
     {
+        inputView->to<ZFUIView *>()->viewSizeMinSet(ZFUISizeMake(
+                ZFUIGlobalStyle::DefaultStyle()->itemSizeDialogWidth(),
+                ZFUIGlobalStyle::DefaultStyle()->itemSizeControl()
+            ));
     }
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextEditStyle *, inputView)
     {
@@ -60,12 +53,6 @@ zfclass ZF_ENV_EXPORT ZFUIDialogForInput : zfextends ZFUIDialogBasic
 {
     ZFOBJECT_DECLARE(ZFUIDialogForInput, ZFUIDialogBasic)
     ZFIMPLEMENTS_DECLARE(ZFUIDialogForInputStyle)
-
-    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, inputHintView)
-    {
-        propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        zfself::_ZFP_inputHintViewInit(propertyValue.to<ZFUITextViewStyle *>());
-    }
 
     ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextEditStyle *, inputView)
     {

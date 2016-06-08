@@ -106,6 +106,8 @@ zfbool ZFSerializable::serializeFromData(ZF_IN const ZFSerializableData &seriali
                                          ZF_OUT_OPT zfstring *outErrorHintToAppend /* = zfnull */,
                                          ZF_OUT_OPT const ZFSerializableData **outErrorPos /* = zfnull */)
 {
+    this->serializableOnSerializeFromDataPrepare(serializableData);
+
     // reference logic
     {
         const zfchar *refType = serializableData.referenceRefType();
@@ -292,6 +294,8 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
                                        ZF_OUT_OPT zfstring *outErrorHintToAppend /* = zfnull */,
                                        ZF_IN_OPT ZFSerializable *referencedObject /* = zfnull */)
 {
+    this->serializableOnSerializeToDataPrepare(serializableData);
+
     if((this->serializableSelfRefTypeGet() != zfnull || this->serializableSelfRefDataGet() != zfnull)
         && (this->serializableStyleableTypeGet() != zfnull || this->serializableStyleableDataGet() != zfnull))
     {

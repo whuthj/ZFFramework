@@ -58,13 +58,9 @@ ZFUIView *ZFUIDialogContentBasic::dialogTitleContainer(void)
 {
     return d->dialogTitleContainer;
 }
-void ZFUIDialogContentBasic::dialogTitleTextSet(ZF_IN const zfchar *text)
+ZFUITextViewStyle *ZFUIDialogContentBasic::dialogTitleView(void)
 {
-    this->dialogTitleView()->textContentStringSet(text);
-}
-const zfchar *ZFUIDialogContentBasic::dialogTitleText(void)
-{
-    return this->dialogTitleView()->textContentString();
+    return this->titleTextView();
 }
 
 // ============================================================
@@ -73,13 +69,9 @@ ZFUIView *ZFUIDialogContentBasic::dialogContentContainer(void)
 {
     return d->dialogContentContainer;
 }
-void ZFUIDialogContentBasic::dialogContentTextSet(ZF_IN const zfchar *text)
+ZFUITextViewStyle *ZFUIDialogContentBasic::dialogContentView(void)
 {
-    this->dialogContentView()->textContentStringSet(text);
-}
-const zfchar *ZFUIDialogContentBasic::dialogContentText(void)
-{
-    return this->dialogContentView()->textContentString();
+    return this->contentTextView();
 }
 
 // ============================================================
@@ -102,6 +94,7 @@ ZFUIButton *ZFUIDialogContentBasic::dialogButton(ZF_IN ZFUIDialogButtonTypeEnum 
                 d->dialogButton_Yes = zfAllocWithoutLeakTest(ZFUIDialogContentBasicButtonYes);
                 zfindex index = 0;
                 d->dialogButtonLayout->childAdd(d->dialogButton_Yes, zfnull, index);
+                this->dialogButtonOnAdd(d->dialogButton_Yes);
             }
             return d->dialogButton_Yes;
         case ZFUIDialogButtonType::e_No:
@@ -112,6 +105,7 @@ ZFUIButton *ZFUIDialogContentBasic::dialogButton(ZF_IN ZFUIDialogButtonTypeEnum 
                 zfindex index = 0;
                 if(d->dialogButton_Yes != zfnull) {++index;}
                 d->dialogButtonLayout->childAdd(d->dialogButton_No, zfnull, index);
+                this->dialogButtonOnAdd(d->dialogButton_No);
             }
             return d->dialogButton_No;
         case ZFUIDialogButtonType::e_Cancel:
@@ -123,6 +117,7 @@ ZFUIButton *ZFUIDialogContentBasic::dialogButton(ZF_IN ZFUIDialogButtonTypeEnum 
                 if(d->dialogButton_Yes != zfnull) {++index;}
                 if(d->dialogButton_No != zfnull) {++index;}
                 d->dialogButtonLayout->childAdd(d->dialogButton_Cancel, zfnull, index);
+                this->dialogButtonOnAdd(d->dialogButton_Cancel);
             }
             return d->dialogButton_Cancel;
         case ZFUIDialogButtonType::e_Destructive:
@@ -135,6 +130,7 @@ ZFUIButton *ZFUIDialogContentBasic::dialogButton(ZF_IN ZFUIDialogButtonTypeEnum 
                 if(d->dialogButton_No != zfnull) {++index;}
                 if(d->dialogButton_Cancel != zfnull) {++index;}
                 d->dialogButtonLayout->childAdd(d->dialogButton_Destructive, zfnull, index);
+                this->dialogButtonOnAdd(d->dialogButton_Destructive);
             }
             return d->dialogButton_Destructive;
         default:
@@ -161,6 +157,7 @@ void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum d
         case ZFUIDialogButtonType::e_Yes:
             if(d->dialogButton_Yes != zfnull)
             {
+                this->dialogButtonOnRemove(d->dialogButton_Yes);
                 --(d->dialogButtonInternalCount);
                 zfindex index = 0;
                 d->dialogButtonLayout->childRemoveAtIndex(index);
@@ -171,6 +168,7 @@ void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum d
         case ZFUIDialogButtonType::e_No:
             if(d->dialogButton_No != zfnull)
             {
+                this->dialogButtonOnRemove(d->dialogButton_No);
                 --(d->dialogButtonInternalCount);
                 zfindex index = 0;
                 if(d->dialogButton_Yes != zfnull) {++index;}
@@ -182,6 +180,7 @@ void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum d
         case ZFUIDialogButtonType::e_Cancel:
             if(d->dialogButton_Cancel != zfnull)
             {
+                this->dialogButtonOnRemove(d->dialogButton_Cancel);
                 --(d->dialogButtonInternalCount);
                 zfindex index = 0;
                 if(d->dialogButton_Yes != zfnull) {++index;}
@@ -194,6 +193,7 @@ void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum d
         case ZFUIDialogButtonType::e_Destructive:
             if(d->dialogButton_Destructive != zfnull)
             {
+                this->dialogButtonOnRemove(d->dialogButton_Destructive);
                 --(d->dialogButtonInternalCount);
                 zfindex index = 0;
                 if(d->dialogButton_Yes != zfnull) {++index;}
@@ -211,7 +211,7 @@ void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum d
 }
 
 // ============================================================
-// button with ZFUIDialogButtonType::e_Normal type
+// button
 zfindex ZFUIDialogContentBasic::dialogButtonCount(void)
 {
     return (d->dialogButtonLayout->childCount() - d->dialogButtonInternalCount);
@@ -247,6 +247,7 @@ void ZFUIDialogContentBasic::dialogButtonAdd(ZF_IN ZFUIButton *button,
         return ;
     }
     d->dialogButtonLayout->childAdd(button, zfnull, atIndex - d->dialogButtonInternalCount);
+    this->dialogButtonOnAdd(button);
 }
 void ZFUIDialogContentBasic::dialogButtonRemove(ZF_IN ZFUIButton *button)
 {
@@ -263,17 +264,42 @@ void ZFUIDialogContentBasic::dialogButtonRemoveAtIndex(ZF_IN zfindex index)
         zfCoreCriticalIndexOutOfRange(index, this->dialogButtonCount());
         return ;
     }
+    this->dialogButtonOnRemove(d->dialogButtonLayout->childAtIndex(d->dialogButtonInternalCount + index)->to<ZFUIButton *>());
     d->dialogButtonLayout->childRemoveAtIndex(d->dialogButtonInternalCount + index);
 }
 void ZFUIDialogContentBasic::dialogButtonRemoveAll(void)
 {
     while(d->dialogButtonLayout->childCount() > d->dialogButtonInternalCount)
     {
+        this->dialogButtonOnRemove(d->dialogButtonLayout->childAtIndex(d->dialogButtonLayout->childCount() - 1)->to<ZFUIButton *>());
         d->dialogButtonLayout->childRemoveAtIndex(d->dialogButtonLayout->childCount() - 1);
     }
 }
 
 // ============================================================
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogContentBasicDataHolder, ZFLevelZFFrameworkNormal)
+{
+    this->textChangeListener = ZFCallbackForRawFunction(zfself::textChange);
+    this->containerChildChangeListener = ZFCallbackForRawFunction(zfself::containerChildChange);
+}
+ZFListener textChangeListener;
+ZFListener containerChildChangeListener;
+static ZFLISTENER_PROTOTYPE_EXPAND(textChange)
+{
+    const ZFProperty *property = listenerData.param0->to<ZFPointerHolder *>()->holdedDataPointer<const ZFProperty *>();
+    if(property != ZFPropertyAccess(ZFUITextView, textContent))
+    {
+        return ;
+    }
+    ZFUITextView *textView = listenerData.sender->to<ZFUITextView *>();
+    textView->viewVisibleSet(!zfscmpTheSame(textView->textContentString(), zfText("")));
+}
+static ZFLISTENER_PROTOTYPE_EXPAND(containerChildChange)
+{
+    ZFUIView *containerView = listenerData.sender->to<ZFUIView *>();
+    containerView->viewVisibleSet(containerView->childCount() > 0);
+}
+ZF_GLOBAL_INITIALIZER_END(ZFUIDialogContentBasicDataHolder)
 ZFObject *ZFUIDialogContentBasic::objectOnInit(void)
 {
     zfsuper::objectOnInit();
@@ -285,20 +311,36 @@ ZFObject *ZFUIDialogContentBasic::objectOnInit(void)
     d->mainContainer->layoutChildSpaceSet(ZFUIGlobalStyle::DefaultStyle()->itemSpace());
 
     { // title
+        ZFUITextView *titleTextView = this->titleTextView()->to<ZFUITextView *>();
+        d->mainContainer->childAdd(titleTextView);
+        titleTextView->layoutParam()->layoutAlignSet(ZFUIAlign::e_Center);
+        titleTextView->observerAdd(ZFObject::EventObjectPropertyValueAfterChange(),
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogContentBasicDataHolder)->textChangeListener);
+        titleTextView->viewVisibleSet(!zfscmpTheSame(titleTextView->textContentString(), zfText("")));
+        titleTextView->textColorSet(ZFUIGlobalStyle::DefaultStyle()->textColorSecondary());
+        titleTextView->textSingleLineSet(zffalse);
+
         d->dialogTitleContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
         d->mainContainer->childAdd(d->dialogTitleContainer);
         d->dialogTitleContainer->layoutParam()->layoutAlignSet(ZFUIAlign::e_Center);
-        d->dialogTitleContainer->childAdd(this->dialogTitleView()->to<ZFUIView *>());
-        this->dialogTitleView()->to<ZFUIView *>()->layoutParam()->layoutAlignSet(ZFUIAlign::e_Center);
+        d->dialogTitleContainer->observerAdd(ZFUIView::EventViewChildOnChange(),
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogContentBasicDataHolder)->containerChildChangeListener);
     }
 
     { // content
+        ZFUITextView *contentTextView = this->contentTextView()->to<ZFUITextView *>();
+        d->mainContainer->childAdd(contentTextView);
+        contentTextView->layoutParam()->layoutAlignSet(ZFUIAlign::e_LeftInner);
+        contentTextView->observerAdd(ZFObject::EventObjectPropertyValueAfterChange(),
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogContentBasicDataHolder)->textChangeListener);
+        contentTextView->viewVisibleSet(!zfscmpTheSame(contentTextView->textContentString(), zfText("")));
+
         d->dialogContentContainer = zfAllocWithoutLeakTest(ZFUIViewLayout);
         d->mainContainer->childAdd(d->dialogContentContainer);
         d->dialogContentContainer->layoutParam()->layoutAlignSet(ZFUIAlign::e_LeftInner);
         d->dialogContentContainer->layoutParam<ZFUILinearLayoutParam *>()->layoutWeightSet(1);
-        d->dialogContentContainer->childAdd(this->dialogContentView()->to<ZFUIView *>());
-        this->dialogContentView()->to<ZFUIView *>()->layoutParam()->layoutAlignSet(ZFUIAlign::e_LeftInner);
+        d->dialogContentContainer->observerAdd(ZFUIView::EventViewChildOnChange(),
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogContentBasicDataHolder)->containerChildChangeListener);
     }
 
     { // button
@@ -317,10 +359,10 @@ ZFObject *ZFUIDialogContentBasic::objectOnInit(void)
 }
 void ZFUIDialogContentBasic::objectOnDealloc(void)
 {
-    zfReleaseWithoutLeakTest(d->dialogButton_Yes);
-    zfReleaseWithoutLeakTest(d->dialogButton_No);
-    zfReleaseWithoutLeakTest(d->dialogButton_Cancel);
-    zfReleaseWithoutLeakTest(d->dialogButton_Destructive);
+    zfCoreAssert(d->dialogButton_Yes == zfnull);
+    zfCoreAssert(d->dialogButton_No == zfnull);
+    zfCoreAssert(d->dialogButton_Cancel == zfnull);
+    zfCoreAssert(d->dialogButton_Destructive == zfnull);
 
     zfReleaseWithoutLeakTest(d->dialogButtonLayout);
     zfReleaseWithoutLeakTest(d->dialogButtonContainer);
@@ -331,21 +373,19 @@ void ZFUIDialogContentBasic::objectOnDealloc(void)
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }
+void ZFUIDialogContentBasic::objectOnDeallocPrepare(void)
+{
+    this->dialogButtonRemove(ZFUIDialogButtonType::e_Yes);
+    this->dialogButtonRemove(ZFUIDialogButtonType::e_No);
+    this->dialogButtonRemove(ZFUIDialogButtonType::e_Cancel);
+    this->dialogButtonRemove(ZFUIDialogButtonType::e_Destructive);
+    zfsuper::objectOnDeallocPrepare();
+}
 
 void ZFUIDialogContentBasic::layoutOnMeasure(ZF_OUT ZFUISize &ret,
                                              ZF_IN const ZFUISize &sizeHint,
                                              ZF_IN const ZFUISizeParam &sizeParam)
 {
-    if(this->dialogTitleText() == zfnull
-        && (this->dialogTitleContainer()->childCount() == 1))
-    {
-        this->dialogTitleContainer()->viewVisibleSet(zffalse);
-    }
-    else
-    {
-        this->dialogTitleContainer()->viewVisibleSet(zftrue);
-    }
-
     ret = d->mainContainer->layoutMeasure(sizeHint, sizeParam);
 }
 void ZFUIDialogContentBasic::internalForegroundViewOnLayout(ZF_IN const ZFUIRect &bounds)

@@ -179,7 +179,7 @@ void ZFUITextView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
     }
 }
 
-ZFUISize ZFUITextView::measureTextView(ZF_IN const ZFUISize &sizeHint)
+ZFUISize ZFUITextView::measureTextView(ZF_IN_OPT const ZFUISize &sizeHint /* = ZFUISizeZero */)
 {
     return ZFUISizeApplyScaleReversely(d->impl->measureNativeTextView(this,
         ZFUISizeApplyScale(sizeHint, this->scaleGetFixed()),
@@ -201,7 +201,7 @@ void ZFUITextView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
                                    ZF_IN const ZFUISize &sizeHint,
                                    ZF_IN const ZFUISizeParam &sizeParam)
 {
-    ret = ZFUIViewLayoutParam::sizeHintApply(this->measureTextView(sizeHint), sizeHint, sizeParam);
+    ret = this->measureTextView(sizeHint);
 }
 void ZFUITextView::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {

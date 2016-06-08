@@ -56,19 +56,47 @@ zfinterface ZF_ENV_EXPORT ZFUIDialogContent : zfextends ZFInterface
 
 public:
     // ============================================================
+    // events
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called when dialog button added,
+     * param0 is the dialog button
+     */
+    ZFOBSERVER_EVENT(DialogButtonOnAdd)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called when dialog button removed,
+     * param0 is the dialog button
+     */
+    ZFOBSERVER_EVENT(DialogButtonOnRemove)
+
+public:
+    // ============================================================
     // title
     /**
      * @brief container to hold custom title views
      */
     virtual ZFUIView *dialogTitleContainer(void) = 0;
     /**
+     * @brief title text view
+     */
+    virtual ZFUITextViewStyle *dialogTitleView(void) = 0;
+    /**
      * @brief set the dialog's title text
      */
-    virtual void dialogTitleTextSet(ZF_IN const zfchar *text) = 0;
+    virtual void dialogTitleTextSet(ZF_IN const zfchar *text)
+    {
+        this->dialogTitleView()->textContentStringSet(text);
+    }
     /**
      * @brief get the dialog's title text
      */
-    virtual const zfchar *dialogTitleText(void) = 0;
+    virtual const zfchar *dialogTitleText(void)
+    {
+        return this->dialogTitleView()->textContentString();
+    }
 
     // ============================================================
     // content
@@ -77,13 +105,23 @@ public:
      */
     virtual ZFUIView *dialogContentContainer(void) = 0;
     /**
+     * @brief content text view
+     */
+    virtual ZFUITextViewStyle *dialogContentView(void) = 0;
+    /**
      * @brief set the dialog's content text
      */
-    virtual void dialogContentTextSet(ZF_IN const zfchar *text) = 0;
+    virtual void dialogContentTextSet(ZF_IN const zfchar *text)
+    {
+        this->dialogContentView()->textContentStringSet(text);
+    }
     /**
      * @brief get the dialog's content text
      */
-    virtual const zfchar *dialogContentText(void) = 0;
+    virtual const zfchar *dialogContentText(void)
+    {
+        return this->dialogContentView()->textContentString();
+    }
 
     // ============================================================
     // button
@@ -179,7 +217,7 @@ public:
     }
 
     // ============================================================
-    // button with ZFUIDialogButtonType::e_Normal type
+    // button
     /**
      * @brief button count with #ZFUIDialogButtonType::e_Normal type
      */
@@ -206,9 +244,21 @@ public:
      */
     virtual void dialogButtonRemoveAtIndex(ZF_IN zfindex index) = 0;
     /**
-     * @brief manually remove a specified button at index
+     * @brief manually remove all button
      */
     virtual void dialogButtonRemoveAll(void) = 0;
+
+protected:
+    /** @brief see #EventDialogButtonOnAdd */
+    virtual inline void dialogButtonOnAdd(ZF_IN ZFUIButton *button)
+    {
+        this->toObject()->observerNotify(ZFUIDialogContent::EventDialogButtonOnAdd(), button);
+    }
+    /** @brief see #EventDialogButtonOnRemove */
+    virtual inline void dialogButtonOnRemove(ZF_IN ZFUIButton *button)
+    {
+        this->toObject()->observerNotify(ZFUIDialogContent::EventDialogButtonOnRemove(), button);
+    }
 };
 
 // ============================================================
@@ -266,18 +316,14 @@ public:
     zfoverride
     virtual inline ZFUIView *dialogTitleContainer(void) {return this->dialogContent()->dialogTitleContainer();}
     zfoverride
-    virtual inline void dialogTitleTextSet(ZF_IN const zfchar *text) {this->dialogContent()->dialogTitleTextSet(text);}
-    zfoverride
-    virtual inline const zfchar *dialogTitleText(void) {return this->dialogContent()->dialogTitleText();}
+    virtual inline ZFUITextViewStyle *dialogTitleView(void) {return this->dialogContent()->dialogTitleView();}
 
     // ============================================================
     // content
     zfoverride
     virtual inline ZFUIView *dialogContentContainer(void) {return this->dialogContent()->dialogContentContainer();}
     zfoverride
-    virtual inline void dialogContentTextSet(ZF_IN const zfchar *text) {this->dialogContent()->dialogContentTextSet(text);}
-    zfoverride
-    virtual inline const zfchar *dialogContentText(void) {return this->dialogContent()->dialogContentText();}
+    virtual inline ZFUITextViewStyle *dialogContentView(void) {return this->dialogContent()->dialogContentView();}
 
     // ============================================================
     // button
@@ -318,7 +364,20 @@ public:
 
 public:
     zfoverride
-    virtual void objectOnInitFinish(void);
+    virtual ZFObject *objectOnInit(void);
+    zfoverride
+    virtual void objectOnDeallocPrepare(void);
+    zfoverride
+    virtual void objectOnDealloc(void);
+
+    zffinal void _ZFP_ZFUIDialogBasic_dialogButtonOnAdd(ZF_IN ZFUIButton *button)
+    {
+        this->dialogButtonOnAdd(button);
+    }
+    zffinal void _ZFP_ZFUIDialogBasic_dialogButtonOnRemove(ZF_IN ZFUIButton *button)
+    {
+        this->dialogButtonOnRemove(button);
+    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

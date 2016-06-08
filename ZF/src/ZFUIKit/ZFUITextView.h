@@ -178,7 +178,7 @@ public:
      * and usually have no need to call\n
      * sizeHint shows max size the text view may have, or 0 if no limit
      */
-    virtual ZFUISize measureTextView(ZF_IN const ZFUISize &sizeHint);
+    virtual ZFUISize measureTextView(ZF_IN_OPT const ZFUISize &sizeHint = ZFUISizeZero);
 
     /**
      * @brief get current text size

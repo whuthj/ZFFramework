@@ -18,9 +18,10 @@ ZFOBJECT_REGISTER(ZFUIViewMeasureResult)
 // ============================================================
 // ZFUIViewLayoutParam
 ZFOBJECT_REGISTER(ZFUIViewLayoutParam)
-ZFUIRect ZFUIViewLayoutParam::layoutParamApply(ZF_IN const ZFUIRect &rect,
-                                               ZF_IN ZFUIView *child,
-                                               ZF_IN ZFUIViewLayoutParam *lp)
+void ZFUIViewLayoutParam::layoutParamApply(ZF_OUT ZFUIRect &ret,
+                                           ZF_IN const ZFUIRect &rect,
+                                           ZF_IN ZFUIView *child,
+                                           ZF_IN ZFUIViewLayoutParam *lp)
 {
     ZFUISize refSizeTmp = ZFUIRectApplyMargin(rect, lp->layoutMargin()).size;
     if(refSizeTmp.width < 0)
@@ -41,100 +42,92 @@ ZFUIRect ZFUIViewLayoutParam::layoutParamApply(ZF_IN const ZFUIRect &rect,
         refSizeTmp.height = zfmMin(lp->sizeHint().height, refSizeTmp.height);
     }
     child->layoutMeasure(refSizeTmp, lp->sizeParam());
-    return ZFUIAlignApply(lp->layoutAlign(), rect, child->layoutMeasuredSize(), lp->layoutMargin());
+    ZFUIAlignApply(ret, lp->layoutAlign(), rect, child->layoutMeasuredSize(), lp->layoutMargin());
 }
 
-ZFUISize ZFUIViewLayoutParam::sizeHintApply(ZF_IN const ZFUISize &size,
-                                            ZF_IN const ZFUISize &sizeHint,
-                                            ZF_IN const ZFUISizeParam &sizeParam)
+void ZFUIViewLayoutParam::sizeHintApply(ZF_OUT zfint &ret,
+                                        ZF_IN zfint size,
+                                        ZF_IN zfint sizeHint,
+                                        ZF_IN ZFUISizeTypeEnum sizeParam)
 {
-    ZFUISize ret = size;
-    switch(sizeParam.width)
+    ret = size;
+    switch(sizeParam)
     {
         case ZFUISizeType::e_Wrap:
-            if(sizeHint.width >= 0 && size.width > sizeHint.width)
+            if(sizeHint >= 0 && size > sizeHint)
             {
-                ret.width = sizeHint.width;
+                ret = sizeHint;
             }
             break;
         case ZFUISizeType::e_Fill:
-            if(sizeHint.width >= 0)
+            if(sizeHint >= 0)
             {
-                ret.width = sizeHint.width;
+                ret = sizeHint;
             }
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ret;
-    }
-    switch(sizeParam.height)
-    {
-        case ZFUISizeType::e_Wrap:
-            if(sizeHint.height >= 0 && size.height > sizeHint.height)
-            {
-                ret.height = sizeHint.height;
-            }
             break;
-        case ZFUISizeType::e_Fill:
-            if(sizeHint.height >= 0)
-            {
-                ret.height = sizeHint.height;
-            }
-            break;
-        default:
-            zfCoreCriticalShouldNotGoHere();
-            return ret;
     }
-    return ret;
 }
-zfint ZFUIViewLayoutParam::sizeHintMerge(ZF_IN zfint sizeHint0,
-                                         ZF_IN zfint sizeHint1)
+void ZFUIViewLayoutParam::sizeHintApply(ZF_OUT ZFUISize &ret,
+                                        ZF_IN const ZFUISize &size,
+                                        ZF_IN const ZFUISize &sizeHint,
+                                        ZF_IN const ZFUISizeParam &sizeParam)
+{
+    ret.width = ZFUIViewLayoutParam::sizeHintApply(size.width, sizeHint.width, sizeParam.width);
+    ret.height = ZFUIViewLayoutParam::sizeHintApply(size.height, sizeHint.height, sizeParam.height);
+}
+void ZFUIViewLayoutParam::sizeHintMerge(ZF_OUT zfint &ret,
+                                        ZF_IN zfint sizeHint0,
+                                        ZF_IN zfint sizeHint1)
 {
     if(sizeHint0 < 0 && sizeHint1 < 0)
     {
-        return -1;
+        ret = -1;
     }
     else if(sizeHint0 >= 0 && sizeHint1 >= 0)
     {
-        return zfmMin(sizeHint0, sizeHint1);
+        ret = zfmMin(sizeHint0, sizeHint1);
     }
     else
     {
-        return zfmMax(sizeHint0, sizeHint1);
+        ret = zfmMax(sizeHint0, sizeHint1);
     }
 }
-ZFUISize ZFUIViewLayoutParam::sizeHintMerge(ZF_IN const ZFUISize &sizeHint0,
-                                            ZF_IN const ZFUISize &sizeHint1)
+void ZFUIViewLayoutParam::sizeHintMerge(ZF_OUT ZFUISize &ret,
+                                        ZF_IN const ZFUISize &sizeHint0,
+                                        ZF_IN const ZFUISize &sizeHint1)
 {
-    return ZFUISizeMake(
-        ZFUIViewLayoutParam::sizeHintMerge(sizeHint0.width, sizeHint1.width),
-        ZFUIViewLayoutParam::sizeHintMerge(sizeHint0.height, sizeHint1.height));
+    ret.width = ZFUIViewLayoutParam::sizeHintMerge(sizeHint0.width, sizeHint1.width);
+    ret.height = ZFUIViewLayoutParam::sizeHintMerge(sizeHint0.height, sizeHint1.height);
 }
-zfint ZFUIViewLayoutParam::sizeHintOffset(ZF_IN zfint sizeHint,
-                                          ZF_IN zfint offset)
+void ZFUIViewLayoutParam::sizeHintOffset(ZF_OUT zfint &ret,
+                                         ZF_IN zfint sizeHint,
+                                         ZF_IN zfint offset)
 {
     if(offset >= 0)
     {
-        return ((sizeHint >= 0) ? sizeHint + offset : -1);
+        ret = ((sizeHint >= 0) ? sizeHint + offset : -1);
     }
     else
     {
-        return ((sizeHint >= 0) ? zfmMax(0, sizeHint + offset) : -1);
+        ret = ((sizeHint >= 0) ? zfmMax(0, sizeHint + offset) : -1);
     }
 }
-ZFUISize ZFUIViewLayoutParam::sizeHintOffset(ZF_IN const ZFUISize &sizeHint,
-                                             ZF_IN const ZFUISize &offset)
+void ZFUIViewLayoutParam::sizeHintOffset(ZF_OUT ZFUISize &ret,
+                                         ZF_IN const ZFUISize &sizeHint,
+                                         ZF_IN const ZFUISize &offset)
 {
-    return ZFUISizeMake(
-        ZFUIViewLayoutParam::sizeHintOffset(sizeHint.width, offset.width),
-        ZFUIViewLayoutParam::sizeHintOffset(sizeHint.height, offset.height));
+    ret.width = ZFUIViewLayoutParam::sizeHintOffset(sizeHint.width, offset.width);
+    ret.height = ZFUIViewLayoutParam::sizeHintOffset(sizeHint.height, offset.height);
 }
-ZFUISize ZFUIViewLayoutParam::sizeHintOffset(ZF_IN const ZFUISize &sizeHint,
-                                             ZF_IN zfint offset)
+void ZFUIViewLayoutParam::sizeHintOffset(ZF_OUT ZFUISize &ret,
+                                         ZF_IN const ZFUISize &sizeHint,
+                                         ZF_IN zfint offset)
 {
-    return ZFUISizeMake(
-        ZFUIViewLayoutParam::sizeHintOffset(sizeHint.width, offset),
-        ZFUIViewLayoutParam::sizeHintOffset(sizeHint.height, offset));
+    ret.width = ZFUIViewLayoutParam::sizeHintOffset(sizeHint.width, offset);
+    ret.height = ZFUIViewLayoutParam::sizeHintOffset(sizeHint.height, offset);
 }
 
 ZF_NAMESPACE_GLOBAL_END

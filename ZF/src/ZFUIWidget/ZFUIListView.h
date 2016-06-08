@@ -168,10 +168,6 @@ protected:
 
 protected:
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
-    zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds);
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);

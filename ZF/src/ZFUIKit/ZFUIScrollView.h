@@ -236,10 +236,6 @@ protected:
     // override ZFUIView
 protected:
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
-    zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds);
     /**
      * @brief override ZFUIView to layout scroll view's internal view and content view

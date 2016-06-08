@@ -300,6 +300,10 @@ zfclassFwd _ZFP_ZFUITextEditPrivate;
  *   however, they have no relationship for some implementation's limitation,
  *   also, style and property copy logic not available between #ZFUITextView and #ZFUITextEdit,
  *   you should use #textStyleCopyFrom/#textStyleCopyTo instead
+ * @note this view supply quite simple text edit logic,
+ *   designed to be lightweighted and able to be embeded to other complex views,
+ *   for common text editing,
+ *   using #ZFUITextEditView is recommended
  */
 zfclass ZF_ENV_EXPORT ZFUITextEdit : zfextends ZFUIView, zfimplements ZFUITextEditStyle
 {
@@ -381,7 +385,7 @@ public:
      * and usually have no need to call\n
      * sizeHint shows max size the text view may have, or -1 if no limit
      */
-    virtual ZFUISize measureTextEdit(ZF_IN const ZFUISize &sizeHint);
+    virtual ZFUISize measureTextEdit(ZF_IN_OPT const ZFUISize &sizeHint = ZFUISizeZero);
 
 public:
     zffinal void _ZFP_ZFUITextEdit_textNotifyBeginEdit(void);

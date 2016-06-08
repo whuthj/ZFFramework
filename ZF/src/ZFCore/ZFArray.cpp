@@ -383,6 +383,10 @@ void ZFArray::remove(ZF_IN zfindex index,
     }
     else if(count > 1)
     {
+        if(count > this->count() - index)
+        {
+            count = this->count() - index;
+        }
         zfstldeque<ZFObject *> tmp(
             d->data.begin() + index,
             d->data.begin() + (index + count));

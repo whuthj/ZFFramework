@@ -112,41 +112,128 @@ public:
      * it's declared for convenient for subclass to layout child
      * using parent's layout logic
      */
+    static void layoutParamApply(ZF_OUT ZFUIRect &ret,
+                                 ZF_IN const ZFUIRect &rect,
+                                 ZF_IN ZFUIView *child,
+                                 ZF_IN ZFUIViewLayoutParam *lp);
+    /** @brief see #layoutParamApply */
     static ZFUIRect layoutParamApply(ZF_IN const ZFUIRect &rect,
                                      ZF_IN ZFUIView *child,
-                                     ZF_IN ZFUIViewLayoutParam *lp);
+                                     ZF_IN ZFUIViewLayoutParam *lp)
+    {
+        ZFUIRect ret = ZFUIRectZero;
+        ZFUIViewLayoutParam::layoutParamApply(ret, rect, child, lp);
+        return ret;
+    }
 
     /**
      * @brief util method to apply sizeHint accorrding sizeParam
      */
+    static void sizeHintApply(ZF_OUT zfint &ret,
+                              ZF_IN zfint size,
+                              ZF_IN zfint sizeHint,
+                              ZF_IN ZFUISizeTypeEnum sizeParam);
+    /** @brief see #sizeHintApply */
+    static zfint sizeHintApply(ZF_IN zfint size,
+                               ZF_IN zfint sizeHint,
+                               ZF_IN ZFUISizeTypeEnum sizeParam)
+    {
+        zfint ret = size;
+        ZFUIViewLayoutParam::sizeHintApply(ret, size, sizeHint, sizeParam);
+        return ret;
+    }
+
+    /**
+     * @brief util method to apply sizeHint accorrding sizeParam
+     */
+    static void sizeHintApply(ZF_OUT ZFUISize &ret,
+                              ZF_IN const ZFUISize &size,
+                              ZF_IN const ZFUISize &sizeHint,
+                              ZF_IN const ZFUISizeParam &sizeParam);
+    /** @brief see #sizeHintApply */
     static ZFUISize sizeHintApply(ZF_IN const ZFUISize &size,
                                   ZF_IN const ZFUISize &sizeHint,
-                                  ZF_IN const ZFUISizeParam &sizeParam);
+                                  ZF_IN const ZFUISizeParam &sizeParam)
+    {
+        ZFUISize ret = ZFUISizeZero;
+        ZFUIViewLayoutParam::sizeHintApply(ret, size, sizeHint, sizeParam);
+        return ret;
+    }
+
     /**
      * @brief merge two size hint
      */
+    static void sizeHintMerge(ZF_OUT zfint &ret,
+                              ZF_IN zfint sizeHint0,
+                              ZF_IN zfint sizeHint1);
+    /** @brief see #sizeHintMerge */
     static zfint sizeHintMerge(ZF_IN zfint sizeHint0,
-                               ZF_IN zfint sizeHint1);
+                               ZF_IN zfint sizeHint1)
+    {
+        zfint ret = 0;
+        ZFUIViewLayoutParam::sizeHintMerge(ret, sizeHint0, sizeHint1);
+        return ret;
+    }
+
     /**
      * @brief merge two size hint
      */
+    static void sizeHintMerge(ZF_OUT ZFUISize &ret,
+                              ZF_IN const ZFUISize &sizeHint0,
+                              ZF_IN const ZFUISize &sizeHint1);
+    /** @brief see #sizeHintMerge */
     static ZFUISize sizeHintMerge(ZF_IN const ZFUISize &sizeHint0,
-                                  ZF_IN const ZFUISize &sizeHint1);
+                                  ZF_IN const ZFUISize &sizeHint1)
+    {
+        ZFUISize ret = ZFUISizeZero;
+        ZFUIViewLayoutParam::sizeHintMerge(ret, sizeHint0, sizeHint1);
+        return ret;
+    }
+
     /**
      * @brief safely increase or decrease size hint, do nothing if old one is no limit
      */
+    static void sizeHintOffset(ZF_OUT zfint &ret,
+                               ZF_IN zfint sizeHint,
+                               ZF_IN zfint offset);
+    /** @brief see #sizeHintOffset */
     static zfint sizeHintOffset(ZF_IN zfint sizeHint,
-                                ZF_IN zfint offset);
+                                ZF_IN zfint offset)
+    {
+        zfint ret = 0;
+        ZFUIViewLayoutParam::sizeHintOffset(ret, sizeHint, offset);
+        return ret;
+    }
+
     /**
      * @brief safely increase or decrease size hint, do nothing if old one is no limit
      */
+    static void sizeHintOffset(ZF_OUT ZFUISize &ret,
+                               ZF_IN const ZFUISize &sizeHint,
+                               ZF_IN const ZFUISize &offset);
+    /** @brief see #sizeHintOffset */
     static ZFUISize sizeHintOffset(ZF_IN const ZFUISize &sizeHint,
-                                   ZF_IN const ZFUISize &offset);
+                                   ZF_IN const ZFUISize &offset)
+    {
+        ZFUISize ret = ZFUISizeZero;
+        ZFUIViewLayoutParam::sizeHintOffset(ret, sizeHint, offset);
+        return ret;
+    }
+
     /**
      * @brief safely increase or decrease size hint, do nothing if old one is no limit
      */
+    static void sizeHintOffset(ZF_OUT ZFUISize &ret,
+                               ZF_IN const ZFUISize &sizeHint,
+                               ZF_IN zfint offset);
+    /** @brief see #sizeHintOffset */
     static ZFUISize sizeHintOffset(ZF_IN const ZFUISize &sizeHint,
-                                   ZF_IN zfint offset);
+                                   ZF_IN zfint offset)
+    {
+        ZFUISize ret = ZFUISizeZero;
+        ZFUIViewLayoutParam::sizeHintOffset(ret, sizeHint, offset);
+        return ret;
+    }
 
 protected:
     zfoverride

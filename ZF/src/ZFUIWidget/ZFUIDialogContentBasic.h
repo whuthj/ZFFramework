@@ -30,30 +30,30 @@ zfinterface ZF_ENV_EXPORT ZFUIDialogContentBasicStyle : zfextends ZFInterface
     /**
      * @brief dialog title view
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, dialogTitleView, ZFPropertyNoInitValue)
-    static void _ZFP_dialogTitleViewInit(ZF_IN ZFUITextViewStyle *dialogTitleView)
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, titleTextView, ZFPropertyNoInitValue)
+    static void _ZFP_titleTextViewInit(ZF_IN ZFUITextViewStyle *titleTextView)
     {
-        dialogTitleView->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeBig());
-        dialogTitleView->textAppearanceSet(ZFUITextAppearance::e_Bold);
+        titleTextView->textSizeSet(ZFUIGlobalStyle::DefaultStyle()->textSizeBig());
+        titleTextView->textAppearanceSet(ZFUITextAppearance::e_Bold);
     }
-    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogTitleView)
+    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, titleTextView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        zfself::_ZFP_dialogTitleViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_titleTextViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
     /**
      * @brief dialog content view
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, dialogContentView, ZFPropertyNoInitValue)
-    static void _ZFP_dialogContentViewInit(ZF_IN ZFUITextViewStyle *dialogContentView)
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextViewStyle *, contentTextView, ZFPropertyNoInitValue)
+    static void _ZFP_contentTextViewInit(ZF_IN ZFUITextViewStyle *contentTextView)
     {
-        dialogContentView->textSingleLineSet(zffalse);
+        contentTextView->textSingleLineSet(zffalse);
     }
-    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogContentView)
+    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, contentTextView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextViewStyleHolder));
-        zfself::_ZFP_dialogContentViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_contentTextViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 };
 ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIDialogContentBasicStyle, ZFUIViewStyle)
@@ -75,15 +75,15 @@ public:
     ZFPROPERTY_OVERRIDE_INIT_VALUE_ASSIGN_NO_AUTO_INIT(ZFUISize, viewSizeMin, ZFUISizeMake(
         ZFUIGlobalStyle::DefaultStyle()->itemSizeDialogWidth(),
         ZFUIGlobalStyle::DefaultStyle()->itemSizeDialog()))
-    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogTitleView)
+    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, titleTextView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        zfself::_ZFP_dialogTitleViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_titleTextViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
-    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, dialogContentView)
+    ZFPROPERTY_OVERRIDE_INIT_STEP_DECLARE_RETAIN_NO_AUTO_INIT(ZFUITextViewStyle *, contentTextView)
     {
         propertyValue = zfautoObjectCreateWithoutLeakTest(zflineAllocWithoutLeakTest(ZFUITextView));
-        zfself::_ZFP_dialogContentViewInit(propertyValue.to<ZFUITextViewStyle *>());
+        zfself::_ZFP_contentTextViewInit(propertyValue.to<ZFUITextViewStyle *>());
     }
 
 public:
@@ -92,18 +92,14 @@ public:
     zfoverride
     virtual ZFUIView *dialogTitleContainer(void);
     zfoverride
-    virtual void dialogTitleTextSet(ZF_IN const zfchar *text);
-    zfoverride
-    virtual const zfchar *dialogTitleText(void);
+    virtual ZFUITextViewStyle *dialogTitleView(void);
 
     // ============================================================
     // content
     zfoverride
     virtual ZFUIView *dialogContentContainer(void);
     zfoverride
-    virtual void dialogContentTextSet(ZF_IN const zfchar *text);
-    zfoverride
-    virtual const zfchar *dialogContentText(void);
+    virtual ZFUITextViewStyle *dialogContentView(void);
 
     // ============================================================
     // button
@@ -121,7 +117,7 @@ public:
     virtual void dialogButtonRemove(ZF_IN ZFUIDialogButtonTypeEnum dialogButtonType);
 
     // ============================================================
-    // button with ZFUIDialogButtonType::e_Normal type
+    // button
     zfoverride
     virtual zfindex dialogButtonCount(void);
     zfoverride
@@ -144,6 +140,8 @@ public:
     virtual ZFObject *objectOnInit(void);
     zfoverride
     virtual void objectOnDealloc(void);
+    zfoverride
+    virtual void objectOnDeallocPrepare(void);
 
 protected:
     zfoverride

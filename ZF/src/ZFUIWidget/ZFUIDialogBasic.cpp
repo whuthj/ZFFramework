@@ -44,6 +44,26 @@ const ZFClass *ZFUIDialogContentClass(void)
 
 ZFSTYLE_DEFAULT_DEFINE(ZFUIDialogBasicStyle, ZFUIDialogStyle)
 
+// ============================================================
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogBasicDataHolder, ZFLevelZFFrameworkNormal)
+{
+    this->dialogButtonOnAddListener = ZFCallbackForRawFunction(zfself::dialogButtonOnAdd);
+    this->dialogButtonOnRemoveListener = ZFCallbackForRawFunction(zfself::dialogButtonOnRemove);
+}
+ZFListener dialogButtonOnAddListener;
+ZFListener dialogButtonOnRemoveListener;
+static ZFLISTENER_PROTOTYPE_EXPAND(dialogButtonOnAdd)
+{
+    userData->to<ZFObjectHolder *>()->holdedObj.to<ZFUIDialogBasic *>()
+        ->_ZFP_ZFUIDialogBasic_dialogButtonOnAdd(listenerData.param0->to<ZFUIButton *>());
+}
+static ZFLISTENER_PROTOTYPE_EXPAND(dialogButtonOnRemove)
+{
+    userData->to<ZFObjectHolder *>()->holdedObj.to<ZFUIDialogBasic *>()
+        ->_ZFP_ZFUIDialogBasic_dialogButtonOnRemove(listenerData.param0->to<ZFUIButton *>());
+}
+ZF_GLOBAL_INITIALIZER_END(ZFUIDialogBasicDataHolder)
+
 ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIDialogBasic, ZFUIDialogContent *, dialogContent)
 {
     if(newValue == zfnull)
@@ -57,14 +77,61 @@ ZFPROPERTY_OVERRIDE_SETTER_DEFINE(ZFUIDialogBasic, ZFUIDialogContent *, dialogCo
             zfsCoreZ2A(newValue->classData()->className()), zfsCoreZ2A(ZFUIDialogContent::ClassData()->className()));
         return ;
     }
+
+    if(this->dialogContent() != zfnull)
+    {
+        this->dialogContent()->toObject()->observerRemove(
+            ZFUIDialogContent::EventDialogButtonOnAdd(),
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogBasicDataHolder)->dialogButtonOnAddListener);
+        this->dialogContent()->toObject()->observerRemove(
+            ZFUIDialogContent::EventDialogButtonOnRemove(),
+            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogBasicDataHolder)->dialogButtonOnRemoveListener);
+        this->dialogContent()->to<ZFUIView *>()->viewRemoveFromParent();
+    }
+
     this->dialogContentSetInternal(newValue);
-    this->dialogViewSet(this->dialogContent()->to<ZFUIView *>());
+
+    this->dialogInternalContainer()->childAdd(this->dialogContent()->to<ZFUIView *>());
+    this->dialogContent()->to<ZFUIView *>()->layoutParam()->layoutAlignSet(ZFUIAlign::e_Center);
+
+    this->dialogContent()->toObject()->observerAdd(
+        ZFUIDialogContent::EventDialogButtonOnAdd(),
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogBasicDataHolder)->dialogButtonOnAddListener,
+        this->objectHolder());
+    this->dialogContent()->toObject()->observerAdd(
+        ZFUIDialogContent::EventDialogButtonOnRemove(),
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogBasicDataHolder)->dialogButtonOnRemoveListener,
+        this->objectHolder());
 }
 
-void ZFUIDialogBasic::objectOnInitFinish(void)
+ZFObject *ZFUIDialogBasic::objectOnInit(void)
 {
-    zfsuper::objectOnInitFinish();
-    this->dialogViewSet(this->dialogContent()->to<ZFUIView *>());
+    zfsuper::objectOnInit();
+
+    this->dialogContentSet(this->dialogContent());
+
+    return this;
+}
+void ZFUIDialogBasic::objectOnDeallocPrepare(void)
+{
+    this->dialogContent()->dialogButtonRemoveAll();
+    this->dialogContent()->dialogButtonRemove(ZFUIDialogButtonType::e_Yes);
+    this->dialogContent()->dialogButtonRemove(ZFUIDialogButtonType::e_No);
+    this->dialogContent()->dialogButtonRemove(ZFUIDialogButtonType::e_Cancel);
+    this->dialogContent()->dialogButtonRemove(ZFUIDialogButtonType::e_Destructive);
+
+    zfsuper::objectOnDeallocPrepare();
+}
+void ZFUIDialogBasic::objectOnDealloc(void)
+{
+    this->dialogContent()->toObject()->observerRemove(
+        ZFUIDialogContent::EventDialogButtonOnAdd(),
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogBasicDataHolder)->dialogButtonOnAddListener);
+    this->dialogContent()->toObject()->observerRemove(
+        ZFUIDialogContent::EventDialogButtonOnRemove(),
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogBasicDataHolder)->dialogButtonOnRemoveListener);
+
+    zfsuper::objectOnDealloc();
 }
 
 ZF_NAMESPACE_GLOBAL_END
