@@ -18,6 +18,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFProperty;
+zfclassFwd ZFObject;
 // ============================================================
 /**
  * @brief used to check whether the property has been accessed
