@@ -14,7 +14,7 @@
 #ifndef _ZFI_ZFUIGlobalStyle_h_
 #define _ZFI_ZFUIGlobalStyle_h_
 
-#include "ZFUIKitDef.h"
+#include "ZFUITypeDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**

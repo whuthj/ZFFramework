@@ -15,6 +15,7 @@
 #define _ZFI_ZFUIImage_h_
 
 #include "ZFUITypeDef.h"
+#include "ZFUIGlobalStyle.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFUIImage;
