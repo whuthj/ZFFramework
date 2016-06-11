@@ -40,6 +40,7 @@ extern ZF_ENV_EXPORT zfbool viewIsChildOf(ZF_IN ZFUIView *view, ZF_IN ZFUIView *
  */
 extern ZF_ENV_EXPORT ZFUIView *viewChildAt(ZF_IN ZFUIView *view,
                                            ZF_IN const ZFUIPoint &pos,
+                                           ZF_IN_OPT zfbool filterDisabledView = zftrue,
                                            ZF_IN_OPT const ZFFilterForZFObject *filter = zfnull);
 
 /**

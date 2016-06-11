@@ -42,9 +42,11 @@ zfbool viewIsChildOf(ZF_IN ZFUIView *view, ZF_IN ZFUIView *parentToCheck)
 
 ZFUIView *viewChildAt(ZF_IN ZFUIView *view,
                       ZF_IN const ZFUIPoint &pos,
+                      ZF_IN_OPT zfbool filterDisabledView /* = zftrue */,
                       ZF_IN_OPT const ZFFilterForZFObject *filter /* = zfnull */)
 {
     if(view == zfnull
+        || (filterDisabledView && !view->viewUIEnableTree())
         || (filter != zfnull && !filter->filterCheckActive(view)))
     {
         return zfnull;
@@ -65,6 +67,7 @@ ZFUIView *viewChildAt(ZF_IN ZFUIView *view,
                 pos.x - layoutedFrameFixed.point.x,
                 pos.y - layoutedFrameFixed.point.y
             ),
+            filterDisabledView,
             filter);
         if(tmp != zfnull)
         {
@@ -102,6 +105,11 @@ ZFUIView *viewChildAt(ZF_IN ZFUIView *view,
         {
             return tmp;
         }
+    }
+
+    if(filterDisabledView && !view->viewUIEnable())
+    {
+        return zfnull;
     }
 
     return view;
