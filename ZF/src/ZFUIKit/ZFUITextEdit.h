@@ -301,9 +301,7 @@ zfclassFwd _ZFP_ZFUITextEditPrivate;
  *   also, style and property copy logic not available between #ZFUITextView and #ZFUITextEdit,
  *   you should use #textStyleCopyFrom/#textStyleCopyTo instead
  * @note this view supply quite simple text edit logic,
- *   designed to be lightweighted and able to be embeded to other complex views,
- *   for common text editing,
- *   using #ZFUITextEditView is recommended
+ *   designed to be lightweighted and able to be embeded to other complex views
  */
 zfclass ZF_ENV_EXPORT ZFUITextEdit : zfextends ZFUIView, zfimplements ZFUITextEditStyle
 {

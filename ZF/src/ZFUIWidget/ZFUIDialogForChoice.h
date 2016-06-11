@@ -52,6 +52,9 @@ ZFENUM_END_WITH_DEFAULT(ZFUIDialogForChoiceMode, ChoiceSingle)
 
 // ============================================================
 // ZFUIDialogForChoiceData
+/**
+ * @brief choice item data for #ZFUIDialogForChoice
+ */
 zfclass ZF_ENV_EXPORT ZFUIDialogForChoiceData : zfextends ZFObject, zfimplements ZFSerializable
 {
     ZFOBJECT_DECLARE(ZFUIDialogForChoiceData, ZFObject)
@@ -421,7 +424,7 @@ public:
      * @brief see #ZFObject::observerNotify
      *
      * called when choice confirmed, either by:
-     * -  click choice if choiceMode is #ZFUIDialogButtonType::e_ChoiceSingleQuickly,
+     * -  click choice if choiceMode is #ZFUIDialogForChoiceMode::e_ChoiceSingleQuickly,
      *   implemented by default
      * -  click #ZFUIDialogContent::dialogButton_Yes,
      *   implemented by default

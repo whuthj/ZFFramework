@@ -27,6 +27,9 @@ zfinterface ZF_ENV_EXPORT ZFUIDialogForInputStyle : zfextends ZFInterface
     ZFINTERFACE_DECLARE(ZFUIDialogForInputStyle, ZFUIDialogBasicStyle)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIDialogForInputStyle, ZFUIDialogBasicStyle)
 
+    /**
+     * @brief the input text edit view
+     */
     ZFPROPERTY_RETAIN_READONLY(ZFUITextEditStyle *, inputView, ZFPropertyNoInitValue)
     static void _ZFP_inputViewInit(ZF_IN ZFUITextEditStyle *inputView)
     {
