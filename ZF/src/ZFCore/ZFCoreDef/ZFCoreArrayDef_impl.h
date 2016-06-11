@@ -209,15 +209,12 @@ void ZFCoreArray<T_Element>::capacitySet(ZF_IN zfindex newCapacity)
 template<typename T_Element>
 void ZFCoreArray<T_Element>::capacityTrim(void)
 {
-    if(this->isEmpty())
+    if(this->capacity() > _ZFP_ZFCoreArrayMinCapacity
+        && this->capacity() > this->count() * 2)
     {
-        d->cleanup();
-    }
-    else
-    {
-        zfindex fixedCapacity = zfmMax<zfindex>(this->capacity(), _ZFP_ZFCoreArrayMinCapacity);
-        zfindex count2x = this->count() * 2;
-        while(fixedCapacity >= count2x) {fixedCapacity /= 2;}
+        zfindex fixedCapacity = this->capacity();
+        zfindex end = zfmMax<zfindex>(this->count(), _ZFP_ZFCoreArrayMinCapacity) * 2;
+        while(fixedCapacity >= end) {fixedCapacity /= 2;}
         this->capacityDoChange(fixedCapacity);
     }
 }
