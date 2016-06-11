@@ -735,6 +735,9 @@ void ZFUIScrollView::implChildOnAdd(ZF_IN ZFUIView *child,
         case ZFUIViewChildLayer::e_Normal:
             d->impl->scrollChildAdd(this, child, childLayerIndex);
             break;
+        case ZFUIViewChildLayer::e_Impl:
+            zfsuper::implChildOnAdd(child, virtualIndex, childLayer, childLayerIndex);
+            break;
         case ZFUIViewChildLayer::e_Background:
             zfsuper::implChildOnAdd(child, virtualIndex, childLayer, childLayerIndex);
             break;
@@ -755,6 +758,9 @@ void ZFUIScrollView::implChildOnRemove(ZF_IN ZFUIView *child,
     {
         case ZFUIViewChildLayer::e_Normal:
             d->impl->scrollChildRemove(this, child, childLayerIndex);
+            break;
+        case ZFUIViewChildLayer::e_Impl:
+            zfsuper::implChildOnRemove(child, virtualIndex, childLayer, childLayerIndex);
             break;
         case ZFUIViewChildLayer::e_Background:
             zfsuper::implChildOnRemove(child, virtualIndex, childLayer, childLayerIndex);

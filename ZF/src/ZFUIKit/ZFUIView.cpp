@@ -105,6 +105,7 @@ public:
     zfbool layouting;
     ZFUIRect layoutedFramePrev;
     ZFUIRect layoutedFrame;
+    _ZFP_ZFUIViewLayerData layerInternalImpl;
     _ZFP_ZFUIViewLayerData layerInternalBg;
     _ZFP_ZFUIViewLayerData layerNormal;
     _ZFP_ZFUIViewLayerData layerInternalFg;
@@ -134,6 +135,7 @@ public:
     , layouting(zffalse)
     , layoutedFramePrev(ZFUIRectZero)
     , layoutedFrame(ZFUIRectZero)
+    , layerInternalImpl()
     , layerInternalBg()
     , layerNormal()
     , layerInternalFg()
@@ -170,35 +172,30 @@ public:
     }
     zfindex viewLayerPrevCount(ZF_IN _ZFP_ZFUIViewLayerData &layer)
     {
-        if(this->nativeImplView != zfnull)
+        zfindex nativeImplFix = (this->nativeImplView ? 1 : 0);
+        if(&layer == &(this->layerNormal))
         {
-            if(&layer == &(this->layerNormal))
-            {
-                return this->layerInternalBg.views.count() + 1;
-            }
-            else if(&layer == &(this->layerInternalBg))
-            {
-                return 1;
-            }
-            else
-            {
-                return this->layerInternalBg.views.count() + this->layerNormal.views.count() + 1;
-            }
+            return this->layerInternalImpl.views.count() + nativeImplFix
+                + this->layerInternalBg.views.count();
+        }
+        else if(&layer == &(this->layerInternalImpl))
+        {
+            return 0;
+        }
+        else if(&layer == &(this->layerInternalBg))
+        {
+            return this->layerInternalImpl.views.count() + nativeImplFix;
+        }
+        else if(&layer == &(this->layerInternalFg))
+        {
+            return this->layerInternalImpl.views.count() + nativeImplFix
+                + this->layerInternalBg.views.count()
+                + this->layerNormal.views.count();
         }
         else
         {
-            if(&layer == &(this->layerNormal))
-            {
-                return this->layerInternalBg.views.count();
-            }
-            else if(&layer == &(this->layerInternalBg))
-            {
-                return 0;
-            }
-            else
-            {
-                return this->layerInternalBg.views.count() + this->layerNormal.views.count();
-            }
+            zfCoreCriticalShouldNotGoHere();
+            return 0;
         }
     }
     void checkUpdateChildScale(ZF_IN ZFUIView *child)
@@ -412,34 +409,38 @@ public:
                             ZF_IN ZFUIView *view1,
                             ZF_IN ZFUIViewChildLayerEnum layer)
     {
-        ZFCoreArrayPOD<ZFUIView *> children0;
-        ZFCoreArrayPOD<ZFUIView *> children1;
+        const ZFCoreArrayPOD<ZFUIView *> *children0 = zfnull;
+        const ZFCoreArrayPOD<ZFUIView *> *children1 = zfnull;
         switch(layer)
         {
             case ZFUIViewChildLayer::e_Normal:
-                children0 = view0->childArray();
-                children1 = view1->childArray();
+                children0 = &(view0->d->layerNormal.views);
+                children1 = &(view1->d->layerNormal.views);
+                break;
+            case ZFUIViewChildLayer::e_Impl:
+                children0 = &(view0->d->layerInternalImpl.views);
+                children1 = &(view1->d->layerInternalImpl.views);
                 break;
             case ZFUIViewChildLayer::e_Background:
-                children0 = view0->internalBackgroundViewArray();
-                children1 = view1->internalBackgroundViewArray();
+                children0 = &(view0->d->layerInternalBg.views);
+                children1 = &(view1->d->layerInternalBg.views);
                 break;
             case ZFUIViewChildLayer::e_Foreground:
-                children0 = view0->internalForegroundViewArray();
-                children1 = view1->internalForegroundViewArray();
+                children0 = &(view0->d->layerInternalFg.views);
+                children1 = &(view1->d->layerInternalFg.views);
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
                 return zffalse;
         }
 
-        if(children0.count() != children1.count())
+        if(children0->count() != children1->count())
         {
             return zffalse;
         }
-        for(zfindex i = children0.count() - 1; i != zfindexMax; --i)
+        for(zfindex i = children0->count() - 1; i != zfindexMax; --i)
         {
-            if(ZFObjectCompare(children0[i], children1[i]) != ZFCompareTheSame)
+            if(ZFObjectCompare(children0->get(i), children1->get(i)) != ZFCompareTheSame)
             {
                 return zffalse;
             }
@@ -452,7 +453,7 @@ public:
         return layer.views.get(index)->layoutParam();
     }
 
-    zfbool serializeInternalViewFromCategoryData(ZF_IN zfbool isInternalBackgroundView,
+    zfbool serializeInternalViewFromCategoryData(ZF_IN ZFUIViewChildLayerEnum childLayer,
                                                  ZF_IN const ZFSerializableData &categoryData,
                                                  ZF_OUT_OPT zfstring *outErrorHintToAppend /* = zfnull */,
                                                  ZF_OUT_OPT const ZFSerializableData **outErrorPos /* = zfnull */)
@@ -484,10 +485,28 @@ public:
             return zffalse;
         }
         ZFUIView *exist = zfnull;
-        const ZFCoreArrayPOD<ZFUIView *> &views = (isInternalBackgroundView ? this->layerInternalBg.views : this->layerInternalFg.views);
-        for(zfindex i = views.count() - 1; i != zfindexMax; --i)
+        const ZFCoreArrayPOD<ZFUIView *> *views = zfnull;
+        switch(childLayer)
         {
-            ZFUIView *tmp = views.get(i)->to<ZFUIView *>();
+            case ZFUIViewChildLayer::e_Normal:
+                zfCoreCriticalShouldNotGoHere();
+                break;
+            case ZFUIViewChildLayer::e_Impl:
+                views = &(this->layerInternalImpl.views);
+                break;
+            case ZFUIViewChildLayer::e_Background:
+                views = &(this->layerInternalBg.views);
+                break;
+            case ZFUIViewChildLayer::e_Foreground:
+                views = &(this->layerInternalFg.views);
+                break;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                return zffalse;
+        }
+        for(zfindex i = views->count() - 1; i != zfindexMax; --i)
+        {
+            ZFUIView *tmp = views->get(i)->to<ZFUIView *>();
             if(tmp->viewId().compare(internalViewTmp->viewId()) == 0)
             {
                 exist = tmp;
@@ -497,13 +516,23 @@ public:
         if(exist == zfnull)
         {
             this->thisView->internalViewAutoSerializeTagAdd(internalViewTmp->viewId().cString());
-            if(isInternalBackgroundView)
+            switch(childLayer)
             {
-                this->thisView->internalBackgroundViewAdd(internalViewTmp);
-            }
-            else
-            {
-                this->thisView->internalForegroundViewAdd(internalViewTmp);
+                case ZFUIViewChildLayer::e_Normal:
+                    zfCoreCriticalShouldNotGoHere();
+                    break;
+                case ZFUIViewChildLayer::e_Impl:
+                    this->thisView->internalImplViewAdd(internalViewTmp);
+                    break;
+                case ZFUIViewChildLayer::e_Background:
+                    this->thisView->internalBackgroundViewAdd(internalViewTmp);
+                    break;
+                case ZFUIViewChildLayer::e_Foreground:
+                    this->thisView->internalForegroundViewAdd(internalViewTmp);
+                    break;
+                default:
+                    zfCoreCriticalShouldNotGoHere();
+                    return zffalse;
             }
         }
         else
@@ -512,25 +541,52 @@ public:
         }
         return zftrue;
     }
-    zfbool serializeInternalViewToCategoryData(ZF_IN zfbool isInternalBackgroundView,
+    zfbool serializeInternalViewToCategoryData(ZF_IN ZFUIViewChildLayerEnum childLayer,
                                                ZF_IN_OUT ZFSerializableData &ownerData,
                                                ZF_IN ZFUIView *ref,
                                                ZF_OUT_OPT zfstring *outErrorHintToAppend /* = zfnull */)
     {
-        const ZFCoreArrayPOD<ZFUIView *> &views = (isInternalBackgroundView ? this->layerInternalBg.views : this->layerInternalFg.views);
+        const ZFCoreArrayPOD<ZFUIView *> *views = zfnull;
         const ZFCoreArrayPOD<ZFUIView *> *viewsRef = zfnull;
-        const zfchar *categoryTag = (isInternalBackgroundView
-            ? ZFSerializableKeyword_ZFUIView_internalBackgroundView
-            : ZFSerializableKeyword_ZFUIView_internalForegroundView);
-        if(ref != zfnull)
+        const zfchar *categoryTag = zfnull;
+        switch(childLayer)
         {
-            viewsRef = (isInternalBackgroundView ? &(ref->d->layerInternalBg.views) : &(ref->d->layerInternalFg.views));
+            case ZFUIViewChildLayer::e_Normal:
+                zfCoreCriticalShouldNotGoHere();
+                break;
+            case ZFUIViewChildLayer::e_Impl:
+                views = &(this->layerInternalImpl.views);
+                if(ref != zfnull)
+                {
+                    viewsRef = &(ref->d->layerInternalImpl.views);
+                }
+                break;
+                categoryTag = ZFSerializableKeyword_ZFUIView_internalImplView;
+            case ZFUIViewChildLayer::e_Background:
+                views = &(this->layerInternalBg.views);
+                if(ref != zfnull)
+                {
+                    viewsRef = &(ref->d->layerInternalBg.views);
+                }
+                categoryTag = ZFSerializableKeyword_ZFUIView_internalBackgroundView;
+                break;
+            case ZFUIViewChildLayer::e_Foreground:
+                views = &(this->layerInternalFg.views);
+                if(ref != zfnull)
+                {
+                    viewsRef = &(ref->d->layerInternalFg.views);
+                }
+                categoryTag = ZFSerializableKeyword_ZFUIView_internalForegroundView;
+                break;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                return zffalse;
         }
         if(ref == zfnull || viewsRef->count() == 0)
         {
-            for(zfindex i = 0; i < views.count(); ++i)
+            for(zfindex i = 0; i < views->count(); ++i)
             {
-                ZFUIView *tmp = views.get(i)->to<ZFUIView *>();
+                ZFUIView *tmp = views->get(i)->to<ZFUIView *>();
                 if(tmp->viewId().isEmpty()
                     || this->internalViewAutoSerializeTags.find(tmp->viewId().cString()) == this->internalViewAutoSerializeTags.end())
                 {
@@ -547,18 +603,18 @@ public:
         }
         else
         {
-            for(zfindex i = 0; i < views.count(); ++i)
+            for(zfindex i = 0; i < views->count(); ++i)
             {
-                ZFUIView *tmp = views.get(i)->to<ZFUIView *>();
+                ZFUIView *tmp = views->get(i)->to<ZFUIView *>();
                 if(tmp->viewId().isEmpty()
                     || this->internalViewAutoSerializeTags.find(tmp->viewId().cString()) == this->internalViewAutoSerializeTags.end())
                 {
                     continue;
                 }
                 zfbool exist = zffalse;
-                for(zfindex iRef = ref->d->layerInternalBg.views.count() - 1; iRef != zfindexMax; --iRef)
+                for(zfindex iRef = viewsRef->count() - 1; iRef != zfindexMax; --iRef)
                 {
-                    if(ref->d->layerInternalBg.views.get(iRef)->to<ZFUIView *>()->viewId().compare(tmp->viewId().cString()) == 0)
+                    if(viewsRef->get(iRef)->to<ZFUIView *>()->viewId().compare(tmp->viewId().cString()) == 0)
                     {
                         exist = zftrue;
                         break;
@@ -654,9 +710,19 @@ zfbool ZFUIView::serializableOnSerializeCategoryFromData(ZF_IN const ZFSerializa
 
             d->layoutParamSet(ZFCastZFObjectUnchecked(ZFUIViewLayoutParam *, layoutParam));
         }
+        else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_internalImplView))
+        {
+            if(!d->serializeInternalViewFromCategoryData(ZFUIViewChildLayer::e_Impl,
+                categoryData,
+                outErrorHintToAppend,
+                outErrorPos))
+            {
+                return zffalse;
+            }
+        }
         else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_internalBackgroundView))
         {
-            if(!d->serializeInternalViewFromCategoryData(zftrue,
+            if(!d->serializeInternalViewFromCategoryData(ZFUIViewChildLayer::e_Background,
                 categoryData,
                 outErrorHintToAppend,
                 outErrorPos))
@@ -666,7 +732,7 @@ zfbool ZFUIView::serializableOnSerializeCategoryFromData(ZF_IN const ZFSerializa
         }
         else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_internalForegroundView))
         {
-            if(!d->serializeInternalViewFromCategoryData(zffalse,
+            if(!d->serializeInternalViewFromCategoryData(ZFUIViewChildLayer::e_Foreground,
                 categoryData,
                 outErrorHintToAppend,
                 outErrorPos))
@@ -701,11 +767,15 @@ zfbool ZFUIView::serializableOnSerializeCategoryToData(ZF_IN_OUT ZFSerializableD
     { // internal views
         if(!d->internalViewAutoSerializeTags.empty())
         {
-            if(!d->serializeInternalViewToCategoryData(zftrue, ownerData, ref, outErrorHintToAppend))
+            if(!d->serializeInternalViewToCategoryData(ZFUIViewChildLayer::e_Impl, ownerData, ref, outErrorHintToAppend))
             {
                 return zffalse;
             }
-            if(!d->serializeInternalViewToCategoryData(zffalse, ownerData, ref, outErrorHintToAppend))
+            if(!d->serializeInternalViewToCategoryData(ZFUIViewChildLayer::e_Background, ownerData, ref, outErrorHintToAppend))
+            {
+                return zffalse;
+            }
+            if(!d->serializeInternalViewToCategoryData(ZFUIViewChildLayer::e_Foreground, ownerData, ref, outErrorHintToAppend))
             {
                 return zffalse;
             }
@@ -877,6 +947,10 @@ void ZFUIView::objectOnDealloc(void)
     {
         zfRelease(d->layerNormal.views.get(i));
     }
+    for(zfindex i = d->layerInternalImpl.views.count() - 1; i != zfindexMax; --i)
+    {
+        zfRelease(d->layerInternalImpl.views.get(i));
+    }
     for(zfindex i = d->layerInternalBg.views.count() - 1; i != zfindexMax; --i)
     {
         zfRelease(d->layerInternalBg.views.get(i));
@@ -913,6 +987,7 @@ void ZFUIView::objectOnDeallocPrepare(void)
     d->removeAllView(ZFUIViewChildLayer::e_Foreground, d->layerInternalFg);
     this->childRemoveAll();
     d->removeAllView(ZFUIViewChildLayer::e_Background, d->layerInternalBg);
+    d->removeAllView(ZFUIViewChildLayer::e_Impl, d->layerInternalImpl);
 
     zfsuper::objectOnDeallocPrepare();
 }
@@ -935,6 +1010,7 @@ ZFCompareResult ZFUIView::objectCompare(ZF_IN ZFObject *anotherObj)
     if(this->childCount() != another->childCount()
         || ZFObjectCompare(d->layoutParam, another->d->layoutParam) != ZFCompareTheSame
         || !ZFClassUtil::allPropertyIsEqual(this, another)
+        || !d->viewArrayTheSame(this, another, ZFUIViewChildLayer::e_Impl)
         || !d->viewArrayTheSame(this, another, ZFUIViewChildLayer::e_Background)
         || !d->viewArrayTheSame(this, another, ZFUIViewChildLayer::e_Foreground)
         || !d->viewArrayTheSame(this, another, ZFUIViewChildLayer::e_Normal))
@@ -1011,6 +1087,10 @@ void ZFUIView::objectCachedOnChange(void)
     {
         d->viewDelegate->objectCachedSet(objectCached);
     }
+    for(zfindex i = 0; i < d->layerInternalImpl.views.count(); ++i)
+    {
+        d->layerInternalImpl.views[i]->objectCachedSet(objectCached);
+    }
     for(zfindex i = 0; i < d->layerInternalBg.views.count(); ++i)
     {
         d->layerInternalBg.views[i]->objectCachedSet(objectCached);
@@ -1043,7 +1123,7 @@ void ZFUIView::nativeImplViewSet(ZF_IN void *nativeImplView,
     ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallbackOld = d->nativeImplViewDeleteCallback;
     d->nativeImplView = nativeImplView;
     d->nativeImplViewDeleteCallback = nativeImplViewDeleteCallback;
-    d->impl->nativeImplViewSet(this, nativeImplViewOld, d->nativeImplView, 0);
+    d->impl->nativeImplViewSet(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.views.count());
     if(nativeImplViewOld && nativeImplViewDeleteCallbackOld)
     {
         nativeImplViewDeleteCallbackOld(this, nativeImplViewOld);
@@ -1281,6 +1361,22 @@ ZFUIView *ZFUIView::viewFocusedChild(void)
             return ret;
         }
     }
+    for(zfindex i = d->layerInternalBg.views.count() - 1; i != zfindexMax; --i)
+    {
+        ret = d->layerInternalBg.views[i]->viewFocusedChild();
+        if(ret != zfnull)
+        {
+            return ret;
+        }
+    }
+    for(zfindex i = d->layerInternalImpl.views.count() - 1; i != zfindexMax; --i)
+    {
+        ret = d->layerInternalImpl.views[i]->viewFocusedChild();
+        if(ret != zfnull)
+        {
+            return ret;
+        }
+    }
     return zfnull;
 }
 
@@ -1299,6 +1395,9 @@ void ZFUIView::viewRemoveFromParent(void)
         {
             case ZFUIViewChildLayer::e_Normal:
                 this->viewParent()->childRemove(this);
+                break;
+            case ZFUIViewChildLayer::e_Impl:
+                this->viewParent()->internalImplViewRemove(this);
                 break;
             case ZFUIViewChildLayer::e_Background:
                 this->viewParent()->internalBackgroundViewRemove(this);
@@ -1354,6 +1453,10 @@ void ZFUIView::_ZFP_ZFUIView_scaleSetRecursively(ZF_IN zffloat scaleForApp,
         || zffloatNotEqual(d->scaleForImpl, scaleForImpl))
     {
         this->_ZFP_ZFUIView_scaleSet(scaleForApp, scaleForImpl);
+        for(zfindex i = d->layerInternalImpl.views.count() - 1; i != zfindexMax; --i)
+        {
+            d->layerInternalImpl.views.get(i)->to<ZFUIView *>()->_ZFP_ZFUIView_scaleSetRecursively(scaleForApp, scaleForImpl);
+        }
         for(zfindex i = d->layerInternalBg.views.count() - 1; i != zfindexMax; --i)
         {
             d->layerInternalBg.views.get(i)->to<ZFUIView *>()->_ZFP_ZFUIView_scaleSetRecursively(scaleForApp, scaleForImpl);
@@ -1539,6 +1642,7 @@ void ZFUIView::layout(ZF_IN const ZFUIRect &rect)
         }
 
         // internal views
+        this->internalImplViewOnLayout(bounds);
         this->internalBackgroundViewOnLayout(bounds);
         this->internalForegroundViewOnLayout(bounds);
 
@@ -1635,6 +1739,7 @@ ZFUIView *ZFUIView::childFindById(ZF_IN const zfchar *viewId,
         toFind.addFrom(view->childArray());
         if(includeInternalViews)
         {
+            toFind.addFrom(view->d->layerInternalImpl.views);
             toFind.addFrom(view->d->layerInternalBg.views);
             toFind.addFrom(view->d->layerInternalFg.views);
         }
@@ -1774,11 +1879,48 @@ ZFUIViewChildLayerEnum ZFUIView::viewLayer(void)
 ZFCoreArrayPOD<ZFUIView *> ZFUIView::childRawArray(void)
 {
     ZFCoreArrayPOD<ZFUIView *> ret;
-    ret.capacitySet(d->layerInternalBg.views.count() + this->childCount() + d->layerInternalFg.views.count());
+    ret.capacitySet(
+        d->layerInternalBg.views.count()
+        + d->layerInternalBg.views.count()
+        + this->childCount()
+        + d->layerInternalFg.views.count());
+    ret.addFrom(d->layerInternalImpl.views);
     ret.addFrom(d->layerInternalBg.views);
     ret.addFrom(this->childCount());
     ret.addFrom(d->layerInternalFg.views);
     return ret;
+}
+
+// ============================================================
+// internal impl views
+void ZFUIView::internalImplViewAdd(ZF_IN ZFUIView *view,
+                                   ZF_IN_OPT ZFUIViewLayoutParam *layoutParam /* = zfnull */,
+                                   ZF_IN_OPT zfbool addAsTopMost /* = zftrue */)
+{
+    d->childAdd(ZFUIViewChildLayer::e_Impl, d->layerInternalImpl, view, layoutParam, (addAsTopMost ? zfindexMax : 0));
+}
+void ZFUIView::internalImplViewRemove(ZF_IN ZFUIView *view)
+{
+    d->childRemove(ZFUIViewChildLayer::e_Impl, d->layerInternalImpl, view);
+}
+void ZFUIView::internalImplViewOnLayout(ZF_IN const ZFUIRect &bounds)
+{
+    for(zfindex i = 0; i < d->viewCount(d->layerInternalImpl); ++i)
+    {
+        ZFUIView *child = d->viewAtIndex(d->layerInternalImpl, i);
+        if(this->internalViewShouldLayout(child))
+        {
+            child->layout(
+                ZFUIViewLayoutParam::layoutParamApply(
+                    bounds,
+                    child,
+                    d->viewLayoutParamAtIndex(d->layerInternalImpl, i)));
+        }
+    }
+}
+ZFCoreArrayPOD<ZFUIView *> ZFUIView::internalImplViewArray(void)
+{
+    return d->layerInternalImpl.views;
 }
 
 // ============================================================

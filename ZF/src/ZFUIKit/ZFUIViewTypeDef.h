@@ -35,10 +35,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFENUM_BEGIN(ZFUIViewChildLayer)
     ZFENUM_VALUE(Normal) /**< @brief added by #ZFUIView::childAdd */
+    ZFENUM_VALUE(Impl) /**< @brief added by #ZFUIView::internalImplViewAdd */
     ZFENUM_VALUE(Background) /**< @brief added by #ZFUIView::internalBackgroundViewAdd */
     ZFENUM_VALUE(Foreground) /**< @brief added by #ZFUIView::internalForegroundViewAdd */
 ZFENUM_SEPARATOR(ZFUIViewChildLayer)
     ZFENUM_VALUE_REGISTER(Normal)
+    ZFENUM_VALUE_REGISTER(Impl)
     ZFENUM_VALUE_REGISTER(Background)
     ZFENUM_VALUE_REGISTER(Foreground)
 ZFENUM_END(ZFUIViewChildLayer)

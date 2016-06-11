@@ -100,6 +100,7 @@ void ZFUIViewPrintViewTree(ZF_IN ZFUIView *view,
         }
 
         // all children
+        ZFCoreArrayPOD<ZFUIView *> implViews = printData.view->internalImplViewArray();
         ZFCoreArrayPOD<ZFUIView *> bgViews = printData.view->internalBackgroundViewArray();
         ZFCoreArrayPOD<ZFUIView *> normalViews = printData.view->childArray();
         ZFCoreArrayPOD<ZFUIView *> fgViews = printData.view->internalForegroundViewArray();
@@ -130,6 +131,15 @@ void ZFUIViewPrintViewTree(ZF_IN ZFUIView *view,
             printDataTmp.layer = ZFUIViewChildLayer::e_Background;
             printDatas.add(printDataTmp);
         }
+        for(zfindex i = implViews.count() - 1; i != zfindexMax; --i)
+        {
+            _ZFP_ZFUIViewPrintViewTreePrintData printDataTmp;
+            printDataTmp.view = implViews.get(i)->to<ZFUIView *>();
+            printDataTmp.depth = printData.depth + 1;
+            printDataTmp.siblingIndex = i;
+            printDataTmp.layer = ZFUIViewChildLayer::e_Impl;
+            printDatas.add(printDataTmp);
+        }
 
         outputCallback.execute(zfText("|"));
         outputCallback.execute(zfstringWithFormat(zfText("%2zi"), printData.siblingIndex).cString());
@@ -142,6 +152,9 @@ void ZFUIViewPrintViewTree(ZF_IN ZFUIView *view,
         {
             case ZFUIViewChildLayer::e_Normal:
                 outputCallback.execute(zfText(" "));
+                break;
+            case ZFUIViewChildLayer::e_Impl:
+                outputCallback.execute(zfText(" impl "));
                 break;
             case ZFUIViewChildLayer::e_Background:
                 outputCallback.execute(zfText(" bg "));

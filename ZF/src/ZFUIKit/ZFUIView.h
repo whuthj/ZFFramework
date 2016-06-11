@@ -141,6 +141,8 @@ public:
 ZFSTYLE_DEFAULT_HOLDER_DECLARE(ZFUIViewStyle, ZFStyleable)
 
 /** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFUIView_internalImplView zfText("internalImplView")
+/** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIView_internalBackgroundView zfText("internalBackgroundView")
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIView_internalForegroundView zfText("internalForegroundView")
@@ -164,6 +166,8 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * @brief base class of all UI views
  *
  * ZFUIView has these layer of views:
+ * -  internal impl view:
+ *   for subclass to add views behind native impl view
  * -  internal native view:
  *   for impl to achieve different functions, internal use only
  * -  internal background view:
@@ -182,6 +186,8 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * serializable data:
  * @code
  *   <ViewClass>
+ *       // optional, see #internalViewAutoSerializeTagAdd
+ *       <ChildClass category="internalImplView" >
  *       // optional, see #internalViewAutoSerializeTagAdd
  *       <ChildClass category="internalBackgroundView" >
  *       </ChildClass>
@@ -950,7 +956,7 @@ public:
     /**
      * @brief return all children including internal views, see #childArray
      *
-     * children are ensured ordered by (bg, normal, fg) views
+     * children are ensured ordered by (impl, bg, normal, fg) views
      */
     virtual ZFCoreArrayPOD<ZFUIView *> childRawArray(void);
 
@@ -1017,12 +1023,27 @@ protected:
     }
 
     // ============================================================
+    // internal impl views
+public:
+    /** @brief see #internalBackgroundViewAdd */
+    virtual void internalImplViewAdd(ZF_IN ZFUIView *view,
+                                     ZF_IN_OPT ZFUIViewLayoutParam *layoutParam = zfnull,
+                                     ZF_IN_OPT zfbool addAsTopMost = zftrue);
+    /** @brief see #internalBackgroundViewAdd */
+    virtual void internalImplViewRemove(ZF_IN ZFUIView *view);
+    /** @brief see #internalBackgroundViewAdd */
+    virtual void internalImplViewOnLayout(ZF_IN const ZFUIRect &bounds);
+    /** @brief see #internalBackgroundViewAdd */
+    virtual ZFCoreArrayPOD<ZFUIView *> internalImplViewArray(void);
+
+    // ============================================================
     // internal background views
 public:
     /**
      * @brief internal view which is independent from normal view
      *
-     * we have three layers in ZFUIView module:
+     * we have these layers in ZFUIView module:
+     * -  internal impl view
      * -  internal background view
      * -  normal view
      * -  internal foreground view
@@ -1062,9 +1083,7 @@ public:
     virtual void internalForegroundViewRemove(ZF_IN ZFUIView *view);
     /** @brief see #internalBackgroundViewAdd */
     virtual void internalForegroundViewOnLayout(ZF_IN const ZFUIRect &bounds);
-    /**
-     * @brief usually for debug use only, try to avoid use this in your app for other purpose
-     */
+    /** @brief see #internalBackgroundViewAdd */
     virtual ZFCoreArrayPOD<ZFUIView *> internalForegroundViewArray(void);
 
     // ============================================================
@@ -1090,8 +1109,7 @@ public:
     virtual ZFCoreArray<zfstring> internalViewAutoSerializeTagGetAll(void);
 protected:
     /**
-     * @brief called by #internalBackgroundViewOnLayout and #internalForegroundViewOnLayout,
-     *   used to check whether the view should be layouted using default layout logic,
+     * @brief called to check whether the view should be layouted using default layout logic,
      *   return true by default
      */
     virtual zfbool internalViewShouldLayout(ZF_IN ZFUIView *internalView);
