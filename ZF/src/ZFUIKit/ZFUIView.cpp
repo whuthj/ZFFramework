@@ -968,12 +968,13 @@ void ZFUIView::objectOnInitFinish(void)
 {
     zfsuper::objectOnInitFinish();
 
+    // auto update view property when object init finished
     this->observerAdd(
         ZFObject::EventObjectAfterAlloc(),
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewListenerHolder)->viewPropertyOnUpdateListener,
         this->objectHolder(),
-        zfnull,
-        zftrue);
+        zfHint("owner")zfnull,
+        zfHint("autoRemoveAfterActivate")zftrue);
 }
 void ZFUIView::objectOnDeallocPrepare(void)
 {
@@ -1131,10 +1132,14 @@ void ZFUIView::nativeImplViewSet(ZF_IN void *nativeImplView,
 }
 void ZFUIView::nativeImplViewMarginUpdate(void)
 {
+    ZFUIMargin old = d->nativeImplViewMargin;
     d->nativeImplViewMargin = ZFUIMarginZero;
     this->nativeImplViewMarginOnUpdate(d->nativeImplViewMargin);
-    d->impl->nativeImplViewMarginSet(this, d->nativeImplViewMargin);
-    this->layoutRequest();
+    if(d->nativeImplViewMargin != old)
+    {
+        d->impl->nativeImplViewMarginSet(this, d->nativeImplViewMargin);
+        this->layoutRequest();
+    }
 }
 const ZFUIMargin &ZFUIView::nativeImplViewMargin(void)
 {

@@ -421,8 +421,10 @@ protected:
     /**
      * @brief update native impl view's margin
      *
-     * invoke #nativeImplViewMarginOnUpdate to update the margin value,
-     * for subclass to achieve complex layout logic
+     * call #nativeImplViewMarginOnUpdate to update the margin value,
+     * for subclass to achieve complex layout logic\n
+     * the margin won't be update automatically for performance,
+     * subclass should manually call this method if necessary
      */
     zffinal void nativeImplViewMarginUpdate(void);
     /**
