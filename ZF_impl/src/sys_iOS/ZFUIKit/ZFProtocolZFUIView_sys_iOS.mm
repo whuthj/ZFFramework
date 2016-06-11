@@ -16,13 +16,6 @@
 
 #import <objc/runtime.h>
 
-static BOOL _ZFP_ZFUIViewImpl_sys_iOS_isImplView(id obj);
-
-static zftimet _ZFP_ZFUIViewImpl_sys_iOS_timestamp(void)
-{
-    return (zftimet)([[NSDate date] timeIntervalSince1970] * 1000);
-}
-
 @interface _ZFP_ZFUIViewImpl_sys_iOS_View : UIView
 #if _ZFP_ZFUIViewImpl_sys_iOS_VIEW_TREE_DEBUG
 @property (nonatomic, retain) NSString *text;
@@ -128,42 +121,6 @@ static zftimet _ZFP_ZFUIViewImpl_sys_iOS_timestamp(void)
 }
 
 // ============================================================
-// internal view
-- (void)set_ZFP_nativeImplView:(UIView *)newNativeImplView ZFImpl_sys_iOS_overrideProperty
-{
-    [newNativeImplView retain];
-    [newNativeImplView removeFromSuperview];
-    [self->_ZFP_nativeImplView removeFromSuperview];
-    [self->_ZFP_nativeImplView release];
-    self->_ZFP_nativeImplView = newNativeImplView;
-
-    if(newNativeImplView != nil)
-    {
-        [self insertSubview:newNativeImplView atIndex:self._ZFP_ownerZFUIView->internalBackgroundViewArray().count()];
-    }
-}
-// ============================================================
-// child add and remove
-- (void)_ZFP_childAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex childLayer:(ZFUIViewChildLayerEnum)childLayer
-{
-    NSUInteger index = atVirtualIndex;
-    if(childLayer != ZFUIViewChildLayer::e_Background && self._ZFP_nativeImplView != nil)
-    {
-        ++index;
-    }
-    [self insertSubview:view atIndex:index];
-}
-- (void)_ZFP_childRemoveAtVirtualIndex:(zfindex)atVirtualIndex childLayer:(ZFUIViewChildLayerEnum)childLayer
-{
-    NSUInteger index = atVirtualIndex;
-    if(childLayer != ZFUIViewChildLayer::e_Background && self._ZFP_nativeImplView != nil)
-    {
-        ++index;
-    }
-    [(UIView *)[self.subviews objectAtIndex:index] removeFromSuperview];
-}
-
-// ============================================================
 // frame and layout
 - (void)set_ZFP_frame:(CGRect)newFrame ZFImpl_sys_iOS_overrideProperty
 {
@@ -175,8 +132,7 @@ static zftimet _ZFP_ZFUIViewImpl_sys_iOS_timestamp(void)
     if(!self._ZFP_layoutRequested)
     {
         self._ZFP_layoutRequested = YES;
-        if(self.superview != nil
-            && !_ZFP_ZFUIViewImpl_sys_iOS_isImplView(self.superview))
+        if(self._ZFP_ownerZFUIView->viewParent() == zfnull)
         {
             self._ZFP_impl->notifyNeedLayout(self._ZFP_ownerZFUIView);
         }
@@ -191,8 +147,7 @@ static zftimet _ZFP_ZFUIViewImpl_sys_iOS_timestamp(void)
 {
     self._ZFP_layoutRequested = NO;
     [super layoutSubviews];
-    if(self.superview != nil
-        && !_ZFP_ZFUIViewImpl_sys_iOS_isImplView(self.superview))
+    if(self._ZFP_ownerZFUIView->viewParent() == zfnull)
     {
         self._ZFP_impl->notifyLayoutRootView(self._ZFP_ownerZFUIView, ZFImpl_sys_iOS_ZFUIKit_ZFUIRectFromCGRect(self.frame));
     }
@@ -335,260 +290,6 @@ static zftimet _ZFP_ZFUIViewImpl_sys_iOS_timestamp(void)
 }
 @end
 
-@interface _ZFP_ZFUIViewImpl_sys_iOS_ScrollViewInternal : UIScrollView
-@property (nonatomic, assign) CGPoint _ZFP_mouseDrag;
-@property (nonatomic, assign) CGPoint _ZFP_mouseDragPrevPos;
-@property (nonatomic, assign) zfbool _ZFP_mouseDragOverride;
-@property (nonatomic, assign) ZFUIRect _ZFP_scrollContentFrame;
-@end
-@implementation _ZFP_ZFUIViewImpl_sys_iOS_ScrollViewInternal
-@synthesize
-    _ZFP_mouseDrag,
-    _ZFP_mouseDragPrevPos,
-    _ZFP_mouseDragOverride,
-    _ZFP_scrollContentFrame;
-- (BOOL)touchesShouldCancelInContentView:(UIView *)view
-{
-    if([view isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]])
-    {
-        return !(((_ZFP_ZFUIViewImpl_sys_iOS_View *)view)._ZFP_uiEnable);
-    }
-    return [super touchesShouldCancelInContentView:view];
-}
-- (void)set_ZFP_scrollContentFrame:(ZFUIRect)newScrollContentFrame ZFImpl_sys_iOS_overrideProperty
-{
-    self->_ZFP_scrollContentFrame = newScrollContentFrame;
-
-    self._ZFP_mouseDragOverride = zftrue;
-    self.contentSize = ZFImpl_sys_iOS_ZFUIKit_ZFUISizeToCGSize(newScrollContentFrame.size);
-    [self setContentOffset:CGPointMake(-newScrollContentFrame.point.x, -newScrollContentFrame.point.y) animated:NO];
-    self._ZFP_mouseDragPrevPos = self.contentOffset;
-    self._ZFP_mouseDragOverride = zffalse;
-}
-@end
-
-@interface _ZFP_ZFUIViewImpl_sys_iOS_ScrollView : _ZFP_ZFUIViewImpl_sys_iOS_View<UIScrollViewDelegate>
-@property (nonatomic, assign) ZFUIScrollView *_ZFP_ownerZFUIScrollView;
-@property (nonatomic, readonly) _ZFP_ZFUIViewImpl_sys_iOS_ScrollViewInternal *_ZFP_scrollView;
-@property (nonatomic, assign) zfbool _ZFP_layoutFlag;
-
-- (void)_ZFP_scrollViewInternalBgViewAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex;
-- (void)_ZFP_scrollViewInternalBgViewRemoveAtVirtualIndex:(zfindex)atVirtualIndex;
-
-- (void)_ZFP_scrollViewAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex;
-- (void)_ZFP_scrollViewRemoveAtVirtualIndex:(zfindex)atVirtualIndex;
-
-- (void)_ZFP_scrollViewInternalFgViewAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex;
-- (void)_ZFP_scrollViewInternalFgViewRemoveAtVirtualIndex:(zfindex)atVirtualIndex;
-
-@property (nonatomic, assign) zfindex _ZFP_scrollViewBgViewCount;
-@property (nonatomic, assign) zfindex _ZFP_scrollViewCenterViewCount;
-@property (nonatomic, retain) NSMutableArray *_ZFP_scrollViewContentViews;
-@property (nonatomic, retain) NSTimer *_ZFP_scrollImplScrollAnimationTimer;
-- (void)_ZFP_scrollContentFrameFix;
-- (void)_ZFP_scrollImplScrollAnimationTimerEvent:(id)dummy;
-@end
-@implementation _ZFP_ZFUIViewImpl_sys_iOS_ScrollView
-@synthesize
-    _ZFP_ownerZFUIScrollView,
-    _ZFP_scrollView;
-@synthesize
-    _ZFP_scrollViewBgViewCount,
-    _ZFP_scrollViewCenterViewCount,
-    _ZFP_scrollViewContentViews,
-    _ZFP_scrollImplScrollAnimationTimer;
-- (id)init
-{
-    self = [super init];
-
-    self._ZFP_scrollViewContentViews = [[NSMutableArray new] autorelease];
-
-    self._ZFP_scrollViewCenterViewCount = 0;
-
-    // add a dummy button for blocking touch event from background
-    [self _ZFP_childAdd:[UIButton buttonWithType:UIButtonTypeCustom] atVirtualIndex:0 childLayer:ZFUIViewChildLayer::e_Background];
-    self._ZFP_scrollViewCenterViewCount += 1;
-
-    // add the scroll view
-    self->_ZFP_scrollView = [_ZFP_ZFUIViewImpl_sys_iOS_ScrollViewInternal new];
-    [self _ZFP_childAdd:self._ZFP_scrollView atVirtualIndex:1 childLayer:ZFUIViewChildLayer::e_Background];
-    self._ZFP_scrollViewCenterViewCount += 1;
-    self._ZFP_scrollView.delegate = self;
-
-    self._ZFP_scrollView.bounces = YES;
-    self._ZFP_scrollView.alwaysBounceHorizontal = NO;
-    self._ZFP_scrollView.alwaysBounceVertical = NO;
-
-    self._ZFP_scrollView.showsHorizontalScrollIndicator = NO;
-    self._ZFP_scrollView.showsVerticalScrollIndicator = NO;
-
-    self._ZFP_scrollView.exclusiveTouch = YES;
-
-    return self;
-}
-- (void)dealloc
-{
-    [self->_ZFP_scrollView release];
-    self->_ZFP_scrollView = nil;
-
-    self._ZFP_scrollViewContentViews = nil;
-
-    [super dealloc];
-}
-- (void)set_ZFP_ownerZFUIView:(ZFUIView *)newOwnerZFUIView ZFImpl_sys_iOS_overrideProperty
-{
-    [super set_ZFP_ownerZFUIView:newOwnerZFUIView];
-    self._ZFP_ownerZFUIScrollView = ZFCastZFObject(ZFUIScrollView *, newOwnerZFUIView);
-}
-
-- (void)_ZFP_scrollViewInternalBgViewAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex
-{
-    self._ZFP_scrollViewBgViewCount += 1;
-    [self _ZFP_childAdd:view atVirtualIndex:(NSUInteger)atVirtualIndex childLayer:ZFUIViewChildLayer::e_Background];
-}
-- (void)_ZFP_scrollViewInternalBgViewRemoveAtVirtualIndex:(zfindex)atVirtualIndex
-{
-    self._ZFP_scrollViewBgViewCount -= 1;
-    [self _ZFP_childRemoveAtVirtualIndex:(NSUInteger)atVirtualIndex childLayer:ZFUIViewChildLayer::e_Background];
-}
-
-- (void)_ZFP_scrollViewAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex
-{
-    if(atVirtualIndex == (zfindex)[self._ZFP_scrollViewContentViews count])
-    {
-        [self._ZFP_scrollViewContentViews addObject:view];
-        [self._ZFP_scrollView addSubview:view];
-    }
-    else
-    {
-        [self._ZFP_scrollViewContentViews insertObject:view atIndex:(NSUInteger)atVirtualIndex];
-        [self._ZFP_scrollView insertSubview:view aboveSubview:[self._ZFP_scrollViewContentViews objectAtIndex:(NSUInteger)atVirtualIndex]];
-    }
-}
-- (void)_ZFP_scrollViewRemoveAtVirtualIndex:(zfindex)atVirtualIndex
-{
-    UIView *child = [[[self._ZFP_scrollViewContentViews objectAtIndex:(NSUInteger)atVirtualIndex] retain] autorelease];
-    [self._ZFP_scrollViewContentViews removeObjectAtIndex:(NSUInteger)atVirtualIndex];
-    [child removeFromSuperview];
-}
-
-- (void)_ZFP_scrollViewInternalFgViewAdd:(UIView *)view atVirtualIndex:(zfindex)atVirtualIndex
-{
-    [self _ZFP_childAdd:view atVirtualIndex:(self._ZFP_scrollViewBgViewCount + self._ZFP_scrollViewCenterViewCount + atVirtualIndex) childLayer:ZFUIViewChildLayer::e_Foreground];
-}
-- (void)_ZFP_scrollViewInternalFgViewRemoveAtVirtualIndex:(zfindex)atVirtualIndex
-{
-    [self _ZFP_childRemoveAtVirtualIndex:(self._ZFP_scrollViewBgViewCount + self._ZFP_scrollViewCenterViewCount + atVirtualIndex) childLayer:ZFUIViewChildLayer::e_Foreground];
-}
-
-// scroll logic
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
-    self._ZFP_scrollView._ZFP_mouseDrag = point;
-    UITouch *touch = [[event allTouches] anyObject];
-    if(touch.phase == UITouchPhaseBegan)
-    {
-        self._ZFP_ownerZFUIScrollView->scrollContentFrameSet(self._ZFP_ownerZFUIScrollView->scrollContentFrame());
-    }
-    return [super hitTest:point withEvent:event];
-}
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self _ZFP_scrollContentFrameFix];
-    self._ZFP_scrollView._ZFP_mouseDragPrevPos = self._ZFP_scrollView.contentOffset;
-    self._ZFP_scrollView._ZFP_mouseDragOverride = zffalse;
-    self._ZFP_impl->notifyScrollViewDragBegin(
-        self._ZFP_ownerZFUIScrollView,
-        ZFImpl_sys_iOS_ZFUIKit_ZFUIPointFromCGPoint(self._ZFP_scrollView._ZFP_mouseDrag),
-        _ZFP_ZFUIViewImpl_sys_iOS_timestamp());
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(self._ZFP_layoutFlag)
-    {
-        self._ZFP_scrollView._ZFP_scrollContentFrame = self._ZFP_scrollView._ZFP_scrollContentFrame;
-        return ;
-    }
-
-    if(self._ZFP_scrollView.dragging)
-    {
-        if(!self._ZFP_scrollView._ZFP_mouseDragOverride)
-        {
-            self._ZFP_scrollView._ZFP_mouseDrag = CGPointMake(
-                self._ZFP_scrollView._ZFP_mouseDrag.x - (self._ZFP_scrollView.contentOffset.x - self._ZFP_scrollView._ZFP_mouseDragPrevPos.x),
-                self._ZFP_scrollView._ZFP_mouseDrag.y - (self._ZFP_scrollView.contentOffset.y - self._ZFP_scrollView._ZFP_mouseDragPrevPos.y));
-
-            self._ZFP_impl->notifyScrollViewDrag(
-                self._ZFP_ownerZFUIScrollView,
-                ZFImpl_sys_iOS_ZFUIKit_ZFUIPointFromCGPoint(self._ZFP_scrollView._ZFP_mouseDrag),
-                _ZFP_ZFUIViewImpl_sys_iOS_timestamp());
-        }
-    }
-    self._ZFP_scrollView._ZFP_mouseDragPrevPos = self._ZFP_scrollView.contentOffset;
-}
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    *targetContentOffset = self._ZFP_scrollView.contentOffset;
-    // iOS9 or later would have strange decerlating logic,
-    // which would cause shake when bounce back,
-    // force update contentOffset once, to prevent shake
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self._ZFP_scrollView setContentOffset:self._ZFP_scrollView.contentOffset animated:NO];
-    });
-}
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    self._ZFP_impl->notifyScrollViewDragEnd(self._ZFP_ownerZFUIScrollView, _ZFP_ZFUIViewImpl_sys_iOS_timestamp(), zftrue);
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self _ZFP_scrollContentFrameFix];
-}
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    [self _ZFP_scrollContentFrameFix];
-}
-- (void)_ZFP_scrollContentFrameFix
-{
-    self._ZFP_impl->scrollViewScrollContentFrameSetForImpl(
-        self._ZFP_ownerZFUIScrollView,
-        ZFUIRectMake(
-            zfmRound(-self._ZFP_scrollView.contentOffset.x),
-            zfmRound(-self._ZFP_scrollView.contentOffset.y),
-            zfmRound(self._ZFP_scrollView.contentSize.width),
-            zfmRound(self._ZFP_scrollView.contentSize.height)));
-}
-- (void)_ZFP_scrollImplScrollAnimationTimerEvent:(id)dummy
-{
-    if(self._ZFP_scrollImplScrollAnimationTimer != nil)
-    {
-        self._ZFP_impl->notifyScrollViewScrollAnimation(self._ZFP_ownerZFUIScrollView, _ZFP_ZFUIViewImpl_sys_iOS_timestamp());
-    }
-}
-
-- (void)layoutSubviews
-{
-    self._ZFP_layoutFlag = zftrue;
-    [super layoutSubviews];
-    for(NSUInteger i = 0; i < [self._ZFP_scrollViewContentViews count]; ++i)
-    {
-        _ZFP_ZFUIViewImpl_sys_iOS_View *child = (_ZFP_ZFUIViewImpl_sys_iOS_View *)[self._ZFP_scrollViewContentViews objectAtIndex:i];
-        child.frame = child._ZFP_frame;
-    }
-    self._ZFP_layoutFlag = zffalse;
-}
-
-- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
-{
-    return NO;
-}
-@end
-
-static BOOL _ZFP_ZFUIViewImpl_sys_iOS_isImplView(id obj)
-{
-    return [obj isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]] || [obj isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_ScrollViewInternal class]];
-}
-
 static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativeImplView)
 {
     if([nativeImplView isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]])
@@ -665,20 +366,10 @@ public:
 public:
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view)
     {
-        if(!view->classData()->classIsSubclassOf(ZFUIScrollView::ClassData()))
-        {
-            _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = [_ZFP_ZFUIViewImpl_sys_iOS_View new];
-            nativeView._ZFP_impl = this;
-            nativeView._ZFP_ownerZFUIView = view;
-            return nativeView;
-        }
-        else
-        {
-            _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeView = [_ZFP_ZFUIViewImpl_sys_iOS_ScrollView new];
-            nativeView._ZFP_impl = this;
-            nativeView._ZFP_ownerZFUIView = view;
-            return nativeView;
-        }
+        _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = [_ZFP_ZFUIViewImpl_sys_iOS_View new];
+        nativeView._ZFP_impl = this;
+        nativeView._ZFP_ownerZFUIView = view;
+        return nativeView;
     }
     virtual void nativeViewDestroy(ZF_IN ZFUIView *view,
                                    ZF_IN void *nativeView)
@@ -688,9 +379,19 @@ public:
 
     virtual void nativeImplViewSet(ZF_IN ZFUIView *view,
                                    ZF_IN void *nativeImplViewOld,
-                                   ZF_IN void *nativeImplView)
+                                   ZF_IN void *nativeImplView,
+                                   ZF_IN zfindex virtualIndex)
     {
-        ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_View *, view->nativeView())._ZFP_nativeImplView = ZFCastStatic(UIView *, nativeImplView);
+        _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_View *, view->nativeView());
+        if(nativeView._ZFP_nativeImplView != nil)
+        {
+            [nativeView._ZFP_nativeImplView removeFromSuperview];
+        }
+        nativeView._ZFP_nativeImplView = ZFCastStatic(UIView *, nativeImplView);
+        if(nativeView._ZFP_nativeImplView != nil)
+        {
+            [nativeView insertSubview:nativeView._ZFP_nativeImplView atIndex:virtualIndex];
+        }
     }
     virtual zffloat nativeViewScaleForImpl(ZF_IN void *nativeView)
     {
@@ -732,105 +433,23 @@ public:
     }
 
 public:
-    virtual void scrollViewScrollEnableSet(ZF_IN ZFUIScrollView *scrollView,
-                                           ZF_IN zfbool scrollEnable)
-    {
-        ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, scrollView->nativeView())._ZFP_scrollView.scrollEnabled = scrollEnable;
-    }
-    virtual void scrollViewScrollBounceSet(ZF_IN ZFUIScrollView *scrollView,
-                                           ZF_IN zfbool scrollBounceHorizontal,
-                                           ZF_IN zfbool scrollBounceVertical,
-                                           ZF_IN zfbool scrollBounceHorizontalAlways,
-                                           ZF_IN zfbool scrollBounceVerticalAlways)
-    {
-        _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, scrollView->nativeView());
-        nativeScrollView._ZFP_scrollView.bounces = (scrollBounceHorizontal || scrollBounceVertical);
-        nativeScrollView._ZFP_scrollView.alwaysBounceHorizontal = scrollBounceHorizontalAlways;
-        nativeScrollView._ZFP_scrollView.alwaysBounceVertical = scrollBounceVerticalAlways;
-    }
-    virtual void scrollViewScrollContentFrameSet(ZF_IN ZFUIScrollView *scrollView,
-                                                 ZF_IN const ZFUIRect &frame)
-    {
-        _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, scrollView->nativeView());
-        nativeScrollView._ZFP_scrollView._ZFP_scrollContentFrame = frame;
-    }
-    virtual zftimet scrollViewScrollAnimationStart(ZF_IN ZFUIScrollView *scrollView)
-    {
-        _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, scrollView->nativeView());
-        nativeScrollView._ZFP_scrollImplScrollAnimationTimer = [NSTimer timerWithTimeInterval:0.03f target:nativeScrollView selector:@selector(_ZFP_scrollImplScrollAnimationTimerEvent:) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:nativeScrollView._ZFP_scrollImplScrollAnimationTimer forMode:NSRunLoopCommonModes];
-        return _ZFP_ZFUIViewImpl_sys_iOS_timestamp();
-    }
-    virtual void scrollViewScrollAnimationStop(ZF_IN ZFUIScrollView *scrollView)
-    {
-        _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, scrollView->nativeView());
-        [nativeScrollView._ZFP_scrollImplScrollAnimationTimer invalidate];
-        nativeScrollView._ZFP_scrollImplScrollAnimationTimer = nil;
-    }
-
-public:
     virtual void childAdd(ZF_IN ZFUIView *parent,
                           ZF_IN ZFUIView *child,
-                          ZF_IN zfindex atIndex,
+                          ZF_IN zfindex virtualIndex,
                           ZF_IN ZFUIViewChildLayerEnum childLayer,
                           ZF_IN zfindex childLayerIndex)
     {
-        if(!parent->classData()->classIsSubclassOf(ZFUIScrollView::ClassData()))
-        {
-            [ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_View *, parent->nativeView())
-                _ZFP_childAdd:ZFCastStatic(UIView *, child->nativeView())
-                atVirtualIndex:atIndex
-                childLayer:childLayer];
-        }
-        else
-        {
-            _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, parent->nativeView());
-            UIView *nativeChildView = ZFCastStatic(UIView *, child->nativeView());
-            switch(childLayer)
-            {
-                case ZFUIViewChildLayer::e_Background:
-                    [nativeScrollView _ZFP_scrollViewInternalBgViewAdd:nativeChildView atVirtualIndex:childLayerIndex];
-                    break;
-                case ZFUIViewChildLayer::e_Normal:
-                    [nativeScrollView _ZFP_scrollViewAdd:nativeChildView atVirtualIndex:childLayerIndex];
-                    break;
-                case ZFUIViewChildLayer::e_Foreground:
-                    [nativeScrollView _ZFP_scrollViewInternalFgViewAdd:nativeChildView atVirtualIndex:childLayerIndex];
-                    break;
-                default:
-                    zfCoreCriticalShouldNotGoHere();
-                    return ;
-            }
-        }
+        [ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_View *, parent->nativeView())
+            insertSubview:ZFCastStatic(UIView *, child->nativeView())
+            atIndex:virtualIndex];
     }
     virtual void childRemove(ZF_IN ZFUIView *parent,
-                             ZF_IN zfindex atIndex,
+                             ZF_IN ZFUIView *child,
+                             ZF_IN zfindex virtualIndex,
                              ZF_IN ZFUIViewChildLayerEnum childLayer,
                              ZF_IN zfindex childLayerIndex)
     {
-        if(!parent->classData()->classIsSubclassOf(ZFUIScrollView::ClassData()))
-        {
-            [ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_View *, parent->nativeView()) _ZFP_childRemoveAtVirtualIndex:atIndex childLayer:childLayer];
-        }
-        else
-        {
-            _ZFP_ZFUIViewImpl_sys_iOS_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_iOS_ScrollView *, parent->nativeView());
-            switch(childLayer)
-            {
-                case ZFUIViewChildLayer::e_Background:
-                    [nativeScrollView _ZFP_scrollViewInternalBgViewRemoveAtVirtualIndex:childLayerIndex];
-                    break;
-                case ZFUIViewChildLayer::e_Normal:
-                    [nativeScrollView _ZFP_scrollViewRemoveAtVirtualIndex:childLayerIndex];
-                    break;
-                case ZFUIViewChildLayer::e_Foreground:
-                    [nativeScrollView _ZFP_scrollViewInternalFgViewRemoveAtVirtualIndex:childLayerIndex];
-                    break;
-                default:
-                    zfCoreCriticalShouldNotGoHere();
-                    return ;
-            }
-        }
+        [ZFCastStatic(UIView *, child->nativeView()) removeFromSuperview];
     }
 
 public:

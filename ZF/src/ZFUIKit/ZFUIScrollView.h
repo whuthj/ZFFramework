@@ -236,6 +236,17 @@ protected:
     // override ZFUIView
 protected:
     zfoverride
+    virtual void implChildOnAdd(ZF_IN ZFUIView *child,
+                                ZF_IN zfindex virtualIndex,
+                                ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                ZF_IN zfindex childLayerIndex);
+    zfoverride
+    virtual void implChildOnRemove(ZF_IN ZFUIView *child,
+                                   ZF_IN zfindex virtualIndex,
+                                   ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                   ZF_IN zfindex childLayerIndex);
+protected:
+    zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds);
     /**
      * @brief override ZFUIView to layout scroll view's internal view and content view

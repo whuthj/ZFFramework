@@ -9,8 +9,6 @@
 package com.ZFFramework.Android.ZFUIKit;
 
 import java.lang.ref.WeakReference;
-import com.ZFFramework.Android.NativeEnum.ZFUIKit.ZFUIViewChildLayer;
-import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
 import com.ZFFramework.Android.ZFCore.ZFMainEntry;
 import android.content.Context;
 import android.os.Handler;
@@ -23,6 +21,7 @@ import android.view.ViewParent;
 
 public class ZFUIScrollView extends ZFUIView {
     // ============================================================
+    public long zfjniPointerOwnerZFUIScrollView = 0;
     public boolean scrollEnable = true;
     public boolean scrollBounceHorizontal = true;
     public boolean scrollBounceVertical = true;
@@ -30,36 +29,36 @@ public class ZFUIScrollView extends ZFUIView {
     public boolean scrollBounceVerticalAlways = false;
 
     // ============================================================
-    public static Object native_ZFUIScrollView_nativeViewCreate(long zfjniPointerOwnerZFUIView) {
+    public static Object native_nativeScrollViewCreate(long zfjniPointerOwnerZFUIScrollView) {
         ZFUIScrollView ret = new ZFUIScrollView(ZFMainEntry.appContext());
-        ret.zfjniPointerOwnerZFUIView = zfjniPointerOwnerZFUIView;
+        ret.zfjniPointerOwnerZFUIScrollView = zfjniPointerOwnerZFUIScrollView;
         return ret;
     }
 
-    public static void native_ZFUIScrollView_scrollViewScrollEnableSet(Object nativeView,
-                                                                       boolean scrollEnable) {
+    public static void native_scrollViewScrollEnableSet(Object nativeView,
+                                                        boolean scrollEnable) {
         ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
         nativeViewTmp.scrollEnable = scrollEnable;
     }
-    public static void native_ZFUIScrollView_scrollViewScrollBounceSet(Object nativeView,
-                                                                       boolean scrollBounceHorizontal,
-                                                                       boolean scrollBounceVertical,
-                                                                       boolean scrollBounceHorizontalAlways,
-                                                                       boolean scrollBounceVerticalAlways) {
+    public static void native_scrollViewScrollBounceSet(Object nativeView,
+                                                        boolean scrollBounceHorizontal,
+                                                        boolean scrollBounceVertical,
+                                                        boolean scrollBounceHorizontalAlways,
+                                                        boolean scrollBounceVerticalAlways) {
         ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
         nativeViewTmp.scrollBounceHorizontal = scrollBounceHorizontal;
         nativeViewTmp.scrollBounceVertical = scrollBounceVertical;
         nativeViewTmp.scrollBounceHorizontalAlways = scrollBounceHorizontalAlways;
         nativeViewTmp.scrollBounceVerticalAlways = scrollBounceVerticalAlways;
     }
-    public static void native_ZFUIScrollView_scrollViewScrollContentFrameSet(Object nativeView,
-                                                                             int contentFrame_x,
-                                                                             int contentFrame_y,
-                                                                             int contentFrame_width,
-                                                                             int contentFrame_height)
+    public static void native_scrollViewScrollContentFrameSet(Object nativeView,
+                                                              int contentFrame_x,
+                                                              int contentFrame_y,
+                                                              int contentFrame_width,
+                                                              int contentFrame_height)
     {
         ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
-        ZFUIView.native_ZFUIView_viewFrameSet(nativeViewTmp._contentLayout,
+        ZFUIView.native_viewFrameSet(nativeViewTmp._contentLayout,
             contentFrame_x, contentFrame_y, contentFrame_width, contentFrame_height);
         ZFUIView.requestLayoutOverride = true;
         nativeViewTmp.requestLayout();
@@ -74,21 +73,21 @@ public class ZFUIScrollView extends ZFUIView {
             super.handleMessage(msg);
             ZFUIScrollView scrollView = (ZFUIScrollView)msg.obj;
             if(scrollView._scrollAnimating && scrollView._scrollAniTaskId == msg.what) {
-                ZFUIScrollView.native_ZFUIScrollView_notifyScrollViewScrollAnimation(
-                    scrollView.zfjniPointerOwnerZFUIView, System.currentTimeMillis());
+                ZFUIScrollView.native_notifyScrollViewScrollAnimation(
+                    scrollView.zfjniPointerOwnerZFUIScrollView, System.currentTimeMillis());
                 _scrollAniTimerHandler.sendMessageDelayed(Message.obtain(
                     _scrollAniTimerHandler, scrollView._scrollAniTaskId, scrollView), 10);
             }
         }
     };
-    public static long native_ZFUIScrollView_scrollViewScrollAnimationStart(Object nativeView) {
+    public static long native_scrollViewScrollAnimationStart(Object nativeView) {
         ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
         ++nativeViewTmp._scrollAniTaskId;
         nativeViewTmp._scrollAnimating = true;
         _scrollAniTimerHandler.sendMessage(Message.obtain(_scrollAniTimerHandler, nativeViewTmp._scrollAniTaskId, nativeViewTmp));
         return System.currentTimeMillis();
     }
-    public static void native_ZFUIScrollView_scrollViewScrollAnimationStop(Object nativeView) {
+    public static void native_scrollViewScrollAnimationStop(Object nativeView) {
         ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
         if(nativeViewTmp._scrollAnimating) {
             _scrollAniTimerHandler.removeMessages(nativeViewTmp._scrollAniTaskId, nativeViewTmp);
@@ -97,44 +96,16 @@ public class ZFUIScrollView extends ZFUIView {
         }
     }
 
-    public static void native_ZFUIScrollView_childAdd(Object nativeView,
-                                                      Object nativeChild,
-                                                      int atIndex,
-                                                      int childLayer,
-                                                      int childLayerIndex) {
+    public static void native_scrollChildAdd(Object nativeView,
+                                             Object nativeChild,
+                                             int atIndex) {
         ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
-        if(childLayer == ZFUIViewChildLayer.e_Normal) {
-            nativeViewTmp._contentLayout.addView((View)nativeChild, childLayerIndex);
-        }
-        else if(childLayer == ZFUIViewChildLayer.e_Background) {
-            ++nativeViewTmp._scrollViewBgViewCount;
-            nativeViewTmp.addView((View)nativeChild, childLayerIndex);
-        }
-        else if(childLayer == ZFUIViewChildLayer.e_Foreground) {
-            nativeViewTmp.addView((View)nativeChild, nativeViewTmp._scrollViewBgViewCount + 1 + childLayerIndex);
-        }
-        else {
-            ZFAndroidLog.shouldNotGoHere();
-        }
+        nativeViewTmp._contentLayout.addView((View)nativeChild, atIndex);
     }
-    public static void native_ZFUIScrollView_childRemove(Object nativeView,
-                                                         int atIndex,
-                                                         int childLayer,
-                                                         int childLayerIndex) {
+    public static void native_scrollChildRemove(Object nativeView,
+                                                int atIndex) {
          ZFUIScrollView nativeViewTmp = (ZFUIScrollView)nativeView;
-         if(childLayer == ZFUIViewChildLayer.e_Normal) {
-             nativeViewTmp._contentLayout.removeViewAt(childLayerIndex);
-         }
-         else if(childLayer == ZFUIViewChildLayer.e_Background) {
-             --nativeViewTmp._scrollViewBgViewCount;
-             nativeViewTmp.removeViewAt(childLayerIndex);
-         }
-         else if(childLayer == ZFUIViewChildLayer.e_Foreground) {
-             nativeViewTmp.removeViewAt(nativeViewTmp._scrollViewBgViewCount + 1 + childLayerIndex);
-         }
-         else {
-             ZFAndroidLog.shouldNotGoHere();
-         }
+         nativeViewTmp._contentLayout.removeViewAt(atIndex);
      }
 
     private static class ScrollContentLayout extends ZFUIView {
@@ -144,19 +115,19 @@ public class ZFUIScrollView extends ZFUIView {
     }
 
     // ============================================================
-    private static native void native_ZFUIScrollView_notifyScrollViewDragBegin(long zfjniPointerOwnerZFUIView,
-                                                                               int mousePosX,
-                                                                               int mousePosY,
-                                                                               long mouseTime);
-    private static native void native_ZFUIScrollView_notifyScrollViewDrag(long zfjniPointerOwnerZFUIView,
-                                                                          int mousePosX,
-                                                                          int mousePosY,
-                                                                          long mouseTime);
-    private static native void native_ZFUIScrollView_notifyScrollViewDragEnd(long zfjniPointerOwnerZFUIView,
-                                                                             long mouseTime,
-                                                                             boolean needScrollAni);
-    private static native void native_ZFUIScrollView_notifyScrollViewScrollAnimation(long zfjniPointerOwnerZFUIView,
-                                                                                     long relativeTimeInMiliseconds);
+    private static native void native_notifyScrollViewDragBegin(long zfjniPointerOwnerZFUIScrollView,
+                                                                int mousePosX,
+                                                                int mousePosY,
+                                                                long mouseTime);
+    private static native void native_notifyScrollViewDrag(long zfjniPointerOwnerZFUIScrollView,
+                                                           int mousePosX,
+                                                           int mousePosY,
+                                                           long mouseTime);
+    private static native void native_notifyScrollViewDragEnd(long zfjniPointerOwnerZFUIScrollView,
+                                                              long mouseTime,
+                                                              boolean needScrollAni);
+    private static native void native_notifyScrollViewScrollAnimation(long zfjniPointerOwnerZFUIScrollView,
+                                                                      long relativeTimeInMiliseconds);
 
     // ============================================================
     private ScrollContentLayout _contentLayout = null;
@@ -434,16 +405,16 @@ public class ZFUIScrollView extends ZFUIView {
         }
 
         private void _dragNotifyBegin(MotionEvent ev) {
-            ZFUIScrollView.native_ZFUIScrollView_notifyScrollViewDragBegin(this.owner.get().zfjniPointerOwnerZFUIView, (int)ev.getX(), (int)ev.getY(), System.currentTimeMillis());
+            ZFUIScrollView.native_notifyScrollViewDragBegin(this.owner.get().zfjniPointerOwnerZFUIScrollView, (int)ev.getX(), (int)ev.getY(), System.currentTimeMillis());
         }
         private void _dragNotifyMove(MotionEvent ev) {
-            ZFUIScrollView.native_ZFUIScrollView_notifyScrollViewDrag(this.owner.get().zfjniPointerOwnerZFUIView, (int)ev.getX(), (int)ev.getY(), System.currentTimeMillis());
+            ZFUIScrollView.native_notifyScrollViewDrag(this.owner.get().zfjniPointerOwnerZFUIScrollView, (int)ev.getX(), (int)ev.getY(), System.currentTimeMillis());
         }
         private void _dragNotifyEnd(MotionEvent ev) {
-            ZFUIScrollView.native_ZFUIScrollView_notifyScrollViewDragEnd(this.owner.get().zfjniPointerOwnerZFUIView, System.currentTimeMillis(), true);
+            ZFUIScrollView.native_notifyScrollViewDragEnd(this.owner.get().zfjniPointerOwnerZFUIScrollView, System.currentTimeMillis(), true);
         }
         private void _dragNotifyCancel(MotionEvent ev) {
-            ZFUIScrollView.native_ZFUIScrollView_notifyScrollViewDragEnd(this.owner.get().zfjniPointerOwnerZFUIView, System.currentTimeMillis(), false);
+            ZFUIScrollView.native_notifyScrollViewDragEnd(this.owner.get().zfjniPointerOwnerZFUIScrollView, System.currentTimeMillis(), false);
         }
 
         // ============================================================

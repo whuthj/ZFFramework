@@ -170,17 +170,35 @@ public:
     }
     zfindex viewLayerPrevCount(ZF_IN _ZFP_ZFUIViewLayerData &layer)
     {
-        if(&layer == &(this->layerNormal))
+        if(this->nativeImplView != zfnull)
         {
-            return this->layerInternalBg.views.count();
-        }
-        else if(&layer == &(this->layerInternalBg))
-        {
-            return 0;
+            if(&layer == &(this->layerNormal))
+            {
+                return this->layerInternalBg.views.count() + 1;
+            }
+            else if(&layer == &(this->layerInternalBg))
+            {
+                return 1;
+            }
+            else
+            {
+                return this->layerInternalBg.views.count() + this->layerNormal.views.count() + 1;
+            }
         }
         else
         {
-            return this->layerInternalBg.views.count() + this->layerNormal.views.count();
+            if(&layer == &(this->layerNormal))
+            {
+                return this->layerInternalBg.views.count();
+            }
+            else if(&layer == &(this->layerInternalBg))
+            {
+                return 0;
+            }
+            else
+            {
+                return this->layerInternalBg.views.count() + this->layerNormal.views.count();
+            }
         }
     }
     void checkUpdateChildScale(ZF_IN ZFUIView *child)
@@ -228,7 +246,7 @@ public:
             atIndex = layer.views.count();
         }
         layer.views.add(atIndex, view);
-        this->impl->childAdd(this->thisView, view, this->viewLayerPrevCount(layer) + atIndex, childLayer, atIndex);
+        this->thisView->implChildOnAdd(view, this->viewLayerPrevCount(layer) + atIndex, childLayer, atIndex);
 
         this->thisView->layoutRequest();
         view->layoutRequest();
@@ -258,19 +276,19 @@ public:
                             ZF_IN _ZFP_ZFUIViewLayerData &layer,
                             ZF_IN zfindex index)
     {
-        ZFUIView *view = ZFCastZFObjectUnchecked(ZFUIView *, layer.views.get(index));
+        ZFUIView *child = layer.views.get(index);
 
-        view->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
+        child->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
         layer.views.remove(index);
-        this->impl->childRemove(this->thisView, this->viewLayerPrevCount(layer) + index, childLayer, index);
+        this->thisView->implChildOnRemove(child, this->viewLayerPrevCount(layer) + index, childLayer, index);
 
         this->thisView->layoutRequest();
 
         ZFUIView *virtualParent = ((this->viewDelegateParent != zfnull) ? this->viewDelegateParent : this->thisView);
-        virtualParent->viewChildOnRemove(view, childLayer);
-        view->viewOnRemoveFromParent(virtualParent);
+        virtualParent->viewChildOnRemove(child, childLayer);
+        child->viewOnRemoveFromParent(virtualParent);
         virtualParent->viewChildOnChange();
-        zfRelease(view);
+        zfRelease(child);
     }
     void removeAllView(ZF_IN ZFUIViewChildLayerEnum childLayer,
                        ZF_IN _ZFP_ZFUIViewLayerData &layer)
@@ -282,15 +300,14 @@ public:
 
         this->thisView->layoutRequest();
 
-        ZFCoreArrayPOD<ZFUIView *> tmp;
-        tmp.copyFrom(layer.views);
-        layer.views.removeAll();
+        ZFCoreArrayPOD<ZFUIView *> tmp = layer.views;
+        layer.views = ZFCoreArrayPOD<ZFUIView *>();
 
         zfindex prevLayerCount = this->viewLayerPrevCount(layer);
         for(zfindex i = tmp.count() - 1; i != zfindexMax; --i)
         {
             tmp[i]->_ZFP_ZFUIView_parentChanged(zfnull, zfnull, ZFUIViewChildLayer::e_Normal);
-            this->impl->childRemove(this->thisView, prevLayerCount + i, childLayer, i);
+            this->thisView->implChildOnRemove(tmp[i], prevLayerCount + i, childLayer, i);
         }
 
         ZFUIView *virtualParent = ((this->viewDelegateParent != zfnull) ? this->viewDelegateParent : this->thisView);
@@ -326,15 +343,13 @@ public:
         {
             return ;
         }
+
+        ZFUIView *child = layer.views.get(fromIndex);
         layer.views.move(fromIndex, toIndexOrIndexMax);
 
         zfindex prevLayerCount = this->viewLayerPrevCount(layer);
-        this->impl->childRemove(this->thisView,
-            prevLayerCount + fromIndex,
-            childLayer, fromIndex);
-        this->impl->childAdd(this->thisView, ZFCastZFObjectUnchecked(ZFUIView *, layer.views.get(toIndexOrIndexMax)),
-            prevLayerCount + toIndexOrIndexMax,
-            childLayer, toIndexOrIndexMax);
+        this->thisView->implChildOnRemove(child, prevLayerCount + fromIndex, childLayer, fromIndex);
+        this->thisView->implChildOnAdd(child, prevLayerCount + toIndexOrIndexMax, childLayer, toIndexOrIndexMax);
 
         ZFUIView *virtualParent = ((this->viewDelegateParent != zfnull) ? this->viewDelegateParent : this->thisView);
         virtualParent->viewChildOnChange();
@@ -362,8 +377,8 @@ public:
         ZFUIView *old = layer.views[atIndex];
         layer.views[atIndex] = toReplace;
         zfindex fixedIndex = this->viewLayerPrevCount(layer) + atIndex;
-        this->impl->childRemove(this->thisView, fixedIndex, childLayer, atIndex);
-        this->impl->childAdd(this->thisView, toReplace, fixedIndex, childLayer, atIndex);
+        this->thisView->implChildOnRemove(old, fixedIndex, childLayer, atIndex);
+        this->thisView->implChildOnAdd(toReplace, fixedIndex, childLayer, atIndex);
 
         this->checkUpdateChildScale(toReplace);
         toReplace->_ZFP_ZFUIView_parentChanged(this->thisView, old->layoutParam(), childLayer);
@@ -386,7 +401,7 @@ public:
     ZFUIView *viewAtIndex(ZF_IN _ZFP_ZFUIViewLayerData &layer,
                             ZF_IN zfindex index)
     {
-        return ZFCastZFObjectUnchecked(ZFUIView *, layer.views.get(index));
+        return layer.views.get(index);
     }
     zfindex indexOfView(ZF_IN _ZFP_ZFUIViewLayerData &layer,
                         ZF_IN ZFUIView *view)
@@ -434,7 +449,7 @@ public:
     ZFUIViewLayoutParam *viewLayoutParamAtIndex(ZF_IN _ZFP_ZFUIViewLayerData &layer,
                                                 ZF_IN zfindex index)
     {
-        return ZFCastZFObjectUnchecked(ZFUIView *, layer.views.get(index))->layoutParam();
+        return layer.views.get(index)->layoutParam();
     }
 
     zfbool serializeInternalViewFromCategoryData(ZF_IN zfbool isInternalBackgroundView,
@@ -460,7 +475,7 @@ public:
                 internalView.toObject()->objectInfoOfInstance().cString(), ZFUIView::ClassData()->className());
             return zffalse;
         }
-        ZFUIView *internalViewTmp = ZFCastZFObjectUnchecked(ZFUIView *, internalView.toObject());
+        ZFUIView *internalViewTmp = internalView.to<ZFUIView *>();
         if(internalViewTmp->viewId().isEmpty())
         {
             ZFSerializableUtil::errorOccurred(outErrorHintToAppend, outErrorPos, categoryData,
@@ -611,7 +626,7 @@ zfbool ZFUIView::serializableOnSerializeCategoryFromData(ZF_IN const ZFSerializa
                     element.toObject()->objectInfoOfInstance().cString(), ZFUIView::ClassData()->className());
                 return zffalse;
             }
-            ZFUIView *child = ZFCastZFObjectUnchecked(ZFUIView *, element);
+            ZFUIView *child = element.to<ZFUIView *>();
             this->childAdd(child, child->layoutParam());
 
             categoryData.resolveMark();
@@ -1028,7 +1043,7 @@ void ZFUIView::nativeImplViewSet(ZF_IN void *nativeImplView,
     ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallbackOld = d->nativeImplViewDeleteCallback;
     d->nativeImplView = nativeImplView;
     d->nativeImplViewDeleteCallback = nativeImplViewDeleteCallback;
-    d->impl->nativeImplViewSet(this, nativeImplViewOld, d->nativeImplView);
+    d->impl->nativeImplViewSet(this, nativeImplViewOld, d->nativeImplView, 0);
     if(nativeImplViewOld && nativeImplViewDeleteCallbackOld)
     {
         nativeImplViewDeleteCallbackOld(this, nativeImplViewOld);
@@ -1044,6 +1059,22 @@ void ZFUIView::nativeImplViewMarginUpdate(void)
 const ZFUIMargin &ZFUIView::nativeImplViewMargin(void)
 {
     return d->nativeImplViewMargin;
+}
+
+// ============================================================
+void ZFUIView::implChildOnAdd(ZF_IN ZFUIView *child,
+                              ZF_IN zfindex virtualIndex,
+                              ZF_IN ZFUIViewChildLayerEnum childLayer,
+                              ZF_IN zfindex childLayerIndex)
+{
+    d->impl->childAdd(this, child, virtualIndex, childLayer, childLayerIndex);
+}
+void ZFUIView::implChildOnRemove(ZF_IN ZFUIView *child,
+                                 ZF_IN zfindex virtualIndex,
+                                 ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                 ZF_IN zfindex childLayerIndex)
+{
+    d->impl->childRemove(this, child, virtualIndex, childLayer, childLayerIndex);
 }
 
 // ============================================================

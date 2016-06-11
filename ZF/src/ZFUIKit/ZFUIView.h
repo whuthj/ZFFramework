@@ -381,6 +381,7 @@ protected:
     zfoverride
     virtual void objectCachedOnChange(void);
 
+    // ============================================================
 public:
     zffinal void _ZFP_ZFUIView_notifyLayoutNativeImplView(ZF_OUT ZFUIRect &result);
     /**
@@ -428,6 +429,27 @@ protected:
      * @brief access the margin without update it, see #nativeImplViewMarginUpdate
      */
     zffinal const ZFUIMargin &nativeImplViewMargin(void);
+
+    // ============================================================
+protected:
+    /**
+     * @brief called to add view to impl
+     *
+     * subclass may override this method,
+     * modify the virtualIndex
+     * or add child to other container
+     */
+    virtual void implChildOnAdd(ZF_IN ZFUIView *child,
+                                ZF_IN zfindex virtualIndex,
+                                ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                ZF_IN zfindex childLayerIndex);
+    /**
+     * @brief see #implChildOnAdd
+     */
+    virtual void implChildOnRemove(ZF_IN ZFUIView *child,
+                                   ZF_IN zfindex virtualIndex,
+                                   ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                   ZF_IN zfindex childLayerIndex);
 
 public:
     /**

@@ -13,7 +13,6 @@ import java.util.List;
 import com.ZFFramework.Android.NativeEnum.ZFUIKit.ZFUIKeyAction;
 import com.ZFFramework.Android.NativeEnum.ZFUIKit.ZFUIKeyCode;
 import com.ZFFramework.Android.NativeEnum.ZFUIKit.ZFUIMouseAction;
-import com.ZFFramework.Android.NativeEnum.ZFUIKit.ZFUIViewChildLayer;
 import com.ZFFramework.Android.NativeUtil.ZFAndroidUI;
 import com.ZFFramework.Android.ZFCore.ZFMainEntry;
 import com.ZFFramework.Android.ZFUIKit.NativeType.ZFAndroidRect;
@@ -45,14 +44,14 @@ public class ZFUIView extends ViewGroup {
     private ZFAndroidRect _rectCache = new ZFAndroidRect();
 
     // ============================================================
-    public static Object native_ZFUIView_nativeViewCreate(long zfjniPointerOwnerZFUIView) {
+    public static Object native_nativeViewCreate(long zfjniPointerOwnerZFUIView) {
         ZFUIView ret = new ZFUIView(ZFMainEntry.appContext());
         ret.zfjniPointerOwnerZFUIView = zfjniPointerOwnerZFUIView;
         return ret;
     }
-    public static void native_ZFUIView_nativeImplViewSet(Object nativeView,
-                                                         Object nativeImplView,
-                                                         int internalBgViewCount) {
+    public static void native_nativeImplViewSet(Object nativeView,
+                                                Object nativeImplView,
+                                                int virtualIndex) {
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         View nativeImplViewOld = nativeViewTmp.nativeImplView;
         View nativeImplViewNew = (View)nativeImplView;
@@ -61,79 +60,73 @@ public class ZFUIView extends ViewGroup {
         }
         nativeViewTmp.nativeImplView = nativeImplViewNew;
         if(nativeViewTmp.nativeImplView != null) {
-            nativeViewTmp.addView(nativeViewTmp.nativeImplView, internalBgViewCount);
+            nativeViewTmp.addView(nativeViewTmp.nativeImplView, virtualIndex);
         }
 
         ZFUIViewFocus.ZFUIViewImplChanged(nativeViewTmp, nativeImplViewOld, nativeImplViewNew);
     }
-    public static float native_ZFUIView_nativeViewScaleForImpl(Object nativeView) {
-        return ZFUIView.native_ZFUIView_nativeViewScaleForPhysicalPixel(nativeView);
+    public static float native_nativeViewScaleForImpl(Object nativeView) {
+        return ZFUIView.native_nativeViewScaleForPhysicalPixel(nativeView);
     }
-    public static float native_ZFUIView_nativeViewScaleForPhysicalPixel(Object nativeView) {
+    public static float native_nativeViewScaleForPhysicalPixel(Object nativeView) {
         return ZFAndroidUI.screenDensity(((View)nativeView).getContext());
     }
-    public static void native_ZFUIView_viewVisibleSet(Object nativeView,
+    public static void native_viewVisibleSet(Object nativeView,
                                                       boolean viewVisible) {
         ZFUIView.requestLayoutOverride = true;
         ((ZFUIView)nativeView).setVisibility(viewVisible ? View.VISIBLE : View.GONE);
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_viewAlphaSet(Object nativeView,
-                                                    float viewAlpha) {
+    public static void native_viewAlphaSet(Object nativeView,
+                                           float viewAlpha) {
         ZFUIView.requestLayoutOverride = true;
         ((ZFUIView)nativeView).setAlpha(viewAlpha);
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_viewUIEnableSet(Object nativeView,
-                                                       boolean viewUIEnable) {
+    public static void native_viewUIEnableSet(Object nativeView,
+                                              boolean viewUIEnable) {
         ZFUIView.requestLayoutOverride = true;
         ((ZFUIView)nativeView).viewUIEnable = viewUIEnable;
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_viewUIEnableTreeSet(Object nativeView,
-                                                           boolean viewUIEnableTree) {
+    public static void native_viewUIEnableTreeSet(Object nativeView,
+                                                  boolean viewUIEnableTree) {
         ZFUIView.requestLayoutOverride = true;
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         nativeViewTmp.viewUIEnableTree = viewUIEnableTree;
         nativeViewTmp.setClickable(viewUIEnableTree);
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_viewBackgroundColorSet(Object nativeView,
-                                                              int viewBackgroundColor) {
+    public static void native_viewBackgroundColorSet(Object nativeView,
+                                                     int viewBackgroundColor) {
         ZFUIView.requestLayoutOverride = true;
         ((ZFUIView)nativeView).setBackgroundColor(viewBackgroundColor);
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_childAdd(Object nativeView,
-                                                Object nativeChild,
-                                                int atIndex,
-                                                int childLayer,
-                                                int childLayerIndex) {
+    public static void native_childAdd(Object nativeView,
+                                       Object nativeChild,
+                                       int virtualIndex,
+                                       int childLayer,
+                                       int childLayerIndex) {
         ZFUIView.requestLayoutOverride = true;
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
-        if(childLayer != ZFUIViewChildLayer.e_Background && nativeViewTmp.nativeImplView != null) {
-            ++atIndex;
-        }
-        nativeViewTmp.addView((View)nativeChild, atIndex);
+        nativeViewTmp.addView((View)nativeChild, virtualIndex);
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_childRemove(Object nativeView,
-                                                   int atIndex,
-                                                   int childLayer,
-                                                   int childLayerIndex) {
+    public static void native_childRemove(Object nativeView,
+                                          int virtualIndex,
+                                          int childLayer,
+                                          int childLayerIndex) {
         ZFUIView.requestLayoutOverride = true;
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
-        if(childLayer != ZFUIViewChildLayer.e_Background && nativeViewTmp.nativeImplView != null) {
-            ++atIndex;
-        }
-        nativeViewTmp.removeViewAt(atIndex);
+        nativeViewTmp.removeViewAt(virtualIndex);
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_viewFrameSet(Object nativeView,
-                                                    int viewFrame_x,
-                                                    int viewFrame_y,
-                                                    int viewFrame_width,
-                                                    int viewFrame_height) {
+    public static void native_viewFrameSet(Object nativeView,
+                                           int viewFrame_x,
+                                           int viewFrame_y,
+                                           int viewFrame_width,
+                                           int viewFrame_height) {
         ZFUIView.requestLayoutOverride = true;
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         nativeViewTmp.viewFrame_x = viewFrame_x;
@@ -142,13 +135,13 @@ public class ZFUIView extends ViewGroup {
         nativeViewTmp.viewFrame_height = viewFrame_height;
         ZFUIView.requestLayoutOverride = false;
     }
-    public static void native_ZFUIView_layoutRequest(Object nativeView) {
+    public static void native_layoutRequest(Object nativeView) {
         ZFUIView nativeViewTmp = (ZFUIView)nativeView;
         nativeViewTmp.requestLayout();
     }
-    public static Object native_ZFUIView_measureNativeView(Object nativeView,
-                                                           int maxWidthOrNegative,
-                                                           int maxHeightOrNegative) {
+    public static Object native_measureNativeView(Object nativeView,
+                                                  int maxWidthOrNegative,
+                                                  int maxHeightOrNegative) {
         View nativeViewTmp = (View)nativeView;
         nativeViewTmp.measure(
             (maxWidthOrNegative >= 0)
@@ -161,21 +154,21 @@ public class ZFUIView extends ViewGroup {
     }
 
     // ============================================================
-    public static native void native_ZFUIView_notifyNeedLayout(long zfjniPointerOwnerZFUIView);
-    public static native void native_ZFUIView_notifyLayoutRootView(long zfjniPointerOwnerZFUIView,
-                                                                   ZFAndroidRect rect);
-    public static native void native_ZFUIView_notifyLayoutNativeImplView(long zfjniPointerOwnerZFUIView,
-                                                                         ZFAndroidRect rect);
-    public static native void native_ZFUIView_notifyUIEvent_mouse(long zfjniPointerOwnerZFUIView,
-                                                                  int mouseId,
-                                                                  int mouseAction,
-                                                                  int mousePointX,
-                                                                  int mousePointY);
-    public static native boolean native_ZFUIView_notifyUIEvent_key(long zfjniPointerOwnerZFUIView,
-                                                                   int keyId,
-                                                                   int keyAction,
-                                                                   int keyCode,
-                                                                   int keyCodeRaw);
+    public static native void native_notifyNeedLayout(long zfjniPointerOwnerZFUIView);
+    public static native void native_notifyLayoutRootView(long zfjniPointerOwnerZFUIView,
+                                                          ZFAndroidRect rect);
+    public static native void native_notifyLayoutNativeImplView(long zfjniPointerOwnerZFUIView,
+                                                                ZFAndroidRect rect);
+    public static native void native_notifyUIEvent_mouse(long zfjniPointerOwnerZFUIView,
+                                                         int mouseId,
+                                                         int mouseAction,
+                                                         int mousePointX,
+                                                         int mousePointY);
+    public static native boolean native_notifyUIEvent_key(long zfjniPointerOwnerZFUIView,
+                                                          int keyId,
+                                                          int keyAction,
+                                                          int keyCode,
+                                                          int keyCodeRaw);
 
     // ============================================================
     protected ZFUIView(Context context) {
@@ -472,7 +465,7 @@ public class ZFUIView extends ViewGroup {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         _pressedKeyAdd((int)event.getDownTime(), event.getKeyCode());
         if(this.zfjniPointerOwnerZFUIView != 0
-            && ZFUIView.native_ZFUIView_notifyUIEvent_key(
+            && ZFUIView.native_notifyUIEvent_key(
                 this.zfjniPointerOwnerZFUIView,
                 (int)event.getDownTime(),
                 _keyActionFromKeyActionRaw(event.getAction()),
@@ -485,7 +478,7 @@ public class ZFUIView extends ViewGroup {
     @Override
     public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
         if(this.zfjniPointerOwnerZFUIView != 0
-            && ZFUIView.native_ZFUIView_notifyUIEvent_key(
+            && ZFUIView.native_notifyUIEvent_key(
                 this.zfjniPointerOwnerZFUIView,
                 (int)event.getDownTime(),
                 _keyActionFromKeyActionRaw(event.getAction()),
@@ -499,7 +492,7 @@ public class ZFUIView extends ViewGroup {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         _pressedKeyRemove((int)event.getDownTime(), event.getKeyCode());
         if(this.zfjniPointerOwnerZFUIView != 0
-            && ZFUIView.native_ZFUIView_notifyUIEvent_key(
+            && ZFUIView.native_notifyUIEvent_key(
                 this.zfjniPointerOwnerZFUIView,
                 (int)event.getDownTime(),
                 _keyActionFromKeyActionRaw(event.getAction()),
@@ -524,7 +517,7 @@ public class ZFUIView extends ViewGroup {
     }
     private void _pressedKeyCancel() {
         for(int i = 0; i < _pressedKeyId.size(); ++i) {
-            ZFUIView.native_ZFUIView_notifyUIEvent_key(
+            ZFUIView.native_notifyUIEvent_key(
                 this.zfjniPointerOwnerZFUIView,
                 _pressedKeyId.get(i),
                 ZFUIKeyAction.e_KeyCancel,
@@ -592,7 +585,7 @@ public class ZFUIView extends ViewGroup {
         }
         for(int i = 0; i < event.getPointerCount(); ++i) {
             if(this.zfjniPointerOwnerZFUIView != 0) {
-                ZFUIView.native_ZFUIView_notifyUIEvent_mouse(
+                ZFUIView.native_notifyUIEvent_mouse(
                     this.zfjniPointerOwnerZFUIView,
                     event.getPointerId(i),
                     action,
@@ -610,7 +603,7 @@ public class ZFUIView extends ViewGroup {
             if(!ZFUIView.requestLayoutOverride
                 && this.zfjniPointerOwnerZFUIView != 0
                 && (this.getParent() != null && !(this.getParent() instanceof ZFUIView))) {
-                ZFUIView.native_ZFUIView_notifyNeedLayout(this.zfjniPointerOwnerZFUIView);
+                ZFUIView.native_notifyNeedLayout(this.zfjniPointerOwnerZFUIView);
             }
         }
         else {
@@ -626,7 +619,7 @@ public class ZFUIView extends ViewGroup {
                 this.getTop(),
                 MeasureSpec.getSize(widthMeasureSpec),
                 MeasureSpec.getSize(heightMeasureSpec));
-            ZFUIView.native_ZFUIView_notifyLayoutRootView(this.zfjniPointerOwnerZFUIView, this._rectCache);
+            ZFUIView.native_notifyLayoutRootView(this.zfjniPointerOwnerZFUIView, this._rectCache);
         }
         widthMeasureSpec = MeasureSpec.makeMeasureSpec(this.viewFrame_width, MeasureSpec.EXACTLY);
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(this.viewFrame_height, MeasureSpec.EXACTLY);
@@ -646,7 +639,7 @@ public class ZFUIView extends ViewGroup {
         for(int i = 0; i < this.getChildCount(); ++i) {
             View child = this.getChildAt(i);
             if(child == this.nativeImplView) {
-                ZFUIView.native_ZFUIView_notifyLayoutNativeImplView(this.zfjniPointerOwnerZFUIView, this._rectCache);
+                ZFUIView.native_notifyLayoutNativeImplView(this.zfjniPointerOwnerZFUIView, this._rectCache);
                 child.layout(
                     this._rectCache.x,
                     this._rectCache.y,
