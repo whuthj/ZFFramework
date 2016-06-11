@@ -7,7 +7,7 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 #include "ZFImpl_sys_Android_NativeEnum_ZFUIWidget.h"
-#include "ZFUIWidget/ZFUIButton.h"
+#include "ZFUIWidget/ZFUIDialogForChoice.h"
 
 #if ZF_ENV_sys_Android
 

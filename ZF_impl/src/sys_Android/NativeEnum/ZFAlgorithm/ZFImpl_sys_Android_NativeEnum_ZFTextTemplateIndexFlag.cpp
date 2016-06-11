@@ -7,7 +7,7 @@
  *   https://github.com/ZFFramework/ZFFramework/blob/master/license/license.txt
  * ====================================================================== */
 #include "ZFImpl_sys_Android_NativeEnum_ZFAlgorithm.h"
-#include "ZFAlgorithm/ZFJson.h"
+#include "ZFAlgorithm/ZFTextTemplate.h"
 
 #if ZF_ENV_sys_Android
 
