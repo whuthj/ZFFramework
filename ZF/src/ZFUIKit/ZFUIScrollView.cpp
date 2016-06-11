@@ -9,7 +9,7 @@
 #include "ZFUIScrollView.h"
 #include "ZFUIScroller.h"
 #include "ZFUIScrollThumb.h"
-#include "protocol/ZFProtocolZFUIView.h"
+#include "protocol/ZFProtocolZFUIScrollView.h"
 
 #include "ZFUIViewPositionOnScreen.h"
 
@@ -39,7 +39,7 @@ zfclass _ZFP_ZFUIScrollViewPrivate : zfextends ZFObject
     ZFOBJECT_DECLARE_ALLOW_CUSTOM_CONSTRUCTOR(_ZFP_ZFUIScrollViewPrivate, ZFObject)
 
 public:
-    ZFPROTOCOL_INTERFACE_CLASS(ZFUIView) *impl;
+    ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl;
     ZFUIScrollView *thisView;
     ZFUIScrollViewStateEnum state;
     zfbool scrollContentFrameOverrideFlag;
@@ -78,7 +78,7 @@ public:
 
 protected:
     _ZFP_ZFUIScrollViewPrivate(void)
-    : impl(ZFPROTOCOL_ACCESS(ZFUIView))
+    : impl(ZFPROTOCOL_ACCESS(ZFUIScrollView))
     , thisView(zfnull)
     , state(ZFUIScrollViewState::e_Idle)
     , scrollContentFrameOverrideFlag(zffalse)
@@ -667,6 +667,20 @@ ZFObject *ZFUIScrollView::objectOnInit(void)
     this->scrollThumbHorizontalOnInit();
     this->scrollThumbVerticalOnInit();
 
+    zfCoreAssert(this->nativeImplView() == zfnull);
+    zfclassNotPOD _ZFP_ZFUIScrollView_nativeImplViewDestroy
+    {
+    public:
+        static void action(ZF_IN ZFUIView *view,
+                           ZF_IN void *nativeImplView)
+        {
+            ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewDestroy(view->to<ZFUIScrollView *>(), nativeImplView);
+        }
+    };
+    this->nativeImplViewSet(
+        ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewCreate(this),
+        _ZFP_ZFUIScrollView_nativeImplViewDestroy::action);
+
     return this;
 }
 void ZFUIScrollView::objectOnDealloc(void)
@@ -711,6 +725,49 @@ void ZFUIScrollView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 
 // ============================================================
 // override ZFUIView
+void ZFUIScrollView::implChildOnAdd(ZF_IN ZFUIView *child,
+                                    ZF_IN zfindex virtualIndex,
+                                    ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                    ZF_IN zfindex childLayerIndex)
+{
+    switch(child->viewLayer())
+    {
+        case ZFUIViewChildLayer::e_Normal:
+            d->impl->scrollChildAdd(this, child, childLayerIndex);
+            break;
+        case ZFUIViewChildLayer::e_Background:
+            zfsuper::implChildOnAdd(child, virtualIndex, childLayer, childLayerIndex);
+            break;
+        case ZFUIViewChildLayer::e_Foreground:
+            zfsuper::implChildOnAdd(child, virtualIndex - this->childCount(), childLayer, childLayerIndex);
+            break;
+        default:
+            zfCoreCriticalShouldNotGoHere();
+            break;
+    }
+}
+void ZFUIScrollView::implChildOnRemove(ZF_IN ZFUIView *child,
+                                       ZF_IN zfindex virtualIndex,
+                                       ZF_IN ZFUIViewChildLayerEnum childLayer,
+                                       ZF_IN zfindex childLayerIndex)
+{
+    switch(childLayer)
+    {
+        case ZFUIViewChildLayer::e_Normal:
+            d->impl->scrollChildRemove(this, child, childLayerIndex);
+            break;
+        case ZFUIViewChildLayer::e_Background:
+            zfsuper::implChildOnRemove(child, virtualIndex, childLayer, childLayerIndex);
+            break;
+        case ZFUIViewChildLayer::e_Foreground:
+            zfsuper::implChildOnRemove(child, virtualIndex - this->childCount(), childLayer, childLayerIndex);
+            break;
+        default:
+            zfCoreCriticalShouldNotGoHere();
+            break;
+    }
+}
+
 void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
 {
     if(!ZFUISizeIsEqual(bounds.size, this->layoutedFramePrev().size))
