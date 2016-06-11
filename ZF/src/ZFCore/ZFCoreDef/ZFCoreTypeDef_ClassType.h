@@ -18,6 +18,7 @@
 #include "ZFCoreTypeDef_CoreType.h"
 #include <stdlib.h>
 #include <memory.h>
+#include <string.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
