@@ -4,7 +4,7 @@
 #include "ZFCore/protocol/ZFProtocolZFLogStackTrace.h"
 #include "ZFCore/ZFLog_StackTrace.h"
 
-#if ZFLOG_STACKTRACE_SUPPORT
+#if !ZFLOG_STACKTRACE_SUPPORT
     #define ZF_EDD_STACK_TRACE_ENABLE 0
 #else
     #if defined(_WIN32)
