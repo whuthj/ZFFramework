@@ -325,16 +325,36 @@ public:
     ZFOBSERVER_EVENT(TextEditOnEditEnd)
     /**
      * @brief see #ZFObject::observerNotify
+     *
+     * called when text is about to change\n
+     * param0 is the text (as #ZFString) that about to change\n
+     * param1 is a #ZFValueEditable::boolValue
+     * shows whether the text should change,
+     * set to false to show the text should not be changed\n
+     * @note if #ZFUITextEditStyle::textEditFilter has been set,
+     *   it would be checked first
+     *   and store result to param1,
+     *   you may change the value to modify the filter result
+     */
+    ZFOBSERVER_EVENT(TextEditOnCheckChange)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called when text changed,
+     * param0 is the old text (as #ZFString)
      */
     ZFOBSERVER_EVENT(TextEditOnChange)
     /**
      * @brief see #ZFObject::observerNotify
+     *
+     * called when return clicked
      */
     ZFOBSERVER_EVENT(TextEditReturnOnClick)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * util event fired when return clicked or focus lost
+     * util event fired when return clicked or focus lost,
+     * or, you may manually notify it by #textEditNotifyConfirm
      */
     ZFOBSERVER_EVENT(TextEditOnConfirm)
 
@@ -411,30 +431,24 @@ public:
     zffinal zfbool textEditing(void);
 
 protected:
-    /**
-     * @brief called when text begin edit
-     */
+    /** @brief see #EventTextEditOnEditBegin */
     virtual void textEditOnEditBegin(void);
-    /**
-     * @brief called when text end edit
-     */
+    /** @brief see #EventTextEditOnEditEnd */
     virtual void textEditOnEditEnd(void);
-    /**
-     * @brief see #textShouldChange
-     */
-    virtual zfbool textOnCheckShouldChange(ZF_IN ZFString *newText);
-    /**
-     * @brief called when text changed
-     */
-    virtual void textEditOnChange(void);
-    /**
-     * @brief called when return clicked
-     */
+    /** @brief see #EventTextEditOnCheckChange */
+    virtual void textEditOnCheckChange(ZF_IN ZFString *newText, ZF_IN_OUT zfbool &shouldChange);
+    /** @brief see #EventTextEditOnChange */
+    virtual void textEditOnChange(ZF_IN ZFString *oldText);
+    /** @brief see #EventTextEditReturnOnClick */
     virtual void textEditReturnOnClick(void);
-    /**
-     * @brief called when return clicked or focus lost
-     */
+    /** @brief see #EventTextEditOnConfirm */
     virtual void textEditOnConfirm(void);
+public:
+    /** @brief see #EventTextEditOnConfirm */
+    virtual void textEditNotifyConfirm(void)
+    {
+        this->textEditOnConfirm();
+    }
 
     // ============================================================
     // override

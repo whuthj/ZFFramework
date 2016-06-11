@@ -262,16 +262,21 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyEndEdit(void)
 }
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyChange(ZF_IN ZFString *newText)
 {
+    ZFString *oldText = this->textContent();
+    zfRetainWithoutLeakTest(oldText);
+
     d->textChangedByImplFlag = zftrue;
     this->textContentSet(newText);
     d->textChangedByImplFlag = zffalse;
 
-    this->textEditOnChange();
+    this->textEditOnChange(oldText);
+
+    zfReleaseWithoutLeakTest(oldText);
 }
 void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void)
 {
     this->textEditReturnOnClick();
-    this->textEditOnConfirm();
+    this->textEditNotifyConfirm();
 
     switch(this->textEditKeyboardReturnAction())
     {
@@ -315,11 +320,16 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void)
 }
 zfbool ZFUITextEdit::textShouldChange(ZF_IN ZFString *newText)
 {
-    if(newText != zfnull && !newText->isEmpty() && !this->textOnCheckShouldChange(newText))
+    zfbool shouldChange = zftrue;
+    this->textEditOnCheckChange(newText, shouldChange);
+    if(!shouldChange && newText != zfnull && !newText->isEmpty())
     {
         return zffalse;
     }
-    return zftrue;
+    else
+    {
+        return zftrue;
+    }
 }
 void ZFUITextEdit::textEditBegin(void)
 {
@@ -344,22 +354,26 @@ void ZFUITextEdit::textEditOnEditEnd(void)
     this->observerNotify(ZFUITextEdit::EventTextEditOnEditEnd());
     ZFGlobalEventCenter::instance()->observerNotifyWithCustomSender(this, ZFUITextEdit::EventTextEditOnEditEnd());
 }
-zfbool ZFUITextEdit::textOnCheckShouldChange(ZF_IN ZFString *newText)
+void ZFUITextEdit::textEditOnCheckChange(ZF_IN ZFString *newText, ZF_IN_OUT zfbool &shouldChange)
 {
-    if(this->textEditFilter() != zfnull)
+    shouldChange = zftrue;
+    if(newText != zfnull && !newText->isEmpty() && this->textEditFilter() != zfnull)
     {
         ZFRegExpResult regexpResult;
         this->textEditFilter()->regExpMatchExact(regexpResult, newText->stringValue());
         if(!regexpResult.matched)
         {
-            return zffalse;
+            shouldChange = zffalse;
         }
     }
-    return zftrue;
+
+    zfautoObject t = ZFValueEditable::boolValueCreate(shouldChange);
+    this->observerNotify(ZFUITextEdit::EventTextEditOnCheckChange(), newText, t.toObject());
+    shouldChange = t.to<ZFValue *>()->boolValue();
 }
-void ZFUITextEdit::textEditOnChange(void)
+void ZFUITextEdit::textEditOnChange(ZF_IN ZFString *oldText)
 {
-    this->observerNotify(ZFUITextEdit::EventTextEditOnChange());
+    this->observerNotify(ZFUITextEdit::EventTextEditOnChange(), oldText);
 }
 void ZFUITextEdit::textEditReturnOnClick(void)
 {
@@ -401,7 +415,7 @@ void ZFUITextEdit::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent)
 void ZFUITextEdit::viewFocusOnChange(void)
 {
     zfsuper::viewFocusOnChange();
-    this->textEditOnConfirm();
+    this->textEditNotifyConfirm();
 }
 
 ZF_NAMESPACE_GLOBAL_END
